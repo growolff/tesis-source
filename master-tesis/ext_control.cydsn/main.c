@@ -21,7 +21,8 @@ int main(void)
     uint8 SendSingleByte;
     uint8 SendEmulatedData;
     uint8 Reset=FALSE;
-    uint8 Turn,TurnLeft,TurnRight;
+    uint8 Turn,Turn_serial,TurnLeft,TurnRight;
+    int _state_=0;
     
     int16 dir_count;
     
@@ -38,6 +39,9 @@ int main(void)
     PID_init(&pos_pid_,kp_pos,ki_pos,kd_pos);
     PID_setMaxValue(&pos_pid_, 10000);
     PID_setMinValue(&pos_pid_, 0);
+
+    /* Place your initialization/startup code here (e.g. MyInst_Start()) */
+    CyGlobalIntEnable; /* Enable global interrupts. */
     
     ADC_Start();
     ADC_tension_Start();
@@ -45,27 +49,24 @@ int main(void)
     UART_1_Start();
     Timer_ha_Start();
     DirCounter_Start();
-    //Timer_hb_Start();
-    isr_HA_Start();
-    //isr_HB_Start();
-    isr_counter_Start();
-    isr_button_Start();
-    vel_control_isr_Start();
-    angle_control_isr_Start();
-    
+
     ADC_StartConvert();
     ADC_tension_StartConvert();
     PWM_Enable();       // enable PWM generation
     
-    /* Place your initialization/startup code here (e.g. MyInst_Start()) */
-    
-    CyGlobalIntEnable; /* Enable global interrupts. */
+    isr_HA_Start();
+    isr_counter_Start();
+    isr_button_Start();
+    vel_control_isr_Start();
+    angle_control_isr_Start();
+
     /* Initialize Variables */
     ContinuouslySendData = FALSE;
     SendSingleByte = FALSE;
     SendEmulatedData = FALSE;
     
-    Turn = FALSE;
+    Turn_serial = FALSE;
+    Turn = TRUE;
     TurnLeft = FALSE;
     TurnRight = FALSE;
     
@@ -75,13 +76,21 @@ int main(void)
     BRAKEn_Write(TRUE);
     
     current_pos = 0; /* Set initial position of rotor */
+    pos_ref = 100;
     
-    pos_ref = 15;
-    
-    UART_1_PutString("----- COM5 Port Open -----\n ");
+    UART_1_PutString("----- COM5 Port Open -----\r\n");
     
     dir_state = 1; //left
     
+    while(_state_ == 0){
+        Ch = UART_1_GetChar();
+        if(Ch == 'i'){
+            _state_=1;
+            UART_1_PutString("[INFO] Start \r\n");
+            break;
+        }
+    }
+
     for(;;)
     {
         dir_count = DirCounter_GetCounter();
@@ -96,8 +105,8 @@ int main(void)
                 
         /* change motor direction with button */
         DIR_Write(dir_state);
-           
-        /* Place your application code here. */
+        
+        /* Check UART for any sent command */
         Ch = UART_1_GetChar();
         
         /* Set flags based on UART command */
@@ -129,10 +138,19 @@ int main(void)
                 TurnRight = TRUE;
                 break;
             case ' ':
-                Turn = ~Turn;
+                Turn_serial = TRUE;
                 break;
             case 'q':
                 Reset = TRUE;
+                break;
+            case '1':
+                pos_ref = 15;
+                break;
+            case '2':
+                pos_ref = 50;
+                break;
+            case '3':
+                pos_ref = -50;
                 break;
             default:
                 /* Place error handling code here */
@@ -154,7 +172,7 @@ int main(void)
         else if(SendEmulatedData)
         {
             /* Format ADC result for transmition */
-            sprintf(TransmitBuffer, "Dir: %s \t|\tTurning: %s \r\n", dir_state?"Left":"Right", Turn?"Turn":"Stop");
+            sprintf(TransmitBuffer, "Dir: %s \tTurning: %s \r\n", dir_state?"Left":"Right", Turn?"Turn":"Stop");
             /* Send out the data */
             UART_1_PutString(TransmitBuffer);
             /* Reset the send once flag */
@@ -166,25 +184,24 @@ int main(void)
             /* Reset the psoc using software */
             CySoftwareReset();
         }
-        if(Turn)
+        if(Turn_serial)
         {
             uint8 brakeState = BRAKEn_Read();
             BRAKEn_Write(~ brakeState);
-            //sprintf(TransmitBuffer, "Turning...\r\n");
-            //UART_1_PutString(TransmitBuffer);
             Turn = ~ Turn;
+            Turn_serial = FALSE;
         }
         if(TurnLeft)
         {
             dir_state = 1; // Left, Counter ClockWise
-            sprintf(TransmitBuffer, "Turn: CCW \r\n");
+            sprintf(TransmitBuffer, "Turn: CCW (L)\r\n");
             UART_1_PutString(TransmitBuffer);
             TurnLeft = FALSE;
         }
         else if(TurnRight)
         {
             dir_state = 0; // Right, ClockWise
-            sprintf(TransmitBuffer, "Turn: CW \r\n");
+            sprintf(TransmitBuffer, "Turn: CW (R)\r\n");
             UART_1_PutString(TransmitBuffer);
             TurnRight = FALSE;
         }

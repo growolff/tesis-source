@@ -25,8 +25,7 @@
 
 #define MAX_COUNTER 6500 
     
-
-#define MANUAL_CONTROL
+//#define MANUAL_CONTROL
 
 /* position control parameters */
 #define KP_POS 1.0
@@ -39,6 +38,8 @@
 #define KD_VEL 0.0
 
 /* Project variables */
+int _state_;
+
 // for rotor speed and direction
 extern volatile int16_t dir_count;
 extern volatile int8_t rotor_direction;
@@ -60,6 +61,6 @@ extern volatile uint8 dir_state;
 extern PID_t  speed_pid_;
 extern PID_t  pos_pid_;
 
-extern volatile uint8 Turn,TurnLeft,TurnRight;
+extern volatile uint8 Turn_serial,Turn,TurnLeft,TurnRight;
 
 /* [] END OF FILE */

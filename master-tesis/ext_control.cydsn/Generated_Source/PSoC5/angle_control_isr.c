@@ -192,11 +192,6 @@ CY_ISR(angle_control_isr_Interrupt)
     
     debug_pos = pos_pid_output;
 
-    /*
-    if(current_pos >= pos_ref){
-        BRAKEn_Write(0);
-    }
-    */
     #ifndef MANUAL_CONTROL
         speed_ref = (int)Sigmoid(pos_pid_output,VEL_MAX,0.5);
     #endif
