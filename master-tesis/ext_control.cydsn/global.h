@@ -25,7 +25,7 @@
 
 #define MAX_COUNTER 6500 
     
-//#define MANUAL_CONTROL
+#define MANUAL_CONTROL
 
 /* position control parameters */
 #define KP_POS 1.0

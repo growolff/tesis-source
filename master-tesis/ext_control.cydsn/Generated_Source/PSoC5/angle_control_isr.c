@@ -31,6 +31,7 @@
 #include "global.h"
 #include <PWM.h>
 #include <functions.h>    
+#include <DirCounter.h>
     
 volatile int32_t HA_counter;
 volatile int32_t speed_ref;
@@ -184,7 +185,7 @@ CY_ISR(angle_control_isr_Interrupt)
     /*  Place your Interrupt code here. */
     /* `#START angle_control_isr_Interrupt` */
 
-    current_pos = HA_counter; // in hall sensor count for better resolution
+    current_pos = DirCounter_GetCounter(); // in hall sensor count for better resolution
     
     PID_setRef(&pos_pid_,pos_ref*4);
     

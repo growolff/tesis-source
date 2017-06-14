@@ -66,14 +66,14 @@ int main(void)
     SendEmulatedData = FALSE;
     
     Turn_serial = FALSE;
-    Turn = TRUE;
+    Turn = FALSE;
     TurnLeft = FALSE;
     TurnRight = FALSE;
     
     //ENABLE_Write(1); // true: speed control, else: external pwm control
     SPEED_Write(TRUE); // true: external pwm control, else: analog voltage control
     //DIR_Write(1);
-    BRAKEn_Write(TRUE);
+    BRAKEn_Write(FALSE);
     
     current_pos = 0; /* Set initial position of rotor */
     pos_ref = 100;
@@ -162,7 +162,7 @@ int main(void)
         {
             /* Format ADC result for transmition */
             //sprintf(TransmitBuffer, "counter: %d\t mean: %d  \t debug: %d \r\n",(int)_vel_counter,(int)_last_median, (int)debug);
-            sprintf(TransmitBuffer, "count: %d \t pid: %d\t vel: %d [rpm]\r\n",(int)dir_count,(int)rotor_direction,(int)current_speed);
+            sprintf(TransmitBuffer, "count: %d \t Ref: %d\t Actual: %d [rpm]\r\n",(int)dir_count,(int)pos_ref,(int)current_pos);
             //sprintf(TransmitBuffer, "%d,%d,%d\n", _motor_speed*50/16, (int)(_speed_ref)*50/16, _pid_output);
             /* Send out the data */
             UART_1_PutString(TransmitBuffer);
@@ -172,7 +172,7 @@ int main(void)
         else if(SendEmulatedData)
         {
             /* Format ADC result for transmition */
-            sprintf(TransmitBuffer, "Dir: %s \tTurning: %s \r\n", dir_state?"Left":"Right", Turn?"Turn":"Stop");
+            sprintf(TransmitBuffer, "Dir: %s \tTurning: %s \r\n", (dir_state?"Left":"Right"), (Turn?"Turn":"Stop"));
             /* Send out the data */
             UART_1_PutString(TransmitBuffer);
             /* Reset the send once flag */
@@ -189,6 +189,9 @@ int main(void)
             uint8 brakeState = BRAKEn_Read();
             BRAKEn_Write(~ brakeState);
             Turn = ~ Turn;
+            ContinuouslySendData = ~ContinuouslySendData;
+            sprintf(TransmitBuffer, "Turning: %s \r\n",(Turn?"True":"False"));
+            UART_1_PutString(TransmitBuffer);
             Turn_serial = FALSE;
         }
         if(TurnLeft)
