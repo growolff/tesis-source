@@ -31,14 +31,14 @@ int main(void)
     /* set speed PID parameters */
     float kp_vel = KP_VEL, ki_vel = KI_VEL, kd_vel = KD_VEL;  
     PID_init(&speed_pid_,kp_vel,ki_vel,kd_vel);
-    PID_setMaxValue(&speed_pid_, 12000);
+    PID_setMaxValue(&speed_pid_, 10000);
     PID_setMinValue(&speed_pid_, 0);
     
     /* set position PID parameters */
     float kp_pos = KP_POS, ki_pos = KI_POS, kd_pos = KD_POS;  
     PID_init(&pos_pid_,kp_pos,ki_pos,kd_pos);
-    PID_setMaxValue(&pos_pid_, 10000);
-    PID_setMinValue(&pos_pid_, 0);
+    PID_setMaxValue(&pos_pid_, 500);
+    PID_setMinValue(&pos_pid_, -500);
 
     /* Place your initialization/startup code here (e.g. MyInst_Start()) */
     CyGlobalIntEnable; /* Enable global interrupts. */
@@ -72,15 +72,12 @@ int main(void)
     
     //ENABLE_Write(1); // true: speed control, else: external pwm control
     SPEED_Write(TRUE); // true: external pwm control, else: analog voltage control
-    //DIR_Write(1);
-    BRAKEn_Write(FALSE);
-    
-    current_pos = 0; /* Set initial position of rotor */
-    pos_ref = 100;
+    DIR_Write(1);     // true: left(ccw), false: right(cw)
+    BRAKEn_Write(TRUE);  // true: turning, false: braken
     
     UART_1_PutString("----- COM5 Port Open -----\r\n");
     
-    dir_state = 1; //left
+    dir_state = 1; //left, negative counter
     
     while(_state_ == 0){
         Ch = UART_1_GetChar();
@@ -90,6 +87,11 @@ int main(void)
             break;
         }
     }
+    /* Set initial position of rotor */
+    reference_pos = 0; 
+    /* Set reference position for control */
+    pos_ref = -100;
+    
 
     for(;;)
     {
@@ -99,11 +101,11 @@ int main(void)
         _tVal = ADC_tension_GetResult16();
         
         #ifdef MANUAL_CONTROL
-            PWM_WriteCompare((uint8)(255-_pVal));
-            //speed_ref = fn_mapper(_pVal,0,255,0,9500);        
+            //PWM_WriteCompare((uint8)(255-_pVal));
+            speed_ref = fn_mapper(_pVal,0,255,0,9500);        
         #endif
                 
-        /* change motor direction with button */
+        /* change motor direction */
         DIR_Write(dir_state);
         
         /* Check UART for any sent command */
@@ -143,6 +145,9 @@ int main(void)
             case 'q':
                 Reset = TRUE;
                 break;
+            case 'b':
+                BRAKEn_Write(FALSE);
+                break;
             case '1':
                 pos_ref = 15;
                 break;
@@ -151,6 +156,9 @@ int main(void)
                 break;
             case '3':
                 pos_ref = -50;
+                break;
+            case '4':
+                pos_ref = 100;
                 break;
             default:
                 /* Place error handling code here */
@@ -162,7 +170,7 @@ int main(void)
         {
             /* Format ADC result for transmition */
             //sprintf(TransmitBuffer, "counter: %d\t mean: %d  \t debug: %d \r\n",(int)_vel_counter,(int)_last_median, (int)debug);
-            sprintf(TransmitBuffer, "count: %d \t Ref: %d\t Actual: %d [rpm]\r\n",(int)dir_count,(int)pos_ref,(int)current_pos);
+            sprintf(TransmitBuffer, "pRef: %d\t pActual: %d\t sRef: %d\t pwm: %d\r\n",(int)pos_ref*4,(int)current_pos,(int)speed_ref,(int)debug);
             //sprintf(TransmitBuffer, "%d,%d,%d\n", _motor_speed*50/16, (int)(_speed_ref)*50/16, _pid_output);
             /* Send out the data */
             UART_1_PutString(TransmitBuffer);
@@ -172,7 +180,7 @@ int main(void)
         else if(SendEmulatedData)
         {
             /* Format ADC result for transmition */
-            sprintf(TransmitBuffer, "Dir: %s \tTurning: %s \r\n", (dir_state?"Left":"Right"), (Turn?"Turn":"Stop"));
+            sprintf(TransmitBuffer, "Dir: %s \r\n", (dir_state?"Left":"Right"));
             /* Send out the data */
             UART_1_PutString(TransmitBuffer);
             /* Reset the send once flag */
@@ -184,30 +192,32 @@ int main(void)
             /* Reset the psoc using software */
             CySoftwareReset();
         }
+        #ifdef MANUAL_CONTROL
         if(Turn_serial)
         {
             uint8 brakeState = BRAKEn_Read();
-            BRAKEn_Write(~ brakeState);
-            Turn = ~ Turn;
-            ContinuouslySendData = ~ContinuouslySendData;
-            sprintf(TransmitBuffer, "Turning: %s \r\n",(Turn?"True":"False"));
+            Turn = ~ brakeState;
+            BRAKEn_Write(TRUE);
+            ContinuouslySendData = ~ ContinuouslySendData;
+            sprintf(TransmitBuffer, "Braken: %s \r\n",(brakeState?"True":"False"));
             UART_1_PutString(TransmitBuffer);
             Turn_serial = FALSE;
         }
         if(TurnLeft)
         {
             dir_state = 1; // Left, Counter ClockWise
-            sprintf(TransmitBuffer, "Turn: CCW (L)\r\n");
+            sprintf(TransmitBuffer, "Dir: CCW (L)\r\n");
             UART_1_PutString(TransmitBuffer);
             TurnLeft = FALSE;
         }
         else if(TurnRight)
         {
             dir_state = 0; // Right, ClockWise
-            sprintf(TransmitBuffer, "Turn: CW (R)\r\n");
+            sprintf(TransmitBuffer, "Dir: CW (R)\r\n");
             UART_1_PutString(TransmitBuffer);
             TurnRight = FALSE;
         }
+        #endif
                 
         CyDelay(20); // works at 50 Hz
     }

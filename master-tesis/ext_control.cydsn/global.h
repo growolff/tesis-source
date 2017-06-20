@@ -14,6 +14,7 @@
 #include "project.h"
 #include "functions.h"
 #include "pid.h"
+#include "math.h"
 
 /* Project defines */
 #define FALSE  0
@@ -25,16 +26,16 @@
 
 #define MAX_COUNTER 6500 
     
-#define MANUAL_CONTROL
+//#define MANUAL_CONTROL
 
 /* position control parameters */
-#define KP_POS 1.0
+#define KP_POS 0.25
 #define KI_POS 0.0
 #define KD_POS 0.0
 
 /* speed control parameters */
-#define KP_VEL 0.6
-#define KI_VEL 0.1
+#define KP_VEL 1.5
+#define KI_VEL 0.2
 #define KD_VEL 0.0
 
 /* Project variables */
@@ -50,16 +51,18 @@ extern volatile int32_t t_ha,ca,ma;
 extern volatile uint8 _pVal;
 extern volatile int16_t _tVal;
 extern volatile int32_t speed_ref;
+extern volatile int32_t reference_pos;
 extern volatile int32_t pos_ref;
 extern volatile int32_t current_speed;
 extern volatile int32_t current_pos;
 
-extern volatile int32_t debug_pos;
+extern volatile int32_t debug;
 extern volatile int32_t HA_counter;
 
 extern volatile uint8 dir_state;
 extern PID_t  speed_pid_;
 extern PID_t  pos_pid_;
+extern uint8 _pid_pwm_out;
 
 extern volatile uint8 Turn_serial,Turn,TurnLeft,TurnRight;
 

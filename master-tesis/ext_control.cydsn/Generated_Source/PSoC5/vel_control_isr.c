@@ -179,22 +179,19 @@ CY_ISR(vel_control_isr_Interrupt)
     /*  Place your Interrupt code here. */
     /* `#START vel_control_isr_Interrupt` */
 
-    current_speed = -HF_CLK/t_ha * 30; // 60 * 2 / 4 = 30, in RPM
+    current_speed = HF_CLK/t_ha * 30; // 60 * 2 / 4 = 30, in RPM
     
     PID_setRef(&speed_pid_,speed_ref);
     
     if(current_speed == 0){
         speed_pid_.iTerm = 0;
     }
-  
     speed_pid_output = PID_calculatePID(&speed_pid_,current_speed);
     
     // maps the pid_output to a 8bit number for pwm control of motor
-    _pid_pwm_out = fn_mapper_8b(speed_pid_output,0,12000,0,255);
-
-    #ifndef MANUAL_CONTROL
-        PWM_WriteCompare((uint8)(255-_pid_pwm_out));
-    #endif
+    _pid_pwm_out = fn_mapper_8b(speed_pid_output,0,10000,0,255);
+    debug = _pid_pwm_out;
+    PWM_WriteCompare((uint8)(255-_pid_pwm_out));
     
     /* `#END` */
 }

@@ -175,7 +175,7 @@ CY_ISR(isr_HA_Interrupt)
     
     HA_counter+=1;
     ca = Timer_ha_ReadCounter(); // read counter
-    t_ha = ca+ma; //
+    t_ha = -1*(ca+ma); //
     ma = ca;
     Timer_ha_WriteCounter(0); // reset the counter
 

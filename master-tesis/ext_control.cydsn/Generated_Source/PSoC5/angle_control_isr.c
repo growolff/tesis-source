@@ -35,14 +35,15 @@
     
 volatile int32_t HA_counter;
 volatile int32_t speed_ref;
-volatile int32_t pos_ref;    
+volatile int32_t pos_ref;
+volatile int32_t reference_pos;
 volatile int32_t current_pos;
 volatile int32_t t;
 
 volatile uint8 dir_state;
 volatile uint8 Turn;
     
-volatile int32_t debug_pos;
+volatile int32_t debug;
        
 PID_t pos_pid_;
 int32_t pos_pid_output;
@@ -185,16 +186,20 @@ CY_ISR(angle_control_isr_Interrupt)
     /*  Place your Interrupt code here. */
     /* `#START angle_control_isr_Interrupt` */
 
-    current_pos = DirCounter_GetCounter(); // in hall sensor count for better resolution
+    /* in hall sensor count for better resolution */
+    current_pos = DirCounter_GetCounter() - reference_pos;
     
-    PID_setRef(&pos_pid_,pos_ref*4);
+    PID_setRef(&pos_pid_,(pos_ref-reference_pos)*4);
     
     pos_pid_output = PID_calculatePID(&pos_pid_,current_pos);
-    
-    debug_pos = pos_pid_output;
 
     #ifndef MANUAL_CONTROL
-        speed_ref = (int)Sigmoid(pos_pid_output,VEL_MAX,0.5);
+    if(pos_pid_output < 0)
+        dir_state=1;
+    else
+        dir_state=0;
+    
+    speed_ref = (int)fabs(Sigmoid(pos_pid_output,VEL_MAX,0.5));
     #endif
 
     /* `#END` */
