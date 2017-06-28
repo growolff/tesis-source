@@ -28,9 +28,12 @@
 ********************************************************************************/
 /* `#START tensor_control_isr_intc` */
 
-#include <pid.h>
+#include <PWM.h>
+#include "global.h"
     
 volatile int16_t _tVal;
+
+PID_t  tens_pid_;
     
 /* `#END` */
 
@@ -170,8 +173,15 @@ CY_ISR(tensor_control_isr_Interrupt)
     /*  Place your Interrupt code here. */
     /* `#START tensor_control_isr_Interrupt` */
 
-    int32_t L=4000,A=150,R=19;  /* valores multiplicados por 100 para calculos enteros */
-
+    //int32_t L=4000,A=150,R=19;  /* valores multiplicados por 100 para calculos enteros */
+    float P[] = {138.5965,-12.3874,0.578,-0.0124,0.0001};
+    /* Se obtiene RT(n) donde n es el numero de vueltas */
+    float RT = P[0]+P[1]*current_pos+P[2]*(current_pos^2)+P[3]*(current_pos^3)+P[4]*(current_pos^4);
+    
+    debug = RT;
+    /* Con la tension medida se calcula el pwm que se le pasa al motor
+       para hacer el control de tension */
+    
     
     /* `#END` */
 }

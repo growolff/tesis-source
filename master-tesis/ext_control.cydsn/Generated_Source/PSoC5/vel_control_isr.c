@@ -190,9 +190,10 @@ CY_ISR(vel_control_isr_Interrupt)
     
     // maps the pid_output to a 8bit number for pwm control of motor
     _pid_pwm_out = fn_mapper_8b(speed_pid_output,0,10000,0,255);
-    debug = _pid_pwm_out;
-    PWM_WriteCompare((uint8)(255-_pid_pwm_out));
-    
+    //debug = _pid_pwm_out;
+    #ifndef NOT_MOVE_MOTOR
+        PWM_WriteCompare((uint8)(255-_pid_pwm_out));
+    #endif
     /* `#END` */
 }
 

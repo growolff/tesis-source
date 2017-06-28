@@ -27,6 +27,7 @@
 #define MAX_COUNTER 6500 
     
 //#define MANUAL_CONTROL
+//#define NOT_MOVE_MOTOR
 
 /* position control parameters */
 #define KP_POS 0.25
@@ -37,6 +38,11 @@
 #define KP_VEL 1.5
 #define KI_VEL 0.2
 #define KD_VEL 0.0
+
+/* tensor control parameters */
+#define KP_TENS 1.0
+#define KI_TENS 0.0
+#define KD_TENS 0.0
 
 /* Project variables */
 int _state_;
@@ -62,6 +68,7 @@ extern volatile int32_t HA_counter;
 extern volatile uint8 dir_state;
 extern PID_t  speed_pid_;
 extern PID_t  pos_pid_;
+extern PID_t  tens_pid_;
 extern uint8 _pid_pwm_out;
 
 extern volatile uint8 Turn_serial,Turn,TurnLeft,TurnRight;

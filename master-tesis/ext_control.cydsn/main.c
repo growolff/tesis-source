@@ -39,6 +39,12 @@ int main(void)
     PID_init(&pos_pid_,kp_pos,ki_pos,kd_pos);
     PID_setMaxValue(&pos_pid_, 500);
     PID_setMinValue(&pos_pid_, -500);
+    
+    /* set tension PID parameters */
+    float kp_tens = KP_TENS, ki_tens = KI_TENS, kd_tens = KD_TENS;  
+    PID_init(&tens_pid_,kp_tens,ki_tens,kd_tens);
+    PID_setMaxValue(&pos_pid_, 500);
+    PID_setMinValue(&pos_pid_, -500);
 
     /* Place your initialization/startup code here (e.g. MyInst_Start()) */
     CyGlobalIntEnable; /* Enable global interrupts. */
@@ -170,7 +176,7 @@ int main(void)
         {
             /* Format ADC result for transmition */
             //sprintf(TransmitBuffer, "counter: %d\t mean: %d  \t debug: %d \r\n",(int)_vel_counter,(int)_last_median, (int)debug);
-            sprintf(TransmitBuffer, "pRef: %d\t pActual: %d\t sRef: %d\t pwm: %d\r\n",(int)pos_ref*4,(int)current_pos,(int)speed_ref,(int)debug);
+            sprintf(TransmitBuffer, "pRef: %d\t pActual: %d\t sRef: %d\t pwm: %d\r\n",(int)_tVal,(int)current_pos,(int)speed_ref,(int)debug);
             //sprintf(TransmitBuffer, "%d,%d,%d\n", _motor_speed*50/16, (int)(_speed_ref)*50/16, _pid_output);
             /* Send out the data */
             UART_1_PutString(TransmitBuffer);
