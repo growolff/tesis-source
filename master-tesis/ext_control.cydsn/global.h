@@ -21,7 +21,7 @@
 #define TRUE   1
 #define TRANSMIT_BUFFER_SIZE  16
 
-#define VEL_MAX 3000 // max vel for speed control
+#define VEL_MAX 4000 // max vel for speed control
 #define HF_CLK 10000 // rate of high frequency clock for speed measurement
 
 #define MAX_COUNTER 6500 
@@ -30,7 +30,7 @@
 //#define NOT_MOVE_MOTOR
 
 /* position control parameters */
-#define KP_POS 0.25
+#define KP_POS 0.3
 #define KI_POS 0.0
 #define KD_POS 0.0
 
