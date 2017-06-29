@@ -4,6 +4,8 @@ Source code of the PSOC uController for the thesis project.
 ### Update 29 June, 2017
 The motor can lift 500g. I need to add pull up resistors to the hall effect sensors so I can read the position of the rotor all the time.
 
+Edit: using pull up resistors in the hall effect sensors ensures that they are allways turned on, so the rotor position control is always working like a charm :3
+
 ### Update 28 June, 2017
 Commenting the global macros 
 ```C

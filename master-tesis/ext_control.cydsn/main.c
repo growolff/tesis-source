@@ -179,7 +179,7 @@ int main(void)
         {
             /* Format ADC result for transmition */
             //sprintf(TransmitBuffer, "counter: %d\t mean: %d  \t debug: %d \r\n",(int)_vel_counter,(int)_last_median, (int)debug);
-            sprintf(TransmitBuffer, "pRef: %d\t pActual: %d\t sRef: %d\t pwm: %d\r\n",(int)pos_ref*4,(int)current_pos,(int)speed_ref,(int)debug);
+            sprintf(TransmitBuffer, "pRef: %d\t pActual: %d\t sRef: %d\t pwm: %d\r\n",(int)pos_ref*4,(int)current_pos,(int)speed_ref,(int)_tVal);
             //sprintf(TransmitBuffer, "%d,%d,%d\n", _motor_speed*50/16, (int)(_speed_ref)*50/16, _pid_output);
             /* Send out the data */
             UART_1_PutString(TransmitBuffer);
