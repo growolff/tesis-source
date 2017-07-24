@@ -83,7 +83,6 @@ int main(void)
     
     dir_state = 1; //left, negative counter
     
-    CyGlobalIntEnable; /* Enable global interrupts. */
     /* Set initial position of rotor */
     init_pos = 0; 
     /* Set reference position for control */
@@ -99,6 +98,7 @@ int main(void)
             break;
         }
     }    
+    CyGlobalIntEnable; /* Enable global interrupts. */
     
     for(;;)
     {
@@ -230,7 +230,7 @@ int main(void)
         }
         #endif
                 
-        CyDelay(20); // works at 50 Hz
+        CyDelay(25); // works at 40 Hz
     }
 }
 

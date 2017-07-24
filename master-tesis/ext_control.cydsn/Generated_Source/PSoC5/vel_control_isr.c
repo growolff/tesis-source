@@ -196,6 +196,7 @@ CY_ISR(vel_control_isr_Interrupt)
     #ifndef T_CONTROL
         
     PWM_WriteCompare((uint8)(255-_pid_pwm_out));
+    debug = _pid_pwm_out;
 
     #endif
     #endif

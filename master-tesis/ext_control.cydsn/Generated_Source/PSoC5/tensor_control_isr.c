@@ -195,6 +195,7 @@ CY_ISR(tensor_control_isr_Interrupt)
     
     #ifdef T_CONTROL
     #ifndef MANUAL_CONTROL
+    BRAKEn_Write(1);    
         
     /* change rotor direction according to pid output */
     if(tension_pid_output < 0)

@@ -27,7 +27,7 @@
 #define MAX_COUNTER 6500 
     
 //#define MANUAL_CONTROL
-//#define T_CONTROL
+#define T_CONTROL
 
 #ifndef T_CONTROL
 #define P_CONTROL
