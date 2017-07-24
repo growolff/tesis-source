@@ -22,8 +22,6 @@ int main(void)
     uint8 SendEmulatedData;
     uint8 Reset=FALSE;
     uint8 Turn,Turn_serial,TurnLeft,TurnRight;
-    int _state_=0;
-    
     int16 dir_count;
     
     char TransmitBuffer[TRANSMIT_BUFFER_SIZE];
@@ -43,12 +41,10 @@ int main(void)
     /* set tension PID parameters */
     float kp_tens = KP_TENS, ki_tens = KI_TENS, kd_tens = KD_TENS;  
     PID_init(&tens_pid_,kp_tens,ki_tens,kd_tens);
-    PID_setMaxValue(&pos_pid_, 500);
-    PID_setMinValue(&pos_pid_, -500);
+    PID_setMaxValue(&tens_pid_, 4096);
+    PID_setMinValue(&tens_pid_, -4096);
 
     /* Place your initialization/startup code here (e.g. MyInst_Start()) */
-    CyGlobalIntEnable; /* Enable global interrupts. */
-    
     ADC_Start();
     ADC_tension_Start();
     PWM_Start();        // initialize PWM block
@@ -60,11 +56,13 @@ int main(void)
     ADC_tension_StartConvert();
     PWM_Enable();       // enable PWM generation
     
+    /* Initialize interrupt blocks */
     isr_HA_Start();
     isr_counter_Start();
     isr_button_Start();
     vel_control_isr_Start();
     angle_control_isr_Start();
+    tensor_control_isr_Start();
 
     /* Initialize Variables */
     ContinuouslySendData = FALSE;
@@ -79,12 +77,20 @@ int main(void)
     //ENABLE_Write(1); // true: speed control, else: external pwm control
     SPEED_Write(TRUE); // true: external pwm control, else: analog voltage control
     DIR_Write(1);     // true: left(ccw), false: right(cw)
-    BRAKEn_Write(TRUE);  // true: turning, false: braken
+    BRAKEn_Write(FALSE);  // true: turning, false: braken
     
     UART_1_PutString("----- COM5 Port Open -----\r\n");
     
     dir_state = 1; //left, negative counter
     
+    CyGlobalIntEnable; /* Enable global interrupts. */
+    /* Set initial position of rotor */
+    init_pos = 0; 
+    /* Set reference position for control */
+    pos_ref = 0;
+    /* Set reference tension for control */
+    ref_tension = 2048;    
+   
     while(_state_ == 0){
         Ch = UART_1_GetChar();
         if(Ch == 'i'){
@@ -92,13 +98,8 @@ int main(void)
             UART_1_PutString("[INFO] Start \r\n");
             break;
         }
-    }
-    /* Set initial position of rotor */
-    reference_pos = 0; 
-    /* Set reference position for control */
-    pos_ref = 0;
+    }    
     
-
     for(;;)
     {
         dir_count = DirCounter_GetCounter();
@@ -107,8 +108,8 @@ int main(void)
         _tVal = ADC_tension_GetResult16();
         
         #ifdef MANUAL_CONTROL
-            //PWM_WriteCompare((uint8)(255-_pVal));
-            speed_ref = fn_mapper(_pVal,0,255,0,9500);        
+            PWM_WriteCompare((uint8)(255-_pVal));
+            //speed_ref = fn_mapper(_pVal,0,255,0,9500);        
         #endif
                 
         /* change motor direction */
@@ -179,7 +180,7 @@ int main(void)
         {
             /* Format ADC result for transmition */
             //sprintf(TransmitBuffer, "counter: %d\t mean: %d  \t debug: %d \r\n",(int)_vel_counter,(int)_last_median, (int)debug);
-            sprintf(TransmitBuffer, "pRef: %d\t pActual: %d\t sRef: %d\t pwm: %d\r\n",(int)pos_ref*4,(int)current_pos,(int)speed_ref,(int)_tVal);
+            sprintf(TransmitBuffer, "pRef: %d\t pActual: %d\t debug: %d\t currTension: %d\r\n",(int)pos_ref*4,(int)actual_pos,(int)debug,(int)_tVal);
             //sprintf(TransmitBuffer, "%d,%d,%d\n", _motor_speed*50/16, (int)(_speed_ref)*50/16, _pid_output);
             /* Send out the data */
             UART_1_PutString(TransmitBuffer);
@@ -201,6 +202,7 @@ int main(void)
             /* Reset the psoc using software */
             CySoftwareReset();
         }
+        
         #ifdef MANUAL_CONTROL
         if(Turn_serial)
         {

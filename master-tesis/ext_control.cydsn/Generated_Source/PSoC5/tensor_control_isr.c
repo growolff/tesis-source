@@ -30,10 +30,17 @@
 
 #include <PWM.h>
 #include "global.h"
+#include "stdlib.h"
     
 volatile int16_t _tVal;
-
-PID_t  tens_pid_;
+volatile int32_t actual_tension;
+volatile int32_t ref_tension;
+int32_t tension_pid_output;
+    
+PID_t tens_pid_;
+   
+volatile int32_t debug;
+volatile int32_t current_pos;
     
 /* `#END` */
 
@@ -174,14 +181,35 @@ CY_ISR(tensor_control_isr_Interrupt)
     /* `#START tensor_control_isr_Interrupt` */
 
     //int32_t L=4000,A=150,R=19;  /* valores multiplicados por 100 para calculos enteros */
-    float P[] = {138.5965,-12.3874,0.578,-0.0124,0.0001};
+    //float P[] = {138.5965,-12.3874,0.578,-0.0124,0.0001};
     /* Se obtiene RT(n) donde n es el numero de vueltas */
-    float RT = P[0]+P[1]*current_pos+P[2]*(current_pos^2)+P[3]*(current_pos^3)+P[4]*(current_pos^4);
+    //float RT = P[0]+P[1]*current_pos+P[2]*(current_pos^2)+P[3]*(current_pos^3)+P[4]*(current_pos^4);
     
-    debug = RT;
+    actual_tension = _tVal;
+    
+    PID_setRef(&tens_pid_,ref_tension);
+    
+    tension_pid_output = PID_calculatePID(&tens_pid_,actual_tension);
+    int as = abs(tension_pid_output);
+    _pid_pwm_out = fn_mapper_8b(as,0,500,0,255);
+    
+    #ifdef T_CONTROL
+    #ifndef MANUAL_CONTROL
+        
+    /* change rotor direction according to pid output */
+    if(tension_pid_output < 0)
+        dir_state=1;
+    else
+        dir_state=0;
+    
+    PWM_WriteCompare((uint8)(255-_pid_pwm_out));
+    debug = _pid_pwm_out;
+    
+    #endif
+    #endif
+    
     /* Con la tension medida se calcula el pwm que se le pasa al motor
        para hacer el control de tension */
-    
     
     /* `#END` */
 }
