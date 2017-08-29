@@ -22,10 +22,17 @@
 #define TRANSMIT_BUFFER_SIZE  16
 
 #define VEL_MAX 3000 // max vel for speed control
-#define HF_CLK 10000 // rate of high frequency clock for speed measurement
+#define K_VEL 0.5 // constant for sigmoid in speed control
 
-#define MAX_COUNTER 6500 
-    
+#define PWM_MAX 255 // max value for force control
+#define K_PWM 0.02 // constan for sigmoidal function in force control
+
+#define HF_CLK 10000 // rate of high frequency clock for speed measurement
+#define MAX_COUNTER 6500 // max counter for checking zero speed
+
+#define MAX_POSITION_LIMIT 72
+#define MIN_POSITION_LIMIT 0
+
 //#define MANUAL_CONTROL
 #define T_CONTROL
 

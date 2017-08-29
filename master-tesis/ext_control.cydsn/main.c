@@ -99,6 +99,7 @@ int main(void)
         }
     }    
     CyGlobalIntEnable; /* Enable global interrupts. */
+    BRAKEn_Write(1);
     
     for(;;)
     {
@@ -114,6 +115,14 @@ int main(void)
                 
         /* change motor direction */
         DIR_Write(dir_state);
+        
+        /* rotor zero crossing checks */
+        if(actual_pos >= 0 && dir_state == 0){ 
+            BRAKEn_Write(0);
+        }
+        else if(dir_state == 1){
+            BRAKEn_Write(1);
+        }
         
         /* Check UART for any sent command */
         Ch = UART_1_GetChar();
@@ -159,7 +168,7 @@ int main(void)
                 pos_ref = 15;
                 break;
             case '2':
-                pos_ref = -15;
+                pos_ref = 15;
                 break;
             case '3':
                 pos_ref = -10;

@@ -194,14 +194,13 @@ CY_ISR(angle_control_isr_Interrupt)
 
     #ifdef P_CONTROL
     #ifndef MANUAL_CONTROL
-    BRAKEn_Write(1);
         
     if(pos_pid_output < 0)
         dir_state=1;
     else
         dir_state=0;
     
-    speed_ref = (int)fabs(Sigmoid(pos_pid_output,VEL_MAX,0.5));
+    speed_ref = (int)fabs(Sigmoid(pos_pid_output,VEL_MAX,K_VEL));
     
     #endif
     #endif

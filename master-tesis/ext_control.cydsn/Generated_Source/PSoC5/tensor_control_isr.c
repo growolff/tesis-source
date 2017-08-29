@@ -190,8 +190,8 @@ CY_ISR(tensor_control_isr_Interrupt)
     PID_setRef(&tens_pid_,ref_tension);
     
     tension_pid_output = PID_calculatePID(&tens_pid_,actual_tension);
-    int as = abs(tension_pid_output);
-    _pid_pwm_out = fn_mapper_8b(as,0,500,0,255);
+    int aux = abs(tension_pid_output);
+    _pid_pwm_out = fn_mapper_8b(aux,0,500,0,255);
     
     #ifdef T_CONTROL
     #ifndef MANUAL_CONTROL
@@ -203,6 +203,7 @@ CY_ISR(tensor_control_isr_Interrupt)
     else
         dir_state=0;
     
+    (int)fabs(Sigmoid(_pid_pwm_out,PWM_MAX,K_PWM));
     PWM_WriteCompare((uint8)(255-_pid_pwm_out));
     debug = _pid_pwm_out;
     
