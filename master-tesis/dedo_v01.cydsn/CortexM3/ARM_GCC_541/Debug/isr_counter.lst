@@ -1,0 +1,2534 @@
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"isr_counter.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.isr_counter_Interrupt,"ax",%progbits
+  20              		.align	2
+  21              		.global	isr_counter_Interrupt
+  22              		.thumb
+  23              		.thumb_func
+  24              		.type	isr_counter_Interrupt, %function
+  25              	isr_counter_Interrupt:
+  26              	.LFB67:
+  27              		.file 1 "isr_counter.c"
+   1:isr_counter.c **** /*******************************************************************************
+   2:isr_counter.c **** * File Name: isr_counter.c  
+   3:isr_counter.c **** * Version 1.70
+   4:isr_counter.c **** *
+   5:isr_counter.c **** *  Description:
+   6:isr_counter.c **** *   API for controlling the state of an interrupt.
+   7:isr_counter.c **** *
+   8:isr_counter.c **** *
+   9:isr_counter.c **** *  Note:
+  10:isr_counter.c **** *
+  11:isr_counter.c **** ********************************************************************************
+  12:isr_counter.c **** * Copyright 2008-2015, Cypress Semiconductor Corporation.  All rights reserved.
+  13:isr_counter.c **** * You may use this file only in accordance with the license, terms, conditions, 
+  14:isr_counter.c **** * disclaimers, and limitations in the end user license agreement accompanying 
+  15:isr_counter.c **** * the software package with which this file was provided.
+  16:isr_counter.c **** *******************************************************************************/
+  17:isr_counter.c **** 
+  18:isr_counter.c **** 
+  19:isr_counter.c **** #include <cydevice_trm.h>
+  20:isr_counter.c **** #include <CyLib.h>
+  21:isr_counter.c **** #include <isr_counter.h>
+  22:isr_counter.c **** #include "cyapicallbacks.h"
+  23:isr_counter.c **** 
+  24:isr_counter.c **** #if !defined(isr_counter__REMOVED) /* Check for removal by optimization */
+  25:isr_counter.c **** 
+  26:isr_counter.c **** /*******************************************************************************
+  27:isr_counter.c **** *  Place your includes, defines and code here 
+  28:isr_counter.c **** ********************************************************************************/
+  29:isr_counter.c **** /* `#START isr_counter_intc` */
+  30:isr_counter.c **** 
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 2
+
+
+  31:isr_counter.c **** #include "global.h"
+  32:isr_counter.c **** #include <DirCounter.h>
+  33:isr_counter.c **** 
+  34:isr_counter.c **** int32_t counter;
+  35:isr_counter.c **** int16 last_count, aux;
+  36:isr_counter.c **** volatile int8 rotor_direction;
+  37:isr_counter.c **** volatile int32_t t_ha;
+  38:isr_counter.c ****     
+  39:isr_counter.c **** /* `#END` */
+  40:isr_counter.c **** 
+  41:isr_counter.c **** #ifndef CYINT_IRQ_BASE
+  42:isr_counter.c **** #define CYINT_IRQ_BASE      16
+  43:isr_counter.c **** #endif /* CYINT_IRQ_BASE */
+  44:isr_counter.c **** #ifndef CYINT_VECT_TABLE
+  45:isr_counter.c **** #define CYINT_VECT_TABLE    ((cyisraddress **) CYREG_NVIC_VECT_OFFSET)
+  46:isr_counter.c **** #endif /* CYINT_VECT_TABLE */
+  47:isr_counter.c **** 
+  48:isr_counter.c **** /* Declared in startup, used to set unused interrupts to. */
+  49:isr_counter.c **** CY_ISR_PROTO(IntDefaultHandler);
+  50:isr_counter.c **** 
+  51:isr_counter.c **** 
+  52:isr_counter.c **** /*******************************************************************************
+  53:isr_counter.c **** * Function Name: isr_counter_Start
+  54:isr_counter.c **** ********************************************************************************
+  55:isr_counter.c **** *
+  56:isr_counter.c **** * Summary:
+  57:isr_counter.c **** *  Set up the interrupt and enable it. This function disables the interrupt, 
+  58:isr_counter.c **** *  sets the default interrupt vector, sets the priority from the value in the
+  59:isr_counter.c **** *  Design Wide Resources Interrupt Editor, then enables the interrupt to the 
+  60:isr_counter.c **** *  interrupt controller.
+  61:isr_counter.c **** *
+  62:isr_counter.c **** * Parameters:  
+  63:isr_counter.c **** *   None
+  64:isr_counter.c **** *
+  65:isr_counter.c **** * Return:
+  66:isr_counter.c **** *   None
+  67:isr_counter.c **** *
+  68:isr_counter.c **** *******************************************************************************/
+  69:isr_counter.c **** void isr_counter_Start(void)
+  70:isr_counter.c **** {
+  71:isr_counter.c ****     /* For all we know the interrupt is active. */
+  72:isr_counter.c ****     isr_counter_Disable();
+  73:isr_counter.c **** 
+  74:isr_counter.c ****     /* Set the ISR to point to the isr_counter Interrupt. */
+  75:isr_counter.c ****     isr_counter_SetVector(&isr_counter_Interrupt);
+  76:isr_counter.c **** 
+  77:isr_counter.c ****     /* Set the priority. */
+  78:isr_counter.c ****     isr_counter_SetPriority((uint8)isr_counter_INTC_PRIOR_NUMBER);
+  79:isr_counter.c **** 
+  80:isr_counter.c ****     /* Enable it. */
+  81:isr_counter.c ****     isr_counter_Enable();
+  82:isr_counter.c **** }
+  83:isr_counter.c **** 
+  84:isr_counter.c **** 
+  85:isr_counter.c **** /*******************************************************************************
+  86:isr_counter.c **** * Function Name: isr_counter_StartEx
+  87:isr_counter.c **** ********************************************************************************
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 3
+
+
+  88:isr_counter.c **** *
+  89:isr_counter.c **** * Summary:
+  90:isr_counter.c **** *  Sets up the interrupt and enables it. This function disables the interrupt,
+  91:isr_counter.c **** *  sets the interrupt vector based on the address passed in, sets the priority 
+  92:isr_counter.c **** *  from the value in the Design Wide Resources Interrupt Editor, then enables 
+  93:isr_counter.c **** *  the interrupt to the interrupt controller.
+  94:isr_counter.c **** *  
+  95:isr_counter.c **** *  When defining ISR functions, the CY_ISR and CY_ISR_PROTO macros should be 
+  96:isr_counter.c **** *  used to provide consistent definition across compilers:
+  97:isr_counter.c **** *  
+  98:isr_counter.c **** *  Function definition example:
+  99:isr_counter.c **** *   CY_ISR(MyISR)
+ 100:isr_counter.c **** *   {
+ 101:isr_counter.c **** *   }
+ 102:isr_counter.c **** *   Function prototype example:
+ 103:isr_counter.c **** *   CY_ISR_PROTO(MyISR);
+ 104:isr_counter.c **** *
+ 105:isr_counter.c **** * Parameters:  
+ 106:isr_counter.c **** *   address: Address of the ISR to set in the interrupt vector table.
+ 107:isr_counter.c **** *
+ 108:isr_counter.c **** * Return:
+ 109:isr_counter.c **** *   None
+ 110:isr_counter.c **** *
+ 111:isr_counter.c **** *******************************************************************************/
+ 112:isr_counter.c **** void isr_counter_StartEx(cyisraddress address)
+ 113:isr_counter.c **** {
+ 114:isr_counter.c ****     /* For all we know the interrupt is active. */
+ 115:isr_counter.c ****     isr_counter_Disable();
+ 116:isr_counter.c **** 
+ 117:isr_counter.c ****     /* Set the ISR to point to the isr_counter Interrupt. */
+ 118:isr_counter.c ****     isr_counter_SetVector(address);
+ 119:isr_counter.c **** 
+ 120:isr_counter.c ****     /* Set the priority. */
+ 121:isr_counter.c ****     isr_counter_SetPriority((uint8)isr_counter_INTC_PRIOR_NUMBER);
+ 122:isr_counter.c **** 
+ 123:isr_counter.c ****     /* Enable it. */
+ 124:isr_counter.c ****     isr_counter_Enable();
+ 125:isr_counter.c **** }
+ 126:isr_counter.c **** 
+ 127:isr_counter.c **** 
+ 128:isr_counter.c **** /*******************************************************************************
+ 129:isr_counter.c **** * Function Name: isr_counter_Stop
+ 130:isr_counter.c **** ********************************************************************************
+ 131:isr_counter.c **** *
+ 132:isr_counter.c **** * Summary:
+ 133:isr_counter.c **** *   Disables and removes the interrupt.
+ 134:isr_counter.c **** *
+ 135:isr_counter.c **** * Parameters:  
+ 136:isr_counter.c **** *   None
+ 137:isr_counter.c **** *
+ 138:isr_counter.c **** * Return:
+ 139:isr_counter.c **** *   None
+ 140:isr_counter.c **** *
+ 141:isr_counter.c **** *******************************************************************************/
+ 142:isr_counter.c **** void isr_counter_Stop(void)
+ 143:isr_counter.c **** {
+ 144:isr_counter.c ****     /* Disable this interrupt. */
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 4
+
+
+ 145:isr_counter.c ****     isr_counter_Disable();
+ 146:isr_counter.c **** 
+ 147:isr_counter.c ****     /* Set the ISR to point to the passive one. */
+ 148:isr_counter.c ****     isr_counter_SetVector(&IntDefaultHandler);
+ 149:isr_counter.c **** }
+ 150:isr_counter.c **** 
+ 151:isr_counter.c **** 
+ 152:isr_counter.c **** /*******************************************************************************
+ 153:isr_counter.c **** * Function Name: isr_counter_Interrupt
+ 154:isr_counter.c **** ********************************************************************************
+ 155:isr_counter.c **** *
+ 156:isr_counter.c **** * Summary:
+ 157:isr_counter.c **** *   The default Interrupt Service Routine for isr_counter.
+ 158:isr_counter.c **** *
+ 159:isr_counter.c **** *   Add custom code between the coments to keep the next version of this file
+ 160:isr_counter.c **** *   from over writting your code.
+ 161:isr_counter.c **** *
+ 162:isr_counter.c **** * Parameters:  
+ 163:isr_counter.c **** *
+ 164:isr_counter.c **** * Return:
+ 165:isr_counter.c **** *   None
+ 166:isr_counter.c **** *
+ 167:isr_counter.c **** *******************************************************************************/
+ 168:isr_counter.c **** CY_ISR(isr_counter_Interrupt)
+ 169:isr_counter.c **** {
+  28              		.loc 1 169 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32 0000 08B5     		push	{r3, lr}
+  33              		.cfi_def_cfa_offset 8
+  34              		.cfi_offset 3, -8
+  35              		.cfi_offset 14, -4
+ 170:isr_counter.c ****     #ifdef isr_counter_INTERRUPT_INTERRUPT_CALLBACK
+ 171:isr_counter.c ****         isr_counter_Interrupt_InterruptCallback();
+ 172:isr_counter.c ****     #endif /* isr_counter_INTERRUPT_INTERRUPT_CALLBACK */ 
+ 173:isr_counter.c **** 
+ 174:isr_counter.c ****     /*  Place your Interrupt code here. */
+ 175:isr_counter.c ****     /* `#START isr_counter_Interrupt` */
+ 176:isr_counter.c ****     
+ 177:isr_counter.c ****     counter++;
+  36              		.loc 1 177 0
+  37 0002 184B     		ldr	r3, .L6
+  38 0004 1968     		ldr	r1, [r3]
+  39 0006 0131     		adds	r1, r1, #1
+  40 0008 1960     		str	r1, [r3]
+ 178:isr_counter.c ****     
+ 179:isr_counter.c ****     if(counter%10 == 0){
+  41              		.loc 1 179 0
+  42 000a 174B     		ldr	r3, .L6+4
+  43 000c 83FB0123 		smull	r2, r3, r3, r1
+  44 0010 CA17     		asrs	r2, r1, #31
+  45 0012 C2EBA303 		rsb	r3, r2, r3, asr #2
+  46 0016 03EB8303 		add	r3, r3, r3, lsl #2
+  47 001a 5A00     		lsls	r2, r3, #1
+  48 001c 9142     		cmp	r1, r2
+  49 001e 1BD1     		bne	.L2
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 5
+
+
+ 180:isr_counter.c ****         // checks if motor is rotating, if not, set velocity to zero for motion control
+ 181:isr_counter.c ****         aux = DirCounter_GetCounter();
+  50              		.loc 1 181 0
+  51 0020 FFF7FEFF 		bl	DirCounter_GetCounter
+  52              	.LVL0:
+  53 0024 114B     		ldr	r3, .L6+8
+  54 0026 1880     		strh	r0, [r3]	@ movhi
+ 182:isr_counter.c ****         if ( aux - last_count > 0 )
+  55              		.loc 1 182 0
+  56 0028 114B     		ldr	r3, .L6+12
+  57 002a B3F90020 		ldrsh	r2, [r3]
+  58 002e 831A     		subs	r3, r0, r2
+  59 0030 002B     		cmp	r3, #0
+  60 0032 03DD     		ble	.L3
+ 183:isr_counter.c ****         {
+ 184:isr_counter.c ****             /* if > 0 its turning right (CW) */
+ 185:isr_counter.c ****             rotor_direction = 1;
+  61              		.loc 1 185 0
+  62 0034 0122     		movs	r2, #1
+  63 0036 0F4B     		ldr	r3, .L6+16
+  64 0038 1A70     		strb	r2, [r3]
+  65 003a 0DE0     		b	.L2
+  66              	.L3:
+ 186:isr_counter.c ****         }
+ 187:isr_counter.c ****         else if ( aux - last_count < 0 )
+  67              		.loc 1 187 0
+  68 003c 002B     		cmp	r3, #0
+  69 003e 03DA     		bge	.L4
+ 188:isr_counter.c ****         {
+ 189:isr_counter.c ****             /* if < 0 its turning left (CCW) */
+ 190:isr_counter.c ****             rotor_direction = 0;
+  70              		.loc 1 190 0
+  71 0040 0022     		movs	r2, #0
+  72 0042 0C4B     		ldr	r3, .L6+16
+  73 0044 1A70     		strb	r2, [r3]
+  74 0046 07E0     		b	.L2
+  75              	.L4:
+ 191:isr_counter.c ****         }
+ 192:isr_counter.c ****         else if ( aux - last_count == 0 )
+  76              		.loc 1 192 0
+  77 0048 9042     		cmp	r0, r2
+  78 004a 05D1     		bne	.L2
+ 193:isr_counter.c ****         {
+ 194:isr_counter.c ****             /* if = 0 its not rotating */
+ 195:isr_counter.c ****             rotor_direction = -1;
+  79              		.loc 1 195 0
+  80 004c FF22     		movs	r2, #255
+  81 004e 094B     		ldr	r3, .L6+16
+  82 0050 1A70     		strb	r2, [r3]
+ 196:isr_counter.c ****             t_ha = 0;
+  83              		.loc 1 196 0
+  84 0052 0022     		movs	r2, #0
+  85 0054 084B     		ldr	r3, .L6+20
+  86 0056 1A60     		str	r2, [r3]
+  87              	.L2:
+ 197:isr_counter.c ****         }
+ 198:isr_counter.c ****     }
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 6
+
+
+ 199:isr_counter.c ****     /* update variable */
+ 200:isr_counter.c ****     last_count = aux; 
+  88              		.loc 1 200 0
+  89 0058 044B     		ldr	r3, .L6+8
+  90 005a 1A88     		ldrh	r2, [r3]
+  91 005c 044B     		ldr	r3, .L6+12
+  92 005e 1A80     		strh	r2, [r3]	@ movhi
+  93 0060 08BD     		pop	{r3, pc}
+  94              	.L7:
+  95 0062 00BF     		.align	2
+  96              	.L6:
+  97 0064 00000000 		.word	counter
+  98 0068 67666666 		.word	1717986919
+  99 006c 00000000 		.word	aux
+ 100 0070 00000000 		.word	last_count
+ 101 0074 00000000 		.word	rotor_direction
+ 102 0078 00000000 		.word	t_ha
+ 103              		.cfi_endproc
+ 104              	.LFE67:
+ 105              		.size	isr_counter_Interrupt, .-isr_counter_Interrupt
+ 106              		.section	.text.isr_counter_SetVector,"ax",%progbits
+ 107              		.align	2
+ 108              		.global	isr_counter_SetVector
+ 109              		.thumb
+ 110              		.thumb_func
+ 111              		.type	isr_counter_SetVector, %function
+ 112              	isr_counter_SetVector:
+ 113              	.LFB68:
+ 201:isr_counter.c ****     
+ 202:isr_counter.c **** 
+ 203:isr_counter.c ****     /* `#END` */
+ 204:isr_counter.c **** }
+ 205:isr_counter.c **** 
+ 206:isr_counter.c **** 
+ 207:isr_counter.c **** /*******************************************************************************
+ 208:isr_counter.c **** * Function Name: isr_counter_SetVector
+ 209:isr_counter.c **** ********************************************************************************
+ 210:isr_counter.c **** *
+ 211:isr_counter.c **** * Summary:
+ 212:isr_counter.c **** *   Change the ISR vector for the Interrupt. Note calling isr_counter_Start
+ 213:isr_counter.c **** *   will override any effect this method would have had. To set the vector 
+ 214:isr_counter.c **** *   before the component has been started use isr_counter_StartEx instead.
+ 215:isr_counter.c **** * 
+ 216:isr_counter.c **** *   When defining ISR functions, the CY_ISR and CY_ISR_PROTO macros should be 
+ 217:isr_counter.c **** *   used to provide consistent definition across compilers:
+ 218:isr_counter.c **** *
+ 219:isr_counter.c **** *   Function definition example:
+ 220:isr_counter.c **** *   CY_ISR(MyISR)
+ 221:isr_counter.c **** *   {
+ 222:isr_counter.c **** *   }
+ 223:isr_counter.c **** *
+ 224:isr_counter.c **** *   Function prototype example:
+ 225:isr_counter.c **** *     CY_ISR_PROTO(MyISR);
+ 226:isr_counter.c **** *
+ 227:isr_counter.c **** * Parameters:
+ 228:isr_counter.c **** *   address: Address of the ISR to set in the interrupt vector table.
+ 229:isr_counter.c **** *
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 7
+
+
+ 230:isr_counter.c **** * Return:
+ 231:isr_counter.c **** *   None
+ 232:isr_counter.c **** *
+ 233:isr_counter.c **** *******************************************************************************/
+ 234:isr_counter.c **** void isr_counter_SetVector(cyisraddress address)
+ 235:isr_counter.c **** {
+ 114              		.loc 1 235 0
+ 115              		.cfi_startproc
+ 116              		@ args = 0, pretend = 0, frame = 0
+ 117              		@ frame_needed = 0, uses_anonymous_args = 0
+ 118              		@ link register save eliminated.
+ 119              	.LVL1:
+ 236:isr_counter.c ****     cyisraddress * ramVectorTable;
+ 237:isr_counter.c **** 
+ 238:isr_counter.c ****     ramVectorTable = (cyisraddress *) *CYINT_VECT_TABLE;
+ 120              		.loc 1 238 0
+ 121 0000 014B     		ldr	r3, .L9
+ 122 0002 1B68     		ldr	r3, [r3]
+ 123              	.LVL2:
+ 239:isr_counter.c **** 
+ 240:isr_counter.c ****     ramVectorTable[CYINT_IRQ_BASE + (uint32)isr_counter__INTC_NUMBER] = address;
+ 124              		.loc 1 240 0
+ 125 0004 D865     		str	r0, [r3, #92]
+ 126 0006 7047     		bx	lr
+ 127              	.L10:
+ 128              		.align	2
+ 129              	.L9:
+ 130 0008 08ED00E0 		.word	-536810232
+ 131              		.cfi_endproc
+ 132              	.LFE68:
+ 133              		.size	isr_counter_SetVector, .-isr_counter_SetVector
+ 134              		.section	.text.isr_counter_GetVector,"ax",%progbits
+ 135              		.align	2
+ 136              		.global	isr_counter_GetVector
+ 137              		.thumb
+ 138              		.thumb_func
+ 139              		.type	isr_counter_GetVector, %function
+ 140              	isr_counter_GetVector:
+ 141              	.LFB69:
+ 241:isr_counter.c **** }
+ 242:isr_counter.c **** 
+ 243:isr_counter.c **** 
+ 244:isr_counter.c **** /*******************************************************************************
+ 245:isr_counter.c **** * Function Name: isr_counter_GetVector
+ 246:isr_counter.c **** ********************************************************************************
+ 247:isr_counter.c **** *
+ 248:isr_counter.c **** * Summary:
+ 249:isr_counter.c **** *   Gets the "address" of the current ISR vector for the Interrupt.
+ 250:isr_counter.c **** *
+ 251:isr_counter.c **** * Parameters:
+ 252:isr_counter.c **** *   None
+ 253:isr_counter.c **** *
+ 254:isr_counter.c **** * Return:
+ 255:isr_counter.c **** *   Address of the ISR in the interrupt vector table.
+ 256:isr_counter.c **** *
+ 257:isr_counter.c **** *******************************************************************************/
+ 258:isr_counter.c **** cyisraddress isr_counter_GetVector(void)
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 8
+
+
+ 259:isr_counter.c **** {
+ 142              		.loc 1 259 0
+ 143              		.cfi_startproc
+ 144              		@ args = 0, pretend = 0, frame = 0
+ 145              		@ frame_needed = 0, uses_anonymous_args = 0
+ 146              		@ link register save eliminated.
+ 260:isr_counter.c ****     cyisraddress * ramVectorTable;
+ 261:isr_counter.c **** 
+ 262:isr_counter.c ****     ramVectorTable = (cyisraddress *) *CYINT_VECT_TABLE;
+ 147              		.loc 1 262 0
+ 148 0000 014B     		ldr	r3, .L12
+ 149 0002 1B68     		ldr	r3, [r3]
+ 150              	.LVL3:
+ 263:isr_counter.c **** 
+ 264:isr_counter.c ****     return ramVectorTable[CYINT_IRQ_BASE + (uint32)isr_counter__INTC_NUMBER];
+ 265:isr_counter.c **** }
+ 151              		.loc 1 265 0
+ 152 0004 D86D     		ldr	r0, [r3, #92]
+ 153 0006 7047     		bx	lr
+ 154              	.L13:
+ 155              		.align	2
+ 156              	.L12:
+ 157 0008 08ED00E0 		.word	-536810232
+ 158              		.cfi_endproc
+ 159              	.LFE69:
+ 160              		.size	isr_counter_GetVector, .-isr_counter_GetVector
+ 161              		.section	.text.isr_counter_SetPriority,"ax",%progbits
+ 162              		.align	2
+ 163              		.global	isr_counter_SetPriority
+ 164              		.thumb
+ 165              		.thumb_func
+ 166              		.type	isr_counter_SetPriority, %function
+ 167              	isr_counter_SetPriority:
+ 168              	.LFB70:
+ 266:isr_counter.c **** 
+ 267:isr_counter.c **** 
+ 268:isr_counter.c **** /*******************************************************************************
+ 269:isr_counter.c **** * Function Name: isr_counter_SetPriority
+ 270:isr_counter.c **** ********************************************************************************
+ 271:isr_counter.c **** *
+ 272:isr_counter.c **** * Summary:
+ 273:isr_counter.c **** *   Sets the Priority of the Interrupt. 
+ 274:isr_counter.c **** *
+ 275:isr_counter.c **** *   Note calling isr_counter_Start or isr_counter_StartEx will 
+ 276:isr_counter.c **** *   override any effect this API would have had. This API should only be called
+ 277:isr_counter.c **** *   after isr_counter_Start or isr_counter_StartEx has been called. 
+ 278:isr_counter.c **** *   To set the initial priority for the component, use the Design-Wide Resources
+ 279:isr_counter.c **** *   Interrupt Editor.
+ 280:isr_counter.c **** *
+ 281:isr_counter.c **** *   Note This API has no effect on Non-maskable interrupt NMI).
+ 282:isr_counter.c **** *
+ 283:isr_counter.c **** * Parameters:
+ 284:isr_counter.c **** *   priority: Priority of the interrupt, 0 being the highest priority
+ 285:isr_counter.c **** *             PSoC 3 and PSoC 5LP: Priority is from 0 to 7.
+ 286:isr_counter.c **** *             PSoC 4: Priority is from 0 to 3.
+ 287:isr_counter.c **** *
+ 288:isr_counter.c **** * Return:
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 9
+
+
+ 289:isr_counter.c **** *   None
+ 290:isr_counter.c **** *
+ 291:isr_counter.c **** *******************************************************************************/
+ 292:isr_counter.c **** void isr_counter_SetPriority(uint8 priority)
+ 293:isr_counter.c **** {
+ 169              		.loc 1 293 0
+ 170              		.cfi_startproc
+ 171              		@ args = 0, pretend = 0, frame = 0
+ 172              		@ frame_needed = 0, uses_anonymous_args = 0
+ 173              		@ link register save eliminated.
+ 174              	.LVL4:
+ 294:isr_counter.c ****     *isr_counter_INTC_PRIOR = priority << 5;
+ 175              		.loc 1 294 0
+ 176 0000 4001     		lsls	r0, r0, #5
+ 177              	.LVL5:
+ 178 0002 C0B2     		uxtb	r0, r0
+ 179 0004 014B     		ldr	r3, .L15
+ 180 0006 1870     		strb	r0, [r3]
+ 181 0008 7047     		bx	lr
+ 182              	.L16:
+ 183 000a 00BF     		.align	2
+ 184              	.L15:
+ 185 000c 07E400E0 		.word	-536812537
+ 186              		.cfi_endproc
+ 187              	.LFE70:
+ 188              		.size	isr_counter_SetPriority, .-isr_counter_SetPriority
+ 189              		.section	.text.isr_counter_GetPriority,"ax",%progbits
+ 190              		.align	2
+ 191              		.global	isr_counter_GetPriority
+ 192              		.thumb
+ 193              		.thumb_func
+ 194              		.type	isr_counter_GetPriority, %function
+ 195              	isr_counter_GetPriority:
+ 196              	.LFB71:
+ 295:isr_counter.c **** }
+ 296:isr_counter.c **** 
+ 297:isr_counter.c **** 
+ 298:isr_counter.c **** /*******************************************************************************
+ 299:isr_counter.c **** * Function Name: isr_counter_GetPriority
+ 300:isr_counter.c **** ********************************************************************************
+ 301:isr_counter.c **** *
+ 302:isr_counter.c **** * Summary:
+ 303:isr_counter.c **** *   Gets the Priority of the Interrupt.
+ 304:isr_counter.c **** *
+ 305:isr_counter.c **** * Parameters:
+ 306:isr_counter.c **** *   None
+ 307:isr_counter.c **** *
+ 308:isr_counter.c **** * Return:
+ 309:isr_counter.c **** *   Priority of the interrupt, 0 being the highest priority
+ 310:isr_counter.c **** *    PSoC 3 and PSoC 5LP: Priority is from 0 to 7.
+ 311:isr_counter.c **** *    PSoC 4: Priority is from 0 to 3.
+ 312:isr_counter.c **** *
+ 313:isr_counter.c **** *******************************************************************************/
+ 314:isr_counter.c **** uint8 isr_counter_GetPriority(void)
+ 315:isr_counter.c **** {
+ 197              		.loc 1 315 0
+ 198              		.cfi_startproc
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 10
+
+
+ 199              		@ args = 0, pretend = 0, frame = 0
+ 200              		@ frame_needed = 0, uses_anonymous_args = 0
+ 201              		@ link register save eliminated.
+ 316:isr_counter.c ****     uint8 priority;
+ 317:isr_counter.c **** 
+ 318:isr_counter.c **** 
+ 319:isr_counter.c ****     priority = *isr_counter_INTC_PRIOR >> 5;
+ 202              		.loc 1 319 0
+ 203 0000 014B     		ldr	r3, .L18
+ 204 0002 1878     		ldrb	r0, [r3]	@ zero_extendqisi2
+ 205              	.LVL6:
+ 320:isr_counter.c **** 
+ 321:isr_counter.c ****     return priority;
+ 322:isr_counter.c **** }
+ 206              		.loc 1 322 0
+ 207 0004 4009     		lsrs	r0, r0, #5
+ 208              	.LVL7:
+ 209 0006 7047     		bx	lr
+ 210              	.L19:
+ 211              		.align	2
+ 212              	.L18:
+ 213 0008 07E400E0 		.word	-536812537
+ 214              		.cfi_endproc
+ 215              	.LFE71:
+ 216              		.size	isr_counter_GetPriority, .-isr_counter_GetPriority
+ 217              		.section	.text.isr_counter_Enable,"ax",%progbits
+ 218              		.align	2
+ 219              		.global	isr_counter_Enable
+ 220              		.thumb
+ 221              		.thumb_func
+ 222              		.type	isr_counter_Enable, %function
+ 223              	isr_counter_Enable:
+ 224              	.LFB72:
+ 323:isr_counter.c **** 
+ 324:isr_counter.c **** 
+ 325:isr_counter.c **** /*******************************************************************************
+ 326:isr_counter.c **** * Function Name: isr_counter_Enable
+ 327:isr_counter.c **** ********************************************************************************
+ 328:isr_counter.c **** *
+ 329:isr_counter.c **** * Summary:
+ 330:isr_counter.c **** *   Enables the interrupt to the interrupt controller. Do not call this function
+ 331:isr_counter.c **** *   unless ISR_Start() has been called or the functionality of the ISR_Start() 
+ 332:isr_counter.c **** *   function, which sets the vector and the priority, has been called.
+ 333:isr_counter.c **** *
+ 334:isr_counter.c **** * Parameters:
+ 335:isr_counter.c **** *   None
+ 336:isr_counter.c **** *
+ 337:isr_counter.c **** * Return:
+ 338:isr_counter.c **** *   None
+ 339:isr_counter.c **** *
+ 340:isr_counter.c **** *******************************************************************************/
+ 341:isr_counter.c **** void isr_counter_Enable(void)
+ 342:isr_counter.c **** {
+ 225              		.loc 1 342 0
+ 226              		.cfi_startproc
+ 227              		@ args = 0, pretend = 0, frame = 0
+ 228              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 11
+
+
+ 229              		@ link register save eliminated.
+ 343:isr_counter.c ****     /* Enable the general interrupt. */
+ 344:isr_counter.c ****     *isr_counter_INTC_SET_EN = isr_counter__INTC_MASK;
+ 230              		.loc 1 344 0
+ 231 0000 8022     		movs	r2, #128
+ 232 0002 014B     		ldr	r3, .L21
+ 233 0004 1A60     		str	r2, [r3]
+ 234 0006 7047     		bx	lr
+ 235              	.L22:
+ 236              		.align	2
+ 237              	.L21:
+ 238 0008 00E100E0 		.word	-536813312
+ 239              		.cfi_endproc
+ 240              	.LFE72:
+ 241              		.size	isr_counter_Enable, .-isr_counter_Enable
+ 242              		.section	.text.isr_counter_GetState,"ax",%progbits
+ 243              		.align	2
+ 244              		.global	isr_counter_GetState
+ 245              		.thumb
+ 246              		.thumb_func
+ 247              		.type	isr_counter_GetState, %function
+ 248              	isr_counter_GetState:
+ 249              	.LFB73:
+ 345:isr_counter.c **** }
+ 346:isr_counter.c **** 
+ 347:isr_counter.c **** 
+ 348:isr_counter.c **** /*******************************************************************************
+ 349:isr_counter.c **** * Function Name: isr_counter_GetState
+ 350:isr_counter.c **** ********************************************************************************
+ 351:isr_counter.c **** *
+ 352:isr_counter.c **** * Summary:
+ 353:isr_counter.c **** *   Gets the state (enabled, disabled) of the Interrupt.
+ 354:isr_counter.c **** *
+ 355:isr_counter.c **** * Parameters:
+ 356:isr_counter.c **** *   None
+ 357:isr_counter.c **** *
+ 358:isr_counter.c **** * Return:
+ 359:isr_counter.c **** *   1 if enabled, 0 if disabled.
+ 360:isr_counter.c **** *
+ 361:isr_counter.c **** *******************************************************************************/
+ 362:isr_counter.c **** uint8 isr_counter_GetState(void)
+ 363:isr_counter.c **** {
+ 250              		.loc 1 363 0
+ 251              		.cfi_startproc
+ 252              		@ args = 0, pretend = 0, frame = 0
+ 253              		@ frame_needed = 0, uses_anonymous_args = 0
+ 254              		@ link register save eliminated.
+ 364:isr_counter.c ****     /* Get the state of the general interrupt. */
+ 365:isr_counter.c ****     return ((*isr_counter_INTC_SET_EN & (uint32)isr_counter__INTC_MASK) != 0u) ? 1u:0u;
+ 255              		.loc 1 365 0
+ 256 0000 044B     		ldr	r3, .L26
+ 257 0002 1B68     		ldr	r3, [r3]
+ 258 0004 13F0800F 		tst	r3, #128
+ 259 0008 01D0     		beq	.L25
+ 260 000a 0120     		movs	r0, #1
+ 261 000c 7047     		bx	lr
+ 262              	.L25:
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 12
+
+
+ 263 000e 0020     		movs	r0, #0
+ 366:isr_counter.c **** }
+ 264              		.loc 1 366 0
+ 265 0010 7047     		bx	lr
+ 266              	.L27:
+ 267 0012 00BF     		.align	2
+ 268              	.L26:
+ 269 0014 00E100E0 		.word	-536813312
+ 270              		.cfi_endproc
+ 271              	.LFE73:
+ 272              		.size	isr_counter_GetState, .-isr_counter_GetState
+ 273              		.section	.text.isr_counter_Disable,"ax",%progbits
+ 274              		.align	2
+ 275              		.global	isr_counter_Disable
+ 276              		.thumb
+ 277              		.thumb_func
+ 278              		.type	isr_counter_Disable, %function
+ 279              	isr_counter_Disable:
+ 280              	.LFB74:
+ 367:isr_counter.c **** 
+ 368:isr_counter.c **** 
+ 369:isr_counter.c **** /*******************************************************************************
+ 370:isr_counter.c **** * Function Name: isr_counter_Disable
+ 371:isr_counter.c **** ********************************************************************************
+ 372:isr_counter.c **** *
+ 373:isr_counter.c **** * Summary:
+ 374:isr_counter.c **** *   Disables the Interrupt in the interrupt controller.
+ 375:isr_counter.c **** *
+ 376:isr_counter.c **** * Parameters:
+ 377:isr_counter.c **** *   None
+ 378:isr_counter.c **** *
+ 379:isr_counter.c **** * Return:
+ 380:isr_counter.c **** *   None
+ 381:isr_counter.c **** *
+ 382:isr_counter.c **** *******************************************************************************/
+ 383:isr_counter.c **** void isr_counter_Disable(void)
+ 384:isr_counter.c **** {
+ 281              		.loc 1 384 0
+ 282              		.cfi_startproc
+ 283              		@ args = 0, pretend = 0, frame = 0
+ 284              		@ frame_needed = 0, uses_anonymous_args = 0
+ 285              		@ link register save eliminated.
+ 385:isr_counter.c ****     /* Disable the general interrupt. */
+ 386:isr_counter.c ****     *isr_counter_INTC_CLR_EN = isr_counter__INTC_MASK;
+ 286              		.loc 1 386 0
+ 287 0000 8022     		movs	r2, #128
+ 288 0002 014B     		ldr	r3, .L29
+ 289 0004 1A60     		str	r2, [r3]
+ 290 0006 7047     		bx	lr
+ 291              	.L30:
+ 292              		.align	2
+ 293              	.L29:
+ 294 0008 80E100E0 		.word	-536813184
+ 295              		.cfi_endproc
+ 296              	.LFE74:
+ 297              		.size	isr_counter_Disable, .-isr_counter_Disable
+ 298              		.section	.text.isr_counter_Start,"ax",%progbits
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 13
+
+
+ 299              		.align	2
+ 300              		.global	isr_counter_Start
+ 301              		.thumb
+ 302              		.thumb_func
+ 303              		.type	isr_counter_Start, %function
+ 304              	isr_counter_Start:
+ 305              	.LFB64:
+  70:isr_counter.c ****     /* For all we know the interrupt is active. */
+ 306              		.loc 1 70 0
+ 307              		.cfi_startproc
+ 308              		@ args = 0, pretend = 0, frame = 0
+ 309              		@ frame_needed = 0, uses_anonymous_args = 0
+ 310 0000 08B5     		push	{r3, lr}
+ 311              		.cfi_def_cfa_offset 8
+ 312              		.cfi_offset 3, -8
+ 313              		.cfi_offset 14, -4
+  72:isr_counter.c **** 
+ 314              		.loc 1 72 0
+ 315 0002 FFF7FEFF 		bl	isr_counter_Disable
+ 316              	.LVL8:
+  75:isr_counter.c **** 
+ 317              		.loc 1 75 0
+ 318 0006 0448     		ldr	r0, .L33
+ 319 0008 FFF7FEFF 		bl	isr_counter_SetVector
+ 320              	.LVL9:
+  78:isr_counter.c **** 
+ 321              		.loc 1 78 0
+ 322 000c 0720     		movs	r0, #7
+ 323 000e FFF7FEFF 		bl	isr_counter_SetPriority
+ 324              	.LVL10:
+  81:isr_counter.c **** }
+ 325              		.loc 1 81 0
+ 326 0012 FFF7FEFF 		bl	isr_counter_Enable
+ 327              	.LVL11:
+ 328 0016 08BD     		pop	{r3, pc}
+ 329              	.L34:
+ 330              		.align	2
+ 331              	.L33:
+ 332 0018 00000000 		.word	isr_counter_Interrupt
+ 333              		.cfi_endproc
+ 334              	.LFE64:
+ 335              		.size	isr_counter_Start, .-isr_counter_Start
+ 336              		.section	.text.isr_counter_StartEx,"ax",%progbits
+ 337              		.align	2
+ 338              		.global	isr_counter_StartEx
+ 339              		.thumb
+ 340              		.thumb_func
+ 341              		.type	isr_counter_StartEx, %function
+ 342              	isr_counter_StartEx:
+ 343              	.LFB65:
+ 113:isr_counter.c ****     /* For all we know the interrupt is active. */
+ 344              		.loc 1 113 0
+ 345              		.cfi_startproc
+ 346              		@ args = 0, pretend = 0, frame = 0
+ 347              		@ frame_needed = 0, uses_anonymous_args = 0
+ 348              	.LVL12:
+ 349 0000 10B5     		push	{r4, lr}
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 14
+
+
+ 350              		.cfi_def_cfa_offset 8
+ 351              		.cfi_offset 4, -8
+ 352              		.cfi_offset 14, -4
+ 353 0002 0446     		mov	r4, r0
+ 115:isr_counter.c **** 
+ 354              		.loc 1 115 0
+ 355 0004 FFF7FEFF 		bl	isr_counter_Disable
+ 356              	.LVL13:
+ 118:isr_counter.c **** 
+ 357              		.loc 1 118 0
+ 358 0008 2046     		mov	r0, r4
+ 359 000a FFF7FEFF 		bl	isr_counter_SetVector
+ 360              	.LVL14:
+ 121:isr_counter.c **** 
+ 361              		.loc 1 121 0
+ 362 000e 0720     		movs	r0, #7
+ 363 0010 FFF7FEFF 		bl	isr_counter_SetPriority
+ 364              	.LVL15:
+ 124:isr_counter.c **** }
+ 365              		.loc 1 124 0
+ 366 0014 FFF7FEFF 		bl	isr_counter_Enable
+ 367              	.LVL16:
+ 368 0018 10BD     		pop	{r4, pc}
+ 369              		.cfi_endproc
+ 370              	.LFE65:
+ 371              		.size	isr_counter_StartEx, .-isr_counter_StartEx
+ 372 001a 00BF     		.section	.text.isr_counter_Stop,"ax",%progbits
+ 373              		.align	2
+ 374              		.global	isr_counter_Stop
+ 375              		.thumb
+ 376              		.thumb_func
+ 377              		.type	isr_counter_Stop, %function
+ 378              	isr_counter_Stop:
+ 379              	.LFB66:
+ 143:isr_counter.c ****     /* Disable this interrupt. */
+ 380              		.loc 1 143 0
+ 381              		.cfi_startproc
+ 382              		@ args = 0, pretend = 0, frame = 0
+ 383              		@ frame_needed = 0, uses_anonymous_args = 0
+ 384 0000 08B5     		push	{r3, lr}
+ 385              		.cfi_def_cfa_offset 8
+ 386              		.cfi_offset 3, -8
+ 387              		.cfi_offset 14, -4
+ 145:isr_counter.c **** 
+ 388              		.loc 1 145 0
+ 389 0002 FFF7FEFF 		bl	isr_counter_Disable
+ 390              	.LVL17:
+ 148:isr_counter.c **** }
+ 391              		.loc 1 148 0
+ 392 0006 0248     		ldr	r0, .L39
+ 393 0008 FFF7FEFF 		bl	isr_counter_SetVector
+ 394              	.LVL18:
+ 395 000c 08BD     		pop	{r3, pc}
+ 396              	.L40:
+ 397 000e 00BF     		.align	2
+ 398              	.L39:
+ 399 0010 00000000 		.word	IntDefaultHandler
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 15
+
+
+ 400              		.cfi_endproc
+ 401              	.LFE66:
+ 402              		.size	isr_counter_Stop, .-isr_counter_Stop
+ 403              		.section	.text.isr_counter_SetPending,"ax",%progbits
+ 404              		.align	2
+ 405              		.global	isr_counter_SetPending
+ 406              		.thumb
+ 407              		.thumb_func
+ 408              		.type	isr_counter_SetPending, %function
+ 409              	isr_counter_SetPending:
+ 410              	.LFB75:
+ 387:isr_counter.c **** }
+ 388:isr_counter.c **** 
+ 389:isr_counter.c **** 
+ 390:isr_counter.c **** /*******************************************************************************
+ 391:isr_counter.c **** * Function Name: isr_counter_SetPending
+ 392:isr_counter.c **** ********************************************************************************
+ 393:isr_counter.c **** *
+ 394:isr_counter.c **** * Summary:
+ 395:isr_counter.c **** *   Causes the Interrupt to enter the pending state, a software method of
+ 396:isr_counter.c **** *   generating the interrupt.
+ 397:isr_counter.c **** *
+ 398:isr_counter.c **** * Parameters:
+ 399:isr_counter.c **** *   None
+ 400:isr_counter.c **** *
+ 401:isr_counter.c **** * Return:
+ 402:isr_counter.c **** *   None
+ 403:isr_counter.c **** *
+ 404:isr_counter.c **** * Side Effects:
+ 405:isr_counter.c **** *   If interrupts are enabled and the interrupt is set up properly, the ISR is
+ 406:isr_counter.c **** *   entered (depending on the priority of this interrupt and other pending 
+ 407:isr_counter.c **** *   interrupts).
+ 408:isr_counter.c **** *
+ 409:isr_counter.c **** *******************************************************************************/
+ 410:isr_counter.c **** void isr_counter_SetPending(void)
+ 411:isr_counter.c **** {
+ 411              		.loc 1 411 0
+ 412              		.cfi_startproc
+ 413              		@ args = 0, pretend = 0, frame = 0
+ 414              		@ frame_needed = 0, uses_anonymous_args = 0
+ 415              		@ link register save eliminated.
+ 412:isr_counter.c ****     *isr_counter_INTC_SET_PD = isr_counter__INTC_MASK;
+ 416              		.loc 1 412 0
+ 417 0000 8022     		movs	r2, #128
+ 418 0002 014B     		ldr	r3, .L42
+ 419 0004 1A60     		str	r2, [r3]
+ 420 0006 7047     		bx	lr
+ 421              	.L43:
+ 422              		.align	2
+ 423              	.L42:
+ 424 0008 00E200E0 		.word	-536813056
+ 425              		.cfi_endproc
+ 426              	.LFE75:
+ 427              		.size	isr_counter_SetPending, .-isr_counter_SetPending
+ 428              		.section	.text.isr_counter_ClearPending,"ax",%progbits
+ 429              		.align	2
+ 430              		.global	isr_counter_ClearPending
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 16
+
+
+ 431              		.thumb
+ 432              		.thumb_func
+ 433              		.type	isr_counter_ClearPending, %function
+ 434              	isr_counter_ClearPending:
+ 435              	.LFB76:
+ 413:isr_counter.c **** }
+ 414:isr_counter.c **** 
+ 415:isr_counter.c **** 
+ 416:isr_counter.c **** /*******************************************************************************
+ 417:isr_counter.c **** * Function Name: isr_counter_ClearPending
+ 418:isr_counter.c **** ********************************************************************************
+ 419:isr_counter.c **** *
+ 420:isr_counter.c **** * Summary:
+ 421:isr_counter.c **** *   Clears a pending interrupt in the interrupt controller.
+ 422:isr_counter.c **** *
+ 423:isr_counter.c **** *   Note Some interrupt sources are clear-on-read and require the block 
+ 424:isr_counter.c **** *   interrupt/status register to be read/cleared with the appropriate block API 
+ 425:isr_counter.c **** *   (GPIO, UART, and so on). Otherwise the ISR will continue to remain in 
+ 426:isr_counter.c **** *   pending state even though the interrupt itself is cleared using this API.
+ 427:isr_counter.c **** *
+ 428:isr_counter.c **** * Parameters:
+ 429:isr_counter.c **** *   None
+ 430:isr_counter.c **** *
+ 431:isr_counter.c **** * Return:
+ 432:isr_counter.c **** *   None
+ 433:isr_counter.c **** *
+ 434:isr_counter.c **** *******************************************************************************/
+ 435:isr_counter.c **** void isr_counter_ClearPending(void)
+ 436:isr_counter.c **** {
+ 436              		.loc 1 436 0
+ 437              		.cfi_startproc
+ 438              		@ args = 0, pretend = 0, frame = 0
+ 439              		@ frame_needed = 0, uses_anonymous_args = 0
+ 440              		@ link register save eliminated.
+ 437:isr_counter.c ****     *isr_counter_INTC_CLR_PD = isr_counter__INTC_MASK;
+ 441              		.loc 1 437 0
+ 442 0000 8022     		movs	r2, #128
+ 443 0002 014B     		ldr	r3, .L45
+ 444 0004 1A60     		str	r2, [r3]
+ 445 0006 7047     		bx	lr
+ 446              	.L46:
+ 447              		.align	2
+ 448              	.L45:
+ 449 0008 80E200E0 		.word	-536812928
+ 450              		.cfi_endproc
+ 451              	.LFE76:
+ 452              		.size	isr_counter_ClearPending, .-isr_counter_ClearPending
+ 453              		.comm	t_ha,4,4
+ 454              		.comm	rotor_direction,1,1
+ 455              		.comm	aux,2,2
+ 456              		.comm	last_count,2,2
+ 457              		.comm	counter,4,4
+ 458              		.comm	_state_,4,4
+ 459              		.comm	_uart_Reset,1,1
+ 460              		.comm	SendEmulatedData,1,1
+ 461              		.comm	SendSingleByte,1,1
+ 462              		.comm	ContinuouslySendData,1,1
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 17
+
+
+ 463              		.comm	Ch,1,1
+ 464              		.comm	PB,16,4
+ 465              		.comm	RB,20,4
+ 466              		.text
+ 467              	.Letext0:
+ 468              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.1\\psoc creator\\import\\gnu\\arm\\5.4.
+ 469              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.1\\psoc creator\\import\\gnu\\arm\\5.4.
+ 470              		.file 4 "Generated_Source\\PSoC5/cytypes.h"
+ 471              		.file 5 "myUART.h"
+ 472              		.file 6 "global.h"
+ 473              		.file 7 "Generated_Source\\PSoC5/core_cm3.h"
+ 474              		.file 8 "Generated_Source\\PSoC5/DirCounter.h"
+ 475              		.section	.debug_info,"",%progbits
+ 476              	.Ldebug_info0:
+ 477 0000 B8040000 		.4byte	0x4b8
+ 478 0004 0400     		.2byte	0x4
+ 479 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 480 000a 04       		.byte	0x4
+ 481 000b 01       		.uleb128 0x1
+ 482 000c 2B030000 		.4byte	.LASF53
+ 483 0010 0C       		.byte	0xc
+ 484 0011 50010000 		.4byte	.LASF54
+ 485 0015 49000000 		.4byte	.LASF55
+ 486 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 487 001d 00000000 		.4byte	0
+ 488 0021 00000000 		.4byte	.Ldebug_line0
+ 489 0025 02       		.uleb128 0x2
+ 490 0026 04       		.byte	0x4
+ 491 0027 05       		.byte	0x5
+ 492 0028 696E7400 		.ascii	"int\000"
+ 493 002c 03       		.uleb128 0x3
+ 494 002d 04       		.byte	0x4
+ 495 002e 07       		.byte	0x7
+ 496 002f B2010000 		.4byte	.LASF0
+ 497 0033 03       		.uleb128 0x3
+ 498 0034 08       		.byte	0x8
+ 499 0035 05       		.byte	0x5
+ 500 0036 B8000000 		.4byte	.LASF1
+ 501 003a 03       		.uleb128 0x3
+ 502 003b 08       		.byte	0x8
+ 503 003c 04       		.byte	0x4
+ 504 003d 37010000 		.4byte	.LASF2
+ 505 0041 03       		.uleb128 0x3
+ 506 0042 01       		.byte	0x1
+ 507 0043 06       		.byte	0x6
+ 508 0044 6D010000 		.4byte	.LASF3
+ 509 0048 03       		.uleb128 0x3
+ 510 0049 01       		.byte	0x1
+ 511 004a 08       		.byte	0x8
+ 512 004b 1D010000 		.4byte	.LASF4
+ 513 004f 03       		.uleb128 0x3
+ 514 0050 02       		.byte	0x2
+ 515 0051 05       		.byte	0x5
+ 516 0052 1E000000 		.4byte	.LASF5
+ 517 0056 03       		.uleb128 0x3
+ 518 0057 02       		.byte	0x2
+ 519 0058 07       		.byte	0x7
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 18
+
+
+ 520 0059 4F020000 		.4byte	.LASF6
+ 521 005d 04       		.uleb128 0x4
+ 522 005e EE020000 		.4byte	.LASF12
+ 523 0062 02       		.byte	0x2
+ 524 0063 3F       		.byte	0x3f
+ 525 0064 68000000 		.4byte	0x68
+ 526 0068 03       		.uleb128 0x3
+ 527 0069 04       		.byte	0x4
+ 528 006a 05       		.byte	0x5
+ 529 006b CB000000 		.4byte	.LASF7
+ 530 006f 03       		.uleb128 0x3
+ 531 0070 04       		.byte	0x4
+ 532 0071 07       		.byte	0x7
+ 533 0072 D5020000 		.4byte	.LASF8
+ 534 0076 03       		.uleb128 0x3
+ 535 0077 08       		.byte	0x8
+ 536 0078 07       		.byte	0x7
+ 537 0079 79010000 		.4byte	.LASF9
+ 538 007d 03       		.uleb128 0x3
+ 539 007e 04       		.byte	0x4
+ 540 007f 07       		.byte	0x7
+ 541 0080 0E030000 		.4byte	.LASF10
+ 542 0084 05       		.uleb128 0x5
+ 543 0085 04       		.byte	0x4
+ 544 0086 8A000000 		.4byte	0x8a
+ 545 008a 03       		.uleb128 0x3
+ 546 008b 01       		.byte	0x1
+ 547 008c 08       		.byte	0x8
+ 548 008d 2E020000 		.4byte	.LASF11
+ 549 0091 05       		.uleb128 0x5
+ 550 0092 04       		.byte	0x4
+ 551 0093 97000000 		.4byte	0x97
+ 552 0097 06       		.uleb128 0x6
+ 553 0098 04       		.uleb128 0x4
+ 554 0099 47020000 		.4byte	.LASF13
+ 555 009d 03       		.byte	0x3
+ 556 009e 2C       		.byte	0x2c
+ 557 009f 5D000000 		.4byte	0x5d
+ 558 00a3 07       		.uleb128 0x7
+ 559 00a4 AC000000 		.4byte	.LASF14
+ 560 00a8 04       		.byte	0x4
+ 561 00a9 9201     		.2byte	0x192
+ 562 00ab 48000000 		.4byte	0x48
+ 563 00af 07       		.uleb128 0x7
+ 564 00b0 E7020000 		.4byte	.LASF15
+ 565 00b4 04       		.byte	0x4
+ 566 00b5 9401     		.2byte	0x194
+ 567 00b7 6F000000 		.4byte	0x6f
+ 568 00bb 07       		.uleb128 0x7
+ 569 00bc C6000000 		.4byte	.LASF16
+ 570 00c0 04       		.byte	0x4
+ 571 00c1 9501     		.2byte	0x195
+ 572 00c3 41000000 		.4byte	0x41
+ 573 00c7 07       		.uleb128 0x7
+ 574 00c8 A1000000 		.4byte	.LASF17
+ 575 00cc 04       		.byte	0x4
+ 576 00cd 9601     		.2byte	0x196
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 19
+
+
+ 577 00cf 4F000000 		.4byte	0x4f
+ 578 00d3 03       		.uleb128 0x3
+ 579 00d4 04       		.byte	0x4
+ 580 00d5 04       		.byte	0x4
+ 581 00d6 B2000000 		.4byte	.LASF18
+ 582 00da 03       		.uleb128 0x3
+ 583 00db 08       		.byte	0x8
+ 584 00dc 04       		.byte	0x4
+ 585 00dd 17030000 		.4byte	.LASF19
+ 586 00e1 07       		.uleb128 0x7
+ 587 00e2 D0020000 		.4byte	.LASF20
+ 588 00e6 04       		.byte	0x4
+ 589 00e7 3C02     		.2byte	0x23c
+ 590 00e9 ED000000 		.4byte	0xed
+ 591 00ed 08       		.uleb128 0x8
+ 592 00ee A3000000 		.4byte	0xa3
+ 593 00f2 07       		.uleb128 0x7
+ 594 00f3 10020000 		.4byte	.LASF21
+ 595 00f7 04       		.byte	0x4
+ 596 00f8 3E02     		.2byte	0x23e
+ 597 00fa FE000000 		.4byte	0xfe
+ 598 00fe 08       		.uleb128 0x8
+ 599 00ff AF000000 		.4byte	0xaf
+ 600 0103 07       		.uleb128 0x7
+ 601 0104 43010000 		.4byte	.LASF22
+ 602 0108 04       		.byte	0x4
+ 603 0109 4E02     		.2byte	0x24e
+ 604 010b 91000000 		.4byte	0x91
+ 605 010f 09       		.uleb128 0x9
+ 606 0110 14       		.byte	0x14
+ 607 0111 05       		.byte	0x5
+ 608 0112 1C       		.byte	0x1c
+ 609 0113 30010000 		.4byte	0x130
+ 610 0117 0A       		.uleb128 0xa
+ 611 0118 636D6400 		.ascii	"cmd\000"
+ 612 011c 05       		.byte	0x5
+ 613 011d 1D       		.byte	0x1d
+ 614 011e 8A000000 		.4byte	0x8a
+ 615 0122 00       		.byte	0
+ 616 0123 0B       		.uleb128 0xb
+ 617 0124 27020000 		.4byte	.LASF23
+ 618 0128 05       		.byte	0x5
+ 619 0129 1E       		.byte	0x1e
+ 620 012a 30010000 		.4byte	0x130
+ 621 012e 01       		.byte	0x1
+ 622 012f 00       		.byte	0
+ 623 0130 0C       		.uleb128 0xc
+ 624 0131 8A000000 		.4byte	0x8a
+ 625 0135 40010000 		.4byte	0x140
+ 626 0139 0D       		.uleb128 0xd
+ 627 013a 7D000000 		.4byte	0x7d
+ 628 013e 12       		.byte	0x12
+ 629 013f 00       		.byte	0
+ 630 0140 0E       		.uleb128 0xe
+ 631 0141 A8010000 		.4byte	.LASF56
+ 632 0145 14       		.byte	0x14
+ 633 0146 05       		.byte	0x5
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 20
+
+
+ 634 0147 1A       		.byte	0x1a
+ 635 0148 5D010000 		.4byte	0x15d
+ 636 014c 0F       		.uleb128 0xf
+ 637 014d 85020000 		.4byte	.LASF57
+ 638 0151 05       		.byte	0x5
+ 639 0152 1B       		.byte	0x1b
+ 640 0153 5D010000 		.4byte	0x15d
+ 641 0157 10       		.uleb128 0x10
+ 642 0158 0F010000 		.4byte	0x10f
+ 643 015c 00       		.byte	0
+ 644 015d 0C       		.uleb128 0xc
+ 645 015e 8A000000 		.4byte	0x8a
+ 646 0162 6D010000 		.4byte	0x16d
+ 647 0166 0D       		.uleb128 0xd
+ 648 0167 7D000000 		.4byte	0x7d
+ 649 016b 13       		.byte	0x13
+ 650 016c 00       		.byte	0
+ 651 016d 11       		.uleb128 0x11
+ 652 016e 03020000 		.4byte	.LASF58
+ 653 0172 10       		.byte	0x10
+ 654 0173 06       		.byte	0x6
+ 655 0174 1A       		.byte	0x1a
+ 656 0175 AA010000 		.4byte	0x1aa
+ 657 0179 0A       		.uleb128 0xa
+ 658 017a 636D6400 		.ascii	"cmd\000"
+ 659 017e 06       		.byte	0x6
+ 660 017f 1B       		.byte	0x1b
+ 661 0180 84000000 		.4byte	0x84
+ 662 0184 00       		.byte	0
+ 663 0185 0B       		.uleb128 0xb
+ 664 0186 10000000 		.4byte	.LASF24
+ 665 018a 06       		.byte	0x6
+ 666 018b 1C       		.byte	0x1c
+ 667 018c 25000000 		.4byte	0x25
+ 668 0190 04       		.byte	0x4
+ 669 0191 0B       		.uleb128 0xb
+ 670 0192 A7000000 		.4byte	.LASF25
+ 671 0196 06       		.byte	0x6
+ 672 0197 1C       		.byte	0x1c
+ 673 0198 25000000 		.4byte	0x25
+ 674 019c 08       		.byte	0x8
+ 675 019d 0B       		.uleb128 0xb
+ 676 019e B9030000 		.4byte	.LASF26
+ 677 01a2 06       		.byte	0x6
+ 678 01a3 1C       		.byte	0x1c
+ 679 01a4 25000000 		.4byte	0x25
+ 680 01a8 0C       		.byte	0xc
+ 681 01a9 00       		.byte	0
+ 682 01aa 04       		.uleb128 0x4
+ 683 01ab AD020000 		.4byte	.LASF27
+ 684 01af 06       		.byte	0x6
+ 685 01b0 1D       		.byte	0x1d
+ 686 01b1 6D010000 		.4byte	0x16d
+ 687 01b5 12       		.uleb128 0x12
+ 688 01b6 ED010000 		.4byte	.LASF28
+ 689 01ba 01       		.byte	0x1
+ 690 01bb A8       		.byte	0xa8
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 21
+
+
+ 691 01bc 00000000 		.4byte	.LFB67
+ 692 01c0 7C000000 		.4byte	.LFE67-.LFB67
+ 693 01c4 01       		.uleb128 0x1
+ 694 01c5 9C       		.byte	0x9c
+ 695 01c6 D4010000 		.4byte	0x1d4
+ 696 01ca 13       		.uleb128 0x13
+ 697 01cb 24000000 		.4byte	.LVL0
+ 698 01cf B0040000 		.4byte	0x4b0
+ 699 01d3 00       		.byte	0
+ 700 01d4 12       		.uleb128 0x12
+ 701 01d5 F8020000 		.4byte	.LASF29
+ 702 01d9 01       		.byte	0x1
+ 703 01da EA       		.byte	0xea
+ 704 01db 00000000 		.4byte	.LFB68
+ 705 01df 0C000000 		.4byte	.LFE68-.LFB68
+ 706 01e3 01       		.uleb128 0x1
+ 707 01e4 9C       		.byte	0x9c
+ 708 01e5 04020000 		.4byte	0x204
+ 709 01e9 14       		.uleb128 0x14
+ 710 01ea E6000000 		.4byte	.LASF32
+ 711 01ee 01       		.byte	0x1
+ 712 01ef EA       		.byte	0xea
+ 713 01f0 03010000 		.4byte	0x103
+ 714 01f4 01       		.uleb128 0x1
+ 715 01f5 50       		.byte	0x50
+ 716 01f6 15       		.uleb128 0x15
+ 717 01f7 8B020000 		.4byte	.LASF30
+ 718 01fb 01       		.byte	0x1
+ 719 01fc EC       		.byte	0xec
+ 720 01fd 04020000 		.4byte	0x204
+ 721 0201 01       		.uleb128 0x1
+ 722 0202 53       		.byte	0x53
+ 723 0203 00       		.byte	0
+ 724 0204 05       		.uleb128 0x5
+ 725 0205 04       		.byte	0x4
+ 726 0206 03010000 		.4byte	0x103
+ 727 020a 16       		.uleb128 0x16
+ 728 020b F3000000 		.4byte	.LASF34
+ 729 020f 01       		.byte	0x1
+ 730 0210 0201     		.2byte	0x102
+ 731 0212 03010000 		.4byte	0x103
+ 732 0216 00000000 		.4byte	.LFB69
+ 733 021a 0C000000 		.4byte	.LFE69-.LFB69
+ 734 021e 01       		.uleb128 0x1
+ 735 021f 9C       		.byte	0x9c
+ 736 0220 33020000 		.4byte	0x233
+ 737 0224 17       		.uleb128 0x17
+ 738 0225 8B020000 		.4byte	.LASF30
+ 739 0229 01       		.byte	0x1
+ 740 022a 0401     		.2byte	0x104
+ 741 022c 04020000 		.4byte	0x204
+ 742 0230 01       		.uleb128 0x1
+ 743 0231 53       		.byte	0x53
+ 744 0232 00       		.byte	0
+ 745 0233 18       		.uleb128 0x18
+ 746 0234 90010000 		.4byte	.LASF31
+ 747 0238 01       		.byte	0x1
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 22
+
+
+ 748 0239 2401     		.2byte	0x124
+ 749 023b 00000000 		.4byte	.LFB70
+ 750 023f 10000000 		.4byte	.LFE70-.LFB70
+ 751 0243 01       		.uleb128 0x1
+ 752 0244 9C       		.byte	0x9c
+ 753 0245 5A020000 		.4byte	0x25a
+ 754 0249 19       		.uleb128 0x19
+ 755 024a 15000000 		.4byte	.LASF33
+ 756 024e 01       		.byte	0x1
+ 757 024f 2401     		.2byte	0x124
+ 758 0251 A3000000 		.4byte	0xa3
+ 759 0255 00000000 		.4byte	.LLST0
+ 760 0259 00       		.byte	0
+ 761 025a 16       		.uleb128 0x16
+ 762 025b 6D020000 		.4byte	.LASF35
+ 763 025f 01       		.byte	0x1
+ 764 0260 3A01     		.2byte	0x13a
+ 765 0262 A3000000 		.4byte	0xa3
+ 766 0266 00000000 		.4byte	.LFB71
+ 767 026a 0C000000 		.4byte	.LFE71-.LFB71
+ 768 026e 01       		.uleb128 0x1
+ 769 026f 9C       		.byte	0x9c
+ 770 0270 85020000 		.4byte	0x285
+ 771 0274 1A       		.uleb128 0x1a
+ 772 0275 15000000 		.4byte	.LASF33
+ 773 0279 01       		.byte	0x1
+ 774 027a 3C01     		.2byte	0x13c
+ 775 027c A3000000 		.4byte	0xa3
+ 776 0280 21000000 		.4byte	.LLST1
+ 777 0284 00       		.byte	0
+ 778 0285 1B       		.uleb128 0x1b
+ 779 0286 9A020000 		.4byte	.LASF36
+ 780 028a 01       		.byte	0x1
+ 781 028b 5501     		.2byte	0x155
+ 782 028d 00000000 		.4byte	.LFB72
+ 783 0291 0C000000 		.4byte	.LFE72-.LFB72
+ 784 0295 01       		.uleb128 0x1
+ 785 0296 9C       		.byte	0x9c
+ 786 0297 1C       		.uleb128 0x1c
+ 787 0298 8C000000 		.4byte	.LASF59
+ 788 029c 01       		.byte	0x1
+ 789 029d 6A01     		.2byte	0x16a
+ 790 029f A3000000 		.4byte	0xa3
+ 791 02a3 00000000 		.4byte	.LFB73
+ 792 02a7 18000000 		.4byte	.LFE73-.LFB73
+ 793 02ab 01       		.uleb128 0x1
+ 794 02ac 9C       		.byte	0x9c
+ 795 02ad 1B       		.uleb128 0x1b
+ 796 02ae 09010000 		.4byte	.LASF37
+ 797 02b2 01       		.byte	0x1
+ 798 02b3 7F01     		.2byte	0x17f
+ 799 02b5 00000000 		.4byte	.LFB74
+ 800 02b9 0C000000 		.4byte	.LFE74-.LFB74
+ 801 02bd 01       		.uleb128 0x1
+ 802 02be 9C       		.byte	0x9c
+ 803 02bf 12       		.uleb128 0x12
+ 804 02c0 D4000000 		.4byte	.LASF38
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 23
+
+
+ 805 02c4 01       		.byte	0x1
+ 806 02c5 45       		.byte	0x45
+ 807 02c6 00000000 		.4byte	.LFB64
+ 808 02ca 1C000000 		.4byte	.LFE64-.LFB64
+ 809 02ce 01       		.uleb128 0x1
+ 810 02cf 9C       		.byte	0x9c
+ 811 02d0 11030000 		.4byte	0x311
+ 812 02d4 13       		.uleb128 0x13
+ 813 02d5 06000000 		.4byte	.LVL8
+ 814 02d9 AD020000 		.4byte	0x2ad
+ 815 02dd 1D       		.uleb128 0x1d
+ 816 02de 0C000000 		.4byte	.LVL9
+ 817 02e2 D4010000 		.4byte	0x1d4
+ 818 02e6 F4020000 		.4byte	0x2f4
+ 819 02ea 1E       		.uleb128 0x1e
+ 820 02eb 01       		.uleb128 0x1
+ 821 02ec 50       		.byte	0x50
+ 822 02ed 05       		.uleb128 0x5
+ 823 02ee 03       		.byte	0x3
+ 824 02ef 00000000 		.4byte	isr_counter_Interrupt
+ 825 02f3 00       		.byte	0
+ 826 02f4 1D       		.uleb128 0x1d
+ 827 02f5 12000000 		.4byte	.LVL10
+ 828 02f9 33020000 		.4byte	0x233
+ 829 02fd 07030000 		.4byte	0x307
+ 830 0301 1E       		.uleb128 0x1e
+ 831 0302 01       		.uleb128 0x1
+ 832 0303 50       		.byte	0x50
+ 833 0304 01       		.uleb128 0x1
+ 834 0305 37       		.byte	0x37
+ 835 0306 00       		.byte	0
+ 836 0307 13       		.uleb128 0x13
+ 837 0308 16000000 		.4byte	.LVL11
+ 838 030c 85020000 		.4byte	0x285
+ 839 0310 00       		.byte	0
+ 840 0311 12       		.uleb128 0x12
+ 841 0312 33020000 		.4byte	.LASF39
+ 842 0316 01       		.byte	0x1
+ 843 0317 70       		.byte	0x70
+ 844 0318 00000000 		.4byte	.LFB65
+ 845 031c 1A000000 		.4byte	.LFE65-.LFB65
+ 846 0320 01       		.uleb128 0x1
+ 847 0321 9C       		.byte	0x9c
+ 848 0322 6F030000 		.4byte	0x36f
+ 849 0326 1F       		.uleb128 0x1f
+ 850 0327 E6000000 		.4byte	.LASF32
+ 851 032b 01       		.byte	0x1
+ 852 032c 70       		.byte	0x70
+ 853 032d 03010000 		.4byte	0x103
+ 854 0331 38000000 		.4byte	.LLST2
+ 855 0335 13       		.uleb128 0x13
+ 856 0336 08000000 		.4byte	.LVL13
+ 857 033a AD020000 		.4byte	0x2ad
+ 858 033e 1D       		.uleb128 0x1d
+ 859 033f 0E000000 		.4byte	.LVL14
+ 860 0343 D4010000 		.4byte	0x1d4
+ 861 0347 52030000 		.4byte	0x352
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 24
+
+
+ 862 034b 1E       		.uleb128 0x1e
+ 863 034c 01       		.uleb128 0x1
+ 864 034d 50       		.byte	0x50
+ 865 034e 02       		.uleb128 0x2
+ 866 034f 74       		.byte	0x74
+ 867 0350 00       		.sleb128 0
+ 868 0351 00       		.byte	0
+ 869 0352 1D       		.uleb128 0x1d
+ 870 0353 14000000 		.4byte	.LVL15
+ 871 0357 33020000 		.4byte	0x233
+ 872 035b 65030000 		.4byte	0x365
+ 873 035f 1E       		.uleb128 0x1e
+ 874 0360 01       		.uleb128 0x1
+ 875 0361 50       		.byte	0x50
+ 876 0362 01       		.uleb128 0x1
+ 877 0363 37       		.byte	0x37
+ 878 0364 00       		.byte	0
+ 879 0365 13       		.uleb128 0x13
+ 880 0366 18000000 		.4byte	.LVL16
+ 881 036a 85020000 		.4byte	0x285
+ 882 036e 00       		.byte	0
+ 883 036f 12       		.uleb128 0x12
+ 884 0370 38000000 		.4byte	.LASF40
+ 885 0374 01       		.byte	0x1
+ 886 0375 8E       		.byte	0x8e
+ 887 0376 00000000 		.4byte	.LFB66
+ 888 037a 14000000 		.4byte	.LFE66-.LFB66
+ 889 037e 01       		.uleb128 0x1
+ 890 037f 9C       		.byte	0x9c
+ 891 0380 97030000 		.4byte	0x397
+ 892 0384 13       		.uleb128 0x13
+ 893 0385 06000000 		.4byte	.LVL17
+ 894 0389 AD020000 		.4byte	0x2ad
+ 895 038d 13       		.uleb128 0x13
+ 896 038e 0C000000 		.4byte	.LVL18
+ 897 0392 D4010000 		.4byte	0x1d4
+ 898 0396 00       		.byte	0
+ 899 0397 1B       		.uleb128 0x1b
+ 900 0398 B9020000 		.4byte	.LASF41
+ 901 039c 01       		.byte	0x1
+ 902 039d 9A01     		.2byte	0x19a
+ 903 039f 00000000 		.4byte	.LFB75
+ 904 03a3 0C000000 		.4byte	.LFE75-.LFB75
+ 905 03a7 01       		.uleb128 0x1
+ 906 03a8 9C       		.byte	0x9c
+ 907 03a9 1B       		.uleb128 0x1b
+ 908 03aa D4010000 		.4byte	.LASF42
+ 909 03ae 01       		.byte	0x1
+ 910 03af B301     		.2byte	0x1b3
+ 911 03b1 00000000 		.4byte	.LFB76
+ 912 03b5 0C000000 		.4byte	.LFE76-.LFB76
+ 913 03b9 01       		.uleb128 0x1
+ 914 03ba 9C       		.byte	0x9c
+ 915 03bb 20       		.uleb128 0x20
+ 916 03bc 1E030000 		.4byte	.LASF43
+ 917 03c0 07       		.byte	0x7
+ 918 03c1 1207     		.2byte	0x712
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 25
+
+
+ 919 03c3 C7030000 		.4byte	0x3c7
+ 920 03c7 08       		.uleb128 0x8
+ 921 03c8 98000000 		.4byte	0x98
+ 922 03cc 21       		.uleb128 0x21
+ 923 03cd 524200   		.ascii	"RB\000"
+ 924 03d0 05       		.byte	0x5
+ 925 03d1 20       		.byte	0x20
+ 926 03d2 40010000 		.4byte	0x140
+ 927 03d6 05       		.uleb128 0x5
+ 928 03d7 03       		.byte	0x3
+ 929 03d8 00000000 		.4byte	RB
+ 930 03dc 21       		.uleb128 0x21
+ 931 03dd 504200   		.ascii	"PB\000"
+ 932 03e0 06       		.byte	0x6
+ 933 03e1 1E       		.byte	0x1e
+ 934 03e2 EC030000 		.4byte	0x3ec
+ 935 03e6 05       		.uleb128 0x5
+ 936 03e7 03       		.byte	0x3
+ 937 03e8 00000000 		.4byte	PB
+ 938 03ec 08       		.uleb128 0x8
+ 939 03ed AA010000 		.4byte	0x1aa
+ 940 03f1 21       		.uleb128 0x21
+ 941 03f2 436800   		.ascii	"Ch\000"
+ 942 03f5 06       		.byte	0x6
+ 943 03f6 4F       		.byte	0x4f
+ 944 03f7 ED000000 		.4byte	0xed
+ 945 03fb 05       		.uleb128 0x5
+ 946 03fc 03       		.byte	0x3
+ 947 03fd 00000000 		.4byte	Ch
+ 948 0401 22       		.uleb128 0x22
+ 949 0402 BF010000 		.4byte	.LASF44
+ 950 0406 06       		.byte	0x6
+ 951 0407 51       		.byte	0x51
+ 952 0408 ED000000 		.4byte	0xed
+ 953 040c 05       		.uleb128 0x5
+ 954 040d 03       		.byte	0x3
+ 955 040e 00000000 		.4byte	ContinuouslySendData
+ 956 0412 22       		.uleb128 0x22
+ 957 0413 5E010000 		.4byte	.LASF45
+ 958 0417 06       		.byte	0x6
+ 959 0418 52       		.byte	0x52
+ 960 0419 ED000000 		.4byte	0xed
+ 961 041d 05       		.uleb128 0x5
+ 962 041e 03       		.byte	0x3
+ 963 041f 00000000 		.4byte	SendSingleByte
+ 964 0423 22       		.uleb128 0x22
+ 965 0424 16020000 		.4byte	.LASF46
+ 966 0428 06       		.byte	0x6
+ 967 0429 53       		.byte	0x53
+ 968 042a ED000000 		.4byte	0xed
+ 969 042e 05       		.uleb128 0x5
+ 970 042f 03       		.byte	0x3
+ 971 0430 00000000 		.4byte	SendEmulatedData
+ 972 0434 22       		.uleb128 0x22
+ 973 0435 2B010000 		.4byte	.LASF47
+ 974 0439 06       		.byte	0x6
+ 975 043a 54       		.byte	0x54
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 26
+
+
+ 976 043b ED000000 		.4byte	0xed
+ 977 043f 05       		.uleb128 0x5
+ 978 0440 03       		.byte	0x3
+ 979 0441 00000000 		.4byte	_uart_Reset
+ 980 0445 22       		.uleb128 0x22
+ 981 0446 00000000 		.4byte	.LASF48
+ 982 044a 06       		.byte	0x6
+ 983 044b 57       		.byte	0x57
+ 984 044c 25000000 		.4byte	0x25
+ 985 0450 05       		.uleb128 0x5
+ 986 0451 03       		.byte	0x3
+ 987 0452 00000000 		.4byte	_state_
+ 988 0456 22       		.uleb128 0x22
+ 989 0457 28000000 		.4byte	.LASF49
+ 990 045b 01       		.byte	0x1
+ 991 045c 24       		.byte	0x24
+ 992 045d 67040000 		.4byte	0x467
+ 993 0461 05       		.uleb128 0x5
+ 994 0462 03       		.byte	0x3
+ 995 0463 00000000 		.4byte	rotor_direction
+ 996 0467 08       		.uleb128 0x8
+ 997 0468 BB000000 		.4byte	0xbb
+ 998 046c 22       		.uleb128 0x22
+ 999 046d EE000000 		.4byte	.LASF50
+ 1000 0471 01       		.byte	0x1
+ 1001 0472 25       		.byte	0x25
+ 1002 0473 C7030000 		.4byte	0x3c7
+ 1003 0477 05       		.uleb128 0x5
+ 1004 0478 03       		.byte	0x3
+ 1005 0479 00000000 		.4byte	t_ha
+ 1006 047d 22       		.uleb128 0x22
+ 1007 047e 08000000 		.4byte	.LASF51
+ 1008 0482 01       		.byte	0x1
+ 1009 0483 22       		.byte	0x22
+ 1010 0484 98000000 		.4byte	0x98
+ 1011 0488 05       		.uleb128 0x5
+ 1012 0489 03       		.byte	0x3
+ 1013 048a 00000000 		.4byte	counter
+ 1014 048e 22       		.uleb128 0x22
+ 1015 048f 62020000 		.4byte	.LASF52
+ 1016 0493 01       		.byte	0x1
+ 1017 0494 23       		.byte	0x23
+ 1018 0495 C7000000 		.4byte	0xc7
+ 1019 0499 05       		.uleb128 0x5
+ 1020 049a 03       		.byte	0x3
+ 1021 049b 00000000 		.4byte	last_count
+ 1022 049f 21       		.uleb128 0x21
+ 1023 04a0 61757800 		.ascii	"aux\000"
+ 1024 04a4 01       		.byte	0x1
+ 1025 04a5 23       		.byte	0x23
+ 1026 04a6 C7000000 		.4byte	0xc7
+ 1027 04aa 05       		.uleb128 0x5
+ 1028 04ab 03       		.byte	0x3
+ 1029 04ac 00000000 		.4byte	aux
+ 1030 04b0 23       		.uleb128 0x23
+ 1031 04b1 BE030000 		.4byte	.LASF60
+ 1032 04b5 BE030000 		.4byte	.LASF60
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 27
+
+
+ 1033 04b9 08       		.byte	0x8
+ 1034 04ba 4E       		.byte	0x4e
+ 1035 04bb 00       		.byte	0
+ 1036              		.section	.debug_abbrev,"",%progbits
+ 1037              	.Ldebug_abbrev0:
+ 1038 0000 01       		.uleb128 0x1
+ 1039 0001 11       		.uleb128 0x11
+ 1040 0002 01       		.byte	0x1
+ 1041 0003 25       		.uleb128 0x25
+ 1042 0004 0E       		.uleb128 0xe
+ 1043 0005 13       		.uleb128 0x13
+ 1044 0006 0B       		.uleb128 0xb
+ 1045 0007 03       		.uleb128 0x3
+ 1046 0008 0E       		.uleb128 0xe
+ 1047 0009 1B       		.uleb128 0x1b
+ 1048 000a 0E       		.uleb128 0xe
+ 1049 000b 55       		.uleb128 0x55
+ 1050 000c 17       		.uleb128 0x17
+ 1051 000d 11       		.uleb128 0x11
+ 1052 000e 01       		.uleb128 0x1
+ 1053 000f 10       		.uleb128 0x10
+ 1054 0010 17       		.uleb128 0x17
+ 1055 0011 00       		.byte	0
+ 1056 0012 00       		.byte	0
+ 1057 0013 02       		.uleb128 0x2
+ 1058 0014 24       		.uleb128 0x24
+ 1059 0015 00       		.byte	0
+ 1060 0016 0B       		.uleb128 0xb
+ 1061 0017 0B       		.uleb128 0xb
+ 1062 0018 3E       		.uleb128 0x3e
+ 1063 0019 0B       		.uleb128 0xb
+ 1064 001a 03       		.uleb128 0x3
+ 1065 001b 08       		.uleb128 0x8
+ 1066 001c 00       		.byte	0
+ 1067 001d 00       		.byte	0
+ 1068 001e 03       		.uleb128 0x3
+ 1069 001f 24       		.uleb128 0x24
+ 1070 0020 00       		.byte	0
+ 1071 0021 0B       		.uleb128 0xb
+ 1072 0022 0B       		.uleb128 0xb
+ 1073 0023 3E       		.uleb128 0x3e
+ 1074 0024 0B       		.uleb128 0xb
+ 1075 0025 03       		.uleb128 0x3
+ 1076 0026 0E       		.uleb128 0xe
+ 1077 0027 00       		.byte	0
+ 1078 0028 00       		.byte	0
+ 1079 0029 04       		.uleb128 0x4
+ 1080 002a 16       		.uleb128 0x16
+ 1081 002b 00       		.byte	0
+ 1082 002c 03       		.uleb128 0x3
+ 1083 002d 0E       		.uleb128 0xe
+ 1084 002e 3A       		.uleb128 0x3a
+ 1085 002f 0B       		.uleb128 0xb
+ 1086 0030 3B       		.uleb128 0x3b
+ 1087 0031 0B       		.uleb128 0xb
+ 1088 0032 49       		.uleb128 0x49
+ 1089 0033 13       		.uleb128 0x13
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 28
+
+
+ 1090 0034 00       		.byte	0
+ 1091 0035 00       		.byte	0
+ 1092 0036 05       		.uleb128 0x5
+ 1093 0037 0F       		.uleb128 0xf
+ 1094 0038 00       		.byte	0
+ 1095 0039 0B       		.uleb128 0xb
+ 1096 003a 0B       		.uleb128 0xb
+ 1097 003b 49       		.uleb128 0x49
+ 1098 003c 13       		.uleb128 0x13
+ 1099 003d 00       		.byte	0
+ 1100 003e 00       		.byte	0
+ 1101 003f 06       		.uleb128 0x6
+ 1102 0040 15       		.uleb128 0x15
+ 1103 0041 00       		.byte	0
+ 1104 0042 27       		.uleb128 0x27
+ 1105 0043 19       		.uleb128 0x19
+ 1106 0044 00       		.byte	0
+ 1107 0045 00       		.byte	0
+ 1108 0046 07       		.uleb128 0x7
+ 1109 0047 16       		.uleb128 0x16
+ 1110 0048 00       		.byte	0
+ 1111 0049 03       		.uleb128 0x3
+ 1112 004a 0E       		.uleb128 0xe
+ 1113 004b 3A       		.uleb128 0x3a
+ 1114 004c 0B       		.uleb128 0xb
+ 1115 004d 3B       		.uleb128 0x3b
+ 1116 004e 05       		.uleb128 0x5
+ 1117 004f 49       		.uleb128 0x49
+ 1118 0050 13       		.uleb128 0x13
+ 1119 0051 00       		.byte	0
+ 1120 0052 00       		.byte	0
+ 1121 0053 08       		.uleb128 0x8
+ 1122 0054 35       		.uleb128 0x35
+ 1123 0055 00       		.byte	0
+ 1124 0056 49       		.uleb128 0x49
+ 1125 0057 13       		.uleb128 0x13
+ 1126 0058 00       		.byte	0
+ 1127 0059 00       		.byte	0
+ 1128 005a 09       		.uleb128 0x9
+ 1129 005b 13       		.uleb128 0x13
+ 1130 005c 01       		.byte	0x1
+ 1131 005d 0B       		.uleb128 0xb
+ 1132 005e 0B       		.uleb128 0xb
+ 1133 005f 3A       		.uleb128 0x3a
+ 1134 0060 0B       		.uleb128 0xb
+ 1135 0061 3B       		.uleb128 0x3b
+ 1136 0062 0B       		.uleb128 0xb
+ 1137 0063 01       		.uleb128 0x1
+ 1138 0064 13       		.uleb128 0x13
+ 1139 0065 00       		.byte	0
+ 1140 0066 00       		.byte	0
+ 1141 0067 0A       		.uleb128 0xa
+ 1142 0068 0D       		.uleb128 0xd
+ 1143 0069 00       		.byte	0
+ 1144 006a 03       		.uleb128 0x3
+ 1145 006b 08       		.uleb128 0x8
+ 1146 006c 3A       		.uleb128 0x3a
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 29
+
+
+ 1147 006d 0B       		.uleb128 0xb
+ 1148 006e 3B       		.uleb128 0x3b
+ 1149 006f 0B       		.uleb128 0xb
+ 1150 0070 49       		.uleb128 0x49
+ 1151 0071 13       		.uleb128 0x13
+ 1152 0072 38       		.uleb128 0x38
+ 1153 0073 0B       		.uleb128 0xb
+ 1154 0074 00       		.byte	0
+ 1155 0075 00       		.byte	0
+ 1156 0076 0B       		.uleb128 0xb
+ 1157 0077 0D       		.uleb128 0xd
+ 1158 0078 00       		.byte	0
+ 1159 0079 03       		.uleb128 0x3
+ 1160 007a 0E       		.uleb128 0xe
+ 1161 007b 3A       		.uleb128 0x3a
+ 1162 007c 0B       		.uleb128 0xb
+ 1163 007d 3B       		.uleb128 0x3b
+ 1164 007e 0B       		.uleb128 0xb
+ 1165 007f 49       		.uleb128 0x49
+ 1166 0080 13       		.uleb128 0x13
+ 1167 0081 38       		.uleb128 0x38
+ 1168 0082 0B       		.uleb128 0xb
+ 1169 0083 00       		.byte	0
+ 1170 0084 00       		.byte	0
+ 1171 0085 0C       		.uleb128 0xc
+ 1172 0086 01       		.uleb128 0x1
+ 1173 0087 01       		.byte	0x1
+ 1174 0088 49       		.uleb128 0x49
+ 1175 0089 13       		.uleb128 0x13
+ 1176 008a 01       		.uleb128 0x1
+ 1177 008b 13       		.uleb128 0x13
+ 1178 008c 00       		.byte	0
+ 1179 008d 00       		.byte	0
+ 1180 008e 0D       		.uleb128 0xd
+ 1181 008f 21       		.uleb128 0x21
+ 1182 0090 00       		.byte	0
+ 1183 0091 49       		.uleb128 0x49
+ 1184 0092 13       		.uleb128 0x13
+ 1185 0093 2F       		.uleb128 0x2f
+ 1186 0094 0B       		.uleb128 0xb
+ 1187 0095 00       		.byte	0
+ 1188 0096 00       		.byte	0
+ 1189 0097 0E       		.uleb128 0xe
+ 1190 0098 17       		.uleb128 0x17
+ 1191 0099 01       		.byte	0x1
+ 1192 009a 03       		.uleb128 0x3
+ 1193 009b 0E       		.uleb128 0xe
+ 1194 009c 0B       		.uleb128 0xb
+ 1195 009d 0B       		.uleb128 0xb
+ 1196 009e 3A       		.uleb128 0x3a
+ 1197 009f 0B       		.uleb128 0xb
+ 1198 00a0 3B       		.uleb128 0x3b
+ 1199 00a1 0B       		.uleb128 0xb
+ 1200 00a2 01       		.uleb128 0x1
+ 1201 00a3 13       		.uleb128 0x13
+ 1202 00a4 00       		.byte	0
+ 1203 00a5 00       		.byte	0
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 30
+
+
+ 1204 00a6 0F       		.uleb128 0xf
+ 1205 00a7 0D       		.uleb128 0xd
+ 1206 00a8 00       		.byte	0
+ 1207 00a9 03       		.uleb128 0x3
+ 1208 00aa 0E       		.uleb128 0xe
+ 1209 00ab 3A       		.uleb128 0x3a
+ 1210 00ac 0B       		.uleb128 0xb
+ 1211 00ad 3B       		.uleb128 0x3b
+ 1212 00ae 0B       		.uleb128 0xb
+ 1213 00af 49       		.uleb128 0x49
+ 1214 00b0 13       		.uleb128 0x13
+ 1215 00b1 00       		.byte	0
+ 1216 00b2 00       		.byte	0
+ 1217 00b3 10       		.uleb128 0x10
+ 1218 00b4 0D       		.uleb128 0xd
+ 1219 00b5 00       		.byte	0
+ 1220 00b6 49       		.uleb128 0x49
+ 1221 00b7 13       		.uleb128 0x13
+ 1222 00b8 00       		.byte	0
+ 1223 00b9 00       		.byte	0
+ 1224 00ba 11       		.uleb128 0x11
+ 1225 00bb 13       		.uleb128 0x13
+ 1226 00bc 01       		.byte	0x1
+ 1227 00bd 03       		.uleb128 0x3
+ 1228 00be 0E       		.uleb128 0xe
+ 1229 00bf 0B       		.uleb128 0xb
+ 1230 00c0 0B       		.uleb128 0xb
+ 1231 00c1 3A       		.uleb128 0x3a
+ 1232 00c2 0B       		.uleb128 0xb
+ 1233 00c3 3B       		.uleb128 0x3b
+ 1234 00c4 0B       		.uleb128 0xb
+ 1235 00c5 01       		.uleb128 0x1
+ 1236 00c6 13       		.uleb128 0x13
+ 1237 00c7 00       		.byte	0
+ 1238 00c8 00       		.byte	0
+ 1239 00c9 12       		.uleb128 0x12
+ 1240 00ca 2E       		.uleb128 0x2e
+ 1241 00cb 01       		.byte	0x1
+ 1242 00cc 3F       		.uleb128 0x3f
+ 1243 00cd 19       		.uleb128 0x19
+ 1244 00ce 03       		.uleb128 0x3
+ 1245 00cf 0E       		.uleb128 0xe
+ 1246 00d0 3A       		.uleb128 0x3a
+ 1247 00d1 0B       		.uleb128 0xb
+ 1248 00d2 3B       		.uleb128 0x3b
+ 1249 00d3 0B       		.uleb128 0xb
+ 1250 00d4 27       		.uleb128 0x27
+ 1251 00d5 19       		.uleb128 0x19
+ 1252 00d6 11       		.uleb128 0x11
+ 1253 00d7 01       		.uleb128 0x1
+ 1254 00d8 12       		.uleb128 0x12
+ 1255 00d9 06       		.uleb128 0x6
+ 1256 00da 40       		.uleb128 0x40
+ 1257 00db 18       		.uleb128 0x18
+ 1258 00dc 9742     		.uleb128 0x2117
+ 1259 00de 19       		.uleb128 0x19
+ 1260 00df 01       		.uleb128 0x1
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 31
+
+
+ 1261 00e0 13       		.uleb128 0x13
+ 1262 00e1 00       		.byte	0
+ 1263 00e2 00       		.byte	0
+ 1264 00e3 13       		.uleb128 0x13
+ 1265 00e4 898201   		.uleb128 0x4109
+ 1266 00e7 00       		.byte	0
+ 1267 00e8 11       		.uleb128 0x11
+ 1268 00e9 01       		.uleb128 0x1
+ 1269 00ea 31       		.uleb128 0x31
+ 1270 00eb 13       		.uleb128 0x13
+ 1271 00ec 00       		.byte	0
+ 1272 00ed 00       		.byte	0
+ 1273 00ee 14       		.uleb128 0x14
+ 1274 00ef 05       		.uleb128 0x5
+ 1275 00f0 00       		.byte	0
+ 1276 00f1 03       		.uleb128 0x3
+ 1277 00f2 0E       		.uleb128 0xe
+ 1278 00f3 3A       		.uleb128 0x3a
+ 1279 00f4 0B       		.uleb128 0xb
+ 1280 00f5 3B       		.uleb128 0x3b
+ 1281 00f6 0B       		.uleb128 0xb
+ 1282 00f7 49       		.uleb128 0x49
+ 1283 00f8 13       		.uleb128 0x13
+ 1284 00f9 02       		.uleb128 0x2
+ 1285 00fa 18       		.uleb128 0x18
+ 1286 00fb 00       		.byte	0
+ 1287 00fc 00       		.byte	0
+ 1288 00fd 15       		.uleb128 0x15
+ 1289 00fe 34       		.uleb128 0x34
+ 1290 00ff 00       		.byte	0
+ 1291 0100 03       		.uleb128 0x3
+ 1292 0101 0E       		.uleb128 0xe
+ 1293 0102 3A       		.uleb128 0x3a
+ 1294 0103 0B       		.uleb128 0xb
+ 1295 0104 3B       		.uleb128 0x3b
+ 1296 0105 0B       		.uleb128 0xb
+ 1297 0106 49       		.uleb128 0x49
+ 1298 0107 13       		.uleb128 0x13
+ 1299 0108 02       		.uleb128 0x2
+ 1300 0109 18       		.uleb128 0x18
+ 1301 010a 00       		.byte	0
+ 1302 010b 00       		.byte	0
+ 1303 010c 16       		.uleb128 0x16
+ 1304 010d 2E       		.uleb128 0x2e
+ 1305 010e 01       		.byte	0x1
+ 1306 010f 3F       		.uleb128 0x3f
+ 1307 0110 19       		.uleb128 0x19
+ 1308 0111 03       		.uleb128 0x3
+ 1309 0112 0E       		.uleb128 0xe
+ 1310 0113 3A       		.uleb128 0x3a
+ 1311 0114 0B       		.uleb128 0xb
+ 1312 0115 3B       		.uleb128 0x3b
+ 1313 0116 05       		.uleb128 0x5
+ 1314 0117 27       		.uleb128 0x27
+ 1315 0118 19       		.uleb128 0x19
+ 1316 0119 49       		.uleb128 0x49
+ 1317 011a 13       		.uleb128 0x13
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 32
+
+
+ 1318 011b 11       		.uleb128 0x11
+ 1319 011c 01       		.uleb128 0x1
+ 1320 011d 12       		.uleb128 0x12
+ 1321 011e 06       		.uleb128 0x6
+ 1322 011f 40       		.uleb128 0x40
+ 1323 0120 18       		.uleb128 0x18
+ 1324 0121 9742     		.uleb128 0x2117
+ 1325 0123 19       		.uleb128 0x19
+ 1326 0124 01       		.uleb128 0x1
+ 1327 0125 13       		.uleb128 0x13
+ 1328 0126 00       		.byte	0
+ 1329 0127 00       		.byte	0
+ 1330 0128 17       		.uleb128 0x17
+ 1331 0129 34       		.uleb128 0x34
+ 1332 012a 00       		.byte	0
+ 1333 012b 03       		.uleb128 0x3
+ 1334 012c 0E       		.uleb128 0xe
+ 1335 012d 3A       		.uleb128 0x3a
+ 1336 012e 0B       		.uleb128 0xb
+ 1337 012f 3B       		.uleb128 0x3b
+ 1338 0130 05       		.uleb128 0x5
+ 1339 0131 49       		.uleb128 0x49
+ 1340 0132 13       		.uleb128 0x13
+ 1341 0133 02       		.uleb128 0x2
+ 1342 0134 18       		.uleb128 0x18
+ 1343 0135 00       		.byte	0
+ 1344 0136 00       		.byte	0
+ 1345 0137 18       		.uleb128 0x18
+ 1346 0138 2E       		.uleb128 0x2e
+ 1347 0139 01       		.byte	0x1
+ 1348 013a 3F       		.uleb128 0x3f
+ 1349 013b 19       		.uleb128 0x19
+ 1350 013c 03       		.uleb128 0x3
+ 1351 013d 0E       		.uleb128 0xe
+ 1352 013e 3A       		.uleb128 0x3a
+ 1353 013f 0B       		.uleb128 0xb
+ 1354 0140 3B       		.uleb128 0x3b
+ 1355 0141 05       		.uleb128 0x5
+ 1356 0142 27       		.uleb128 0x27
+ 1357 0143 19       		.uleb128 0x19
+ 1358 0144 11       		.uleb128 0x11
+ 1359 0145 01       		.uleb128 0x1
+ 1360 0146 12       		.uleb128 0x12
+ 1361 0147 06       		.uleb128 0x6
+ 1362 0148 40       		.uleb128 0x40
+ 1363 0149 18       		.uleb128 0x18
+ 1364 014a 9742     		.uleb128 0x2117
+ 1365 014c 19       		.uleb128 0x19
+ 1366 014d 01       		.uleb128 0x1
+ 1367 014e 13       		.uleb128 0x13
+ 1368 014f 00       		.byte	0
+ 1369 0150 00       		.byte	0
+ 1370 0151 19       		.uleb128 0x19
+ 1371 0152 05       		.uleb128 0x5
+ 1372 0153 00       		.byte	0
+ 1373 0154 03       		.uleb128 0x3
+ 1374 0155 0E       		.uleb128 0xe
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 33
+
+
+ 1375 0156 3A       		.uleb128 0x3a
+ 1376 0157 0B       		.uleb128 0xb
+ 1377 0158 3B       		.uleb128 0x3b
+ 1378 0159 05       		.uleb128 0x5
+ 1379 015a 49       		.uleb128 0x49
+ 1380 015b 13       		.uleb128 0x13
+ 1381 015c 02       		.uleb128 0x2
+ 1382 015d 17       		.uleb128 0x17
+ 1383 015e 00       		.byte	0
+ 1384 015f 00       		.byte	0
+ 1385 0160 1A       		.uleb128 0x1a
+ 1386 0161 34       		.uleb128 0x34
+ 1387 0162 00       		.byte	0
+ 1388 0163 03       		.uleb128 0x3
+ 1389 0164 0E       		.uleb128 0xe
+ 1390 0165 3A       		.uleb128 0x3a
+ 1391 0166 0B       		.uleb128 0xb
+ 1392 0167 3B       		.uleb128 0x3b
+ 1393 0168 05       		.uleb128 0x5
+ 1394 0169 49       		.uleb128 0x49
+ 1395 016a 13       		.uleb128 0x13
+ 1396 016b 02       		.uleb128 0x2
+ 1397 016c 17       		.uleb128 0x17
+ 1398 016d 00       		.byte	0
+ 1399 016e 00       		.byte	0
+ 1400 016f 1B       		.uleb128 0x1b
+ 1401 0170 2E       		.uleb128 0x2e
+ 1402 0171 00       		.byte	0
+ 1403 0172 3F       		.uleb128 0x3f
+ 1404 0173 19       		.uleb128 0x19
+ 1405 0174 03       		.uleb128 0x3
+ 1406 0175 0E       		.uleb128 0xe
+ 1407 0176 3A       		.uleb128 0x3a
+ 1408 0177 0B       		.uleb128 0xb
+ 1409 0178 3B       		.uleb128 0x3b
+ 1410 0179 05       		.uleb128 0x5
+ 1411 017a 27       		.uleb128 0x27
+ 1412 017b 19       		.uleb128 0x19
+ 1413 017c 11       		.uleb128 0x11
+ 1414 017d 01       		.uleb128 0x1
+ 1415 017e 12       		.uleb128 0x12
+ 1416 017f 06       		.uleb128 0x6
+ 1417 0180 40       		.uleb128 0x40
+ 1418 0181 18       		.uleb128 0x18
+ 1419 0182 9742     		.uleb128 0x2117
+ 1420 0184 19       		.uleb128 0x19
+ 1421 0185 00       		.byte	0
+ 1422 0186 00       		.byte	0
+ 1423 0187 1C       		.uleb128 0x1c
+ 1424 0188 2E       		.uleb128 0x2e
+ 1425 0189 00       		.byte	0
+ 1426 018a 3F       		.uleb128 0x3f
+ 1427 018b 19       		.uleb128 0x19
+ 1428 018c 03       		.uleb128 0x3
+ 1429 018d 0E       		.uleb128 0xe
+ 1430 018e 3A       		.uleb128 0x3a
+ 1431 018f 0B       		.uleb128 0xb
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 34
+
+
+ 1432 0190 3B       		.uleb128 0x3b
+ 1433 0191 05       		.uleb128 0x5
+ 1434 0192 27       		.uleb128 0x27
+ 1435 0193 19       		.uleb128 0x19
+ 1436 0194 49       		.uleb128 0x49
+ 1437 0195 13       		.uleb128 0x13
+ 1438 0196 11       		.uleb128 0x11
+ 1439 0197 01       		.uleb128 0x1
+ 1440 0198 12       		.uleb128 0x12
+ 1441 0199 06       		.uleb128 0x6
+ 1442 019a 40       		.uleb128 0x40
+ 1443 019b 18       		.uleb128 0x18
+ 1444 019c 9742     		.uleb128 0x2117
+ 1445 019e 19       		.uleb128 0x19
+ 1446 019f 00       		.byte	0
+ 1447 01a0 00       		.byte	0
+ 1448 01a1 1D       		.uleb128 0x1d
+ 1449 01a2 898201   		.uleb128 0x4109
+ 1450 01a5 01       		.byte	0x1
+ 1451 01a6 11       		.uleb128 0x11
+ 1452 01a7 01       		.uleb128 0x1
+ 1453 01a8 31       		.uleb128 0x31
+ 1454 01a9 13       		.uleb128 0x13
+ 1455 01aa 01       		.uleb128 0x1
+ 1456 01ab 13       		.uleb128 0x13
+ 1457 01ac 00       		.byte	0
+ 1458 01ad 00       		.byte	0
+ 1459 01ae 1E       		.uleb128 0x1e
+ 1460 01af 8A8201   		.uleb128 0x410a
+ 1461 01b2 00       		.byte	0
+ 1462 01b3 02       		.uleb128 0x2
+ 1463 01b4 18       		.uleb128 0x18
+ 1464 01b5 9142     		.uleb128 0x2111
+ 1465 01b7 18       		.uleb128 0x18
+ 1466 01b8 00       		.byte	0
+ 1467 01b9 00       		.byte	0
+ 1468 01ba 1F       		.uleb128 0x1f
+ 1469 01bb 05       		.uleb128 0x5
+ 1470 01bc 00       		.byte	0
+ 1471 01bd 03       		.uleb128 0x3
+ 1472 01be 0E       		.uleb128 0xe
+ 1473 01bf 3A       		.uleb128 0x3a
+ 1474 01c0 0B       		.uleb128 0xb
+ 1475 01c1 3B       		.uleb128 0x3b
+ 1476 01c2 0B       		.uleb128 0xb
+ 1477 01c3 49       		.uleb128 0x49
+ 1478 01c4 13       		.uleb128 0x13
+ 1479 01c5 02       		.uleb128 0x2
+ 1480 01c6 17       		.uleb128 0x17
+ 1481 01c7 00       		.byte	0
+ 1482 01c8 00       		.byte	0
+ 1483 01c9 20       		.uleb128 0x20
+ 1484 01ca 34       		.uleb128 0x34
+ 1485 01cb 00       		.byte	0
+ 1486 01cc 03       		.uleb128 0x3
+ 1487 01cd 0E       		.uleb128 0xe
+ 1488 01ce 3A       		.uleb128 0x3a
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 35
+
+
+ 1489 01cf 0B       		.uleb128 0xb
+ 1490 01d0 3B       		.uleb128 0x3b
+ 1491 01d1 05       		.uleb128 0x5
+ 1492 01d2 49       		.uleb128 0x49
+ 1493 01d3 13       		.uleb128 0x13
+ 1494 01d4 3F       		.uleb128 0x3f
+ 1495 01d5 19       		.uleb128 0x19
+ 1496 01d6 3C       		.uleb128 0x3c
+ 1497 01d7 19       		.uleb128 0x19
+ 1498 01d8 00       		.byte	0
+ 1499 01d9 00       		.byte	0
+ 1500 01da 21       		.uleb128 0x21
+ 1501 01db 34       		.uleb128 0x34
+ 1502 01dc 00       		.byte	0
+ 1503 01dd 03       		.uleb128 0x3
+ 1504 01de 08       		.uleb128 0x8
+ 1505 01df 3A       		.uleb128 0x3a
+ 1506 01e0 0B       		.uleb128 0xb
+ 1507 01e1 3B       		.uleb128 0x3b
+ 1508 01e2 0B       		.uleb128 0xb
+ 1509 01e3 49       		.uleb128 0x49
+ 1510 01e4 13       		.uleb128 0x13
+ 1511 01e5 3F       		.uleb128 0x3f
+ 1512 01e6 19       		.uleb128 0x19
+ 1513 01e7 02       		.uleb128 0x2
+ 1514 01e8 18       		.uleb128 0x18
+ 1515 01e9 00       		.byte	0
+ 1516 01ea 00       		.byte	0
+ 1517 01eb 22       		.uleb128 0x22
+ 1518 01ec 34       		.uleb128 0x34
+ 1519 01ed 00       		.byte	0
+ 1520 01ee 03       		.uleb128 0x3
+ 1521 01ef 0E       		.uleb128 0xe
+ 1522 01f0 3A       		.uleb128 0x3a
+ 1523 01f1 0B       		.uleb128 0xb
+ 1524 01f2 3B       		.uleb128 0x3b
+ 1525 01f3 0B       		.uleb128 0xb
+ 1526 01f4 49       		.uleb128 0x49
+ 1527 01f5 13       		.uleb128 0x13
+ 1528 01f6 3F       		.uleb128 0x3f
+ 1529 01f7 19       		.uleb128 0x19
+ 1530 01f8 02       		.uleb128 0x2
+ 1531 01f9 18       		.uleb128 0x18
+ 1532 01fa 00       		.byte	0
+ 1533 01fb 00       		.byte	0
+ 1534 01fc 23       		.uleb128 0x23
+ 1535 01fd 2E       		.uleb128 0x2e
+ 1536 01fe 00       		.byte	0
+ 1537 01ff 3F       		.uleb128 0x3f
+ 1538 0200 19       		.uleb128 0x19
+ 1539 0201 3C       		.uleb128 0x3c
+ 1540 0202 19       		.uleb128 0x19
+ 1541 0203 6E       		.uleb128 0x6e
+ 1542 0204 0E       		.uleb128 0xe
+ 1543 0205 03       		.uleb128 0x3
+ 1544 0206 0E       		.uleb128 0xe
+ 1545 0207 3A       		.uleb128 0x3a
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 36
+
+
+ 1546 0208 0B       		.uleb128 0xb
+ 1547 0209 3B       		.uleb128 0x3b
+ 1548 020a 0B       		.uleb128 0xb
+ 1549 020b 00       		.byte	0
+ 1550 020c 00       		.byte	0
+ 1551 020d 00       		.byte	0
+ 1552              		.section	.debug_loc,"",%progbits
+ 1553              	.Ldebug_loc0:
+ 1554              	.LLST0:
+ 1555 0000 00000000 		.4byte	.LVL4
+ 1556 0004 02000000 		.4byte	.LVL5
+ 1557 0008 0100     		.2byte	0x1
+ 1558 000a 50       		.byte	0x50
+ 1559 000b 02000000 		.4byte	.LVL5
+ 1560 000f 10000000 		.4byte	.LFE70
+ 1561 0013 0400     		.2byte	0x4
+ 1562 0015 F3       		.byte	0xf3
+ 1563 0016 01       		.uleb128 0x1
+ 1564 0017 50       		.byte	0x50
+ 1565 0018 9F       		.byte	0x9f
+ 1566 0019 00000000 		.4byte	0
+ 1567 001d 00000000 		.4byte	0
+ 1568              	.LLST1:
+ 1569 0021 04000000 		.4byte	.LVL6
+ 1570 0025 06000000 		.4byte	.LVL7
+ 1571 0029 0500     		.2byte	0x5
+ 1572 002b 70       		.byte	0x70
+ 1573 002c 00       		.sleb128 0
+ 1574 002d 35       		.byte	0x35
+ 1575 002e 25       		.byte	0x25
+ 1576 002f 9F       		.byte	0x9f
+ 1577 0030 00000000 		.4byte	0
+ 1578 0034 00000000 		.4byte	0
+ 1579              	.LLST2:
+ 1580 0038 00000000 		.4byte	.LVL12
+ 1581 003c 07000000 		.4byte	.LVL13-1
+ 1582 0040 0100     		.2byte	0x1
+ 1583 0042 50       		.byte	0x50
+ 1584 0043 07000000 		.4byte	.LVL13-1
+ 1585 0047 1A000000 		.4byte	.LFE65
+ 1586 004b 0100     		.2byte	0x1
+ 1587 004d 54       		.byte	0x54
+ 1588 004e 00000000 		.4byte	0
+ 1589 0052 00000000 		.4byte	0
+ 1590              		.section	.debug_aranges,"",%progbits
+ 1591 0000 7C000000 		.4byte	0x7c
+ 1592 0004 0200     		.2byte	0x2
+ 1593 0006 00000000 		.4byte	.Ldebug_info0
+ 1594 000a 04       		.byte	0x4
+ 1595 000b 00       		.byte	0
+ 1596 000c 0000     		.2byte	0
+ 1597 000e 0000     		.2byte	0
+ 1598 0010 00000000 		.4byte	.LFB67
+ 1599 0014 7C000000 		.4byte	.LFE67-.LFB67
+ 1600 0018 00000000 		.4byte	.LFB68
+ 1601 001c 0C000000 		.4byte	.LFE68-.LFB68
+ 1602 0020 00000000 		.4byte	.LFB69
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 37
+
+
+ 1603 0024 0C000000 		.4byte	.LFE69-.LFB69
+ 1604 0028 00000000 		.4byte	.LFB70
+ 1605 002c 10000000 		.4byte	.LFE70-.LFB70
+ 1606 0030 00000000 		.4byte	.LFB71
+ 1607 0034 0C000000 		.4byte	.LFE71-.LFB71
+ 1608 0038 00000000 		.4byte	.LFB72
+ 1609 003c 0C000000 		.4byte	.LFE72-.LFB72
+ 1610 0040 00000000 		.4byte	.LFB73
+ 1611 0044 18000000 		.4byte	.LFE73-.LFB73
+ 1612 0048 00000000 		.4byte	.LFB74
+ 1613 004c 0C000000 		.4byte	.LFE74-.LFB74
+ 1614 0050 00000000 		.4byte	.LFB64
+ 1615 0054 1C000000 		.4byte	.LFE64-.LFB64
+ 1616 0058 00000000 		.4byte	.LFB65
+ 1617 005c 1A000000 		.4byte	.LFE65-.LFB65
+ 1618 0060 00000000 		.4byte	.LFB66
+ 1619 0064 14000000 		.4byte	.LFE66-.LFB66
+ 1620 0068 00000000 		.4byte	.LFB75
+ 1621 006c 0C000000 		.4byte	.LFE75-.LFB75
+ 1622 0070 00000000 		.4byte	.LFB76
+ 1623 0074 0C000000 		.4byte	.LFE76-.LFB76
+ 1624 0078 00000000 		.4byte	0
+ 1625 007c 00000000 		.4byte	0
+ 1626              		.section	.debug_ranges,"",%progbits
+ 1627              	.Ldebug_ranges0:
+ 1628 0000 00000000 		.4byte	.LFB67
+ 1629 0004 7C000000 		.4byte	.LFE67
+ 1630 0008 00000000 		.4byte	.LFB68
+ 1631 000c 0C000000 		.4byte	.LFE68
+ 1632 0010 00000000 		.4byte	.LFB69
+ 1633 0014 0C000000 		.4byte	.LFE69
+ 1634 0018 00000000 		.4byte	.LFB70
+ 1635 001c 10000000 		.4byte	.LFE70
+ 1636 0020 00000000 		.4byte	.LFB71
+ 1637 0024 0C000000 		.4byte	.LFE71
+ 1638 0028 00000000 		.4byte	.LFB72
+ 1639 002c 0C000000 		.4byte	.LFE72
+ 1640 0030 00000000 		.4byte	.LFB73
+ 1641 0034 18000000 		.4byte	.LFE73
+ 1642 0038 00000000 		.4byte	.LFB74
+ 1643 003c 0C000000 		.4byte	.LFE74
+ 1644 0040 00000000 		.4byte	.LFB64
+ 1645 0044 1C000000 		.4byte	.LFE64
+ 1646 0048 00000000 		.4byte	.LFB65
+ 1647 004c 1A000000 		.4byte	.LFE65
+ 1648 0050 00000000 		.4byte	.LFB66
+ 1649 0054 14000000 		.4byte	.LFE66
+ 1650 0058 00000000 		.4byte	.LFB75
+ 1651 005c 0C000000 		.4byte	.LFE75
+ 1652 0060 00000000 		.4byte	.LFB76
+ 1653 0064 0C000000 		.4byte	.LFE76
+ 1654 0068 00000000 		.4byte	0
+ 1655 006c 00000000 		.4byte	0
+ 1656              		.section	.debug_line,"",%progbits
+ 1657              	.Ldebug_line0:
+ 1658 0000 73020000 		.section	.debug_str,"MS",%progbits,1
+ 1658      02007B01 
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 38
+
+
+ 1658      00000201 
+ 1658      FB0E0D00 
+ 1658      01010101 
+ 1659              	.LASF48:
+ 1660 0000 5F737461 		.ascii	"_state_\000"
+ 1660      74655F00 
+ 1661              	.LASF51:
+ 1662 0008 636F756E 		.ascii	"counter\000"
+ 1662      74657200 
+ 1663              	.LASF24:
+ 1664 0010 7056616C 		.ascii	"pVal\000"
+ 1664      00
+ 1665              	.LASF33:
+ 1666 0015 7072696F 		.ascii	"priority\000"
+ 1666      72697479 
+ 1666      00
+ 1667              	.LASF5:
+ 1668 001e 73686F72 		.ascii	"short int\000"
+ 1668      7420696E 
+ 1668      7400
+ 1669              	.LASF49:
+ 1670 0028 726F746F 		.ascii	"rotor_direction\000"
+ 1670      725F6469 
+ 1670      72656374 
+ 1670      696F6E00 
+ 1671              	.LASF40:
+ 1672 0038 6973725F 		.ascii	"isr_counter_Stop\000"
+ 1672      636F756E 
+ 1672      7465725F 
+ 1672      53746F70 
+ 1672      00
+ 1673              	.LASF55:
+ 1674 0049 443A5C44 		.ascii	"D:\\Dropbox\\Magister\\Tesis\\tesis-source\\master-"
+ 1674      726F7062 
+ 1674      6F785C4D 
+ 1674      61676973 
+ 1674      7465725C 
+ 1675 0077 74657369 		.ascii	"tesis\\dedo_v01.cydsn\000"
+ 1675      735C6465 
+ 1675      646F5F76 
+ 1675      30312E63 
+ 1675      7964736E 
+ 1676              	.LASF59:
+ 1677 008c 6973725F 		.ascii	"isr_counter_GetState\000"
+ 1677      636F756E 
+ 1677      7465725F 
+ 1677      47657453 
+ 1677      74617465 
+ 1678              	.LASF17:
+ 1679 00a1 696E7431 		.ascii	"int16\000"
+ 1679      3600
+ 1680              	.LASF25:
+ 1681 00a7 6956616C 		.ascii	"iVal\000"
+ 1681      00
+ 1682              	.LASF14:
+ 1683 00ac 75696E74 		.ascii	"uint8\000"
+ 1683      3800
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 39
+
+
+ 1684              	.LASF18:
+ 1685 00b2 666C6F61 		.ascii	"float\000"
+ 1685      7400
+ 1686              	.LASF1:
+ 1687 00b8 6C6F6E67 		.ascii	"long long int\000"
+ 1687      206C6F6E 
+ 1687      6720696E 
+ 1687      7400
+ 1688              	.LASF16:
+ 1689 00c6 696E7438 		.ascii	"int8\000"
+ 1689      00
+ 1690              	.LASF7:
+ 1691 00cb 6C6F6E67 		.ascii	"long int\000"
+ 1691      20696E74 
+ 1691      00
+ 1692              	.LASF38:
+ 1693 00d4 6973725F 		.ascii	"isr_counter_Start\000"
+ 1693      636F756E 
+ 1693      7465725F 
+ 1693      53746172 
+ 1693      7400
+ 1694              	.LASF32:
+ 1695 00e6 61646472 		.ascii	"address\000"
+ 1695      65737300 
+ 1696              	.LASF50:
+ 1697 00ee 745F6861 		.ascii	"t_ha\000"
+ 1697      00
+ 1698              	.LASF34:
+ 1699 00f3 6973725F 		.ascii	"isr_counter_GetVector\000"
+ 1699      636F756E 
+ 1699      7465725F 
+ 1699      47657456 
+ 1699      6563746F 
+ 1700              	.LASF37:
+ 1701 0109 6973725F 		.ascii	"isr_counter_Disable\000"
+ 1701      636F756E 
+ 1701      7465725F 
+ 1701      44697361 
+ 1701      626C6500 
+ 1702              	.LASF4:
+ 1703 011d 756E7369 		.ascii	"unsigned char\000"
+ 1703      676E6564 
+ 1703      20636861 
+ 1703      7200
+ 1704              	.LASF47:
+ 1705 012b 5F756172 		.ascii	"_uart_Reset\000"
+ 1705      745F5265 
+ 1705      73657400 
+ 1706              	.LASF2:
+ 1707 0137 6C6F6E67 		.ascii	"long double\000"
+ 1707      20646F75 
+ 1707      626C6500 
+ 1708              	.LASF22:
+ 1709 0143 63796973 		.ascii	"cyisraddress\000"
+ 1709      72616464 
+ 1709      72657373 
+ 1709      00
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 40
+
+
+ 1710              	.LASF54:
+ 1711 0150 6973725F 		.ascii	"isr_counter.c\000"
+ 1711      636F756E 
+ 1711      7465722E 
+ 1711      6300
+ 1712              	.LASF45:
+ 1713 015e 53656E64 		.ascii	"SendSingleByte\000"
+ 1713      53696E67 
+ 1713      6C654279 
+ 1713      746500
+ 1714              	.LASF3:
+ 1715 016d 7369676E 		.ascii	"signed char\000"
+ 1715      65642063 
+ 1715      68617200 
+ 1716              	.LASF9:
+ 1717 0179 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1717      206C6F6E 
+ 1717      6720756E 
+ 1717      7369676E 
+ 1717      65642069 
+ 1718              	.LASF31:
+ 1719 0190 6973725F 		.ascii	"isr_counter_SetPriority\000"
+ 1719      636F756E 
+ 1719      7465725F 
+ 1719      53657450 
+ 1719      72696F72 
+ 1720              	.LASF56:
+ 1721 01a8 54527842 		.ascii	"TRxBuffer\000"
+ 1721      75666665 
+ 1721      7200
+ 1722              	.LASF0:
+ 1723 01b2 756E7369 		.ascii	"unsigned int\000"
+ 1723      676E6564 
+ 1723      20696E74 
+ 1723      00
+ 1724              	.LASF44:
+ 1725 01bf 436F6E74 		.ascii	"ContinuouslySendData\000"
+ 1725      696E756F 
+ 1725      75736C79 
+ 1725      53656E64 
+ 1725      44617461 
+ 1726              	.LASF42:
+ 1727 01d4 6973725F 		.ascii	"isr_counter_ClearPending\000"
+ 1727      636F756E 
+ 1727      7465725F 
+ 1727      436C6561 
+ 1727      7250656E 
+ 1728              	.LASF28:
+ 1729 01ed 6973725F 		.ascii	"isr_counter_Interrupt\000"
+ 1729      636F756E 
+ 1729      7465725F 
+ 1729      496E7465 
+ 1729      72727570 
+ 1730              	.LASF58:
+ 1731 0203 54506172 		.ascii	"TParamBuffer\000"
+ 1731      616D4275 
+ 1731      66666572 
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 41
+
+
+ 1731      00
+ 1732              	.LASF21:
+ 1733 0210 72656733 		.ascii	"reg32\000"
+ 1733      3200
+ 1734              	.LASF46:
+ 1735 0216 53656E64 		.ascii	"SendEmulatedData\000"
+ 1735      456D756C 
+ 1735      61746564 
+ 1735      44617461 
+ 1735      00
+ 1736              	.LASF23:
+ 1737 0227 76616C73 		.ascii	"valstr\000"
+ 1737      747200
+ 1738              	.LASF11:
+ 1739 022e 63686172 		.ascii	"char\000"
+ 1739      00
+ 1740              	.LASF39:
+ 1741 0233 6973725F 		.ascii	"isr_counter_StartEx\000"
+ 1741      636F756E 
+ 1741      7465725F 
+ 1741      53746172 
+ 1741      74457800 
+ 1742              	.LASF13:
+ 1743 0247 696E7433 		.ascii	"int32_t\000"
+ 1743      325F7400 
+ 1744              	.LASF6:
+ 1745 024f 73686F72 		.ascii	"short unsigned int\000"
+ 1745      7420756E 
+ 1745      7369676E 
+ 1745      65642069 
+ 1745      6E7400
+ 1746              	.LASF52:
+ 1747 0262 6C617374 		.ascii	"last_count\000"
+ 1747      5F636F75 
+ 1747      6E7400
+ 1748              	.LASF35:
+ 1749 026d 6973725F 		.ascii	"isr_counter_GetPriority\000"
+ 1749      636F756E 
+ 1749      7465725F 
+ 1749      47657450 
+ 1749      72696F72 
+ 1750              	.LASF57:
+ 1751 0285 52785374 		.ascii	"RxStr\000"
+ 1751      7200
+ 1752              	.LASF30:
+ 1753 028b 72616D56 		.ascii	"ramVectorTable\000"
+ 1753      6563746F 
+ 1753      72546162 
+ 1753      6C6500
+ 1754              	.LASF36:
+ 1755 029a 6973725F 		.ascii	"isr_counter_Enable\000"
+ 1755      636F756E 
+ 1755      7465725F 
+ 1755      456E6162 
+ 1755      6C6500
+ 1756              	.LASF27:
+ 1757 02ad 50617261 		.ascii	"ParamBuffer\000"
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 42
+
+
+ 1757      6D427566 
+ 1757      66657200 
+ 1758              	.LASF41:
+ 1759 02b9 6973725F 		.ascii	"isr_counter_SetPending\000"
+ 1759      636F756E 
+ 1759      7465725F 
+ 1759      53657450 
+ 1759      656E6469 
+ 1760              	.LASF20:
+ 1761 02d0 72656738 		.ascii	"reg8\000"
+ 1761      00
+ 1762              	.LASF8:
+ 1763 02d5 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1763      20756E73 
+ 1763      69676E65 
+ 1763      6420696E 
+ 1763      7400
+ 1764              	.LASF15:
+ 1765 02e7 75696E74 		.ascii	"uint32\000"
+ 1765      333200
+ 1766              	.LASF12:
+ 1767 02ee 5F5F696E 		.ascii	"__int32_t\000"
+ 1767      7433325F 
+ 1767      7400
+ 1768              	.LASF29:
+ 1769 02f8 6973725F 		.ascii	"isr_counter_SetVector\000"
+ 1769      636F756E 
+ 1769      7465725F 
+ 1769      53657456 
+ 1769      6563746F 
+ 1770              	.LASF10:
+ 1771 030e 73697A65 		.ascii	"sizetype\000"
+ 1771      74797065 
+ 1771      00
+ 1772              	.LASF19:
+ 1773 0317 646F7562 		.ascii	"double\000"
+ 1773      6C6500
+ 1774              	.LASF43:
+ 1775 031e 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 1775      52784275 
+ 1775      66666572 
+ 1775      00
+ 1776              	.LASF53:
+ 1777 032b 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 1777      43313120 
+ 1777      352E342E 
+ 1777      31203230 
+ 1777      31363036 
+ 1778 035e 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m3 -mthumb -g -O"
+ 1778      20726576 
+ 1778      6973696F 
+ 1778      6E203233 
+ 1778      37373135 
+ 1779 0391 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 1779      66756E63 
+ 1779      74696F6E 
+ 1779      2D736563 
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 43
+
+
+ 1779      74696F6E 
+ 1780              	.LASF26:
+ 1781 03b9 6456616C 		.ascii	"dVal\000"
+ 1781      00
+ 1782              	.LASF60:
+ 1783 03be 44697243 		.ascii	"DirCounter_GetCounter\000"
+ 1783      6F756E74 
+ 1783      65725F47 
+ 1783      6574436F 
+ 1783      756E7465 
+ 1784              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

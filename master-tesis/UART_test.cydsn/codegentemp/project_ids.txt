@@ -1,0 +1,8 @@
+C:\Users\growo\Documents\PSoC Creator\4.1\Downloads ( 4.1).cylib\Downloads ( 4.1).cyprj|a3a1e72b-7b97-4d29-ae4b-39b9511c658c
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\CyAnnotationLibrary.cyprj|f902e369-5908-48f0-9c5a-4b738b3437d4
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\cycomponentlibraryupdates\CyComponentLibraryUpdates.cylib\CyComponentLibraryUpdates.cyprj|7e918ef1-1c3e-4ca5-ae0e-2c9ebe7c9fb5
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CyComponentLibrary.cyprj|ad530bdb-46fc-4b76-85eb-1fdd805d65c0
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\CyPrimitives.cyprj|08d9ff60-2d14-4061-866b-5982db9e5191
+D:\Dropbox\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\dedo_v01.cyprj|cc71cf99-9a97-4eec-a32f-0705ae257c91
+C:\Users\growo\Desktop\UART4_RGB_01.cydsn\UART4_RGB_01.cyprj|8750fc79-a460-443e-aeb3-145e0a6ab267
+D:\Dropbox\Magister\Tesis\tesis-source\master-tesis\UART_test.cydsn\UART_test.cyprj|cedfd9f1-71eb-4d82-93fc-9db769fd9bc4

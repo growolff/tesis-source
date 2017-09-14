@@ -1,0 +1,2785 @@
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccHjzAm6.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"vel_control_isr.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.vel_control_isr_Interrupt,"ax",%progbits
+  20              		.align	2
+  21              		.global	vel_control_isr_Interrupt
+  22              		.thumb
+  23              		.thumb_func
+  24              		.type	vel_control_isr_Interrupt, %function
+  25              	vel_control_isr_Interrupt:
+  26              	.LFB67:
+  27              		.file 1 "vel_control_isr.c"
+   1:vel_control_isr.c **** /*******************************************************************************
+   2:vel_control_isr.c **** * File Name: vel_control_isr.c  
+   3:vel_control_isr.c **** * Version 1.70
+   4:vel_control_isr.c **** *
+   5:vel_control_isr.c **** *  Description:
+   6:vel_control_isr.c **** *   API for controlling the state of an interrupt.
+   7:vel_control_isr.c **** *
+   8:vel_control_isr.c **** *
+   9:vel_control_isr.c **** *  Note:
+  10:vel_control_isr.c **** *
+  11:vel_control_isr.c **** ********************************************************************************
+  12:vel_control_isr.c **** * Copyright 2008-2015, Cypress Semiconductor Corporation.  All rights reserved.
+  13:vel_control_isr.c **** * You may use this file only in accordance with the license, terms, conditions, 
+  14:vel_control_isr.c **** * disclaimers, and limitations in the end user license agreement accompanying 
+  15:vel_control_isr.c **** * the software package with which this file was provided.
+  16:vel_control_isr.c **** *******************************************************************************/
+  17:vel_control_isr.c **** 
+  18:vel_control_isr.c **** 
+  19:vel_control_isr.c **** #include <cydevice_trm.h>
+  20:vel_control_isr.c **** #include <CyLib.h>
+  21:vel_control_isr.c **** #include <vel_control_isr.h>
+  22:vel_control_isr.c **** #include "cyapicallbacks.h"
+  23:vel_control_isr.c **** 
+  24:vel_control_isr.c **** #if !defined(vel_control_isr__REMOVED) /* Check for removal by optimization */
+  25:vel_control_isr.c **** 
+  26:vel_control_isr.c **** /*******************************************************************************
+  27:vel_control_isr.c **** *  Place your includes, defines and code here 
+  28:vel_control_isr.c **** ********************************************************************************/
+  29:vel_control_isr.c **** /* `#START vel_control_isr_intc` */
+  30:vel_control_isr.c **** 
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccHjzAm6.s 			page 2
+
+
+  31:vel_control_isr.c **** #include <VDAC8_Speed.h>
+  32:vel_control_isr.c **** #include <global.h>
+  33:vel_control_isr.c **** 
+  34:vel_control_isr.c **** volatile int32_t t_ha;
+  35:vel_control_isr.c **** volatile int32_t speed_ref;
+  36:vel_control_isr.c **** volatile int32_t actual_speed;
+  37:vel_control_isr.c **** volatile uint8 _pVal;
+  38:vel_control_isr.c ****     
+  39:vel_control_isr.c **** PID_t speed_pid_;
+  40:vel_control_isr.c **** int32_t speed_pid_output;
+  41:vel_control_isr.c **** uint8 _pid_out;
+  42:vel_control_isr.c ****     
+  43:vel_control_isr.c **** /* `#END` */
+  44:vel_control_isr.c **** 
+  45:vel_control_isr.c **** #ifndef CYINT_IRQ_BASE
+  46:vel_control_isr.c **** #define CYINT_IRQ_BASE      16
+  47:vel_control_isr.c **** #endif /* CYINT_IRQ_BASE */
+  48:vel_control_isr.c **** #ifndef CYINT_VECT_TABLE
+  49:vel_control_isr.c **** #define CYINT_VECT_TABLE    ((cyisraddress **) CYREG_NVIC_VECT_OFFSET)
+  50:vel_control_isr.c **** #endif /* CYINT_VECT_TABLE */
+  51:vel_control_isr.c **** 
+  52:vel_control_isr.c **** /* Declared in startup, used to set unused interrupts to. */
+  53:vel_control_isr.c **** CY_ISR_PROTO(IntDefaultHandler);
+  54:vel_control_isr.c **** 
+  55:vel_control_isr.c **** 
+  56:vel_control_isr.c **** /*******************************************************************************
+  57:vel_control_isr.c **** * Function Name: vel_control_isr_Start
+  58:vel_control_isr.c **** ********************************************************************************
+  59:vel_control_isr.c **** *
+  60:vel_control_isr.c **** * Summary:
+  61:vel_control_isr.c **** *  Set up the interrupt and enable it. This function disables the interrupt, 
+  62:vel_control_isr.c **** *  sets the default interrupt vector, sets the priority from the value in the
+  63:vel_control_isr.c **** *  Design Wide Resources Interrupt Editor, then enables the interrupt to the 
+  64:vel_control_isr.c **** *  interrupt controller.
+  65:vel_control_isr.c **** *
+  66:vel_control_isr.c **** * Parameters:  
+  67:vel_control_isr.c **** *   None
+  68:vel_control_isr.c **** *
+  69:vel_control_isr.c **** * Return:
+  70:vel_control_isr.c **** *   None
+  71:vel_control_isr.c **** *
+  72:vel_control_isr.c **** *******************************************************************************/
+  73:vel_control_isr.c **** void vel_control_isr_Start(void)
+  74:vel_control_isr.c **** {
+  75:vel_control_isr.c ****     /* For all we know the interrupt is active. */
+  76:vel_control_isr.c ****     vel_control_isr_Disable();
+  77:vel_control_isr.c **** 
+  78:vel_control_isr.c ****     /* Set the ISR to point to the vel_control_isr Interrupt. */
+  79:vel_control_isr.c ****     vel_control_isr_SetVector(&vel_control_isr_Interrupt);
+  80:vel_control_isr.c **** 
+  81:vel_control_isr.c ****     /* Set the priority. */
+  82:vel_control_isr.c ****     vel_control_isr_SetPriority((uint8)vel_control_isr_INTC_PRIOR_NUMBER);
+  83:vel_control_isr.c **** 
+  84:vel_control_isr.c ****     /* Enable it. */
+  85:vel_control_isr.c ****     vel_control_isr_Enable();
+  86:vel_control_isr.c **** }
+  87:vel_control_isr.c **** 
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccHjzAm6.s 			page 3
+
+
+  88:vel_control_isr.c **** 
+  89:vel_control_isr.c **** /*******************************************************************************
+  90:vel_control_isr.c **** * Function Name: vel_control_isr_StartEx
+  91:vel_control_isr.c **** ********************************************************************************
+  92:vel_control_isr.c **** *
+  93:vel_control_isr.c **** * Summary:
+  94:vel_control_isr.c **** *  Sets up the interrupt and enables it. This function disables the interrupt,
+  95:vel_control_isr.c **** *  sets the interrupt vector based on the address passed in, sets the priority 
+  96:vel_control_isr.c **** *  from the value in the Design Wide Resources Interrupt Editor, then enables 
+  97:vel_control_isr.c **** *  the interrupt to the interrupt controller.
+  98:vel_control_isr.c **** *  
+  99:vel_control_isr.c **** *  When defining ISR functions, the CY_ISR and CY_ISR_PROTO macros should be 
+ 100:vel_control_isr.c **** *  used to provide consistent definition across compilers:
+ 101:vel_control_isr.c **** *  
+ 102:vel_control_isr.c **** *  Function definition example:
+ 103:vel_control_isr.c **** *   CY_ISR(MyISR)
+ 104:vel_control_isr.c **** *   {
+ 105:vel_control_isr.c **** *   }
+ 106:vel_control_isr.c **** *   Function prototype example:
+ 107:vel_control_isr.c **** *   CY_ISR_PROTO(MyISR);
+ 108:vel_control_isr.c **** *
+ 109:vel_control_isr.c **** * Parameters:  
+ 110:vel_control_isr.c **** *   address: Address of the ISR to set in the interrupt vector table.
+ 111:vel_control_isr.c **** *
+ 112:vel_control_isr.c **** * Return:
+ 113:vel_control_isr.c **** *   None
+ 114:vel_control_isr.c **** *
+ 115:vel_control_isr.c **** *******************************************************************************/
+ 116:vel_control_isr.c **** void vel_control_isr_StartEx(cyisraddress address)
+ 117:vel_control_isr.c **** {
+ 118:vel_control_isr.c ****     /* For all we know the interrupt is active. */
+ 119:vel_control_isr.c ****     vel_control_isr_Disable();
+ 120:vel_control_isr.c **** 
+ 121:vel_control_isr.c ****     /* Set the ISR to point to the vel_control_isr Interrupt. */
+ 122:vel_control_isr.c ****     vel_control_isr_SetVector(address);
+ 123:vel_control_isr.c **** 
+ 124:vel_control_isr.c ****     /* Set the priority. */
+ 125:vel_control_isr.c ****     vel_control_isr_SetPriority((uint8)vel_control_isr_INTC_PRIOR_NUMBER);
+ 126:vel_control_isr.c **** 
+ 127:vel_control_isr.c ****     /* Enable it. */
+ 128:vel_control_isr.c ****     vel_control_isr_Enable();
+ 129:vel_control_isr.c **** }
+ 130:vel_control_isr.c **** 
+ 131:vel_control_isr.c **** 
+ 132:vel_control_isr.c **** /*******************************************************************************
+ 133:vel_control_isr.c **** * Function Name: vel_control_isr_Stop
+ 134:vel_control_isr.c **** ********************************************************************************
+ 135:vel_control_isr.c **** *
+ 136:vel_control_isr.c **** * Summary:
+ 137:vel_control_isr.c **** *   Disables and removes the interrupt.
+ 138:vel_control_isr.c **** *
+ 139:vel_control_isr.c **** * Parameters:  
+ 140:vel_control_isr.c **** *   None
+ 141:vel_control_isr.c **** *
+ 142:vel_control_isr.c **** * Return:
+ 143:vel_control_isr.c **** *   None
+ 144:vel_control_isr.c **** *
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccHjzAm6.s 			page 4
+
+
+ 145:vel_control_isr.c **** *******************************************************************************/
+ 146:vel_control_isr.c **** void vel_control_isr_Stop(void)
+ 147:vel_control_isr.c **** {
+ 148:vel_control_isr.c ****     /* Disable this interrupt. */
+ 149:vel_control_isr.c ****     vel_control_isr_Disable();
+ 150:vel_control_isr.c **** 
+ 151:vel_control_isr.c ****     /* Set the ISR to point to the passive one. */
+ 152:vel_control_isr.c ****     vel_control_isr_SetVector(&IntDefaultHandler);
+ 153:vel_control_isr.c **** }
+ 154:vel_control_isr.c **** 
+ 155:vel_control_isr.c **** 
+ 156:vel_control_isr.c **** /*******************************************************************************
+ 157:vel_control_isr.c **** * Function Name: vel_control_isr_Interrupt
+ 158:vel_control_isr.c **** ********************************************************************************
+ 159:vel_control_isr.c **** *
+ 160:vel_control_isr.c **** * Summary:
+ 161:vel_control_isr.c **** *   The default Interrupt Service Routine for vel_control_isr.
+ 162:vel_control_isr.c **** *
+ 163:vel_control_isr.c **** *   Add custom code between the coments to keep the next version of this file
+ 164:vel_control_isr.c **** *   from over writting your code.
+ 165:vel_control_isr.c **** *
+ 166:vel_control_isr.c **** * Parameters:  
+ 167:vel_control_isr.c **** *
+ 168:vel_control_isr.c **** * Return:
+ 169:vel_control_isr.c **** *   None
+ 170:vel_control_isr.c **** *
+ 171:vel_control_isr.c **** *******************************************************************************/
+ 172:vel_control_isr.c **** CY_ISR(vel_control_isr_Interrupt)
+ 173:vel_control_isr.c **** {
+  28              		.loc 1 173 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32 0000 10B5     		push	{r4, lr}
+  33              		.cfi_def_cfa_offset 8
+  34              		.cfi_offset 4, -8
+  35              		.cfi_offset 14, -4
+  36 0002 82B0     		sub	sp, sp, #8
+  37              		.cfi_def_cfa_offset 16
+ 174:vel_control_isr.c ****     #ifdef vel_control_isr_INTERRUPT_INTERRUPT_CALLBACK
+ 175:vel_control_isr.c ****         vel_control_isr_Interrupt_InterruptCallback();
+ 176:vel_control_isr.c ****     #endif /* vel_control_isr_INTERRUPT_INTERRUPT_CALLBACK */ 
+ 177:vel_control_isr.c **** 
+ 178:vel_control_isr.c ****     /*  Place your Interrupt code here. */
+ 179:vel_control_isr.c ****     /* `#START vel_control_isr_Interrupt` */
+ 180:vel_control_isr.c **** 
+ 181:vel_control_isr.c ****     actual_speed = HF_CLK/t_ha * 30; // 60 * 2 / 4 = 30, in RPM
+  38              		.loc 1 181 0
+  39 0004 154B     		ldr	r3, .L4
+  40 0006 1A68     		ldr	r2, [r3]
+  41 0008 42F21073 		movw	r3, #10000
+  42 000c 93FBF2F3 		sdiv	r3, r3, r2
+  43 0010 C3EB0313 		rsb	r3, r3, r3, lsl #4
+  44 0014 5A00     		lsls	r2, r3, #1
+  45 0016 124C     		ldr	r4, .L4+4
+  46 0018 2260     		str	r2, [r4]
+ 182:vel_control_isr.c ****     
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccHjzAm6.s 			page 5
+
+
+ 183:vel_control_isr.c ****     PID_setRef(&speed_pid_,speed_ref);
+  47              		.loc 1 183 0
+  48 001a 124B     		ldr	r3, .L4+8
+  49 001c 1968     		ldr	r1, [r3]
+  50 001e 1248     		ldr	r0, .L4+12
+  51 0020 FFF7FEFF 		bl	PID_setRef
+  52              	.LVL0:
+ 184:vel_control_isr.c ****     
+ 185:vel_control_isr.c ****     if(actual_speed == 0){
+  53              		.loc 1 185 0
+  54 0024 2368     		ldr	r3, [r4]
+  55 0026 13B9     		cbnz	r3, .L2
+ 186:vel_control_isr.c ****         speed_pid_.iTerm = 0;
+  56              		.loc 1 186 0
+  57 0028 0022     		movs	r2, #0
+  58 002a 0F4B     		ldr	r3, .L4+12
+  59 002c 9A61     		str	r2, [r3, #24]
+  60              	.L2:
+ 187:vel_control_isr.c ****     }
+ 188:vel_control_isr.c ****     speed_pid_output = PID_calculatePID(&speed_pid_,actual_speed);
+  61              		.loc 1 188 0
+  62 002e 0C4B     		ldr	r3, .L4+4
+  63 0030 1968     		ldr	r1, [r3]
+  64 0032 0D48     		ldr	r0, .L4+12
+  65 0034 FFF7FEFF 		bl	PID_calculatePID
+  66              	.LVL1:
+  67 0038 0C4B     		ldr	r3, .L4+16
+  68 003a 1860     		str	r0, [r3]
+ 189:vel_control_isr.c ****     
+ 190:vel_control_isr.c ****     // maps the pid_output to a 8bit number for pwm control of motor
+ 191:vel_control_isr.c ****     _pid_out = fn_mapper_8b(speed_pid_output,0,10000,0,255);
+  69              		.loc 1 191 0
+  70 003c FF23     		movs	r3, #255
+  71 003e 0093     		str	r3, [sp]
+  72 0040 0023     		movs	r3, #0
+  73 0042 42F21072 		movw	r2, #10000
+  74 0046 1946     		mov	r1, r3
+  75 0048 FFF7FEFF 		bl	fn_mapper_8b
+  76              	.LVL2:
+  77 004c C0B2     		uxtb	r0, r0
+  78 004e 084B     		ldr	r3, .L4+20
+  79 0050 1870     		strb	r0, [r3]
+ 192:vel_control_isr.c ****     //debug = _pid_out;
+ 193:vel_control_isr.c **** 
+ 194:vel_control_isr.c ****     #if defined(ANGLE_CONTROL) || defined(SPEED_CONTROL)
+ 195:vel_control_isr.c ****             VDAC8_Speed_SetValue((uint8)(_pid_out));
+  80              		.loc 1 195 0
+  81 0052 FFF7FEFF 		bl	VDAC8_Speed_SetValue
+  82              	.LVL3:
+ 196:vel_control_isr.c ****     #endif
+ 197:vel_control_isr.c ****     
+ 198:vel_control_isr.c ****     /* `#END` */
+ 199:vel_control_isr.c **** }
+  83              		.loc 1 199 0
+  84 0056 02B0     		add	sp, sp, #8
+  85              		.cfi_def_cfa_offset 8
+  86              		@ sp needed
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccHjzAm6.s 			page 6
+
+
+  87 0058 10BD     		pop	{r4, pc}
+  88              	.L5:
+  89 005a 00BF     		.align	2
+  90              	.L4:
+  91 005c 00000000 		.word	t_ha
+  92 0060 00000000 		.word	actual_speed
+  93 0064 00000000 		.word	speed_ref
+  94 0068 00000000 		.word	speed_pid_
+  95 006c 00000000 		.word	speed_pid_output
+  96 0070 00000000 		.word	_pid_out
+  97              		.cfi_endproc
+  98              	.LFE67:
+  99              		.size	vel_control_isr_Interrupt, .-vel_control_isr_Interrupt
+ 100              		.section	.text.vel_control_isr_SetVector,"ax",%progbits
+ 101              		.align	2
+ 102              		.global	vel_control_isr_SetVector
+ 103              		.thumb
+ 104              		.thumb_func
+ 105              		.type	vel_control_isr_SetVector, %function
+ 106              	vel_control_isr_SetVector:
+ 107              	.LFB68:
+ 200:vel_control_isr.c **** 
+ 201:vel_control_isr.c **** 
+ 202:vel_control_isr.c **** /*******************************************************************************
+ 203:vel_control_isr.c **** * Function Name: vel_control_isr_SetVector
+ 204:vel_control_isr.c **** ********************************************************************************
+ 205:vel_control_isr.c **** *
+ 206:vel_control_isr.c **** * Summary:
+ 207:vel_control_isr.c **** *   Change the ISR vector for the Interrupt. Note calling vel_control_isr_Start
+ 208:vel_control_isr.c **** *   will override any effect this method would have had. To set the vector 
+ 209:vel_control_isr.c **** *   before the component has been started use vel_control_isr_StartEx instead.
+ 210:vel_control_isr.c **** * 
+ 211:vel_control_isr.c **** *   When defining ISR functions, the CY_ISR and CY_ISR_PROTO macros should be 
+ 212:vel_control_isr.c **** *   used to provide consistent definition across compilers:
+ 213:vel_control_isr.c **** *
+ 214:vel_control_isr.c **** *   Function definition example:
+ 215:vel_control_isr.c **** *   CY_ISR(MyISR)
+ 216:vel_control_isr.c **** *   {
+ 217:vel_control_isr.c **** *   }
+ 218:vel_control_isr.c **** *
+ 219:vel_control_isr.c **** *   Function prototype example:
+ 220:vel_control_isr.c **** *     CY_ISR_PROTO(MyISR);
+ 221:vel_control_isr.c **** *
+ 222:vel_control_isr.c **** * Parameters:
+ 223:vel_control_isr.c **** *   address: Address of the ISR to set in the interrupt vector table.
+ 224:vel_control_isr.c **** *
+ 225:vel_control_isr.c **** * Return:
+ 226:vel_control_isr.c **** *   None
+ 227:vel_control_isr.c **** *
+ 228:vel_control_isr.c **** *******************************************************************************/
+ 229:vel_control_isr.c **** void vel_control_isr_SetVector(cyisraddress address)
+ 230:vel_control_isr.c **** {
+ 108              		.loc 1 230 0
+ 109              		.cfi_startproc
+ 110              		@ args = 0, pretend = 0, frame = 0
+ 111              		@ frame_needed = 0, uses_anonymous_args = 0
+ 112              		@ link register save eliminated.
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccHjzAm6.s 			page 7
+
+
+ 113              	.LVL4:
+ 231:vel_control_isr.c ****     cyisraddress * ramVectorTable;
+ 232:vel_control_isr.c **** 
+ 233:vel_control_isr.c ****     ramVectorTable = (cyisraddress *) *CYINT_VECT_TABLE;
+ 114              		.loc 1 233 0
+ 115 0000 014B     		ldr	r3, .L7
+ 116 0002 1B68     		ldr	r3, [r3]
+ 117              	.LVL5:
+ 234:vel_control_isr.c **** 
+ 235:vel_control_isr.c ****     ramVectorTable[CYINT_IRQ_BASE + (uint32)vel_control_isr__INTC_NUMBER] = address;
+ 118              		.loc 1 235 0
+ 119 0004 5866     		str	r0, [r3, #100]
+ 120 0006 7047     		bx	lr
+ 121              	.L8:
+ 122              		.align	2
+ 123              	.L7:
+ 124 0008 08ED00E0 		.word	-536810232
+ 125              		.cfi_endproc
+ 126              	.LFE68:
+ 127              		.size	vel_control_isr_SetVector, .-vel_control_isr_SetVector
+ 128              		.section	.text.vel_control_isr_GetVector,"ax",%progbits
+ 129              		.align	2
+ 130              		.global	vel_control_isr_GetVector
+ 131              		.thumb
+ 132              		.thumb_func
+ 133              		.type	vel_control_isr_GetVector, %function
+ 134              	vel_control_isr_GetVector:
+ 135              	.LFB69:
+ 236:vel_control_isr.c **** }
+ 237:vel_control_isr.c **** 
+ 238:vel_control_isr.c **** 
+ 239:vel_control_isr.c **** /*******************************************************************************
+ 240:vel_control_isr.c **** * Function Name: vel_control_isr_GetVector
+ 241:vel_control_isr.c **** ********************************************************************************
+ 242:vel_control_isr.c **** *
+ 243:vel_control_isr.c **** * Summary:
+ 244:vel_control_isr.c **** *   Gets the "address" of the current ISR vector for the Interrupt.
+ 245:vel_control_isr.c **** *
+ 246:vel_control_isr.c **** * Parameters:
+ 247:vel_control_isr.c **** *   None
+ 248:vel_control_isr.c **** *
+ 249:vel_control_isr.c **** * Return:
+ 250:vel_control_isr.c **** *   Address of the ISR in the interrupt vector table.
+ 251:vel_control_isr.c **** *
+ 252:vel_control_isr.c **** *******************************************************************************/
+ 253:vel_control_isr.c **** cyisraddress vel_control_isr_GetVector(void)
+ 254:vel_control_isr.c **** {
+ 136              		.loc 1 254 0
+ 137              		.cfi_startproc
+ 138              		@ args = 0, pretend = 0, frame = 0
+ 139              		@ frame_needed = 0, uses_anonymous_args = 0
+ 140              		@ link register save eliminated.
+ 255:vel_control_isr.c ****     cyisraddress * ramVectorTable;
+ 256:vel_control_isr.c **** 
+ 257:vel_control_isr.c ****     ramVectorTable = (cyisraddress *) *CYINT_VECT_TABLE;
+ 141              		.loc 1 257 0
+ 142 0000 014B     		ldr	r3, .L10
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccHjzAm6.s 			page 8
+
+
+ 143 0002 1B68     		ldr	r3, [r3]
+ 144              	.LVL6:
+ 258:vel_control_isr.c **** 
+ 259:vel_control_isr.c ****     return ramVectorTable[CYINT_IRQ_BASE + (uint32)vel_control_isr__INTC_NUMBER];
+ 260:vel_control_isr.c **** }
+ 145              		.loc 1 260 0
+ 146 0004 586E     		ldr	r0, [r3, #100]
+ 147 0006 7047     		bx	lr
+ 148              	.L11:
+ 149              		.align	2
+ 150              	.L10:
+ 151 0008 08ED00E0 		.word	-536810232
+ 152              		.cfi_endproc
+ 153              	.LFE69:
+ 154              		.size	vel_control_isr_GetVector, .-vel_control_isr_GetVector
+ 155              		.section	.text.vel_control_isr_SetPriority,"ax",%progbits
+ 156              		.align	2
+ 157              		.global	vel_control_isr_SetPriority
+ 158              		.thumb
+ 159              		.thumb_func
+ 160              		.type	vel_control_isr_SetPriority, %function
+ 161              	vel_control_isr_SetPriority:
+ 162              	.LFB70:
+ 261:vel_control_isr.c **** 
+ 262:vel_control_isr.c **** 
+ 263:vel_control_isr.c **** /*******************************************************************************
+ 264:vel_control_isr.c **** * Function Name: vel_control_isr_SetPriority
+ 265:vel_control_isr.c **** ********************************************************************************
+ 266:vel_control_isr.c **** *
+ 267:vel_control_isr.c **** * Summary:
+ 268:vel_control_isr.c **** *   Sets the Priority of the Interrupt. 
+ 269:vel_control_isr.c **** *
+ 270:vel_control_isr.c **** *   Note calling vel_control_isr_Start or vel_control_isr_StartEx will 
+ 271:vel_control_isr.c **** *   override any effect this API would have had. This API should only be called
+ 272:vel_control_isr.c **** *   after vel_control_isr_Start or vel_control_isr_StartEx has been called. 
+ 273:vel_control_isr.c **** *   To set the initial priority for the component, use the Design-Wide Resources
+ 274:vel_control_isr.c **** *   Interrupt Editor.
+ 275:vel_control_isr.c **** *
+ 276:vel_control_isr.c **** *   Note This API has no effect on Non-maskable interrupt NMI).
+ 277:vel_control_isr.c **** *
+ 278:vel_control_isr.c **** * Parameters:
+ 279:vel_control_isr.c **** *   priority: Priority of the interrupt, 0 being the highest priority
+ 280:vel_control_isr.c **** *             PSoC 3 and PSoC 5LP: Priority is from 0 to 7.
+ 281:vel_control_isr.c **** *             PSoC 4: Priority is from 0 to 3.
+ 282:vel_control_isr.c **** *
+ 283:vel_control_isr.c **** * Return:
+ 284:vel_control_isr.c **** *   None
+ 285:vel_control_isr.c **** *
+ 286:vel_control_isr.c **** *******************************************************************************/
+ 287:vel_control_isr.c **** void vel_control_isr_SetPriority(uint8 priority)
+ 288:vel_control_isr.c **** {
+ 163              		.loc 1 288 0
+ 164              		.cfi_startproc
+ 165              		@ args = 0, pretend = 0, frame = 0
+ 166              		@ frame_needed = 0, uses_anonymous_args = 0
+ 167              		@ link register save eliminated.
+ 168              	.LVL7:
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccHjzAm6.s 			page 9
+
+
+ 289:vel_control_isr.c ****     *vel_control_isr_INTC_PRIOR = priority << 5;
+ 169              		.loc 1 289 0
+ 170 0000 4001     		lsls	r0, r0, #5
+ 171              	.LVL8:
+ 172 0002 C0B2     		uxtb	r0, r0
+ 173 0004 014B     		ldr	r3, .L13
+ 174 0006 1870     		strb	r0, [r3]
+ 175 0008 7047     		bx	lr
+ 176              	.L14:
+ 177 000a 00BF     		.align	2
+ 178              	.L13:
+ 179 000c 09E400E0 		.word	-536812535
+ 180              		.cfi_endproc
+ 181              	.LFE70:
+ 182              		.size	vel_control_isr_SetPriority, .-vel_control_isr_SetPriority
+ 183              		.section	.text.vel_control_isr_GetPriority,"ax",%progbits
+ 184              		.align	2
+ 185              		.global	vel_control_isr_GetPriority
+ 186              		.thumb
+ 187              		.thumb_func
+ 188              		.type	vel_control_isr_GetPriority, %function
+ 189              	vel_control_isr_GetPriority:
+ 190              	.LFB71:
+ 290:vel_control_isr.c **** }
+ 291:vel_control_isr.c **** 
+ 292:vel_control_isr.c **** 
+ 293:vel_control_isr.c **** /*******************************************************************************
+ 294:vel_control_isr.c **** * Function Name: vel_control_isr_GetPriority
+ 295:vel_control_isr.c **** ********************************************************************************
+ 296:vel_control_isr.c **** *
+ 297:vel_control_isr.c **** * Summary:
+ 298:vel_control_isr.c **** *   Gets the Priority of the Interrupt.
+ 299:vel_control_isr.c **** *
+ 300:vel_control_isr.c **** * Parameters:
+ 301:vel_control_isr.c **** *   None
+ 302:vel_control_isr.c **** *
+ 303:vel_control_isr.c **** * Return:
+ 304:vel_control_isr.c **** *   Priority of the interrupt, 0 being the highest priority
+ 305:vel_control_isr.c **** *    PSoC 3 and PSoC 5LP: Priority is from 0 to 7.
+ 306:vel_control_isr.c **** *    PSoC 4: Priority is from 0 to 3.
+ 307:vel_control_isr.c **** *
+ 308:vel_control_isr.c **** *******************************************************************************/
+ 309:vel_control_isr.c **** uint8 vel_control_isr_GetPriority(void)
+ 310:vel_control_isr.c **** {
+ 191              		.loc 1 310 0
+ 192              		.cfi_startproc
+ 193              		@ args = 0, pretend = 0, frame = 0
+ 194              		@ frame_needed = 0, uses_anonymous_args = 0
+ 195              		@ link register save eliminated.
+ 311:vel_control_isr.c ****     uint8 priority;
+ 312:vel_control_isr.c **** 
+ 313:vel_control_isr.c **** 
+ 314:vel_control_isr.c ****     priority = *vel_control_isr_INTC_PRIOR >> 5;
+ 196              		.loc 1 314 0
+ 197 0000 014B     		ldr	r3, .L16
+ 198 0002 1878     		ldrb	r0, [r3]	@ zero_extendqisi2
+ 199              	.LVL9:
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccHjzAm6.s 			page 10
+
+
+ 315:vel_control_isr.c **** 
+ 316:vel_control_isr.c ****     return priority;
+ 317:vel_control_isr.c **** }
+ 200              		.loc 1 317 0
+ 201 0004 4009     		lsrs	r0, r0, #5
+ 202              	.LVL10:
+ 203 0006 7047     		bx	lr
+ 204              	.L17:
+ 205              		.align	2
+ 206              	.L16:
+ 207 0008 09E400E0 		.word	-536812535
+ 208              		.cfi_endproc
+ 209              	.LFE71:
+ 210              		.size	vel_control_isr_GetPriority, .-vel_control_isr_GetPriority
+ 211              		.section	.text.vel_control_isr_Enable,"ax",%progbits
+ 212              		.align	2
+ 213              		.global	vel_control_isr_Enable
+ 214              		.thumb
+ 215              		.thumb_func
+ 216              		.type	vel_control_isr_Enable, %function
+ 217              	vel_control_isr_Enable:
+ 218              	.LFB72:
+ 318:vel_control_isr.c **** 
+ 319:vel_control_isr.c **** 
+ 320:vel_control_isr.c **** /*******************************************************************************
+ 321:vel_control_isr.c **** * Function Name: vel_control_isr_Enable
+ 322:vel_control_isr.c **** ********************************************************************************
+ 323:vel_control_isr.c **** *
+ 324:vel_control_isr.c **** * Summary:
+ 325:vel_control_isr.c **** *   Enables the interrupt to the interrupt controller. Do not call this function
+ 326:vel_control_isr.c **** *   unless ISR_Start() has been called or the functionality of the ISR_Start() 
+ 327:vel_control_isr.c **** *   function, which sets the vector and the priority, has been called.
+ 328:vel_control_isr.c **** *
+ 329:vel_control_isr.c **** * Parameters:
+ 330:vel_control_isr.c **** *   None
+ 331:vel_control_isr.c **** *
+ 332:vel_control_isr.c **** * Return:
+ 333:vel_control_isr.c **** *   None
+ 334:vel_control_isr.c **** *
+ 335:vel_control_isr.c **** *******************************************************************************/
+ 336:vel_control_isr.c **** void vel_control_isr_Enable(void)
+ 337:vel_control_isr.c **** {
+ 219              		.loc 1 337 0
+ 220              		.cfi_startproc
+ 221              		@ args = 0, pretend = 0, frame = 0
+ 222              		@ frame_needed = 0, uses_anonymous_args = 0
+ 223              		@ link register save eliminated.
+ 338:vel_control_isr.c ****     /* Enable the general interrupt. */
+ 339:vel_control_isr.c ****     *vel_control_isr_INTC_SET_EN = vel_control_isr__INTC_MASK;
+ 224              		.loc 1 339 0
+ 225 0000 4FF40072 		mov	r2, #512
+ 226 0004 014B     		ldr	r3, .L19
+ 227 0006 1A60     		str	r2, [r3]
+ 228 0008 7047     		bx	lr
+ 229              	.L20:
+ 230 000a 00BF     		.align	2
+ 231              	.L19:
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccHjzAm6.s 			page 11
+
+
+ 232 000c 00E100E0 		.word	-536813312
+ 233              		.cfi_endproc
+ 234              	.LFE72:
+ 235              		.size	vel_control_isr_Enable, .-vel_control_isr_Enable
+ 236              		.section	.text.vel_control_isr_GetState,"ax",%progbits
+ 237              		.align	2
+ 238              		.global	vel_control_isr_GetState
+ 239              		.thumb
+ 240              		.thumb_func
+ 241              		.type	vel_control_isr_GetState, %function
+ 242              	vel_control_isr_GetState:
+ 243              	.LFB73:
+ 340:vel_control_isr.c **** }
+ 341:vel_control_isr.c **** 
+ 342:vel_control_isr.c **** 
+ 343:vel_control_isr.c **** /*******************************************************************************
+ 344:vel_control_isr.c **** * Function Name: vel_control_isr_GetState
+ 345:vel_control_isr.c **** ********************************************************************************
+ 346:vel_control_isr.c **** *
+ 347:vel_control_isr.c **** * Summary:
+ 348:vel_control_isr.c **** *   Gets the state (enabled, disabled) of the Interrupt.
+ 349:vel_control_isr.c **** *
+ 350:vel_control_isr.c **** * Parameters:
+ 351:vel_control_isr.c **** *   None
+ 352:vel_control_isr.c **** *
+ 353:vel_control_isr.c **** * Return:
+ 354:vel_control_isr.c **** *   1 if enabled, 0 if disabled.
+ 355:vel_control_isr.c **** *
+ 356:vel_control_isr.c **** *******************************************************************************/
+ 357:vel_control_isr.c **** uint8 vel_control_isr_GetState(void)
+ 358:vel_control_isr.c **** {
+ 244              		.loc 1 358 0
+ 245              		.cfi_startproc
+ 246              		@ args = 0, pretend = 0, frame = 0
+ 247              		@ frame_needed = 0, uses_anonymous_args = 0
+ 248              		@ link register save eliminated.
+ 359:vel_control_isr.c ****     /* Get the state of the general interrupt. */
+ 360:vel_control_isr.c ****     return ((*vel_control_isr_INTC_SET_EN & (uint32)vel_control_isr__INTC_MASK) != 0u) ? 1u:0u;
+ 249              		.loc 1 360 0
+ 250 0000 044B     		ldr	r3, .L24
+ 251 0002 1B68     		ldr	r3, [r3]
+ 252 0004 13F4007F 		tst	r3, #512
+ 253 0008 01D0     		beq	.L23
+ 254 000a 0120     		movs	r0, #1
+ 255 000c 7047     		bx	lr
+ 256              	.L23:
+ 257 000e 0020     		movs	r0, #0
+ 361:vel_control_isr.c **** }
+ 258              		.loc 1 361 0
+ 259 0010 7047     		bx	lr
+ 260              	.L25:
+ 261 0012 00BF     		.align	2
+ 262              	.L24:
+ 263 0014 00E100E0 		.word	-536813312
+ 264              		.cfi_endproc
+ 265              	.LFE73:
+ 266              		.size	vel_control_isr_GetState, .-vel_control_isr_GetState
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccHjzAm6.s 			page 12
+
+
+ 267              		.section	.text.vel_control_isr_Disable,"ax",%progbits
+ 268              		.align	2
+ 269              		.global	vel_control_isr_Disable
+ 270              		.thumb
+ 271              		.thumb_func
+ 272              		.type	vel_control_isr_Disable, %function
+ 273              	vel_control_isr_Disable:
+ 274              	.LFB74:
+ 362:vel_control_isr.c **** 
+ 363:vel_control_isr.c **** 
+ 364:vel_control_isr.c **** /*******************************************************************************
+ 365:vel_control_isr.c **** * Function Name: vel_control_isr_Disable
+ 366:vel_control_isr.c **** ********************************************************************************
+ 367:vel_control_isr.c **** *
+ 368:vel_control_isr.c **** * Summary:
+ 369:vel_control_isr.c **** *   Disables the Interrupt in the interrupt controller.
+ 370:vel_control_isr.c **** *
+ 371:vel_control_isr.c **** * Parameters:
+ 372:vel_control_isr.c **** *   None
+ 373:vel_control_isr.c **** *
+ 374:vel_control_isr.c **** * Return:
+ 375:vel_control_isr.c **** *   None
+ 376:vel_control_isr.c **** *
+ 377:vel_control_isr.c **** *******************************************************************************/
+ 378:vel_control_isr.c **** void vel_control_isr_Disable(void)
+ 379:vel_control_isr.c **** {
+ 275              		.loc 1 379 0
+ 276              		.cfi_startproc
+ 277              		@ args = 0, pretend = 0, frame = 0
+ 278              		@ frame_needed = 0, uses_anonymous_args = 0
+ 279              		@ link register save eliminated.
+ 380:vel_control_isr.c ****     /* Disable the general interrupt. */
+ 381:vel_control_isr.c ****     *vel_control_isr_INTC_CLR_EN = vel_control_isr__INTC_MASK;
+ 280              		.loc 1 381 0
+ 281 0000 4FF40072 		mov	r2, #512
+ 282 0004 014B     		ldr	r3, .L27
+ 283 0006 1A60     		str	r2, [r3]
+ 284 0008 7047     		bx	lr
+ 285              	.L28:
+ 286 000a 00BF     		.align	2
+ 287              	.L27:
+ 288 000c 80E100E0 		.word	-536813184
+ 289              		.cfi_endproc
+ 290              	.LFE74:
+ 291              		.size	vel_control_isr_Disable, .-vel_control_isr_Disable
+ 292              		.section	.text.vel_control_isr_Start,"ax",%progbits
+ 293              		.align	2
+ 294              		.global	vel_control_isr_Start
+ 295              		.thumb
+ 296              		.thumb_func
+ 297              		.type	vel_control_isr_Start, %function
+ 298              	vel_control_isr_Start:
+ 299              	.LFB64:
+  74:vel_control_isr.c ****     /* For all we know the interrupt is active. */
+ 300              		.loc 1 74 0
+ 301              		.cfi_startproc
+ 302              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccHjzAm6.s 			page 13
+
+
+ 303              		@ frame_needed = 0, uses_anonymous_args = 0
+ 304 0000 08B5     		push	{r3, lr}
+ 305              		.cfi_def_cfa_offset 8
+ 306              		.cfi_offset 3, -8
+ 307              		.cfi_offset 14, -4
+  76:vel_control_isr.c **** 
+ 308              		.loc 1 76 0
+ 309 0002 FFF7FEFF 		bl	vel_control_isr_Disable
+ 310              	.LVL11:
+  79:vel_control_isr.c **** 
+ 311              		.loc 1 79 0
+ 312 0006 0448     		ldr	r0, .L31
+ 313 0008 FFF7FEFF 		bl	vel_control_isr_SetVector
+ 314              	.LVL12:
+  82:vel_control_isr.c **** 
+ 315              		.loc 1 82 0
+ 316 000c 0720     		movs	r0, #7
+ 317 000e FFF7FEFF 		bl	vel_control_isr_SetPriority
+ 318              	.LVL13:
+  85:vel_control_isr.c **** }
+ 319              		.loc 1 85 0
+ 320 0012 FFF7FEFF 		bl	vel_control_isr_Enable
+ 321              	.LVL14:
+ 322 0016 08BD     		pop	{r3, pc}
+ 323              	.L32:
+ 324              		.align	2
+ 325              	.L31:
+ 326 0018 00000000 		.word	vel_control_isr_Interrupt
+ 327              		.cfi_endproc
+ 328              	.LFE64:
+ 329              		.size	vel_control_isr_Start, .-vel_control_isr_Start
+ 330              		.section	.text.vel_control_isr_StartEx,"ax",%progbits
+ 331              		.align	2
+ 332              		.global	vel_control_isr_StartEx
+ 333              		.thumb
+ 334              		.thumb_func
+ 335              		.type	vel_control_isr_StartEx, %function
+ 336              	vel_control_isr_StartEx:
+ 337              	.LFB65:
+ 117:vel_control_isr.c ****     /* For all we know the interrupt is active. */
+ 338              		.loc 1 117 0
+ 339              		.cfi_startproc
+ 340              		@ args = 0, pretend = 0, frame = 0
+ 341              		@ frame_needed = 0, uses_anonymous_args = 0
+ 342              	.LVL15:
+ 343 0000 10B5     		push	{r4, lr}
+ 344              		.cfi_def_cfa_offset 8
+ 345              		.cfi_offset 4, -8
+ 346              		.cfi_offset 14, -4
+ 347 0002 0446     		mov	r4, r0
+ 119:vel_control_isr.c **** 
+ 348              		.loc 1 119 0
+ 349 0004 FFF7FEFF 		bl	vel_control_isr_Disable
+ 350              	.LVL16:
+ 122:vel_control_isr.c **** 
+ 351              		.loc 1 122 0
+ 352 0008 2046     		mov	r0, r4
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccHjzAm6.s 			page 14
+
+
+ 353 000a FFF7FEFF 		bl	vel_control_isr_SetVector
+ 354              	.LVL17:
+ 125:vel_control_isr.c **** 
+ 355              		.loc 1 125 0
+ 356 000e 0720     		movs	r0, #7
+ 357 0010 FFF7FEFF 		bl	vel_control_isr_SetPriority
+ 358              	.LVL18:
+ 128:vel_control_isr.c **** }
+ 359              		.loc 1 128 0
+ 360 0014 FFF7FEFF 		bl	vel_control_isr_Enable
+ 361              	.LVL19:
+ 362 0018 10BD     		pop	{r4, pc}
+ 363              		.cfi_endproc
+ 364              	.LFE65:
+ 365              		.size	vel_control_isr_StartEx, .-vel_control_isr_StartEx
+ 366 001a 00BF     		.section	.text.vel_control_isr_Stop,"ax",%progbits
+ 367              		.align	2
+ 368              		.global	vel_control_isr_Stop
+ 369              		.thumb
+ 370              		.thumb_func
+ 371              		.type	vel_control_isr_Stop, %function
+ 372              	vel_control_isr_Stop:
+ 373              	.LFB66:
+ 147:vel_control_isr.c ****     /* Disable this interrupt. */
+ 374              		.loc 1 147 0
+ 375              		.cfi_startproc
+ 376              		@ args = 0, pretend = 0, frame = 0
+ 377              		@ frame_needed = 0, uses_anonymous_args = 0
+ 378 0000 08B5     		push	{r3, lr}
+ 379              		.cfi_def_cfa_offset 8
+ 380              		.cfi_offset 3, -8
+ 381              		.cfi_offset 14, -4
+ 149:vel_control_isr.c **** 
+ 382              		.loc 1 149 0
+ 383 0002 FFF7FEFF 		bl	vel_control_isr_Disable
+ 384              	.LVL20:
+ 152:vel_control_isr.c **** }
+ 385              		.loc 1 152 0
+ 386 0006 0248     		ldr	r0, .L37
+ 387 0008 FFF7FEFF 		bl	vel_control_isr_SetVector
+ 388              	.LVL21:
+ 389 000c 08BD     		pop	{r3, pc}
+ 390              	.L38:
+ 391 000e 00BF     		.align	2
+ 392              	.L37:
+ 393 0010 00000000 		.word	IntDefaultHandler
+ 394              		.cfi_endproc
+ 395              	.LFE66:
+ 396              		.size	vel_control_isr_Stop, .-vel_control_isr_Stop
+ 397              		.section	.text.vel_control_isr_SetPending,"ax",%progbits
+ 398              		.align	2
+ 399              		.global	vel_control_isr_SetPending
+ 400              		.thumb
+ 401              		.thumb_func
+ 402              		.type	vel_control_isr_SetPending, %function
+ 403              	vel_control_isr_SetPending:
+ 404              	.LFB75:
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccHjzAm6.s 			page 15
+
+
+ 382:vel_control_isr.c **** }
+ 383:vel_control_isr.c **** 
+ 384:vel_control_isr.c **** 
+ 385:vel_control_isr.c **** /*******************************************************************************
+ 386:vel_control_isr.c **** * Function Name: vel_control_isr_SetPending
+ 387:vel_control_isr.c **** ********************************************************************************
+ 388:vel_control_isr.c **** *
+ 389:vel_control_isr.c **** * Summary:
+ 390:vel_control_isr.c **** *   Causes the Interrupt to enter the pending state, a software method of
+ 391:vel_control_isr.c **** *   generating the interrupt.
+ 392:vel_control_isr.c **** *
+ 393:vel_control_isr.c **** * Parameters:
+ 394:vel_control_isr.c **** *   None
+ 395:vel_control_isr.c **** *
+ 396:vel_control_isr.c **** * Return:
+ 397:vel_control_isr.c **** *   None
+ 398:vel_control_isr.c **** *
+ 399:vel_control_isr.c **** * Side Effects:
+ 400:vel_control_isr.c **** *   If interrupts are enabled and the interrupt is set up properly, the ISR is
+ 401:vel_control_isr.c **** *   entered (depending on the priority of this interrupt and other pending 
+ 402:vel_control_isr.c **** *   interrupts).
+ 403:vel_control_isr.c **** *
+ 404:vel_control_isr.c **** *******************************************************************************/
+ 405:vel_control_isr.c **** void vel_control_isr_SetPending(void)
+ 406:vel_control_isr.c **** {
+ 405              		.loc 1 406 0
+ 406              		.cfi_startproc
+ 407              		@ args = 0, pretend = 0, frame = 0
+ 408              		@ frame_needed = 0, uses_anonymous_args = 0
+ 409              		@ link register save eliminated.
+ 407:vel_control_isr.c ****     *vel_control_isr_INTC_SET_PD = vel_control_isr__INTC_MASK;
+ 410              		.loc 1 407 0
+ 411 0000 4FF40072 		mov	r2, #512
+ 412 0004 014B     		ldr	r3, .L40
+ 413 0006 1A60     		str	r2, [r3]
+ 414 0008 7047     		bx	lr
+ 415              	.L41:
+ 416 000a 00BF     		.align	2
+ 417              	.L40:
+ 418 000c 00E200E0 		.word	-536813056
+ 419              		.cfi_endproc
+ 420              	.LFE75:
+ 421              		.size	vel_control_isr_SetPending, .-vel_control_isr_SetPending
+ 422              		.section	.text.vel_control_isr_ClearPending,"ax",%progbits
+ 423              		.align	2
+ 424              		.global	vel_control_isr_ClearPending
+ 425              		.thumb
+ 426              		.thumb_func
+ 427              		.type	vel_control_isr_ClearPending, %function
+ 428              	vel_control_isr_ClearPending:
+ 429              	.LFB76:
+ 408:vel_control_isr.c **** }
+ 409:vel_control_isr.c **** 
+ 410:vel_control_isr.c **** 
+ 411:vel_control_isr.c **** /*******************************************************************************
+ 412:vel_control_isr.c **** * Function Name: vel_control_isr_ClearPending
+ 413:vel_control_isr.c **** ********************************************************************************
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccHjzAm6.s 			page 16
+
+
+ 414:vel_control_isr.c **** *
+ 415:vel_control_isr.c **** * Summary:
+ 416:vel_control_isr.c **** *   Clears a pending interrupt in the interrupt controller.
+ 417:vel_control_isr.c **** *
+ 418:vel_control_isr.c **** *   Note Some interrupt sources are clear-on-read and require the block 
+ 419:vel_control_isr.c **** *   interrupt/status register to be read/cleared with the appropriate block API 
+ 420:vel_control_isr.c **** *   (GPIO, UART, and so on). Otherwise the ISR will continue to remain in 
+ 421:vel_control_isr.c **** *   pending state even though the interrupt itself is cleared using this API.
+ 422:vel_control_isr.c **** *
+ 423:vel_control_isr.c **** * Parameters:
+ 424:vel_control_isr.c **** *   None
+ 425:vel_control_isr.c **** *
+ 426:vel_control_isr.c **** * Return:
+ 427:vel_control_isr.c **** *   None
+ 428:vel_control_isr.c **** *
+ 429:vel_control_isr.c **** *******************************************************************************/
+ 430:vel_control_isr.c **** void vel_control_isr_ClearPending(void)
+ 431:vel_control_isr.c **** {
+ 430              		.loc 1 431 0
+ 431              		.cfi_startproc
+ 432              		@ args = 0, pretend = 0, frame = 0
+ 433              		@ frame_needed = 0, uses_anonymous_args = 0
+ 434              		@ link register save eliminated.
+ 432:vel_control_isr.c ****     *vel_control_isr_INTC_CLR_PD = vel_control_isr__INTC_MASK;
+ 435              		.loc 1 432 0
+ 436 0000 4FF40072 		mov	r2, #512
+ 437 0004 014B     		ldr	r3, .L43
+ 438 0006 1A60     		str	r2, [r3]
+ 439 0008 7047     		bx	lr
+ 440              	.L44:
+ 441 000a 00BF     		.align	2
+ 442              	.L43:
+ 443 000c 80E200E0 		.word	-536812928
+ 444              		.cfi_endproc
+ 445              	.LFE76:
+ 446              		.size	vel_control_isr_ClearPending, .-vel_control_isr_ClearPending
+ 447              		.comm	_pid_out,1,1
+ 448              		.comm	speed_pid_output,4,4
+ 449              		.comm	speed_pid_,44,4
+ 450              		.comm	_pVal,1,1
+ 451              		.comm	actual_speed,4,4
+ 452              		.comm	speed_ref,4,4
+ 453              		.comm	t_ha,4,4
+ 454              		.comm	_state_,4,4
+ 455              		.comm	_uart_Reset,1,1
+ 456              		.comm	SendEmulatedData,1,1
+ 457              		.comm	SendSingleByte,1,1
+ 458              		.comm	ContinuouslySendData,1,1
+ 459              		.comm	Ch,1,1
+ 460              		.comm	PB,16,4
+ 461              		.comm	RB,20,4
+ 462              		.text
+ 463              	.Letext0:
+ 464              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.1\\psoc creator\\import\\gnu\\arm\\5.4.
+ 465              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.1\\psoc creator\\import\\gnu\\arm\\5.4.
+ 466              		.file 4 "Generated_Source\\PSoC5/cytypes.h"
+ 467              		.file 5 "./pid.h"
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccHjzAm6.s 			page 17
+
+
+ 468              		.file 6 "./myUART.h"
+ 469              		.file 7 "./global.h"
+ 470              		.file 8 "Generated_Source\\PSoC5/core_cm3.h"
+ 471              		.file 9 "Generated_Source\\PSoC5/VDAC8_Speed.h"
+ 472              		.section	.debug_info,"",%progbits
+ 473              	.Ldebug_info0:
+ 474 0000 D6050000 		.4byte	0x5d6
+ 475 0004 0400     		.2byte	0x4
+ 476 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 477 000a 04       		.byte	0x4
+ 478 000b 01       		.uleb128 0x1
+ 479 000c B7030000 		.4byte	.LASF67
+ 480 0010 0C       		.byte	0xc
+ 481 0011 52020000 		.4byte	.LASF68
+ 482 0015 67000000 		.4byte	.LASF69
+ 483 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 484 001d 00000000 		.4byte	0
+ 485 0021 00000000 		.4byte	.Ldebug_line0
+ 486 0025 02       		.uleb128 0x2
+ 487 0026 04       		.byte	0x4
+ 488 0027 05       		.byte	0x5
+ 489 0028 696E7400 		.ascii	"int\000"
+ 490 002c 03       		.uleb128 0x3
+ 491 002d 04       		.byte	0x4
+ 492 002e 07       		.byte	0x7
+ 493 002f 0A020000 		.4byte	.LASF0
+ 494 0033 03       		.uleb128 0x3
+ 495 0034 08       		.byte	0x8
+ 496 0035 05       		.byte	0x5
+ 497 0036 20010000 		.4byte	.LASF1
+ 498 003a 03       		.uleb128 0x3
+ 499 003b 08       		.byte	0x8
+ 500 003c 04       		.byte	0x4
+ 501 003d 5B000000 		.4byte	.LASF2
+ 502 0041 03       		.uleb128 0x3
+ 503 0042 01       		.byte	0x1
+ 504 0043 06       		.byte	0x6
+ 505 0044 D5010000 		.4byte	.LASF3
+ 506 0048 03       		.uleb128 0x3
+ 507 0049 01       		.byte	0x1
+ 508 004a 08       		.byte	0x8
+ 509 004b 94010000 		.4byte	.LASF4
+ 510 004f 03       		.uleb128 0x3
+ 511 0050 02       		.byte	0x2
+ 512 0051 05       		.byte	0x5
+ 513 0052 AA000000 		.4byte	.LASF5
+ 514 0056 03       		.uleb128 0x3
+ 515 0057 02       		.byte	0x2
+ 516 0058 07       		.byte	0x7
+ 517 0059 B6020000 		.4byte	.LASF6
+ 518 005d 04       		.uleb128 0x4
+ 519 005e 3E030000 		.4byte	.LASF12
+ 520 0062 02       		.byte	0x2
+ 521 0063 3F       		.byte	0x3f
+ 522 0064 68000000 		.4byte	0x68
+ 523 0068 03       		.uleb128 0x3
+ 524 0069 04       		.byte	0x4
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccHjzAm6.s 			page 18
+
+
+ 525 006a 05       		.byte	0x5
+ 526 006b 43010000 		.4byte	.LASF7
+ 527 006f 03       		.uleb128 0x3
+ 528 0070 04       		.byte	0x4
+ 529 0071 07       		.byte	0x7
+ 530 0072 12030000 		.4byte	.LASF8
+ 531 0076 03       		.uleb128 0x3
+ 532 0077 08       		.byte	0x8
+ 533 0078 07       		.byte	0x7
+ 534 0079 E9010000 		.4byte	.LASF9
+ 535 007d 03       		.uleb128 0x3
+ 536 007e 04       		.byte	0x4
+ 537 007f 07       		.byte	0x7
+ 538 0080 52000000 		.4byte	.LASF10
+ 539 0084 05       		.uleb128 0x5
+ 540 0085 04       		.byte	0x4
+ 541 0086 8A000000 		.4byte	0x8a
+ 542 008a 03       		.uleb128 0x3
+ 543 008b 01       		.byte	0x1
+ 544 008c 08       		.byte	0x8
+ 545 008d 8F020000 		.4byte	.LASF11
+ 546 0091 05       		.uleb128 0x5
+ 547 0092 04       		.byte	0x4
+ 548 0093 97000000 		.4byte	0x97
+ 549 0097 06       		.uleb128 0x6
+ 550 0098 04       		.uleb128 0x4
+ 551 0099 E1010000 		.4byte	.LASF13
+ 552 009d 03       		.byte	0x3
+ 553 009e 2C       		.byte	0x2c
+ 554 009f 5D000000 		.4byte	0x5d
+ 555 00a3 07       		.uleb128 0x7
+ 556 00a4 DC000000 		.4byte	.LASF14
+ 557 00a8 04       		.byte	0x4
+ 558 00a9 9201     		.2byte	0x192
+ 559 00ab 48000000 		.4byte	0x48
+ 560 00af 07       		.uleb128 0x7
+ 561 00b0 05030000 		.4byte	.LASF15
+ 562 00b4 04       		.byte	0x4
+ 563 00b5 9401     		.2byte	0x194
+ 564 00b7 6F000000 		.4byte	0x6f
+ 565 00bb 03       		.uleb128 0x3
+ 566 00bc 04       		.byte	0x4
+ 567 00bd 04       		.byte	0x4
+ 568 00be 03010000 		.4byte	.LASF16
+ 569 00c2 03       		.uleb128 0x3
+ 570 00c3 08       		.byte	0x8
+ 571 00c4 04       		.byte	0x4
+ 572 00c5 24030000 		.4byte	.LASF17
+ 573 00c9 07       		.uleb128 0x7
+ 574 00ca 56010000 		.4byte	.LASF18
+ 575 00ce 04       		.byte	0x4
+ 576 00cf 3C02     		.2byte	0x23c
+ 577 00d1 D5000000 		.4byte	0xd5
+ 578 00d5 08       		.uleb128 0x8
+ 579 00d6 A3000000 		.4byte	0xa3
+ 580 00da 07       		.uleb128 0x7
+ 581 00db 64020000 		.4byte	.LASF19
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccHjzAm6.s 			page 19
+
+
+ 582 00df 04       		.byte	0x4
+ 583 00e0 3E02     		.2byte	0x23e
+ 584 00e2 E6000000 		.4byte	0xe6
+ 585 00e6 08       		.uleb128 0x8
+ 586 00e7 AF000000 		.4byte	0xaf
+ 587 00eb 07       		.uleb128 0x7
+ 588 00ec B9010000 		.4byte	.LASF20
+ 589 00f0 04       		.byte	0x4
+ 590 00f1 4E02     		.2byte	0x24e
+ 591 00f3 91000000 		.4byte	0x91
+ 592 00f7 09       		.uleb128 0x9
+ 593 00f8 2C       		.byte	0x2c
+ 594 00f9 05       		.byte	0x5
+ 595 00fa 14       		.byte	0x14
+ 596 00fb 81010000 		.4byte	0x181
+ 597 00ff 0A       		.uleb128 0xa
+ 598 0100 6B5000   		.ascii	"kP\000"
+ 599 0103 05       		.byte	0x5
+ 600 0104 16       		.byte	0x16
+ 601 0105 98000000 		.4byte	0x98
+ 602 0109 00       		.byte	0
+ 603 010a 0A       		.uleb128 0xa
+ 604 010b 6B4900   		.ascii	"kI\000"
+ 605 010e 05       		.byte	0x5
+ 606 010f 17       		.byte	0x17
+ 607 0110 98000000 		.4byte	0x98
+ 608 0114 04       		.byte	0x4
+ 609 0115 0A       		.uleb128 0xa
+ 610 0116 6B4400   		.ascii	"kD\000"
+ 611 0119 05       		.byte	0x5
+ 612 011a 18       		.byte	0x18
+ 613 011b 98000000 		.4byte	0x98
+ 614 011f 08       		.byte	0x8
+ 615 0120 0B       		.uleb128 0xb
+ 616 0121 E2000000 		.4byte	.LASF21
+ 617 0125 05       		.byte	0x5
+ 618 0126 19       		.byte	0x19
+ 619 0127 98000000 		.4byte	0x98
+ 620 012b 0C       		.byte	0xc
+ 621 012c 0B       		.uleb128 0xb
+ 622 012d AE010000 		.4byte	.LASF22
+ 623 0131 05       		.byte	0x5
+ 624 0132 1A       		.byte	0x1a
+ 625 0133 98000000 		.4byte	0x98
+ 626 0137 10       		.byte	0x10
+ 627 0138 0B       		.uleb128 0xb
+ 628 0139 4C010000 		.4byte	.LASF23
+ 629 013d 05       		.byte	0x5
+ 630 013e 1B       		.byte	0x1b
+ 631 013f 98000000 		.4byte	0x98
+ 632 0143 14       		.byte	0x14
+ 633 0144 0B       		.uleb128 0xb
+ 634 0145 38030000 		.4byte	.LASF24
+ 635 0149 05       		.byte	0x5
+ 636 014a 1C       		.byte	0x1c
+ 637 014b 98000000 		.4byte	0x98
+ 638 014f 18       		.byte	0x18
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccHjzAm6.s 			page 20
+
+
+ 639 0150 0B       		.uleb128 0xb
+ 640 0151 E9000000 		.4byte	.LASF25
+ 641 0155 05       		.byte	0x5
+ 642 0156 1D       		.byte	0x1d
+ 643 0157 98000000 		.4byte	0x98
+ 644 015b 1C       		.byte	0x1c
+ 645 015c 0B       		.uleb128 0xb
+ 646 015d 5B010000 		.4byte	.LASF26
+ 647 0161 05       		.byte	0x5
+ 648 0162 1E       		.byte	0x1e
+ 649 0163 98000000 		.4byte	0x98
+ 650 0167 20       		.byte	0x20
+ 651 0168 0B       		.uleb128 0xb
+ 652 0169 08000000 		.4byte	.LASF27
+ 653 016d 05       		.byte	0x5
+ 654 016e 1F       		.byte	0x1f
+ 655 016f 98000000 		.4byte	0x98
+ 656 0173 24       		.byte	0x24
+ 657 0174 0B       		.uleb128 0xb
+ 658 0175 5B040000 		.4byte	.LASF28
+ 659 0179 05       		.byte	0x5
+ 660 017a 20       		.byte	0x20
+ 661 017b 98000000 		.4byte	0x98
+ 662 017f 28       		.byte	0x28
+ 663 0180 00       		.byte	0
+ 664 0181 04       		.uleb128 0x4
+ 665 0182 90040000 		.4byte	.LASF29
+ 666 0186 05       		.byte	0x5
+ 667 0187 21       		.byte	0x21
+ 668 0188 F7000000 		.4byte	0xf7
+ 669 018c 09       		.uleb128 0x9
+ 670 018d 14       		.byte	0x14
+ 671 018e 06       		.byte	0x6
+ 672 018f 1C       		.byte	0x1c
+ 673 0190 AD010000 		.4byte	0x1ad
+ 674 0194 0A       		.uleb128 0xa
+ 675 0195 636D6400 		.ascii	"cmd\000"
+ 676 0199 06       		.byte	0x6
+ 677 019a 1D       		.byte	0x1d
+ 678 019b 8A000000 		.4byte	0x8a
+ 679 019f 00       		.byte	0
+ 680 01a0 0B       		.uleb128 0xb
+ 681 01a1 7B020000 		.4byte	.LASF30
+ 682 01a5 06       		.byte	0x6
+ 683 01a6 1E       		.byte	0x1e
+ 684 01a7 AD010000 		.4byte	0x1ad
+ 685 01ab 01       		.byte	0x1
+ 686 01ac 00       		.byte	0
+ 687 01ad 0C       		.uleb128 0xc
+ 688 01ae 8A000000 		.4byte	0x8a
+ 689 01b2 BD010000 		.4byte	0x1bd
+ 690 01b6 0D       		.uleb128 0xd
+ 691 01b7 7D000000 		.4byte	0x7d
+ 692 01bb 12       		.byte	0x12
+ 693 01bc 00       		.byte	0
+ 694 01bd 0E       		.uleb128 0xe
+ 695 01be 00020000 		.4byte	.LASF70
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccHjzAm6.s 			page 21
+
+
+ 696 01c2 14       		.byte	0x14
+ 697 01c3 06       		.byte	0x6
+ 698 01c4 1A       		.byte	0x1a
+ 699 01c5 DA010000 		.4byte	0x1da
+ 700 01c9 0F       		.uleb128 0xf
+ 701 01ca E5020000 		.4byte	.LASF71
+ 702 01ce 06       		.byte	0x6
+ 703 01cf 1B       		.byte	0x1b
+ 704 01d0 DA010000 		.4byte	0x1da
+ 705 01d4 10       		.uleb128 0x10
+ 706 01d5 8C010000 		.4byte	0x18c
+ 707 01d9 00       		.byte	0
+ 708 01da 0C       		.uleb128 0xc
+ 709 01db 8A000000 		.4byte	0x8a
+ 710 01df EA010000 		.4byte	0x1ea
+ 711 01e3 0D       		.uleb128 0xd
+ 712 01e4 7D000000 		.4byte	0x7d
+ 713 01e8 13       		.byte	0x13
+ 714 01e9 00       		.byte	0
+ 715 01ea 11       		.uleb128 0x11
+ 716 01eb A9020000 		.4byte	.LASF72
+ 717 01ef 10       		.byte	0x10
+ 718 01f0 07       		.byte	0x7
+ 719 01f1 1A       		.byte	0x1a
+ 720 01f2 27020000 		.4byte	0x227
+ 721 01f6 0A       		.uleb128 0xa
+ 722 01f7 636D6400 		.ascii	"cmd\000"
+ 723 01fb 07       		.byte	0x7
+ 724 01fc 1B       		.byte	0x1b
+ 725 01fd 84000000 		.4byte	0x84
+ 726 0201 00       		.byte	0
+ 727 0202 0B       		.uleb128 0xb
+ 728 0203 12000000 		.4byte	.LASF31
+ 729 0207 07       		.byte	0x7
+ 730 0208 1C       		.byte	0x1c
+ 731 0209 25000000 		.4byte	0x25
+ 732 020d 04       		.byte	0x4
+ 733 020e 0B       		.uleb128 0xb
+ 734 020f D7000000 		.4byte	.LASF32
+ 735 0213 07       		.byte	0x7
+ 736 0214 1C       		.byte	0x1c
+ 737 0215 25000000 		.4byte	0x25
+ 738 0219 08       		.byte	0x8
+ 739 021a 0B       		.uleb128 0xb
+ 740 021b 65040000 		.4byte	.LASF33
+ 741 021f 07       		.byte	0x7
+ 742 0220 1C       		.byte	0x1c
+ 743 0221 25000000 		.4byte	0x25
+ 744 0225 0C       		.byte	0xc
+ 745 0226 00       		.byte	0
+ 746 0227 04       		.uleb128 0x4
+ 747 0228 46020000 		.4byte	.LASF34
+ 748 022c 07       		.byte	0x7
+ 749 022d 1D       		.byte	0x1d
+ 750 022e EA010000 		.4byte	0x1ea
+ 751 0232 12       		.uleb128 0x12
+ 752 0233 EB020000 		.4byte	.LASF35
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccHjzAm6.s 			page 22
+
+
+ 753 0237 01       		.byte	0x1
+ 754 0238 AC       		.byte	0xac
+ 755 0239 00000000 		.4byte	.LFB67
+ 756 023d 74000000 		.4byte	.LFE67-.LFB67
+ 757 0241 01       		.uleb128 0x1
+ 758 0242 9C       		.byte	0x9c
+ 759 0243 B6020000 		.4byte	0x2b6
+ 760 0247 13       		.uleb128 0x13
+ 761 0248 60030000 		.4byte	.LASF65
+ 762 024c 01       		.byte	0x1
+ 763 024d BF       		.byte	0xbf
+ 764 024e 25000000 		.4byte	0x25
+ 765 0252 58020000 		.4byte	0x258
+ 766 0256 14       		.uleb128 0x14
+ 767 0257 00       		.byte	0
+ 768 0258 15       		.uleb128 0x15
+ 769 0259 24000000 		.4byte	.LVL0
+ 770 025d AD050000 		.4byte	0x5ad
+ 771 0261 6F020000 		.4byte	0x26f
+ 772 0265 16       		.uleb128 0x16
+ 773 0266 01       		.uleb128 0x1
+ 774 0267 50       		.byte	0x50
+ 775 0268 05       		.uleb128 0x5
+ 776 0269 03       		.byte	0x3
+ 777 026a 00000000 		.4byte	speed_pid_
+ 778 026e 00       		.byte	0
+ 779 026f 15       		.uleb128 0x15
+ 780 0270 38000000 		.4byte	.LVL1
+ 781 0274 B8050000 		.4byte	0x5b8
+ 782 0278 86020000 		.4byte	0x286
+ 783 027c 16       		.uleb128 0x16
+ 784 027d 01       		.uleb128 0x1
+ 785 027e 50       		.byte	0x50
+ 786 027f 05       		.uleb128 0x5
+ 787 0280 03       		.byte	0x3
+ 788 0281 00000000 		.4byte	speed_pid_
+ 789 0285 00       		.byte	0
+ 790 0286 15       		.uleb128 0x15
+ 791 0287 4C000000 		.4byte	.LVL2
+ 792 028b C3050000 		.4byte	0x5c3
+ 793 028f AC020000 		.4byte	0x2ac
+ 794 0293 16       		.uleb128 0x16
+ 795 0294 01       		.uleb128 0x1
+ 796 0295 51       		.byte	0x51
+ 797 0296 01       		.uleb128 0x1
+ 798 0297 30       		.byte	0x30
+ 799 0298 16       		.uleb128 0x16
+ 800 0299 01       		.uleb128 0x1
+ 801 029a 52       		.byte	0x52
+ 802 029b 03       		.uleb128 0x3
+ 803 029c 0A       		.byte	0xa
+ 804 029d 1027     		.2byte	0x2710
+ 805 029f 16       		.uleb128 0x16
+ 806 02a0 01       		.uleb128 0x1
+ 807 02a1 53       		.byte	0x53
+ 808 02a2 01       		.uleb128 0x1
+ 809 02a3 30       		.byte	0x30
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccHjzAm6.s 			page 23
+
+
+ 810 02a4 16       		.uleb128 0x16
+ 811 02a5 02       		.uleb128 0x2
+ 812 02a6 7D       		.byte	0x7d
+ 813 02a7 00       		.sleb128 0
+ 814 02a8 02       		.uleb128 0x2
+ 815 02a9 08       		.byte	0x8
+ 816 02aa FF       		.byte	0xff
+ 817 02ab 00       		.byte	0
+ 818 02ac 17       		.uleb128 0x17
+ 819 02ad 56000000 		.4byte	.LVL3
+ 820 02b1 CE050000 		.4byte	0x5ce
+ 821 02b5 00       		.byte	0
+ 822 02b6 12       		.uleb128 0x12
+ 823 02b7 20000000 		.4byte	.LASF36
+ 824 02bb 01       		.byte	0x1
+ 825 02bc E5       		.byte	0xe5
+ 826 02bd 00000000 		.4byte	.LFB68
+ 827 02c1 0C000000 		.4byte	.LFE68-.LFB68
+ 828 02c5 01       		.uleb128 0x1
+ 829 02c6 9C       		.byte	0x9c
+ 830 02c7 E6020000 		.4byte	0x2e6
+ 831 02cb 18       		.uleb128 0x18
+ 832 02cc BE000000 		.4byte	.LASF39
+ 833 02d0 01       		.byte	0x1
+ 834 02d1 E5       		.byte	0xe5
+ 835 02d2 EB000000 		.4byte	0xeb
+ 836 02d6 01       		.uleb128 0x1
+ 837 02d7 50       		.byte	0x50
+ 838 02d8 19       		.uleb128 0x19
+ 839 02d9 69010000 		.4byte	.LASF37
+ 840 02dd 01       		.byte	0x1
+ 841 02de E7       		.byte	0xe7
+ 842 02df E6020000 		.4byte	0x2e6
+ 843 02e3 01       		.uleb128 0x1
+ 844 02e4 53       		.byte	0x53
+ 845 02e5 00       		.byte	0
+ 846 02e6 05       		.uleb128 0x5
+ 847 02e7 04       		.byte	0x4
+ 848 02e8 EB000000 		.4byte	0xeb
+ 849 02ec 1A       		.uleb128 0x1a
+ 850 02ed 2C020000 		.4byte	.LASF41
+ 851 02f1 01       		.byte	0x1
+ 852 02f2 FD       		.byte	0xfd
+ 853 02f3 EB000000 		.4byte	0xeb
+ 854 02f7 00000000 		.4byte	.LFB69
+ 855 02fb 0C000000 		.4byte	.LFE69-.LFB69
+ 856 02ff 01       		.uleb128 0x1
+ 857 0300 9C       		.byte	0x9c
+ 858 0301 13030000 		.4byte	0x313
+ 859 0305 19       		.uleb128 0x19
+ 860 0306 69010000 		.4byte	.LASF37
+ 861 030a 01       		.byte	0x1
+ 862 030b FF       		.byte	0xff
+ 863 030c E6020000 		.4byte	0x2e6
+ 864 0310 01       		.uleb128 0x1
+ 865 0311 53       		.byte	0x53
+ 866 0312 00       		.byte	0
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccHjzAm6.s 			page 24
+
+
+ 867 0313 1B       		.uleb128 0x1b
+ 868 0314 78010000 		.4byte	.LASF38
+ 869 0318 01       		.byte	0x1
+ 870 0319 1F01     		.2byte	0x11f
+ 871 031b 00000000 		.4byte	.LFB70
+ 872 031f 10000000 		.4byte	.LFE70-.LFB70
+ 873 0323 01       		.uleb128 0x1
+ 874 0324 9C       		.byte	0x9c
+ 875 0325 3A030000 		.4byte	0x33a
+ 876 0329 1C       		.uleb128 0x1c
+ 877 032a 17000000 		.4byte	.LASF40
+ 878 032e 01       		.byte	0x1
+ 879 032f 1F01     		.2byte	0x11f
+ 880 0331 A3000000 		.4byte	0xa3
+ 881 0335 00000000 		.4byte	.LLST0
+ 882 0339 00       		.byte	0
+ 883 033a 1D       		.uleb128 0x1d
+ 884 033b C9020000 		.4byte	.LASF42
+ 885 033f 01       		.byte	0x1
+ 886 0340 3501     		.2byte	0x135
+ 887 0342 A3000000 		.4byte	0xa3
+ 888 0346 00000000 		.4byte	.LFB71
+ 889 034a 0C000000 		.4byte	.LFE71-.LFB71
+ 890 034e 01       		.uleb128 0x1
+ 891 034f 9C       		.byte	0x9c
+ 892 0350 65030000 		.4byte	0x365
+ 893 0354 1E       		.uleb128 0x1e
+ 894 0355 17000000 		.4byte	.LASF40
+ 895 0359 01       		.byte	0x1
+ 896 035a 3701     		.2byte	0x137
+ 897 035c A3000000 		.4byte	0xa3
+ 898 0360 21000000 		.4byte	.LLST1
+ 899 0364 00       		.byte	0
+ 900 0365 1F       		.uleb128 0x1f
+ 901 0366 09010000 		.4byte	.LASF43
+ 902 036a 01       		.byte	0x1
+ 903 036b 5001     		.2byte	0x150
+ 904 036d 00000000 		.4byte	.LFB72
+ 905 0371 10000000 		.4byte	.LFE72-.LFB72
+ 906 0375 01       		.uleb128 0x1
+ 907 0376 9C       		.byte	0x9c
+ 908 0377 20       		.uleb128 0x20
+ 909 0378 9E030000 		.4byte	.LASF73
+ 910 037c 01       		.byte	0x1
+ 911 037d 6501     		.2byte	0x165
+ 912 037f A3000000 		.4byte	0xa3
+ 913 0383 00000000 		.4byte	.LFB73
+ 914 0387 18000000 		.4byte	.LFE73-.LFB73
+ 915 038b 01       		.uleb128 0x1
+ 916 038c 9C       		.byte	0x9c
+ 917 038d 1F       		.uleb128 0x1f
+ 918 038e 3A000000 		.4byte	.LASF44
+ 919 0392 01       		.byte	0x1
+ 920 0393 7A01     		.2byte	0x17a
+ 921 0395 00000000 		.4byte	.LFB74
+ 922 0399 10000000 		.4byte	.LFE74-.LFB74
+ 923 039d 01       		.uleb128 0x1
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccHjzAm6.s 			page 25
+
+
+ 924 039e 9C       		.byte	0x9c
+ 925 039f 12       		.uleb128 0x12
+ 926 03a0 45040000 		.4byte	.LASF45
+ 927 03a4 01       		.byte	0x1
+ 928 03a5 49       		.byte	0x49
+ 929 03a6 00000000 		.4byte	.LFB64
+ 930 03aa 1C000000 		.4byte	.LFE64-.LFB64
+ 931 03ae 01       		.uleb128 0x1
+ 932 03af 9C       		.byte	0x9c
+ 933 03b0 F1030000 		.4byte	0x3f1
+ 934 03b4 17       		.uleb128 0x17
+ 935 03b5 06000000 		.4byte	.LVL11
+ 936 03b9 8D030000 		.4byte	0x38d
+ 937 03bd 15       		.uleb128 0x15
+ 938 03be 0C000000 		.4byte	.LVL12
+ 939 03c2 B6020000 		.4byte	0x2b6
+ 940 03c6 D4030000 		.4byte	0x3d4
+ 941 03ca 16       		.uleb128 0x16
+ 942 03cb 01       		.uleb128 0x1
+ 943 03cc 50       		.byte	0x50
+ 944 03cd 05       		.uleb128 0x5
+ 945 03ce 03       		.byte	0x3
+ 946 03cf 00000000 		.4byte	vel_control_isr_Interrupt
+ 947 03d3 00       		.byte	0
+ 948 03d4 15       		.uleb128 0x15
+ 949 03d5 12000000 		.4byte	.LVL13
+ 950 03d9 13030000 		.4byte	0x313
+ 951 03dd E7030000 		.4byte	0x3e7
+ 952 03e1 16       		.uleb128 0x16
+ 953 03e2 01       		.uleb128 0x1
+ 954 03e3 50       		.byte	0x50
+ 955 03e4 01       		.uleb128 0x1
+ 956 03e5 37       		.byte	0x37
+ 957 03e6 00       		.byte	0
+ 958 03e7 17       		.uleb128 0x17
+ 959 03e8 16000000 		.4byte	.LVL14
+ 960 03ec 65030000 		.4byte	0x365
+ 961 03f0 00       		.byte	0
+ 962 03f1 12       		.uleb128 0x12
+ 963 03f2 48030000 		.4byte	.LASF46
+ 964 03f6 01       		.byte	0x1
+ 965 03f7 74       		.byte	0x74
+ 966 03f8 00000000 		.4byte	.LFB65
+ 967 03fc 1A000000 		.4byte	.LFE65-.LFB65
+ 968 0400 01       		.uleb128 0x1
+ 969 0401 9C       		.byte	0x9c
+ 970 0402 4F040000 		.4byte	0x44f
+ 971 0406 21       		.uleb128 0x21
+ 972 0407 BE000000 		.4byte	.LASF39
+ 973 040b 01       		.byte	0x1
+ 974 040c 74       		.byte	0x74
+ 975 040d EB000000 		.4byte	0xeb
+ 976 0411 38000000 		.4byte	.LLST2
+ 977 0415 17       		.uleb128 0x17
+ 978 0416 08000000 		.4byte	.LVL16
+ 979 041a 8D030000 		.4byte	0x38d
+ 980 041e 15       		.uleb128 0x15
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccHjzAm6.s 			page 26
+
+
+ 981 041f 0E000000 		.4byte	.LVL17
+ 982 0423 B6020000 		.4byte	0x2b6
+ 983 0427 32040000 		.4byte	0x432
+ 984 042b 16       		.uleb128 0x16
+ 985 042c 01       		.uleb128 0x1
+ 986 042d 50       		.byte	0x50
+ 987 042e 02       		.uleb128 0x2
+ 988 042f 74       		.byte	0x74
+ 989 0430 00       		.sleb128 0
+ 990 0431 00       		.byte	0
+ 991 0432 15       		.uleb128 0x15
+ 992 0433 14000000 		.4byte	.LVL18
+ 993 0437 13030000 		.4byte	0x313
+ 994 043b 45040000 		.4byte	0x445
+ 995 043f 16       		.uleb128 0x16
+ 996 0440 01       		.uleb128 0x1
+ 997 0441 50       		.byte	0x50
+ 998 0442 01       		.uleb128 0x1
+ 999 0443 37       		.byte	0x37
+ 1000 0444 00       		.byte	0
+ 1001 0445 17       		.uleb128 0x17
+ 1002 0446 18000000 		.4byte	.LVL19
+ 1003 044a 65030000 		.4byte	0x365
+ 1004 044e 00       		.byte	0
+ 1005 044f 12       		.uleb128 0x12
+ 1006 0450 94020000 		.4byte	.LASF47
+ 1007 0454 01       		.byte	0x1
+ 1008 0455 92       		.byte	0x92
+ 1009 0456 00000000 		.4byte	.LFB66
+ 1010 045a 14000000 		.4byte	.LFE66-.LFB66
+ 1011 045e 01       		.uleb128 0x1
+ 1012 045f 9C       		.byte	0x9c
+ 1013 0460 77040000 		.4byte	0x477
+ 1014 0464 17       		.uleb128 0x17
+ 1015 0465 06000000 		.4byte	.LVL20
+ 1016 0469 8D030000 		.4byte	0x38d
+ 1017 046d 17       		.uleb128 0x17
+ 1018 046e 0C000000 		.4byte	.LVL21
+ 1019 0472 B6020000 		.4byte	0x2b6
+ 1020 0476 00       		.byte	0
+ 1021 0477 1F       		.uleb128 0x1f
+ 1022 0478 6A040000 		.4byte	.LASF48
+ 1023 047c 01       		.byte	0x1
+ 1024 047d 9501     		.2byte	0x195
+ 1025 047f 00000000 		.4byte	.LFB75
+ 1026 0483 10000000 		.4byte	.LFE75-.LFB75
+ 1027 0487 01       		.uleb128 0x1
+ 1028 0488 9C       		.byte	0x9c
+ 1029 0489 1F       		.uleb128 0x1f
+ 1030 048a 6D030000 		.4byte	.LASF49
+ 1031 048e 01       		.byte	0x1
+ 1032 048f AE01     		.2byte	0x1ae
+ 1033 0491 00000000 		.4byte	.LFB76
+ 1034 0495 10000000 		.4byte	.LFE76-.LFB76
+ 1035 0499 01       		.uleb128 0x1
+ 1036 049a 9C       		.byte	0x9c
+ 1037 049b 22       		.uleb128 0x22
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccHjzAm6.s 			page 27
+
+
+ 1038 049c 2B030000 		.4byte	.LASF50
+ 1039 04a0 08       		.byte	0x8
+ 1040 04a1 1207     		.2byte	0x712
+ 1041 04a3 A7040000 		.4byte	0x4a7
+ 1042 04a7 08       		.uleb128 0x8
+ 1043 04a8 98000000 		.4byte	0x98
+ 1044 04ac 23       		.uleb128 0x23
+ 1045 04ad 524200   		.ascii	"RB\000"
+ 1046 04b0 06       		.byte	0x6
+ 1047 04b1 20       		.byte	0x20
+ 1048 04b2 BD010000 		.4byte	0x1bd
+ 1049 04b6 05       		.uleb128 0x5
+ 1050 04b7 03       		.byte	0x3
+ 1051 04b8 00000000 		.4byte	RB
+ 1052 04bc 23       		.uleb128 0x23
+ 1053 04bd 504200   		.ascii	"PB\000"
+ 1054 04c0 07       		.byte	0x7
+ 1055 04c1 1E       		.byte	0x1e
+ 1056 04c2 CC040000 		.4byte	0x4cc
+ 1057 04c6 05       		.uleb128 0x5
+ 1058 04c7 03       		.byte	0x3
+ 1059 04c8 00000000 		.4byte	PB
+ 1060 04cc 08       		.uleb128 0x8
+ 1061 04cd 27020000 		.4byte	0x227
+ 1062 04d1 23       		.uleb128 0x23
+ 1063 04d2 436800   		.ascii	"Ch\000"
+ 1064 04d5 07       		.byte	0x7
+ 1065 04d6 4F       		.byte	0x4f
+ 1066 04d7 D5000000 		.4byte	0xd5
+ 1067 04db 05       		.uleb128 0x5
+ 1068 04dc 03       		.byte	0x3
+ 1069 04dd 00000000 		.4byte	Ch
+ 1070 04e1 24       		.uleb128 0x24
+ 1071 04e2 17020000 		.4byte	.LASF51
+ 1072 04e6 07       		.byte	0x7
+ 1073 04e7 51       		.byte	0x51
+ 1074 04e8 D5000000 		.4byte	0xd5
+ 1075 04ec 05       		.uleb128 0x5
+ 1076 04ed 03       		.byte	0x3
+ 1077 04ee 00000000 		.4byte	ContinuouslySendData
+ 1078 04f2 24       		.uleb128 0x24
+ 1079 04f3 C6010000 		.4byte	.LASF52
+ 1080 04f7 07       		.byte	0x7
+ 1081 04f8 52       		.byte	0x52
+ 1082 04f9 D5000000 		.4byte	0xd5
+ 1083 04fd 05       		.uleb128 0x5
+ 1084 04fe 03       		.byte	0x3
+ 1085 04ff 00000000 		.4byte	SendSingleByte
+ 1086 0503 24       		.uleb128 0x24
+ 1087 0504 6A020000 		.4byte	.LASF53
+ 1088 0508 07       		.byte	0x7
+ 1089 0509 53       		.byte	0x53
+ 1090 050a D5000000 		.4byte	0xd5
+ 1091 050e 05       		.uleb128 0x5
+ 1092 050f 03       		.byte	0x3
+ 1093 0510 00000000 		.4byte	SendEmulatedData
+ 1094 0514 24       		.uleb128 0x24
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccHjzAm6.s 			page 28
+
+
+ 1095 0515 A2010000 		.4byte	.LASF54
+ 1096 0519 07       		.byte	0x7
+ 1097 051a 54       		.byte	0x54
+ 1098 051b D5000000 		.4byte	0xd5
+ 1099 051f 05       		.uleb128 0x5
+ 1100 0520 03       		.byte	0x3
+ 1101 0521 00000000 		.4byte	_uart_Reset
+ 1102 0525 24       		.uleb128 0x24
+ 1103 0526 00000000 		.4byte	.LASF55
+ 1104 052a 07       		.byte	0x7
+ 1105 052b 57       		.byte	0x57
+ 1106 052c 25000000 		.4byte	0x25
+ 1107 0530 05       		.uleb128 0x5
+ 1108 0531 03       		.byte	0x3
+ 1109 0532 00000000 		.4byte	_state_
+ 1110 0536 24       		.uleb128 0x24
+ 1111 0537 64010000 		.4byte	.LASF56
+ 1112 053b 01       		.byte	0x1
+ 1113 053c 22       		.byte	0x22
+ 1114 053d A7040000 		.4byte	0x4a7
+ 1115 0541 05       		.uleb128 0x5
+ 1116 0542 03       		.byte	0x3
+ 1117 0543 00000000 		.4byte	t_ha
+ 1118 0547 24       		.uleb128 0x24
+ 1119 0548 8A030000 		.4byte	.LASF57
+ 1120 054c 01       		.byte	0x1
+ 1121 054d 27       		.byte	0x27
+ 1122 054e 81010000 		.4byte	0x181
+ 1123 0552 05       		.uleb128 0x5
+ 1124 0553 03       		.byte	0x3
+ 1125 0554 00000000 		.4byte	speed_pid_
+ 1126 0558 24       		.uleb128 0x24
+ 1127 0559 82020000 		.4byte	.LASF58
+ 1128 055d 01       		.byte	0x1
+ 1129 055e 24       		.byte	0x24
+ 1130 055f A7040000 		.4byte	0x4a7
+ 1131 0563 05       		.uleb128 0x5
+ 1132 0564 03       		.byte	0x3
+ 1133 0565 00000000 		.4byte	actual_speed
+ 1134 0569 24       		.uleb128 0x24
+ 1135 056a B4000000 		.4byte	.LASF59
+ 1136 056e 01       		.byte	0x1
+ 1137 056f 23       		.byte	0x23
+ 1138 0570 A7040000 		.4byte	0x4a7
+ 1139 0574 05       		.uleb128 0x5
+ 1140 0575 03       		.byte	0x3
+ 1141 0576 00000000 		.4byte	speed_ref
+ 1142 057a 24       		.uleb128 0x24
+ 1143 057b 0C030000 		.4byte	.LASF60
+ 1144 057f 01       		.byte	0x1
+ 1145 0580 25       		.byte	0x25
+ 1146 0581 D5000000 		.4byte	0xd5
+ 1147 0585 05       		.uleb128 0x5
+ 1148 0586 03       		.byte	0x3
+ 1149 0587 00000000 		.4byte	_pVal
+ 1150 058b 24       		.uleb128 0x24
+ 1151 058c 95030000 		.4byte	.LASF61
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccHjzAm6.s 			page 29
+
+
+ 1152 0590 01       		.byte	0x1
+ 1153 0591 29       		.byte	0x29
+ 1154 0592 A3000000 		.4byte	0xa3
+ 1155 0596 05       		.uleb128 0x5
+ 1156 0597 03       		.byte	0x3
+ 1157 0598 00000000 		.4byte	_pid_out
+ 1158 059c 24       		.uleb128 0x24
+ 1159 059d C6000000 		.4byte	.LASF62
+ 1160 05a1 01       		.byte	0x1
+ 1161 05a2 28       		.byte	0x28
+ 1162 05a3 98000000 		.4byte	0x98
+ 1163 05a7 05       		.uleb128 0x5
+ 1164 05a8 03       		.byte	0x3
+ 1165 05a9 00000000 		.4byte	speed_pid_output
+ 1166 05ad 25       		.uleb128 0x25
+ 1167 05ae 85040000 		.4byte	.LASF63
+ 1168 05b2 85040000 		.4byte	.LASF63
+ 1169 05b6 05       		.byte	0x5
+ 1170 05b7 26       		.byte	0x26
+ 1171 05b8 25       		.uleb128 0x25
+ 1172 05b9 F2000000 		.4byte	.LASF64
+ 1173 05bd F2000000 		.4byte	.LASF64
+ 1174 05c1 05       		.byte	0x5
+ 1175 05c2 29       		.byte	0x29
+ 1176 05c3 25       		.uleb128 0x25
+ 1177 05c4 60030000 		.4byte	.LASF65
+ 1178 05c8 60030000 		.4byte	.LASF65
+ 1179 05cc 01       		.byte	0x1
+ 1180 05cd BF       		.byte	0xbf
+ 1181 05ce 25       		.uleb128 0x25
+ 1182 05cf 2E010000 		.4byte	.LASF66
+ 1183 05d3 2E010000 		.4byte	.LASF66
+ 1184 05d7 09       		.byte	0x9
+ 1185 05d8 37       		.byte	0x37
+ 1186 05d9 00       		.byte	0
+ 1187              		.section	.debug_abbrev,"",%progbits
+ 1188              	.Ldebug_abbrev0:
+ 1189 0000 01       		.uleb128 0x1
+ 1190 0001 11       		.uleb128 0x11
+ 1191 0002 01       		.byte	0x1
+ 1192 0003 25       		.uleb128 0x25
+ 1193 0004 0E       		.uleb128 0xe
+ 1194 0005 13       		.uleb128 0x13
+ 1195 0006 0B       		.uleb128 0xb
+ 1196 0007 03       		.uleb128 0x3
+ 1197 0008 0E       		.uleb128 0xe
+ 1198 0009 1B       		.uleb128 0x1b
+ 1199 000a 0E       		.uleb128 0xe
+ 1200 000b 55       		.uleb128 0x55
+ 1201 000c 17       		.uleb128 0x17
+ 1202 000d 11       		.uleb128 0x11
+ 1203 000e 01       		.uleb128 0x1
+ 1204 000f 10       		.uleb128 0x10
+ 1205 0010 17       		.uleb128 0x17
+ 1206 0011 00       		.byte	0
+ 1207 0012 00       		.byte	0
+ 1208 0013 02       		.uleb128 0x2
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccHjzAm6.s 			page 30
+
+
+ 1209 0014 24       		.uleb128 0x24
+ 1210 0015 00       		.byte	0
+ 1211 0016 0B       		.uleb128 0xb
+ 1212 0017 0B       		.uleb128 0xb
+ 1213 0018 3E       		.uleb128 0x3e
+ 1214 0019 0B       		.uleb128 0xb
+ 1215 001a 03       		.uleb128 0x3
+ 1216 001b 08       		.uleb128 0x8
+ 1217 001c 00       		.byte	0
+ 1218 001d 00       		.byte	0
+ 1219 001e 03       		.uleb128 0x3
+ 1220 001f 24       		.uleb128 0x24
+ 1221 0020 00       		.byte	0
+ 1222 0021 0B       		.uleb128 0xb
+ 1223 0022 0B       		.uleb128 0xb
+ 1224 0023 3E       		.uleb128 0x3e
+ 1225 0024 0B       		.uleb128 0xb
+ 1226 0025 03       		.uleb128 0x3
+ 1227 0026 0E       		.uleb128 0xe
+ 1228 0027 00       		.byte	0
+ 1229 0028 00       		.byte	0
+ 1230 0029 04       		.uleb128 0x4
+ 1231 002a 16       		.uleb128 0x16
+ 1232 002b 00       		.byte	0
+ 1233 002c 03       		.uleb128 0x3
+ 1234 002d 0E       		.uleb128 0xe
+ 1235 002e 3A       		.uleb128 0x3a
+ 1236 002f 0B       		.uleb128 0xb
+ 1237 0030 3B       		.uleb128 0x3b
+ 1238 0031 0B       		.uleb128 0xb
+ 1239 0032 49       		.uleb128 0x49
+ 1240 0033 13       		.uleb128 0x13
+ 1241 0034 00       		.byte	0
+ 1242 0035 00       		.byte	0
+ 1243 0036 05       		.uleb128 0x5
+ 1244 0037 0F       		.uleb128 0xf
+ 1245 0038 00       		.byte	0
+ 1246 0039 0B       		.uleb128 0xb
+ 1247 003a 0B       		.uleb128 0xb
+ 1248 003b 49       		.uleb128 0x49
+ 1249 003c 13       		.uleb128 0x13
+ 1250 003d 00       		.byte	0
+ 1251 003e 00       		.byte	0
+ 1252 003f 06       		.uleb128 0x6
+ 1253 0040 15       		.uleb128 0x15
+ 1254 0041 00       		.byte	0
+ 1255 0042 27       		.uleb128 0x27
+ 1256 0043 19       		.uleb128 0x19
+ 1257 0044 00       		.byte	0
+ 1258 0045 00       		.byte	0
+ 1259 0046 07       		.uleb128 0x7
+ 1260 0047 16       		.uleb128 0x16
+ 1261 0048 00       		.byte	0
+ 1262 0049 03       		.uleb128 0x3
+ 1263 004a 0E       		.uleb128 0xe
+ 1264 004b 3A       		.uleb128 0x3a
+ 1265 004c 0B       		.uleb128 0xb
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccHjzAm6.s 			page 31
+
+
+ 1266 004d 3B       		.uleb128 0x3b
+ 1267 004e 05       		.uleb128 0x5
+ 1268 004f 49       		.uleb128 0x49
+ 1269 0050 13       		.uleb128 0x13
+ 1270 0051 00       		.byte	0
+ 1271 0052 00       		.byte	0
+ 1272 0053 08       		.uleb128 0x8
+ 1273 0054 35       		.uleb128 0x35
+ 1274 0055 00       		.byte	0
+ 1275 0056 49       		.uleb128 0x49
+ 1276 0057 13       		.uleb128 0x13
+ 1277 0058 00       		.byte	0
+ 1278 0059 00       		.byte	0
+ 1279 005a 09       		.uleb128 0x9
+ 1280 005b 13       		.uleb128 0x13
+ 1281 005c 01       		.byte	0x1
+ 1282 005d 0B       		.uleb128 0xb
+ 1283 005e 0B       		.uleb128 0xb
+ 1284 005f 3A       		.uleb128 0x3a
+ 1285 0060 0B       		.uleb128 0xb
+ 1286 0061 3B       		.uleb128 0x3b
+ 1287 0062 0B       		.uleb128 0xb
+ 1288 0063 01       		.uleb128 0x1
+ 1289 0064 13       		.uleb128 0x13
+ 1290 0065 00       		.byte	0
+ 1291 0066 00       		.byte	0
+ 1292 0067 0A       		.uleb128 0xa
+ 1293 0068 0D       		.uleb128 0xd
+ 1294 0069 00       		.byte	0
+ 1295 006a 03       		.uleb128 0x3
+ 1296 006b 08       		.uleb128 0x8
+ 1297 006c 3A       		.uleb128 0x3a
+ 1298 006d 0B       		.uleb128 0xb
+ 1299 006e 3B       		.uleb128 0x3b
+ 1300 006f 0B       		.uleb128 0xb
+ 1301 0070 49       		.uleb128 0x49
+ 1302 0071 13       		.uleb128 0x13
+ 1303 0072 38       		.uleb128 0x38
+ 1304 0073 0B       		.uleb128 0xb
+ 1305 0074 00       		.byte	0
+ 1306 0075 00       		.byte	0
+ 1307 0076 0B       		.uleb128 0xb
+ 1308 0077 0D       		.uleb128 0xd
+ 1309 0078 00       		.byte	0
+ 1310 0079 03       		.uleb128 0x3
+ 1311 007a 0E       		.uleb128 0xe
+ 1312 007b 3A       		.uleb128 0x3a
+ 1313 007c 0B       		.uleb128 0xb
+ 1314 007d 3B       		.uleb128 0x3b
+ 1315 007e 0B       		.uleb128 0xb
+ 1316 007f 49       		.uleb128 0x49
+ 1317 0080 13       		.uleb128 0x13
+ 1318 0081 38       		.uleb128 0x38
+ 1319 0082 0B       		.uleb128 0xb
+ 1320 0083 00       		.byte	0
+ 1321 0084 00       		.byte	0
+ 1322 0085 0C       		.uleb128 0xc
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccHjzAm6.s 			page 32
+
+
+ 1323 0086 01       		.uleb128 0x1
+ 1324 0087 01       		.byte	0x1
+ 1325 0088 49       		.uleb128 0x49
+ 1326 0089 13       		.uleb128 0x13
+ 1327 008a 01       		.uleb128 0x1
+ 1328 008b 13       		.uleb128 0x13
+ 1329 008c 00       		.byte	0
+ 1330 008d 00       		.byte	0
+ 1331 008e 0D       		.uleb128 0xd
+ 1332 008f 21       		.uleb128 0x21
+ 1333 0090 00       		.byte	0
+ 1334 0091 49       		.uleb128 0x49
+ 1335 0092 13       		.uleb128 0x13
+ 1336 0093 2F       		.uleb128 0x2f
+ 1337 0094 0B       		.uleb128 0xb
+ 1338 0095 00       		.byte	0
+ 1339 0096 00       		.byte	0
+ 1340 0097 0E       		.uleb128 0xe
+ 1341 0098 17       		.uleb128 0x17
+ 1342 0099 01       		.byte	0x1
+ 1343 009a 03       		.uleb128 0x3
+ 1344 009b 0E       		.uleb128 0xe
+ 1345 009c 0B       		.uleb128 0xb
+ 1346 009d 0B       		.uleb128 0xb
+ 1347 009e 3A       		.uleb128 0x3a
+ 1348 009f 0B       		.uleb128 0xb
+ 1349 00a0 3B       		.uleb128 0x3b
+ 1350 00a1 0B       		.uleb128 0xb
+ 1351 00a2 01       		.uleb128 0x1
+ 1352 00a3 13       		.uleb128 0x13
+ 1353 00a4 00       		.byte	0
+ 1354 00a5 00       		.byte	0
+ 1355 00a6 0F       		.uleb128 0xf
+ 1356 00a7 0D       		.uleb128 0xd
+ 1357 00a8 00       		.byte	0
+ 1358 00a9 03       		.uleb128 0x3
+ 1359 00aa 0E       		.uleb128 0xe
+ 1360 00ab 3A       		.uleb128 0x3a
+ 1361 00ac 0B       		.uleb128 0xb
+ 1362 00ad 3B       		.uleb128 0x3b
+ 1363 00ae 0B       		.uleb128 0xb
+ 1364 00af 49       		.uleb128 0x49
+ 1365 00b0 13       		.uleb128 0x13
+ 1366 00b1 00       		.byte	0
+ 1367 00b2 00       		.byte	0
+ 1368 00b3 10       		.uleb128 0x10
+ 1369 00b4 0D       		.uleb128 0xd
+ 1370 00b5 00       		.byte	0
+ 1371 00b6 49       		.uleb128 0x49
+ 1372 00b7 13       		.uleb128 0x13
+ 1373 00b8 00       		.byte	0
+ 1374 00b9 00       		.byte	0
+ 1375 00ba 11       		.uleb128 0x11
+ 1376 00bb 13       		.uleb128 0x13
+ 1377 00bc 01       		.byte	0x1
+ 1378 00bd 03       		.uleb128 0x3
+ 1379 00be 0E       		.uleb128 0xe
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccHjzAm6.s 			page 33
+
+
+ 1380 00bf 0B       		.uleb128 0xb
+ 1381 00c0 0B       		.uleb128 0xb
+ 1382 00c1 3A       		.uleb128 0x3a
+ 1383 00c2 0B       		.uleb128 0xb
+ 1384 00c3 3B       		.uleb128 0x3b
+ 1385 00c4 0B       		.uleb128 0xb
+ 1386 00c5 01       		.uleb128 0x1
+ 1387 00c6 13       		.uleb128 0x13
+ 1388 00c7 00       		.byte	0
+ 1389 00c8 00       		.byte	0
+ 1390 00c9 12       		.uleb128 0x12
+ 1391 00ca 2E       		.uleb128 0x2e
+ 1392 00cb 01       		.byte	0x1
+ 1393 00cc 3F       		.uleb128 0x3f
+ 1394 00cd 19       		.uleb128 0x19
+ 1395 00ce 03       		.uleb128 0x3
+ 1396 00cf 0E       		.uleb128 0xe
+ 1397 00d0 3A       		.uleb128 0x3a
+ 1398 00d1 0B       		.uleb128 0xb
+ 1399 00d2 3B       		.uleb128 0x3b
+ 1400 00d3 0B       		.uleb128 0xb
+ 1401 00d4 27       		.uleb128 0x27
+ 1402 00d5 19       		.uleb128 0x19
+ 1403 00d6 11       		.uleb128 0x11
+ 1404 00d7 01       		.uleb128 0x1
+ 1405 00d8 12       		.uleb128 0x12
+ 1406 00d9 06       		.uleb128 0x6
+ 1407 00da 40       		.uleb128 0x40
+ 1408 00db 18       		.uleb128 0x18
+ 1409 00dc 9742     		.uleb128 0x2117
+ 1410 00de 19       		.uleb128 0x19
+ 1411 00df 01       		.uleb128 0x1
+ 1412 00e0 13       		.uleb128 0x13
+ 1413 00e1 00       		.byte	0
+ 1414 00e2 00       		.byte	0
+ 1415 00e3 13       		.uleb128 0x13
+ 1416 00e4 2E       		.uleb128 0x2e
+ 1417 00e5 01       		.byte	0x1
+ 1418 00e6 3F       		.uleb128 0x3f
+ 1419 00e7 19       		.uleb128 0x19
+ 1420 00e8 03       		.uleb128 0x3
+ 1421 00e9 0E       		.uleb128 0xe
+ 1422 00ea 3A       		.uleb128 0x3a
+ 1423 00eb 0B       		.uleb128 0xb
+ 1424 00ec 3B       		.uleb128 0x3b
+ 1425 00ed 0B       		.uleb128 0xb
+ 1426 00ee 49       		.uleb128 0x49
+ 1427 00ef 13       		.uleb128 0x13
+ 1428 00f0 3C       		.uleb128 0x3c
+ 1429 00f1 19       		.uleb128 0x19
+ 1430 00f2 01       		.uleb128 0x1
+ 1431 00f3 13       		.uleb128 0x13
+ 1432 00f4 00       		.byte	0
+ 1433 00f5 00       		.byte	0
+ 1434 00f6 14       		.uleb128 0x14
+ 1435 00f7 18       		.uleb128 0x18
+ 1436 00f8 00       		.byte	0
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccHjzAm6.s 			page 34
+
+
+ 1437 00f9 00       		.byte	0
+ 1438 00fa 00       		.byte	0
+ 1439 00fb 15       		.uleb128 0x15
+ 1440 00fc 898201   		.uleb128 0x4109
+ 1441 00ff 01       		.byte	0x1
+ 1442 0100 11       		.uleb128 0x11
+ 1443 0101 01       		.uleb128 0x1
+ 1444 0102 31       		.uleb128 0x31
+ 1445 0103 13       		.uleb128 0x13
+ 1446 0104 01       		.uleb128 0x1
+ 1447 0105 13       		.uleb128 0x13
+ 1448 0106 00       		.byte	0
+ 1449 0107 00       		.byte	0
+ 1450 0108 16       		.uleb128 0x16
+ 1451 0109 8A8201   		.uleb128 0x410a
+ 1452 010c 00       		.byte	0
+ 1453 010d 02       		.uleb128 0x2
+ 1454 010e 18       		.uleb128 0x18
+ 1455 010f 9142     		.uleb128 0x2111
+ 1456 0111 18       		.uleb128 0x18
+ 1457 0112 00       		.byte	0
+ 1458 0113 00       		.byte	0
+ 1459 0114 17       		.uleb128 0x17
+ 1460 0115 898201   		.uleb128 0x4109
+ 1461 0118 00       		.byte	0
+ 1462 0119 11       		.uleb128 0x11
+ 1463 011a 01       		.uleb128 0x1
+ 1464 011b 31       		.uleb128 0x31
+ 1465 011c 13       		.uleb128 0x13
+ 1466 011d 00       		.byte	0
+ 1467 011e 00       		.byte	0
+ 1468 011f 18       		.uleb128 0x18
+ 1469 0120 05       		.uleb128 0x5
+ 1470 0121 00       		.byte	0
+ 1471 0122 03       		.uleb128 0x3
+ 1472 0123 0E       		.uleb128 0xe
+ 1473 0124 3A       		.uleb128 0x3a
+ 1474 0125 0B       		.uleb128 0xb
+ 1475 0126 3B       		.uleb128 0x3b
+ 1476 0127 0B       		.uleb128 0xb
+ 1477 0128 49       		.uleb128 0x49
+ 1478 0129 13       		.uleb128 0x13
+ 1479 012a 02       		.uleb128 0x2
+ 1480 012b 18       		.uleb128 0x18
+ 1481 012c 00       		.byte	0
+ 1482 012d 00       		.byte	0
+ 1483 012e 19       		.uleb128 0x19
+ 1484 012f 34       		.uleb128 0x34
+ 1485 0130 00       		.byte	0
+ 1486 0131 03       		.uleb128 0x3
+ 1487 0132 0E       		.uleb128 0xe
+ 1488 0133 3A       		.uleb128 0x3a
+ 1489 0134 0B       		.uleb128 0xb
+ 1490 0135 3B       		.uleb128 0x3b
+ 1491 0136 0B       		.uleb128 0xb
+ 1492 0137 49       		.uleb128 0x49
+ 1493 0138 13       		.uleb128 0x13
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccHjzAm6.s 			page 35
+
+
+ 1494 0139 02       		.uleb128 0x2
+ 1495 013a 18       		.uleb128 0x18
+ 1496 013b 00       		.byte	0
+ 1497 013c 00       		.byte	0
+ 1498 013d 1A       		.uleb128 0x1a
+ 1499 013e 2E       		.uleb128 0x2e
+ 1500 013f 01       		.byte	0x1
+ 1501 0140 3F       		.uleb128 0x3f
+ 1502 0141 19       		.uleb128 0x19
+ 1503 0142 03       		.uleb128 0x3
+ 1504 0143 0E       		.uleb128 0xe
+ 1505 0144 3A       		.uleb128 0x3a
+ 1506 0145 0B       		.uleb128 0xb
+ 1507 0146 3B       		.uleb128 0x3b
+ 1508 0147 0B       		.uleb128 0xb
+ 1509 0148 27       		.uleb128 0x27
+ 1510 0149 19       		.uleb128 0x19
+ 1511 014a 49       		.uleb128 0x49
+ 1512 014b 13       		.uleb128 0x13
+ 1513 014c 11       		.uleb128 0x11
+ 1514 014d 01       		.uleb128 0x1
+ 1515 014e 12       		.uleb128 0x12
+ 1516 014f 06       		.uleb128 0x6
+ 1517 0150 40       		.uleb128 0x40
+ 1518 0151 18       		.uleb128 0x18
+ 1519 0152 9742     		.uleb128 0x2117
+ 1520 0154 19       		.uleb128 0x19
+ 1521 0155 01       		.uleb128 0x1
+ 1522 0156 13       		.uleb128 0x13
+ 1523 0157 00       		.byte	0
+ 1524 0158 00       		.byte	0
+ 1525 0159 1B       		.uleb128 0x1b
+ 1526 015a 2E       		.uleb128 0x2e
+ 1527 015b 01       		.byte	0x1
+ 1528 015c 3F       		.uleb128 0x3f
+ 1529 015d 19       		.uleb128 0x19
+ 1530 015e 03       		.uleb128 0x3
+ 1531 015f 0E       		.uleb128 0xe
+ 1532 0160 3A       		.uleb128 0x3a
+ 1533 0161 0B       		.uleb128 0xb
+ 1534 0162 3B       		.uleb128 0x3b
+ 1535 0163 05       		.uleb128 0x5
+ 1536 0164 27       		.uleb128 0x27
+ 1537 0165 19       		.uleb128 0x19
+ 1538 0166 11       		.uleb128 0x11
+ 1539 0167 01       		.uleb128 0x1
+ 1540 0168 12       		.uleb128 0x12
+ 1541 0169 06       		.uleb128 0x6
+ 1542 016a 40       		.uleb128 0x40
+ 1543 016b 18       		.uleb128 0x18
+ 1544 016c 9742     		.uleb128 0x2117
+ 1545 016e 19       		.uleb128 0x19
+ 1546 016f 01       		.uleb128 0x1
+ 1547 0170 13       		.uleb128 0x13
+ 1548 0171 00       		.byte	0
+ 1549 0172 00       		.byte	0
+ 1550 0173 1C       		.uleb128 0x1c
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccHjzAm6.s 			page 36
+
+
+ 1551 0174 05       		.uleb128 0x5
+ 1552 0175 00       		.byte	0
+ 1553 0176 03       		.uleb128 0x3
+ 1554 0177 0E       		.uleb128 0xe
+ 1555 0178 3A       		.uleb128 0x3a
+ 1556 0179 0B       		.uleb128 0xb
+ 1557 017a 3B       		.uleb128 0x3b
+ 1558 017b 05       		.uleb128 0x5
+ 1559 017c 49       		.uleb128 0x49
+ 1560 017d 13       		.uleb128 0x13
+ 1561 017e 02       		.uleb128 0x2
+ 1562 017f 17       		.uleb128 0x17
+ 1563 0180 00       		.byte	0
+ 1564 0181 00       		.byte	0
+ 1565 0182 1D       		.uleb128 0x1d
+ 1566 0183 2E       		.uleb128 0x2e
+ 1567 0184 01       		.byte	0x1
+ 1568 0185 3F       		.uleb128 0x3f
+ 1569 0186 19       		.uleb128 0x19
+ 1570 0187 03       		.uleb128 0x3
+ 1571 0188 0E       		.uleb128 0xe
+ 1572 0189 3A       		.uleb128 0x3a
+ 1573 018a 0B       		.uleb128 0xb
+ 1574 018b 3B       		.uleb128 0x3b
+ 1575 018c 05       		.uleb128 0x5
+ 1576 018d 27       		.uleb128 0x27
+ 1577 018e 19       		.uleb128 0x19
+ 1578 018f 49       		.uleb128 0x49
+ 1579 0190 13       		.uleb128 0x13
+ 1580 0191 11       		.uleb128 0x11
+ 1581 0192 01       		.uleb128 0x1
+ 1582 0193 12       		.uleb128 0x12
+ 1583 0194 06       		.uleb128 0x6
+ 1584 0195 40       		.uleb128 0x40
+ 1585 0196 18       		.uleb128 0x18
+ 1586 0197 9742     		.uleb128 0x2117
+ 1587 0199 19       		.uleb128 0x19
+ 1588 019a 01       		.uleb128 0x1
+ 1589 019b 13       		.uleb128 0x13
+ 1590 019c 00       		.byte	0
+ 1591 019d 00       		.byte	0
+ 1592 019e 1E       		.uleb128 0x1e
+ 1593 019f 34       		.uleb128 0x34
+ 1594 01a0 00       		.byte	0
+ 1595 01a1 03       		.uleb128 0x3
+ 1596 01a2 0E       		.uleb128 0xe
+ 1597 01a3 3A       		.uleb128 0x3a
+ 1598 01a4 0B       		.uleb128 0xb
+ 1599 01a5 3B       		.uleb128 0x3b
+ 1600 01a6 05       		.uleb128 0x5
+ 1601 01a7 49       		.uleb128 0x49
+ 1602 01a8 13       		.uleb128 0x13
+ 1603 01a9 02       		.uleb128 0x2
+ 1604 01aa 17       		.uleb128 0x17
+ 1605 01ab 00       		.byte	0
+ 1606 01ac 00       		.byte	0
+ 1607 01ad 1F       		.uleb128 0x1f
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccHjzAm6.s 			page 37
+
+
+ 1608 01ae 2E       		.uleb128 0x2e
+ 1609 01af 00       		.byte	0
+ 1610 01b0 3F       		.uleb128 0x3f
+ 1611 01b1 19       		.uleb128 0x19
+ 1612 01b2 03       		.uleb128 0x3
+ 1613 01b3 0E       		.uleb128 0xe
+ 1614 01b4 3A       		.uleb128 0x3a
+ 1615 01b5 0B       		.uleb128 0xb
+ 1616 01b6 3B       		.uleb128 0x3b
+ 1617 01b7 05       		.uleb128 0x5
+ 1618 01b8 27       		.uleb128 0x27
+ 1619 01b9 19       		.uleb128 0x19
+ 1620 01ba 11       		.uleb128 0x11
+ 1621 01bb 01       		.uleb128 0x1
+ 1622 01bc 12       		.uleb128 0x12
+ 1623 01bd 06       		.uleb128 0x6
+ 1624 01be 40       		.uleb128 0x40
+ 1625 01bf 18       		.uleb128 0x18
+ 1626 01c0 9742     		.uleb128 0x2117
+ 1627 01c2 19       		.uleb128 0x19
+ 1628 01c3 00       		.byte	0
+ 1629 01c4 00       		.byte	0
+ 1630 01c5 20       		.uleb128 0x20
+ 1631 01c6 2E       		.uleb128 0x2e
+ 1632 01c7 00       		.byte	0
+ 1633 01c8 3F       		.uleb128 0x3f
+ 1634 01c9 19       		.uleb128 0x19
+ 1635 01ca 03       		.uleb128 0x3
+ 1636 01cb 0E       		.uleb128 0xe
+ 1637 01cc 3A       		.uleb128 0x3a
+ 1638 01cd 0B       		.uleb128 0xb
+ 1639 01ce 3B       		.uleb128 0x3b
+ 1640 01cf 05       		.uleb128 0x5
+ 1641 01d0 27       		.uleb128 0x27
+ 1642 01d1 19       		.uleb128 0x19
+ 1643 01d2 49       		.uleb128 0x49
+ 1644 01d3 13       		.uleb128 0x13
+ 1645 01d4 11       		.uleb128 0x11
+ 1646 01d5 01       		.uleb128 0x1
+ 1647 01d6 12       		.uleb128 0x12
+ 1648 01d7 06       		.uleb128 0x6
+ 1649 01d8 40       		.uleb128 0x40
+ 1650 01d9 18       		.uleb128 0x18
+ 1651 01da 9742     		.uleb128 0x2117
+ 1652 01dc 19       		.uleb128 0x19
+ 1653 01dd 00       		.byte	0
+ 1654 01de 00       		.byte	0
+ 1655 01df 21       		.uleb128 0x21
+ 1656 01e0 05       		.uleb128 0x5
+ 1657 01e1 00       		.byte	0
+ 1658 01e2 03       		.uleb128 0x3
+ 1659 01e3 0E       		.uleb128 0xe
+ 1660 01e4 3A       		.uleb128 0x3a
+ 1661 01e5 0B       		.uleb128 0xb
+ 1662 01e6 3B       		.uleb128 0x3b
+ 1663 01e7 0B       		.uleb128 0xb
+ 1664 01e8 49       		.uleb128 0x49
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccHjzAm6.s 			page 38
+
+
+ 1665 01e9 13       		.uleb128 0x13
+ 1666 01ea 02       		.uleb128 0x2
+ 1667 01eb 17       		.uleb128 0x17
+ 1668 01ec 00       		.byte	0
+ 1669 01ed 00       		.byte	0
+ 1670 01ee 22       		.uleb128 0x22
+ 1671 01ef 34       		.uleb128 0x34
+ 1672 01f0 00       		.byte	0
+ 1673 01f1 03       		.uleb128 0x3
+ 1674 01f2 0E       		.uleb128 0xe
+ 1675 01f3 3A       		.uleb128 0x3a
+ 1676 01f4 0B       		.uleb128 0xb
+ 1677 01f5 3B       		.uleb128 0x3b
+ 1678 01f6 05       		.uleb128 0x5
+ 1679 01f7 49       		.uleb128 0x49
+ 1680 01f8 13       		.uleb128 0x13
+ 1681 01f9 3F       		.uleb128 0x3f
+ 1682 01fa 19       		.uleb128 0x19
+ 1683 01fb 3C       		.uleb128 0x3c
+ 1684 01fc 19       		.uleb128 0x19
+ 1685 01fd 00       		.byte	0
+ 1686 01fe 00       		.byte	0
+ 1687 01ff 23       		.uleb128 0x23
+ 1688 0200 34       		.uleb128 0x34
+ 1689 0201 00       		.byte	0
+ 1690 0202 03       		.uleb128 0x3
+ 1691 0203 08       		.uleb128 0x8
+ 1692 0204 3A       		.uleb128 0x3a
+ 1693 0205 0B       		.uleb128 0xb
+ 1694 0206 3B       		.uleb128 0x3b
+ 1695 0207 0B       		.uleb128 0xb
+ 1696 0208 49       		.uleb128 0x49
+ 1697 0209 13       		.uleb128 0x13
+ 1698 020a 3F       		.uleb128 0x3f
+ 1699 020b 19       		.uleb128 0x19
+ 1700 020c 02       		.uleb128 0x2
+ 1701 020d 18       		.uleb128 0x18
+ 1702 020e 00       		.byte	0
+ 1703 020f 00       		.byte	0
+ 1704 0210 24       		.uleb128 0x24
+ 1705 0211 34       		.uleb128 0x34
+ 1706 0212 00       		.byte	0
+ 1707 0213 03       		.uleb128 0x3
+ 1708 0214 0E       		.uleb128 0xe
+ 1709 0215 3A       		.uleb128 0x3a
+ 1710 0216 0B       		.uleb128 0xb
+ 1711 0217 3B       		.uleb128 0x3b
+ 1712 0218 0B       		.uleb128 0xb
+ 1713 0219 49       		.uleb128 0x49
+ 1714 021a 13       		.uleb128 0x13
+ 1715 021b 3F       		.uleb128 0x3f
+ 1716 021c 19       		.uleb128 0x19
+ 1717 021d 02       		.uleb128 0x2
+ 1718 021e 18       		.uleb128 0x18
+ 1719 021f 00       		.byte	0
+ 1720 0220 00       		.byte	0
+ 1721 0221 25       		.uleb128 0x25
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccHjzAm6.s 			page 39
+
+
+ 1722 0222 2E       		.uleb128 0x2e
+ 1723 0223 00       		.byte	0
+ 1724 0224 3F       		.uleb128 0x3f
+ 1725 0225 19       		.uleb128 0x19
+ 1726 0226 3C       		.uleb128 0x3c
+ 1727 0227 19       		.uleb128 0x19
+ 1728 0228 6E       		.uleb128 0x6e
+ 1729 0229 0E       		.uleb128 0xe
+ 1730 022a 03       		.uleb128 0x3
+ 1731 022b 0E       		.uleb128 0xe
+ 1732 022c 3A       		.uleb128 0x3a
+ 1733 022d 0B       		.uleb128 0xb
+ 1734 022e 3B       		.uleb128 0x3b
+ 1735 022f 0B       		.uleb128 0xb
+ 1736 0230 00       		.byte	0
+ 1737 0231 00       		.byte	0
+ 1738 0232 00       		.byte	0
+ 1739              		.section	.debug_loc,"",%progbits
+ 1740              	.Ldebug_loc0:
+ 1741              	.LLST0:
+ 1742 0000 00000000 		.4byte	.LVL7
+ 1743 0004 02000000 		.4byte	.LVL8
+ 1744 0008 0100     		.2byte	0x1
+ 1745 000a 50       		.byte	0x50
+ 1746 000b 02000000 		.4byte	.LVL8
+ 1747 000f 10000000 		.4byte	.LFE70
+ 1748 0013 0400     		.2byte	0x4
+ 1749 0015 F3       		.byte	0xf3
+ 1750 0016 01       		.uleb128 0x1
+ 1751 0017 50       		.byte	0x50
+ 1752 0018 9F       		.byte	0x9f
+ 1753 0019 00000000 		.4byte	0
+ 1754 001d 00000000 		.4byte	0
+ 1755              	.LLST1:
+ 1756 0021 04000000 		.4byte	.LVL9
+ 1757 0025 06000000 		.4byte	.LVL10
+ 1758 0029 0500     		.2byte	0x5
+ 1759 002b 70       		.byte	0x70
+ 1760 002c 00       		.sleb128 0
+ 1761 002d 35       		.byte	0x35
+ 1762 002e 25       		.byte	0x25
+ 1763 002f 9F       		.byte	0x9f
+ 1764 0030 00000000 		.4byte	0
+ 1765 0034 00000000 		.4byte	0
+ 1766              	.LLST2:
+ 1767 0038 00000000 		.4byte	.LVL15
+ 1768 003c 07000000 		.4byte	.LVL16-1
+ 1769 0040 0100     		.2byte	0x1
+ 1770 0042 50       		.byte	0x50
+ 1771 0043 07000000 		.4byte	.LVL16-1
+ 1772 0047 1A000000 		.4byte	.LFE65
+ 1773 004b 0100     		.2byte	0x1
+ 1774 004d 54       		.byte	0x54
+ 1775 004e 00000000 		.4byte	0
+ 1776 0052 00000000 		.4byte	0
+ 1777              		.section	.debug_aranges,"",%progbits
+ 1778 0000 7C000000 		.4byte	0x7c
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccHjzAm6.s 			page 40
+
+
+ 1779 0004 0200     		.2byte	0x2
+ 1780 0006 00000000 		.4byte	.Ldebug_info0
+ 1781 000a 04       		.byte	0x4
+ 1782 000b 00       		.byte	0
+ 1783 000c 0000     		.2byte	0
+ 1784 000e 0000     		.2byte	0
+ 1785 0010 00000000 		.4byte	.LFB67
+ 1786 0014 74000000 		.4byte	.LFE67-.LFB67
+ 1787 0018 00000000 		.4byte	.LFB68
+ 1788 001c 0C000000 		.4byte	.LFE68-.LFB68
+ 1789 0020 00000000 		.4byte	.LFB69
+ 1790 0024 0C000000 		.4byte	.LFE69-.LFB69
+ 1791 0028 00000000 		.4byte	.LFB70
+ 1792 002c 10000000 		.4byte	.LFE70-.LFB70
+ 1793 0030 00000000 		.4byte	.LFB71
+ 1794 0034 0C000000 		.4byte	.LFE71-.LFB71
+ 1795 0038 00000000 		.4byte	.LFB72
+ 1796 003c 10000000 		.4byte	.LFE72-.LFB72
+ 1797 0040 00000000 		.4byte	.LFB73
+ 1798 0044 18000000 		.4byte	.LFE73-.LFB73
+ 1799 0048 00000000 		.4byte	.LFB74
+ 1800 004c 10000000 		.4byte	.LFE74-.LFB74
+ 1801 0050 00000000 		.4byte	.LFB64
+ 1802 0054 1C000000 		.4byte	.LFE64-.LFB64
+ 1803 0058 00000000 		.4byte	.LFB65
+ 1804 005c 1A000000 		.4byte	.LFE65-.LFB65
+ 1805 0060 00000000 		.4byte	.LFB66
+ 1806 0064 14000000 		.4byte	.LFE66-.LFB66
+ 1807 0068 00000000 		.4byte	.LFB75
+ 1808 006c 10000000 		.4byte	.LFE75-.LFB75
+ 1809 0070 00000000 		.4byte	.LFB76
+ 1810 0074 10000000 		.4byte	.LFE76-.LFB76
+ 1811 0078 00000000 		.4byte	0
+ 1812 007c 00000000 		.4byte	0
+ 1813              		.section	.debug_ranges,"",%progbits
+ 1814              	.Ldebug_ranges0:
+ 1815 0000 00000000 		.4byte	.LFB67
+ 1816 0004 74000000 		.4byte	.LFE67
+ 1817 0008 00000000 		.4byte	.LFB68
+ 1818 000c 0C000000 		.4byte	.LFE68
+ 1819 0010 00000000 		.4byte	.LFB69
+ 1820 0014 0C000000 		.4byte	.LFE69
+ 1821 0018 00000000 		.4byte	.LFB70
+ 1822 001c 10000000 		.4byte	.LFE70
+ 1823 0020 00000000 		.4byte	.LFB71
+ 1824 0024 0C000000 		.4byte	.LFE71
+ 1825 0028 00000000 		.4byte	.LFB72
+ 1826 002c 10000000 		.4byte	.LFE72
+ 1827 0030 00000000 		.4byte	.LFB73
+ 1828 0034 18000000 		.4byte	.LFE73
+ 1829 0038 00000000 		.4byte	.LFB74
+ 1830 003c 10000000 		.4byte	.LFE74
+ 1831 0040 00000000 		.4byte	.LFB64
+ 1832 0044 1C000000 		.4byte	.LFE64
+ 1833 0048 00000000 		.4byte	.LFB65
+ 1834 004c 1A000000 		.4byte	.LFE65
+ 1835 0050 00000000 		.4byte	.LFB66
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccHjzAm6.s 			page 41
+
+
+ 1836 0054 14000000 		.4byte	.LFE66
+ 1837 0058 00000000 		.4byte	.LFB75
+ 1838 005c 10000000 		.4byte	.LFE75
+ 1839 0060 00000000 		.4byte	.LFB76
+ 1840 0064 10000000 		.4byte	.LFE76
+ 1841 0068 00000000 		.4byte	0
+ 1842 006c 00000000 		.4byte	0
+ 1843              		.section	.debug_line,"",%progbits
+ 1844              	.Ldebug_line0:
+ 1845 0000 84020000 		.section	.debug_str,"MS",%progbits,1
+ 1845      02008F01 
+ 1845      00000201 
+ 1845      FB0E0D00 
+ 1845      01010101 
+ 1846              	.LASF55:
+ 1847 0000 5F737461 		.ascii	"_state_\000"
+ 1847      74655F00 
+ 1848              	.LASF27:
+ 1849 0008 7363616C 		.ascii	"scaledMin\000"
+ 1849      65644D69 
+ 1849      6E00
+ 1850              	.LASF31:
+ 1851 0012 7056616C 		.ascii	"pVal\000"
+ 1851      00
+ 1852              	.LASF40:
+ 1853 0017 7072696F 		.ascii	"priority\000"
+ 1853      72697479 
+ 1853      00
+ 1854              	.LASF36:
+ 1855 0020 76656C5F 		.ascii	"vel_control_isr_SetVector\000"
+ 1855      636F6E74 
+ 1855      726F6C5F 
+ 1855      6973725F 
+ 1855      53657456 
+ 1856              	.LASF44:
+ 1857 003a 76656C5F 		.ascii	"vel_control_isr_Disable\000"
+ 1857      636F6E74 
+ 1857      726F6C5F 
+ 1857      6973725F 
+ 1857      44697361 
+ 1858              	.LASF10:
+ 1859 0052 73697A65 		.ascii	"sizetype\000"
+ 1859      74797065 
+ 1859      00
+ 1860              	.LASF2:
+ 1861 005b 6C6F6E67 		.ascii	"long double\000"
+ 1861      20646F75 
+ 1861      626C6500 
+ 1862              	.LASF69:
+ 1863 0067 443A5C44 		.ascii	"D:\\Dropbox\\Magister\\Tesis\\tesis-source\\master-"
+ 1863      726F7062 
+ 1863      6F785C4D 
+ 1863      61676973 
+ 1863      7465725C 
+ 1864 0095 74657369 		.ascii	"tesis\\dedo_v01.cydsn\000"
+ 1864      735C6465 
+ 1864      646F5F76 
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccHjzAm6.s 			page 42
+
+
+ 1864      30312E63 
+ 1864      7964736E 
+ 1865              	.LASF5:
+ 1866 00aa 73686F72 		.ascii	"short int\000"
+ 1866      7420696E 
+ 1866      7400
+ 1867              	.LASF59:
+ 1868 00b4 73706565 		.ascii	"speed_ref\000"
+ 1868      645F7265 
+ 1868      6600
+ 1869              	.LASF39:
+ 1870 00be 61646472 		.ascii	"address\000"
+ 1870      65737300 
+ 1871              	.LASF62:
+ 1872 00c6 73706565 		.ascii	"speed_pid_output\000"
+ 1872      645F7069 
+ 1872      645F6F75 
+ 1872      74707574 
+ 1872      00
+ 1873              	.LASF32:
+ 1874 00d7 6956616C 		.ascii	"iVal\000"
+ 1874      00
+ 1875              	.LASF14:
+ 1876 00dc 75696E74 		.ascii	"uint8\000"
+ 1876      3800
+ 1877              	.LASF21:
+ 1878 00e2 72656656 		.ascii	"refVal\000"
+ 1878      616C00
+ 1879              	.LASF25:
+ 1880 00e9 6D696E56 		.ascii	"minValue\000"
+ 1880      616C7565 
+ 1880      00
+ 1881              	.LASF64:
+ 1882 00f2 5049445F 		.ascii	"PID_calculatePID\000"
+ 1882      63616C63 
+ 1882      756C6174 
+ 1882      65504944 
+ 1882      00
+ 1883              	.LASF16:
+ 1884 0103 666C6F61 		.ascii	"float\000"
+ 1884      7400
+ 1885              	.LASF43:
+ 1886 0109 76656C5F 		.ascii	"vel_control_isr_Enable\000"
+ 1886      636F6E74 
+ 1886      726F6C5F 
+ 1886      6973725F 
+ 1886      456E6162 
+ 1887              	.LASF1:
+ 1888 0120 6C6F6E67 		.ascii	"long long int\000"
+ 1888      206C6F6E 
+ 1888      6720696E 
+ 1888      7400
+ 1889              	.LASF66:
+ 1890 012e 56444143 		.ascii	"VDAC8_Speed_SetValue\000"
+ 1890      385F5370 
+ 1890      6565645F 
+ 1890      53657456 
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccHjzAm6.s 			page 43
+
+
+ 1890      616C7565 
+ 1891              	.LASF7:
+ 1892 0143 6C6F6E67 		.ascii	"long int\000"
+ 1892      20696E74 
+ 1892      00
+ 1893              	.LASF23:
+ 1894 014c 6C617374 		.ascii	"lastValue\000"
+ 1894      56616C75 
+ 1894      6500
+ 1895              	.LASF18:
+ 1896 0156 72656738 		.ascii	"reg8\000"
+ 1896      00
+ 1897              	.LASF26:
+ 1898 015b 6D617856 		.ascii	"maxValue\000"
+ 1898      616C7565 
+ 1898      00
+ 1899              	.LASF56:
+ 1900 0164 745F6861 		.ascii	"t_ha\000"
+ 1900      00
+ 1901              	.LASF37:
+ 1902 0169 72616D56 		.ascii	"ramVectorTable\000"
+ 1902      6563746F 
+ 1902      72546162 
+ 1902      6C6500
+ 1903              	.LASF38:
+ 1904 0178 76656C5F 		.ascii	"vel_control_isr_SetPriority\000"
+ 1904      636F6E74 
+ 1904      726F6C5F 
+ 1904      6973725F 
+ 1904      53657450 
+ 1905              	.LASF4:
+ 1906 0194 756E7369 		.ascii	"unsigned char\000"
+ 1906      676E6564 
+ 1906      20636861 
+ 1906      7200
+ 1907              	.LASF54:
+ 1908 01a2 5F756172 		.ascii	"_uart_Reset\000"
+ 1908      745F5265 
+ 1908      73657400 
+ 1909              	.LASF22:
+ 1910 01ae 696E7075 		.ascii	"inputValue\000"
+ 1910      7456616C 
+ 1910      756500
+ 1911              	.LASF20:
+ 1912 01b9 63796973 		.ascii	"cyisraddress\000"
+ 1912      72616464 
+ 1912      72657373 
+ 1912      00
+ 1913              	.LASF52:
+ 1914 01c6 53656E64 		.ascii	"SendSingleByte\000"
+ 1914      53696E67 
+ 1914      6C654279 
+ 1914      746500
+ 1915              	.LASF3:
+ 1916 01d5 7369676E 		.ascii	"signed char\000"
+ 1916      65642063 
+ 1916      68617200 
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccHjzAm6.s 			page 44
+
+
+ 1917              	.LASF13:
+ 1918 01e1 696E7433 		.ascii	"int32_t\000"
+ 1918      325F7400 
+ 1919              	.LASF9:
+ 1920 01e9 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1920      206C6F6E 
+ 1920      6720756E 
+ 1920      7369676E 
+ 1920      65642069 
+ 1921              	.LASF70:
+ 1922 0200 54527842 		.ascii	"TRxBuffer\000"
+ 1922      75666665 
+ 1922      7200
+ 1923              	.LASF0:
+ 1924 020a 756E7369 		.ascii	"unsigned int\000"
+ 1924      676E6564 
+ 1924      20696E74 
+ 1924      00
+ 1925              	.LASF51:
+ 1926 0217 436F6E74 		.ascii	"ContinuouslySendData\000"
+ 1926      696E756F 
+ 1926      75736C79 
+ 1926      53656E64 
+ 1926      44617461 
+ 1927              	.LASF41:
+ 1928 022c 76656C5F 		.ascii	"vel_control_isr_GetVector\000"
+ 1928      636F6E74 
+ 1928      726F6C5F 
+ 1928      6973725F 
+ 1928      47657456 
+ 1929              	.LASF34:
+ 1930 0246 50617261 		.ascii	"ParamBuffer\000"
+ 1930      6D427566 
+ 1930      66657200 
+ 1931              	.LASF68:
+ 1932 0252 76656C5F 		.ascii	"vel_control_isr.c\000"
+ 1932      636F6E74 
+ 1932      726F6C5F 
+ 1932      6973722E 
+ 1932      6300
+ 1933              	.LASF19:
+ 1934 0264 72656733 		.ascii	"reg32\000"
+ 1934      3200
+ 1935              	.LASF53:
+ 1936 026a 53656E64 		.ascii	"SendEmulatedData\000"
+ 1936      456D756C 
+ 1936      61746564 
+ 1936      44617461 
+ 1936      00
+ 1937              	.LASF30:
+ 1938 027b 76616C73 		.ascii	"valstr\000"
+ 1938      747200
+ 1939              	.LASF58:
+ 1940 0282 61637475 		.ascii	"actual_speed\000"
+ 1940      616C5F73 
+ 1940      70656564 
+ 1940      00
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccHjzAm6.s 			page 45
+
+
+ 1941              	.LASF11:
+ 1942 028f 63686172 		.ascii	"char\000"
+ 1942      00
+ 1943              	.LASF47:
+ 1944 0294 76656C5F 		.ascii	"vel_control_isr_Stop\000"
+ 1944      636F6E74 
+ 1944      726F6C5F 
+ 1944      6973725F 
+ 1944      53746F70 
+ 1945              	.LASF72:
+ 1946 02a9 54506172 		.ascii	"TParamBuffer\000"
+ 1946      616D4275 
+ 1946      66666572 
+ 1946      00
+ 1947              	.LASF6:
+ 1948 02b6 73686F72 		.ascii	"short unsigned int\000"
+ 1948      7420756E 
+ 1948      7369676E 
+ 1948      65642069 
+ 1948      6E7400
+ 1949              	.LASF42:
+ 1950 02c9 76656C5F 		.ascii	"vel_control_isr_GetPriority\000"
+ 1950      636F6E74 
+ 1950      726F6C5F 
+ 1950      6973725F 
+ 1950      47657450 
+ 1951              	.LASF71:
+ 1952 02e5 52785374 		.ascii	"RxStr\000"
+ 1952      7200
+ 1953              	.LASF35:
+ 1954 02eb 76656C5F 		.ascii	"vel_control_isr_Interrupt\000"
+ 1954      636F6E74 
+ 1954      726F6C5F 
+ 1954      6973725F 
+ 1954      496E7465 
+ 1955              	.LASF15:
+ 1956 0305 75696E74 		.ascii	"uint32\000"
+ 1956      333200
+ 1957              	.LASF60:
+ 1958 030c 5F705661 		.ascii	"_pVal\000"
+ 1958      6C00
+ 1959              	.LASF8:
+ 1960 0312 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1960      20756E73 
+ 1960      69676E65 
+ 1960      6420696E 
+ 1960      7400
+ 1961              	.LASF17:
+ 1962 0324 646F7562 		.ascii	"double\000"
+ 1962      6C6500
+ 1963              	.LASF50:
+ 1964 032b 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 1964      52784275 
+ 1964      66666572 
+ 1964      00
+ 1965              	.LASF24:
+ 1966 0338 69546572 		.ascii	"iTerm\000"
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccHjzAm6.s 			page 46
+
+
+ 1966      6D00
+ 1967              	.LASF12:
+ 1968 033e 5F5F696E 		.ascii	"__int32_t\000"
+ 1968      7433325F 
+ 1968      7400
+ 1969              	.LASF46:
+ 1970 0348 76656C5F 		.ascii	"vel_control_isr_StartEx\000"
+ 1970      636F6E74 
+ 1970      726F6C5F 
+ 1970      6973725F 
+ 1970      53746172 
+ 1971              	.LASF65:
+ 1972 0360 666E5F6D 		.ascii	"fn_mapper_8b\000"
+ 1972      61707065 
+ 1972      725F3862 
+ 1972      00
+ 1973              	.LASF49:
+ 1974 036d 76656C5F 		.ascii	"vel_control_isr_ClearPending\000"
+ 1974      636F6E74 
+ 1974      726F6C5F 
+ 1974      6973725F 
+ 1974      436C6561 
+ 1975              	.LASF57:
+ 1976 038a 73706565 		.ascii	"speed_pid_\000"
+ 1976      645F7069 
+ 1976      645F00
+ 1977              	.LASF61:
+ 1978 0395 5F706964 		.ascii	"_pid_out\000"
+ 1978      5F6F7574 
+ 1978      00
+ 1979              	.LASF73:
+ 1980 039e 76656C5F 		.ascii	"vel_control_isr_GetState\000"
+ 1980      636F6E74 
+ 1980      726F6C5F 
+ 1980      6973725F 
+ 1980      47657453 
+ 1981              	.LASF67:
+ 1982 03b7 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 1982      43313120 
+ 1982      352E342E 
+ 1982      31203230 
+ 1982      31363036 
+ 1983 03ea 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m3 -mthumb -g -O"
+ 1983      20726576 
+ 1983      6973696F 
+ 1983      6E203233 
+ 1983      37373135 
+ 1984 041d 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 1984      66756E63 
+ 1984      74696F6E 
+ 1984      2D736563 
+ 1984      74696F6E 
+ 1985              	.LASF45:
+ 1986 0445 76656C5F 		.ascii	"vel_control_isr_Start\000"
+ 1986      636F6E74 
+ 1986      726F6C5F 
+ 1986      6973725F 
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccHjzAm6.s 			page 47
+
+
+ 1986      53746172 
+ 1987              	.LASF28:
+ 1988 045b 7363616C 		.ascii	"scaledMax\000"
+ 1988      65644D61 
+ 1988      7800
+ 1989              	.LASF33:
+ 1990 0465 6456616C 		.ascii	"dVal\000"
+ 1990      00
+ 1991              	.LASF48:
+ 1992 046a 76656C5F 		.ascii	"vel_control_isr_SetPending\000"
+ 1992      636F6E74 
+ 1992      726F6C5F 
+ 1992      6973725F 
+ 1992      53657450 
+ 1993              	.LASF63:
+ 1994 0485 5049445F 		.ascii	"PID_setRef\000"
+ 1994      73657452 
+ 1994      656600
+ 1995              	.LASF29:
+ 1996 0490 5049445F 		.ascii	"PID_t\000"
+ 1996      7400
+ 1997              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

@@ -1,0 +1,2104 @@
+ARM GAS  C:\Users\growo\AppData\Local\Temp\cc8OHj2a.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"isr_HA.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.isr_HA_Interrupt,"ax",%progbits
+  20              		.align	2
+  21              		.global	isr_HA_Interrupt
+  22              		.thumb
+  23              		.thumb_func
+  24              		.type	isr_HA_Interrupt, %function
+  25              	isr_HA_Interrupt:
+  26              	.LFB3:
+  27              		.file 1 "isr_HA.c"
+   1:isr_HA.c      **** /*******************************************************************************
+   2:isr_HA.c      **** * File Name: isr_HA.c  
+   3:isr_HA.c      **** * Version 1.70
+   4:isr_HA.c      **** *
+   5:isr_HA.c      **** *  Description:
+   6:isr_HA.c      **** *   API for controlling the state of an interrupt.
+   7:isr_HA.c      **** *
+   8:isr_HA.c      **** *
+   9:isr_HA.c      **** *  Note:
+  10:isr_HA.c      **** *
+  11:isr_HA.c      **** ********************************************************************************
+  12:isr_HA.c      **** * Copyright 2008-2015, Cypress Semiconductor Corporation.  All rights reserved.
+  13:isr_HA.c      **** * You may use this file only in accordance with the license, terms, conditions, 
+  14:isr_HA.c      **** * disclaimers, and limitations in the end user license agreement accompanying 
+  15:isr_HA.c      **** * the software package with which this file was provided.
+  16:isr_HA.c      **** *******************************************************************************/
+  17:isr_HA.c      **** 
+  18:isr_HA.c      **** 
+  19:isr_HA.c      **** #include <cydevice_trm.h>
+  20:isr_HA.c      **** #include <CyLib.h>
+  21:isr_HA.c      **** #include <isr_HA.h>
+  22:isr_HA.c      **** #include "cyapicallbacks.h"
+  23:isr_HA.c      **** 
+  24:isr_HA.c      **** #if !defined(isr_HA__REMOVED) /* Check for removal by optimization */
+  25:isr_HA.c      **** 
+  26:isr_HA.c      **** /*******************************************************************************
+  27:isr_HA.c      **** *  Place your includes, defines and code here 
+  28:isr_HA.c      **** ********************************************************************************/
+  29:isr_HA.c      **** /* `#START isr_HA_intc` */
+  30:isr_HA.c      **** #include <Timer_ha.h>
+ARM GAS  C:\Users\growo\AppData\Local\Temp\cc8OHj2a.s 			page 2
+
+
+  31:isr_HA.c      ****       
+  32:isr_HA.c      **** volatile int32_t t_ha;
+  33:isr_HA.c      **** volatile int32_t ca;
+  34:isr_HA.c      **** volatile int32_t ma; 
+  35:isr_HA.c      **** 
+  36:isr_HA.c      **** volatile int32_t HA_counter;
+  37:isr_HA.c      ****     
+  38:isr_HA.c      **** /* `#END` */
+  39:isr_HA.c      **** 
+  40:isr_HA.c      **** #ifndef CYINT_IRQ_BASE
+  41:isr_HA.c      **** #define CYINT_IRQ_BASE      16
+  42:isr_HA.c      **** #endif /* CYINT_IRQ_BASE */
+  43:isr_HA.c      **** #ifndef CYINT_VECT_TABLE
+  44:isr_HA.c      **** #define CYINT_VECT_TABLE    ((cyisraddress **) CYREG_NVIC_VECT_OFFSET)
+  45:isr_HA.c      **** #endif /* CYINT_VECT_TABLE */
+  46:isr_HA.c      **** 
+  47:isr_HA.c      **** /* Declared in startup, used to set unused interrupts to. */
+  48:isr_HA.c      **** CY_ISR_PROTO(IntDefaultHandler);
+  49:isr_HA.c      **** 
+  50:isr_HA.c      **** 
+  51:isr_HA.c      **** /*******************************************************************************
+  52:isr_HA.c      **** * Function Name: isr_HA_Start
+  53:isr_HA.c      **** ********************************************************************************
+  54:isr_HA.c      **** *
+  55:isr_HA.c      **** * Summary:
+  56:isr_HA.c      **** *  Set up the interrupt and enable it. This function disables the interrupt, 
+  57:isr_HA.c      **** *  sets the default interrupt vector, sets the priority from the value in the
+  58:isr_HA.c      **** *  Design Wide Resources Interrupt Editor, then enables the interrupt to the 
+  59:isr_HA.c      **** *  interrupt controller.
+  60:isr_HA.c      **** *
+  61:isr_HA.c      **** * Parameters:  
+  62:isr_HA.c      **** *   None
+  63:isr_HA.c      **** *
+  64:isr_HA.c      **** * Return:
+  65:isr_HA.c      **** *   None
+  66:isr_HA.c      **** *
+  67:isr_HA.c      **** *******************************************************************************/
+  68:isr_HA.c      **** void isr_HA_Start(void)
+  69:isr_HA.c      **** {
+  70:isr_HA.c      ****     /* For all we know the interrupt is active. */
+  71:isr_HA.c      ****     isr_HA_Disable();
+  72:isr_HA.c      **** 
+  73:isr_HA.c      ****     /* Set the ISR to point to the isr_HA Interrupt. */
+  74:isr_HA.c      ****     isr_HA_SetVector(&isr_HA_Interrupt);
+  75:isr_HA.c      **** 
+  76:isr_HA.c      ****     /* Set the priority. */
+  77:isr_HA.c      ****     isr_HA_SetPriority((uint8)isr_HA_INTC_PRIOR_NUMBER);
+  78:isr_HA.c      **** 
+  79:isr_HA.c      ****     /* Enable it. */
+  80:isr_HA.c      ****     isr_HA_Enable();
+  81:isr_HA.c      **** }
+  82:isr_HA.c      **** 
+  83:isr_HA.c      **** 
+  84:isr_HA.c      **** /*******************************************************************************
+  85:isr_HA.c      **** * Function Name: isr_HA_StartEx
+  86:isr_HA.c      **** ********************************************************************************
+  87:isr_HA.c      **** *
+ARM GAS  C:\Users\growo\AppData\Local\Temp\cc8OHj2a.s 			page 3
+
+
+  88:isr_HA.c      **** * Summary:
+  89:isr_HA.c      **** *  Sets up the interrupt and enables it. This function disables the interrupt,
+  90:isr_HA.c      **** *  sets the interrupt vector based on the address passed in, sets the priority 
+  91:isr_HA.c      **** *  from the value in the Design Wide Resources Interrupt Editor, then enables 
+  92:isr_HA.c      **** *  the interrupt to the interrupt controller.
+  93:isr_HA.c      **** *  
+  94:isr_HA.c      **** *  When defining ISR functions, the CY_ISR and CY_ISR_PROTO macros should be 
+  95:isr_HA.c      **** *  used to provide consistent definition across compilers:
+  96:isr_HA.c      **** *  
+  97:isr_HA.c      **** *  Function definition example:
+  98:isr_HA.c      **** *   CY_ISR(MyISR)
+  99:isr_HA.c      **** *   {
+ 100:isr_HA.c      **** *   }
+ 101:isr_HA.c      **** *   Function prototype example:
+ 102:isr_HA.c      **** *   CY_ISR_PROTO(MyISR);
+ 103:isr_HA.c      **** *
+ 104:isr_HA.c      **** * Parameters:  
+ 105:isr_HA.c      **** *   address: Address of the ISR to set in the interrupt vector table.
+ 106:isr_HA.c      **** *
+ 107:isr_HA.c      **** * Return:
+ 108:isr_HA.c      **** *   None
+ 109:isr_HA.c      **** *
+ 110:isr_HA.c      **** *******************************************************************************/
+ 111:isr_HA.c      **** void isr_HA_StartEx(cyisraddress address)
+ 112:isr_HA.c      **** {
+ 113:isr_HA.c      ****     /* For all we know the interrupt is active. */
+ 114:isr_HA.c      ****     isr_HA_Disable();
+ 115:isr_HA.c      **** 
+ 116:isr_HA.c      ****     /* Set the ISR to point to the isr_HA Interrupt. */
+ 117:isr_HA.c      ****     isr_HA_SetVector(address);
+ 118:isr_HA.c      **** 
+ 119:isr_HA.c      ****     /* Set the priority. */
+ 120:isr_HA.c      ****     isr_HA_SetPriority((uint8)isr_HA_INTC_PRIOR_NUMBER);
+ 121:isr_HA.c      **** 
+ 122:isr_HA.c      ****     /* Enable it. */
+ 123:isr_HA.c      ****     isr_HA_Enable();
+ 124:isr_HA.c      **** }
+ 125:isr_HA.c      **** 
+ 126:isr_HA.c      **** 
+ 127:isr_HA.c      **** /*******************************************************************************
+ 128:isr_HA.c      **** * Function Name: isr_HA_Stop
+ 129:isr_HA.c      **** ********************************************************************************
+ 130:isr_HA.c      **** *
+ 131:isr_HA.c      **** * Summary:
+ 132:isr_HA.c      **** *   Disables and removes the interrupt.
+ 133:isr_HA.c      **** *
+ 134:isr_HA.c      **** * Parameters:  
+ 135:isr_HA.c      **** *   None
+ 136:isr_HA.c      **** *
+ 137:isr_HA.c      **** * Return:
+ 138:isr_HA.c      **** *   None
+ 139:isr_HA.c      **** *
+ 140:isr_HA.c      **** *******************************************************************************/
+ 141:isr_HA.c      **** void isr_HA_Stop(void)
+ 142:isr_HA.c      **** {
+ 143:isr_HA.c      ****     /* Disable this interrupt. */
+ 144:isr_HA.c      ****     isr_HA_Disable();
+ARM GAS  C:\Users\growo\AppData\Local\Temp\cc8OHj2a.s 			page 4
+
+
+ 145:isr_HA.c      **** 
+ 146:isr_HA.c      ****     /* Set the ISR to point to the passive one. */
+ 147:isr_HA.c      ****     isr_HA_SetVector(&IntDefaultHandler);
+ 148:isr_HA.c      **** }
+ 149:isr_HA.c      **** 
+ 150:isr_HA.c      **** 
+ 151:isr_HA.c      **** /*******************************************************************************
+ 152:isr_HA.c      **** * Function Name: isr_HA_Interrupt
+ 153:isr_HA.c      **** ********************************************************************************
+ 154:isr_HA.c      **** *
+ 155:isr_HA.c      **** * Summary:
+ 156:isr_HA.c      **** *   The default Interrupt Service Routine for isr_HA.
+ 157:isr_HA.c      **** *
+ 158:isr_HA.c      **** *   Add custom code between the coments to keep the next version of this file
+ 159:isr_HA.c      **** *   from over writting your code.
+ 160:isr_HA.c      **** *
+ 161:isr_HA.c      **** * Parameters:  
+ 162:isr_HA.c      **** *
+ 163:isr_HA.c      **** * Return:
+ 164:isr_HA.c      **** *   None
+ 165:isr_HA.c      **** *
+ 166:isr_HA.c      **** *******************************************************************************/
+ 167:isr_HA.c      **** CY_ISR(isr_HA_Interrupt)
+ 168:isr_HA.c      **** {
+  28              		.loc 1 168 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32 0000 08B5     		push	{r3, lr}
+  33              		.cfi_def_cfa_offset 8
+  34              		.cfi_offset 3, -8
+  35              		.cfi_offset 14, -4
+ 169:isr_HA.c      ****     #ifdef isr_HA_INTERRUPT_INTERRUPT_CALLBACK
+ 170:isr_HA.c      ****         isr_HA_Interrupt_InterruptCallback();
+ 171:isr_HA.c      ****     #endif /* isr_HA_INTERRUPT_INTERRUPT_CALLBACK */ 
+ 172:isr_HA.c      **** 
+ 173:isr_HA.c      ****     /*  Place your Interrupt code here. */
+ 174:isr_HA.c      ****     /* `#START isr_HA_Interrupt` */
+ 175:isr_HA.c      ****     
+ 176:isr_HA.c      ****     HA_counter+=1;
+  36              		.loc 1 176 0
+  37 0002 0A4A     		ldr	r2, .L3
+  38 0004 1368     		ldr	r3, [r2]
+  39 0006 0133     		adds	r3, r3, #1
+  40 0008 1360     		str	r3, [r2]
+ 177:isr_HA.c      ****     ca = Timer_ha_ReadCounter(); // read counter
+  41              		.loc 1 177 0
+  42 000a FFF7FEFF 		bl	Timer_ha_ReadCounter
+  43              	.LVL0:
+  44 000e 084A     		ldr	r2, .L3+4
+  45 0010 1060     		str	r0, [r2]
+ 178:isr_HA.c      ****     t_ha = -1*(ca+ma); //
+  46              		.loc 1 178 0
+  47 0012 1068     		ldr	r0, [r2]
+  48 0014 0749     		ldr	r1, .L3+8
+  49 0016 0B68     		ldr	r3, [r1]
+  50 0018 0344     		add	r3, r3, r0
+ARM GAS  C:\Users\growo\AppData\Local\Temp\cc8OHj2a.s 			page 5
+
+
+  51 001a 5B42     		negs	r3, r3
+  52 001c 0648     		ldr	r0, .L3+12
+  53 001e 0360     		str	r3, [r0]
+ 179:isr_HA.c      ****     ma = ca;
+  54              		.loc 1 179 0
+  55 0020 1368     		ldr	r3, [r2]
+  56 0022 0B60     		str	r3, [r1]
+ 180:isr_HA.c      ****     Timer_ha_WriteCounter(0); // reset the counter
+  57              		.loc 1 180 0
+  58 0024 0020     		movs	r0, #0
+  59 0026 FFF7FEFF 		bl	Timer_ha_WriteCounter
+  60              	.LVL1:
+  61 002a 08BD     		pop	{r3, pc}
+  62              	.L4:
+  63              		.align	2
+  64              	.L3:
+  65 002c 00000000 		.word	HA_counter
+  66 0030 00000000 		.word	ca
+  67 0034 00000000 		.word	ma
+  68 0038 00000000 		.word	t_ha
+  69              		.cfi_endproc
+  70              	.LFE3:
+  71              		.size	isr_HA_Interrupt, .-isr_HA_Interrupt
+  72              		.section	.text.isr_HA_SetVector,"ax",%progbits
+  73              		.align	2
+  74              		.global	isr_HA_SetVector
+  75              		.thumb
+  76              		.thumb_func
+  77              		.type	isr_HA_SetVector, %function
+  78              	isr_HA_SetVector:
+  79              	.LFB4:
+ 181:isr_HA.c      **** 
+ 182:isr_HA.c      ****     /* `#END` */
+ 183:isr_HA.c      **** }
+ 184:isr_HA.c      **** 
+ 185:isr_HA.c      **** 
+ 186:isr_HA.c      **** /*******************************************************************************
+ 187:isr_HA.c      **** * Function Name: isr_HA_SetVector
+ 188:isr_HA.c      **** ********************************************************************************
+ 189:isr_HA.c      **** *
+ 190:isr_HA.c      **** * Summary:
+ 191:isr_HA.c      **** *   Change the ISR vector for the Interrupt. Note calling isr_HA_Start
+ 192:isr_HA.c      **** *   will override any effect this method would have had. To set the vector 
+ 193:isr_HA.c      **** *   before the component has been started use isr_HA_StartEx instead.
+ 194:isr_HA.c      **** * 
+ 195:isr_HA.c      **** *   When defining ISR functions, the CY_ISR and CY_ISR_PROTO macros should be 
+ 196:isr_HA.c      **** *   used to provide consistent definition across compilers:
+ 197:isr_HA.c      **** *
+ 198:isr_HA.c      **** *   Function definition example:
+ 199:isr_HA.c      **** *   CY_ISR(MyISR)
+ 200:isr_HA.c      **** *   {
+ 201:isr_HA.c      **** *   }
+ 202:isr_HA.c      **** *
+ 203:isr_HA.c      **** *   Function prototype example:
+ 204:isr_HA.c      **** *     CY_ISR_PROTO(MyISR);
+ 205:isr_HA.c      **** *
+ 206:isr_HA.c      **** * Parameters:
+ARM GAS  C:\Users\growo\AppData\Local\Temp\cc8OHj2a.s 			page 6
+
+
+ 207:isr_HA.c      **** *   address: Address of the ISR to set in the interrupt vector table.
+ 208:isr_HA.c      **** *
+ 209:isr_HA.c      **** * Return:
+ 210:isr_HA.c      **** *   None
+ 211:isr_HA.c      **** *
+ 212:isr_HA.c      **** *******************************************************************************/
+ 213:isr_HA.c      **** void isr_HA_SetVector(cyisraddress address)
+ 214:isr_HA.c      **** {
+  80              		.loc 1 214 0
+  81              		.cfi_startproc
+  82              		@ args = 0, pretend = 0, frame = 0
+  83              		@ frame_needed = 0, uses_anonymous_args = 0
+  84              		@ link register save eliminated.
+  85              	.LVL2:
+ 215:isr_HA.c      ****     cyisraddress * ramVectorTable;
+ 216:isr_HA.c      **** 
+ 217:isr_HA.c      ****     ramVectorTable = (cyisraddress *) *CYINT_VECT_TABLE;
+  86              		.loc 1 217 0
+  87 0000 014B     		ldr	r3, .L6
+  88 0002 1B68     		ldr	r3, [r3]
+  89              	.LVL3:
+ 218:isr_HA.c      **** 
+ 219:isr_HA.c      ****     ramVectorTable[CYINT_IRQ_BASE + (uint32)isr_HA__INTC_NUMBER] = address;
+  90              		.loc 1 219 0
+  91 0004 5865     		str	r0, [r3, #84]
+  92 0006 7047     		bx	lr
+  93              	.L7:
+  94              		.align	2
+  95              	.L6:
+  96 0008 08ED00E0 		.word	-536810232
+  97              		.cfi_endproc
+  98              	.LFE4:
+  99              		.size	isr_HA_SetVector, .-isr_HA_SetVector
+ 100              		.section	.text.isr_HA_GetVector,"ax",%progbits
+ 101              		.align	2
+ 102              		.global	isr_HA_GetVector
+ 103              		.thumb
+ 104              		.thumb_func
+ 105              		.type	isr_HA_GetVector, %function
+ 106              	isr_HA_GetVector:
+ 107              	.LFB5:
+ 220:isr_HA.c      **** }
+ 221:isr_HA.c      **** 
+ 222:isr_HA.c      **** 
+ 223:isr_HA.c      **** /*******************************************************************************
+ 224:isr_HA.c      **** * Function Name: isr_HA_GetVector
+ 225:isr_HA.c      **** ********************************************************************************
+ 226:isr_HA.c      **** *
+ 227:isr_HA.c      **** * Summary:
+ 228:isr_HA.c      **** *   Gets the "address" of the current ISR vector for the Interrupt.
+ 229:isr_HA.c      **** *
+ 230:isr_HA.c      **** * Parameters:
+ 231:isr_HA.c      **** *   None
+ 232:isr_HA.c      **** *
+ 233:isr_HA.c      **** * Return:
+ 234:isr_HA.c      **** *   Address of the ISR in the interrupt vector table.
+ 235:isr_HA.c      **** *
+ARM GAS  C:\Users\growo\AppData\Local\Temp\cc8OHj2a.s 			page 7
+
+
+ 236:isr_HA.c      **** *******************************************************************************/
+ 237:isr_HA.c      **** cyisraddress isr_HA_GetVector(void)
+ 238:isr_HA.c      **** {
+ 108              		.loc 1 238 0
+ 109              		.cfi_startproc
+ 110              		@ args = 0, pretend = 0, frame = 0
+ 111              		@ frame_needed = 0, uses_anonymous_args = 0
+ 112              		@ link register save eliminated.
+ 239:isr_HA.c      ****     cyisraddress * ramVectorTable;
+ 240:isr_HA.c      **** 
+ 241:isr_HA.c      ****     ramVectorTable = (cyisraddress *) *CYINT_VECT_TABLE;
+ 113              		.loc 1 241 0
+ 114 0000 014B     		ldr	r3, .L9
+ 115 0002 1B68     		ldr	r3, [r3]
+ 116              	.LVL4:
+ 242:isr_HA.c      **** 
+ 243:isr_HA.c      ****     return ramVectorTable[CYINT_IRQ_BASE + (uint32)isr_HA__INTC_NUMBER];
+ 244:isr_HA.c      **** }
+ 117              		.loc 1 244 0
+ 118 0004 586D     		ldr	r0, [r3, #84]
+ 119 0006 7047     		bx	lr
+ 120              	.L10:
+ 121              		.align	2
+ 122              	.L9:
+ 123 0008 08ED00E0 		.word	-536810232
+ 124              		.cfi_endproc
+ 125              	.LFE5:
+ 126              		.size	isr_HA_GetVector, .-isr_HA_GetVector
+ 127              		.section	.text.isr_HA_SetPriority,"ax",%progbits
+ 128              		.align	2
+ 129              		.global	isr_HA_SetPriority
+ 130              		.thumb
+ 131              		.thumb_func
+ 132              		.type	isr_HA_SetPriority, %function
+ 133              	isr_HA_SetPriority:
+ 134              	.LFB6:
+ 245:isr_HA.c      **** 
+ 246:isr_HA.c      **** 
+ 247:isr_HA.c      **** /*******************************************************************************
+ 248:isr_HA.c      **** * Function Name: isr_HA_SetPriority
+ 249:isr_HA.c      **** ********************************************************************************
+ 250:isr_HA.c      **** *
+ 251:isr_HA.c      **** * Summary:
+ 252:isr_HA.c      **** *   Sets the Priority of the Interrupt. 
+ 253:isr_HA.c      **** *
+ 254:isr_HA.c      **** *   Note calling isr_HA_Start or isr_HA_StartEx will 
+ 255:isr_HA.c      **** *   override any effect this API would have had. This API should only be called
+ 256:isr_HA.c      **** *   after isr_HA_Start or isr_HA_StartEx has been called. 
+ 257:isr_HA.c      **** *   To set the initial priority for the component, use the Design-Wide Resources
+ 258:isr_HA.c      **** *   Interrupt Editor.
+ 259:isr_HA.c      **** *
+ 260:isr_HA.c      **** *   Note This API has no effect on Non-maskable interrupt NMI).
+ 261:isr_HA.c      **** *
+ 262:isr_HA.c      **** * Parameters:
+ 263:isr_HA.c      **** *   priority: Priority of the interrupt, 0 being the highest priority
+ 264:isr_HA.c      **** *             PSoC 3 and PSoC 5LP: Priority is from 0 to 7.
+ 265:isr_HA.c      **** *             PSoC 4: Priority is from 0 to 3.
+ARM GAS  C:\Users\growo\AppData\Local\Temp\cc8OHj2a.s 			page 8
+
+
+ 266:isr_HA.c      **** *
+ 267:isr_HA.c      **** * Return:
+ 268:isr_HA.c      **** *   None
+ 269:isr_HA.c      **** *
+ 270:isr_HA.c      **** *******************************************************************************/
+ 271:isr_HA.c      **** void isr_HA_SetPriority(uint8 priority)
+ 272:isr_HA.c      **** {
+ 135              		.loc 1 272 0
+ 136              		.cfi_startproc
+ 137              		@ args = 0, pretend = 0, frame = 0
+ 138              		@ frame_needed = 0, uses_anonymous_args = 0
+ 139              		@ link register save eliminated.
+ 140              	.LVL5:
+ 273:isr_HA.c      ****     *isr_HA_INTC_PRIOR = priority << 5;
+ 141              		.loc 1 273 0
+ 142 0000 4001     		lsls	r0, r0, #5
+ 143              	.LVL6:
+ 144 0002 C0B2     		uxtb	r0, r0
+ 145 0004 014B     		ldr	r3, .L12
+ 146 0006 1870     		strb	r0, [r3]
+ 147 0008 7047     		bx	lr
+ 148              	.L13:
+ 149 000a 00BF     		.align	2
+ 150              	.L12:
+ 151 000c 05E400E0 		.word	-536812539
+ 152              		.cfi_endproc
+ 153              	.LFE6:
+ 154              		.size	isr_HA_SetPriority, .-isr_HA_SetPriority
+ 155              		.section	.text.isr_HA_GetPriority,"ax",%progbits
+ 156              		.align	2
+ 157              		.global	isr_HA_GetPriority
+ 158              		.thumb
+ 159              		.thumb_func
+ 160              		.type	isr_HA_GetPriority, %function
+ 161              	isr_HA_GetPriority:
+ 162              	.LFB7:
+ 274:isr_HA.c      **** }
+ 275:isr_HA.c      **** 
+ 276:isr_HA.c      **** 
+ 277:isr_HA.c      **** /*******************************************************************************
+ 278:isr_HA.c      **** * Function Name: isr_HA_GetPriority
+ 279:isr_HA.c      **** ********************************************************************************
+ 280:isr_HA.c      **** *
+ 281:isr_HA.c      **** * Summary:
+ 282:isr_HA.c      **** *   Gets the Priority of the Interrupt.
+ 283:isr_HA.c      **** *
+ 284:isr_HA.c      **** * Parameters:
+ 285:isr_HA.c      **** *   None
+ 286:isr_HA.c      **** *
+ 287:isr_HA.c      **** * Return:
+ 288:isr_HA.c      **** *   Priority of the interrupt, 0 being the highest priority
+ 289:isr_HA.c      **** *    PSoC 3 and PSoC 5LP: Priority is from 0 to 7.
+ 290:isr_HA.c      **** *    PSoC 4: Priority is from 0 to 3.
+ 291:isr_HA.c      **** *
+ 292:isr_HA.c      **** *******************************************************************************/
+ 293:isr_HA.c      **** uint8 isr_HA_GetPriority(void)
+ 294:isr_HA.c      **** {
+ARM GAS  C:\Users\growo\AppData\Local\Temp\cc8OHj2a.s 			page 9
+
+
+ 163              		.loc 1 294 0
+ 164              		.cfi_startproc
+ 165              		@ args = 0, pretend = 0, frame = 0
+ 166              		@ frame_needed = 0, uses_anonymous_args = 0
+ 167              		@ link register save eliminated.
+ 295:isr_HA.c      ****     uint8 priority;
+ 296:isr_HA.c      **** 
+ 297:isr_HA.c      **** 
+ 298:isr_HA.c      ****     priority = *isr_HA_INTC_PRIOR >> 5;
+ 168              		.loc 1 298 0
+ 169 0000 014B     		ldr	r3, .L15
+ 170 0002 1878     		ldrb	r0, [r3]	@ zero_extendqisi2
+ 171              	.LVL7:
+ 299:isr_HA.c      **** 
+ 300:isr_HA.c      ****     return priority;
+ 301:isr_HA.c      **** }
+ 172              		.loc 1 301 0
+ 173 0004 4009     		lsrs	r0, r0, #5
+ 174              	.LVL8:
+ 175 0006 7047     		bx	lr
+ 176              	.L16:
+ 177              		.align	2
+ 178              	.L15:
+ 179 0008 05E400E0 		.word	-536812539
+ 180              		.cfi_endproc
+ 181              	.LFE7:
+ 182              		.size	isr_HA_GetPriority, .-isr_HA_GetPriority
+ 183              		.section	.text.isr_HA_Enable,"ax",%progbits
+ 184              		.align	2
+ 185              		.global	isr_HA_Enable
+ 186              		.thumb
+ 187              		.thumb_func
+ 188              		.type	isr_HA_Enable, %function
+ 189              	isr_HA_Enable:
+ 190              	.LFB8:
+ 302:isr_HA.c      **** 
+ 303:isr_HA.c      **** 
+ 304:isr_HA.c      **** /*******************************************************************************
+ 305:isr_HA.c      **** * Function Name: isr_HA_Enable
+ 306:isr_HA.c      **** ********************************************************************************
+ 307:isr_HA.c      **** *
+ 308:isr_HA.c      **** * Summary:
+ 309:isr_HA.c      **** *   Enables the interrupt to the interrupt controller. Do not call this function
+ 310:isr_HA.c      **** *   unless ISR_Start() has been called or the functionality of the ISR_Start() 
+ 311:isr_HA.c      **** *   function, which sets the vector and the priority, has been called.
+ 312:isr_HA.c      **** *
+ 313:isr_HA.c      **** * Parameters:
+ 314:isr_HA.c      **** *   None
+ 315:isr_HA.c      **** *
+ 316:isr_HA.c      **** * Return:
+ 317:isr_HA.c      **** *   None
+ 318:isr_HA.c      **** *
+ 319:isr_HA.c      **** *******************************************************************************/
+ 320:isr_HA.c      **** void isr_HA_Enable(void)
+ 321:isr_HA.c      **** {
+ 191              		.loc 1 321 0
+ 192              		.cfi_startproc
+ARM GAS  C:\Users\growo\AppData\Local\Temp\cc8OHj2a.s 			page 10
+
+
+ 193              		@ args = 0, pretend = 0, frame = 0
+ 194              		@ frame_needed = 0, uses_anonymous_args = 0
+ 195              		@ link register save eliminated.
+ 322:isr_HA.c      ****     /* Enable the general interrupt. */
+ 323:isr_HA.c      ****     *isr_HA_INTC_SET_EN = isr_HA__INTC_MASK;
+ 196              		.loc 1 323 0
+ 197 0000 2022     		movs	r2, #32
+ 198 0002 014B     		ldr	r3, .L18
+ 199 0004 1A60     		str	r2, [r3]
+ 200 0006 7047     		bx	lr
+ 201              	.L19:
+ 202              		.align	2
+ 203              	.L18:
+ 204 0008 00E100E0 		.word	-536813312
+ 205              		.cfi_endproc
+ 206              	.LFE8:
+ 207              		.size	isr_HA_Enable, .-isr_HA_Enable
+ 208              		.section	.text.isr_HA_GetState,"ax",%progbits
+ 209              		.align	2
+ 210              		.global	isr_HA_GetState
+ 211              		.thumb
+ 212              		.thumb_func
+ 213              		.type	isr_HA_GetState, %function
+ 214              	isr_HA_GetState:
+ 215              	.LFB9:
+ 324:isr_HA.c      **** }
+ 325:isr_HA.c      **** 
+ 326:isr_HA.c      **** 
+ 327:isr_HA.c      **** /*******************************************************************************
+ 328:isr_HA.c      **** * Function Name: isr_HA_GetState
+ 329:isr_HA.c      **** ********************************************************************************
+ 330:isr_HA.c      **** *
+ 331:isr_HA.c      **** * Summary:
+ 332:isr_HA.c      **** *   Gets the state (enabled, disabled) of the Interrupt.
+ 333:isr_HA.c      **** *
+ 334:isr_HA.c      **** * Parameters:
+ 335:isr_HA.c      **** *   None
+ 336:isr_HA.c      **** *
+ 337:isr_HA.c      **** * Return:
+ 338:isr_HA.c      **** *   1 if enabled, 0 if disabled.
+ 339:isr_HA.c      **** *
+ 340:isr_HA.c      **** *******************************************************************************/
+ 341:isr_HA.c      **** uint8 isr_HA_GetState(void)
+ 342:isr_HA.c      **** {
+ 216              		.loc 1 342 0
+ 217              		.cfi_startproc
+ 218              		@ args = 0, pretend = 0, frame = 0
+ 219              		@ frame_needed = 0, uses_anonymous_args = 0
+ 220              		@ link register save eliminated.
+ 343:isr_HA.c      ****     /* Get the state of the general interrupt. */
+ 344:isr_HA.c      ****     return ((*isr_HA_INTC_SET_EN & (uint32)isr_HA__INTC_MASK) != 0u) ? 1u:0u;
+ 221              		.loc 1 344 0
+ 222 0000 044B     		ldr	r3, .L23
+ 223 0002 1B68     		ldr	r3, [r3]
+ 224 0004 13F0200F 		tst	r3, #32
+ 225 0008 01D0     		beq	.L22
+ 226 000a 0120     		movs	r0, #1
+ARM GAS  C:\Users\growo\AppData\Local\Temp\cc8OHj2a.s 			page 11
+
+
+ 227 000c 7047     		bx	lr
+ 228              	.L22:
+ 229 000e 0020     		movs	r0, #0
+ 345:isr_HA.c      **** }
+ 230              		.loc 1 345 0
+ 231 0010 7047     		bx	lr
+ 232              	.L24:
+ 233 0012 00BF     		.align	2
+ 234              	.L23:
+ 235 0014 00E100E0 		.word	-536813312
+ 236              		.cfi_endproc
+ 237              	.LFE9:
+ 238              		.size	isr_HA_GetState, .-isr_HA_GetState
+ 239              		.section	.text.isr_HA_Disable,"ax",%progbits
+ 240              		.align	2
+ 241              		.global	isr_HA_Disable
+ 242              		.thumb
+ 243              		.thumb_func
+ 244              		.type	isr_HA_Disable, %function
+ 245              	isr_HA_Disable:
+ 246              	.LFB10:
+ 346:isr_HA.c      **** 
+ 347:isr_HA.c      **** 
+ 348:isr_HA.c      **** /*******************************************************************************
+ 349:isr_HA.c      **** * Function Name: isr_HA_Disable
+ 350:isr_HA.c      **** ********************************************************************************
+ 351:isr_HA.c      **** *
+ 352:isr_HA.c      **** * Summary:
+ 353:isr_HA.c      **** *   Disables the Interrupt in the interrupt controller.
+ 354:isr_HA.c      **** *
+ 355:isr_HA.c      **** * Parameters:
+ 356:isr_HA.c      **** *   None
+ 357:isr_HA.c      **** *
+ 358:isr_HA.c      **** * Return:
+ 359:isr_HA.c      **** *   None
+ 360:isr_HA.c      **** *
+ 361:isr_HA.c      **** *******************************************************************************/
+ 362:isr_HA.c      **** void isr_HA_Disable(void)
+ 363:isr_HA.c      **** {
+ 247              		.loc 1 363 0
+ 248              		.cfi_startproc
+ 249              		@ args = 0, pretend = 0, frame = 0
+ 250              		@ frame_needed = 0, uses_anonymous_args = 0
+ 251              		@ link register save eliminated.
+ 364:isr_HA.c      ****     /* Disable the general interrupt. */
+ 365:isr_HA.c      ****     *isr_HA_INTC_CLR_EN = isr_HA__INTC_MASK;
+ 252              		.loc 1 365 0
+ 253 0000 2022     		movs	r2, #32
+ 254 0002 014B     		ldr	r3, .L26
+ 255 0004 1A60     		str	r2, [r3]
+ 256 0006 7047     		bx	lr
+ 257              	.L27:
+ 258              		.align	2
+ 259              	.L26:
+ 260 0008 80E100E0 		.word	-536813184
+ 261              		.cfi_endproc
+ 262              	.LFE10:
+ARM GAS  C:\Users\growo\AppData\Local\Temp\cc8OHj2a.s 			page 12
+
+
+ 263              		.size	isr_HA_Disable, .-isr_HA_Disable
+ 264              		.section	.text.isr_HA_Start,"ax",%progbits
+ 265              		.align	2
+ 266              		.global	isr_HA_Start
+ 267              		.thumb
+ 268              		.thumb_func
+ 269              		.type	isr_HA_Start, %function
+ 270              	isr_HA_Start:
+ 271              	.LFB0:
+  69:isr_HA.c      ****     /* For all we know the interrupt is active. */
+ 272              		.loc 1 69 0
+ 273              		.cfi_startproc
+ 274              		@ args = 0, pretend = 0, frame = 0
+ 275              		@ frame_needed = 0, uses_anonymous_args = 0
+ 276 0000 08B5     		push	{r3, lr}
+ 277              		.cfi_def_cfa_offset 8
+ 278              		.cfi_offset 3, -8
+ 279              		.cfi_offset 14, -4
+  71:isr_HA.c      **** 
+ 280              		.loc 1 71 0
+ 281 0002 FFF7FEFF 		bl	isr_HA_Disable
+ 282              	.LVL9:
+  74:isr_HA.c      **** 
+ 283              		.loc 1 74 0
+ 284 0006 0448     		ldr	r0, .L30
+ 285 0008 FFF7FEFF 		bl	isr_HA_SetVector
+ 286              	.LVL10:
+  77:isr_HA.c      **** 
+ 287              		.loc 1 77 0
+ 288 000c 0720     		movs	r0, #7
+ 289 000e FFF7FEFF 		bl	isr_HA_SetPriority
+ 290              	.LVL11:
+  80:isr_HA.c      **** }
+ 291              		.loc 1 80 0
+ 292 0012 FFF7FEFF 		bl	isr_HA_Enable
+ 293              	.LVL12:
+ 294 0016 08BD     		pop	{r3, pc}
+ 295              	.L31:
+ 296              		.align	2
+ 297              	.L30:
+ 298 0018 00000000 		.word	isr_HA_Interrupt
+ 299              		.cfi_endproc
+ 300              	.LFE0:
+ 301              		.size	isr_HA_Start, .-isr_HA_Start
+ 302              		.section	.text.isr_HA_StartEx,"ax",%progbits
+ 303              		.align	2
+ 304              		.global	isr_HA_StartEx
+ 305              		.thumb
+ 306              		.thumb_func
+ 307              		.type	isr_HA_StartEx, %function
+ 308              	isr_HA_StartEx:
+ 309              	.LFB1:
+ 112:isr_HA.c      ****     /* For all we know the interrupt is active. */
+ 310              		.loc 1 112 0
+ 311              		.cfi_startproc
+ 312              		@ args = 0, pretend = 0, frame = 0
+ 313              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  C:\Users\growo\AppData\Local\Temp\cc8OHj2a.s 			page 13
+
+
+ 314              	.LVL13:
+ 315 0000 10B5     		push	{r4, lr}
+ 316              		.cfi_def_cfa_offset 8
+ 317              		.cfi_offset 4, -8
+ 318              		.cfi_offset 14, -4
+ 319 0002 0446     		mov	r4, r0
+ 114:isr_HA.c      **** 
+ 320              		.loc 1 114 0
+ 321 0004 FFF7FEFF 		bl	isr_HA_Disable
+ 322              	.LVL14:
+ 117:isr_HA.c      **** 
+ 323              		.loc 1 117 0
+ 324 0008 2046     		mov	r0, r4
+ 325 000a FFF7FEFF 		bl	isr_HA_SetVector
+ 326              	.LVL15:
+ 120:isr_HA.c      **** 
+ 327              		.loc 1 120 0
+ 328 000e 0720     		movs	r0, #7
+ 329 0010 FFF7FEFF 		bl	isr_HA_SetPriority
+ 330              	.LVL16:
+ 123:isr_HA.c      **** }
+ 331              		.loc 1 123 0
+ 332 0014 FFF7FEFF 		bl	isr_HA_Enable
+ 333              	.LVL17:
+ 334 0018 10BD     		pop	{r4, pc}
+ 335              		.cfi_endproc
+ 336              	.LFE1:
+ 337              		.size	isr_HA_StartEx, .-isr_HA_StartEx
+ 338 001a 00BF     		.section	.text.isr_HA_Stop,"ax",%progbits
+ 339              		.align	2
+ 340              		.global	isr_HA_Stop
+ 341              		.thumb
+ 342              		.thumb_func
+ 343              		.type	isr_HA_Stop, %function
+ 344              	isr_HA_Stop:
+ 345              	.LFB2:
+ 142:isr_HA.c      ****     /* Disable this interrupt. */
+ 346              		.loc 1 142 0
+ 347              		.cfi_startproc
+ 348              		@ args = 0, pretend = 0, frame = 0
+ 349              		@ frame_needed = 0, uses_anonymous_args = 0
+ 350 0000 08B5     		push	{r3, lr}
+ 351              		.cfi_def_cfa_offset 8
+ 352              		.cfi_offset 3, -8
+ 353              		.cfi_offset 14, -4
+ 144:isr_HA.c      **** 
+ 354              		.loc 1 144 0
+ 355 0002 FFF7FEFF 		bl	isr_HA_Disable
+ 356              	.LVL18:
+ 147:isr_HA.c      **** }
+ 357              		.loc 1 147 0
+ 358 0006 0248     		ldr	r0, .L36
+ 359 0008 FFF7FEFF 		bl	isr_HA_SetVector
+ 360              	.LVL19:
+ 361 000c 08BD     		pop	{r3, pc}
+ 362              	.L37:
+ 363 000e 00BF     		.align	2
+ARM GAS  C:\Users\growo\AppData\Local\Temp\cc8OHj2a.s 			page 14
+
+
+ 364              	.L36:
+ 365 0010 00000000 		.word	IntDefaultHandler
+ 366              		.cfi_endproc
+ 367              	.LFE2:
+ 368              		.size	isr_HA_Stop, .-isr_HA_Stop
+ 369              		.section	.text.isr_HA_SetPending,"ax",%progbits
+ 370              		.align	2
+ 371              		.global	isr_HA_SetPending
+ 372              		.thumb
+ 373              		.thumb_func
+ 374              		.type	isr_HA_SetPending, %function
+ 375              	isr_HA_SetPending:
+ 376              	.LFB11:
+ 366:isr_HA.c      **** }
+ 367:isr_HA.c      **** 
+ 368:isr_HA.c      **** 
+ 369:isr_HA.c      **** /*******************************************************************************
+ 370:isr_HA.c      **** * Function Name: isr_HA_SetPending
+ 371:isr_HA.c      **** ********************************************************************************
+ 372:isr_HA.c      **** *
+ 373:isr_HA.c      **** * Summary:
+ 374:isr_HA.c      **** *   Causes the Interrupt to enter the pending state, a software method of
+ 375:isr_HA.c      **** *   generating the interrupt.
+ 376:isr_HA.c      **** *
+ 377:isr_HA.c      **** * Parameters:
+ 378:isr_HA.c      **** *   None
+ 379:isr_HA.c      **** *
+ 380:isr_HA.c      **** * Return:
+ 381:isr_HA.c      **** *   None
+ 382:isr_HA.c      **** *
+ 383:isr_HA.c      **** * Side Effects:
+ 384:isr_HA.c      **** *   If interrupts are enabled and the interrupt is set up properly, the ISR is
+ 385:isr_HA.c      **** *   entered (depending on the priority of this interrupt and other pending 
+ 386:isr_HA.c      **** *   interrupts).
+ 387:isr_HA.c      **** *
+ 388:isr_HA.c      **** *******************************************************************************/
+ 389:isr_HA.c      **** void isr_HA_SetPending(void)
+ 390:isr_HA.c      **** {
+ 377              		.loc 1 390 0
+ 378              		.cfi_startproc
+ 379              		@ args = 0, pretend = 0, frame = 0
+ 380              		@ frame_needed = 0, uses_anonymous_args = 0
+ 381              		@ link register save eliminated.
+ 391:isr_HA.c      ****     *isr_HA_INTC_SET_PD = isr_HA__INTC_MASK;
+ 382              		.loc 1 391 0
+ 383 0000 2022     		movs	r2, #32
+ 384 0002 014B     		ldr	r3, .L39
+ 385 0004 1A60     		str	r2, [r3]
+ 386 0006 7047     		bx	lr
+ 387              	.L40:
+ 388              		.align	2
+ 389              	.L39:
+ 390 0008 00E200E0 		.word	-536813056
+ 391              		.cfi_endproc
+ 392              	.LFE11:
+ 393              		.size	isr_HA_SetPending, .-isr_HA_SetPending
+ 394              		.section	.text.isr_HA_ClearPending,"ax",%progbits
+ARM GAS  C:\Users\growo\AppData\Local\Temp\cc8OHj2a.s 			page 15
+
+
+ 395              		.align	2
+ 396              		.global	isr_HA_ClearPending
+ 397              		.thumb
+ 398              		.thumb_func
+ 399              		.type	isr_HA_ClearPending, %function
+ 400              	isr_HA_ClearPending:
+ 401              	.LFB12:
+ 392:isr_HA.c      **** }
+ 393:isr_HA.c      **** 
+ 394:isr_HA.c      **** 
+ 395:isr_HA.c      **** /*******************************************************************************
+ 396:isr_HA.c      **** * Function Name: isr_HA_ClearPending
+ 397:isr_HA.c      **** ********************************************************************************
+ 398:isr_HA.c      **** *
+ 399:isr_HA.c      **** * Summary:
+ 400:isr_HA.c      **** *   Clears a pending interrupt in the interrupt controller.
+ 401:isr_HA.c      **** *
+ 402:isr_HA.c      **** *   Note Some interrupt sources are clear-on-read and require the block 
+ 403:isr_HA.c      **** *   interrupt/status register to be read/cleared with the appropriate block API 
+ 404:isr_HA.c      **** *   (GPIO, UART, and so on). Otherwise the ISR will continue to remain in 
+ 405:isr_HA.c      **** *   pending state even though the interrupt itself is cleared using this API.
+ 406:isr_HA.c      **** *
+ 407:isr_HA.c      **** * Parameters:
+ 408:isr_HA.c      **** *   None
+ 409:isr_HA.c      **** *
+ 410:isr_HA.c      **** * Return:
+ 411:isr_HA.c      **** *   None
+ 412:isr_HA.c      **** *
+ 413:isr_HA.c      **** *******************************************************************************/
+ 414:isr_HA.c      **** void isr_HA_ClearPending(void)
+ 415:isr_HA.c      **** {
+ 402              		.loc 1 415 0
+ 403              		.cfi_startproc
+ 404              		@ args = 0, pretend = 0, frame = 0
+ 405              		@ frame_needed = 0, uses_anonymous_args = 0
+ 406              		@ link register save eliminated.
+ 416:isr_HA.c      ****     *isr_HA_INTC_CLR_PD = isr_HA__INTC_MASK;
+ 407              		.loc 1 416 0
+ 408 0000 2022     		movs	r2, #32
+ 409 0002 014B     		ldr	r3, .L42
+ 410 0004 1A60     		str	r2, [r3]
+ 411 0006 7047     		bx	lr
+ 412              	.L43:
+ 413              		.align	2
+ 414              	.L42:
+ 415 0008 80E200E0 		.word	-536812928
+ 416              		.cfi_endproc
+ 417              	.LFE12:
+ 418              		.size	isr_HA_ClearPending, .-isr_HA_ClearPending
+ 419              		.comm	HA_counter,4,4
+ 420              		.comm	ma,4,4
+ 421              		.comm	ca,4,4
+ 422              		.comm	t_ha,4,4
+ 423              		.text
+ 424              	.Letext0:
+ 425              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.1\\psoc creator\\import\\gnu\\arm\\5.4.
+ 426              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.1\\psoc creator\\import\\gnu\\arm\\5.4.
+ARM GAS  C:\Users\growo\AppData\Local\Temp\cc8OHj2a.s 			page 16
+
+
+ 427              		.file 4 "Generated_Source\\PSoC5/cytypes.h"
+ 428              		.file 5 "Generated_Source\\PSoC5/Timer_ha.h"
+ 429              		.section	.debug_info,"",%progbits
+ 430              	.Ldebug_info0:
+ 431 0000 5E030000 		.4byte	0x35e
+ 432 0004 0400     		.2byte	0x4
+ 433 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 434 000a 04       		.byte	0x4
+ 435 000b 01       		.uleb128 0x1
+ 436 000c 00010000 		.4byte	.LASF40
+ 437 0010 0C       		.byte	0xc
+ 438 0011 A0020000 		.4byte	.LASF41
+ 439 0015 06000000 		.4byte	.LASF42
+ 440 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 441 001d 00000000 		.4byte	0
+ 442 0021 00000000 		.4byte	.Ldebug_line0
+ 443 0025 02       		.uleb128 0x2
+ 444 0026 04       		.byte	0x4
+ 445 0027 05       		.byte	0x5
+ 446 0028 696E7400 		.ascii	"int\000"
+ 447 002c 03       		.uleb128 0x3
+ 448 002d 04       		.byte	0x4
+ 449 002e 07       		.byte	0x7
+ 450 002f 97000000 		.4byte	.LASF0
+ 451 0033 03       		.uleb128 0x3
+ 452 0034 08       		.byte	0x8
+ 453 0035 05       		.byte	0x5
+ 454 0036 74020000 		.4byte	.LASF1
+ 455 003a 03       		.uleb128 0x3
+ 456 003b 08       		.byte	0x8
+ 457 003c 04       		.byte	0x4
+ 458 003d BD020000 		.4byte	.LASF2
+ 459 0041 03       		.uleb128 0x3
+ 460 0042 01       		.byte	0x1
+ 461 0043 06       		.byte	0x6
+ 462 0044 C9020000 		.4byte	.LASF3
+ 463 0048 03       		.uleb128 0x3
+ 464 0049 01       		.byte	0x1
+ 465 004a 08       		.byte	0x8
+ 466 004b F2000000 		.4byte	.LASF4
+ 467 004f 03       		.uleb128 0x3
+ 468 0050 02       		.byte	0x2
+ 469 0051 05       		.byte	0x5
+ 470 0052 96020000 		.4byte	.LASF5
+ 471 0056 03       		.uleb128 0x3
+ 472 0057 02       		.byte	0x2
+ 473 0058 07       		.byte	0x7
+ 474 0059 71000000 		.4byte	.LASF6
+ 475 005d 04       		.uleb128 0x4
+ 476 005e 49000000 		.4byte	.LASF12
+ 477 0062 02       		.byte	0x2
+ 478 0063 3F       		.byte	0x3f
+ 479 0064 68000000 		.4byte	0x68
+ 480 0068 03       		.uleb128 0x3
+ 481 0069 04       		.byte	0x4
+ 482 006a 05       		.byte	0x5
+ 483 006b A9020000 		.4byte	.LASF7
+ARM GAS  C:\Users\growo\AppData\Local\Temp\cc8OHj2a.s 			page 17
+
+
+ 484 006f 03       		.uleb128 0x3
+ 485 0070 04       		.byte	0x4
+ 486 0071 07       		.byte	0x7
+ 487 0072 93010000 		.4byte	.LASF8
+ 488 0076 03       		.uleb128 0x3
+ 489 0077 08       		.byte	0x8
+ 490 0078 07       		.byte	0x7
+ 491 0079 3F020000 		.4byte	.LASF9
+ 492 007d 03       		.uleb128 0x3
+ 493 007e 04       		.byte	0x4
+ 494 007f 07       		.byte	0x7
+ 495 0080 6B020000 		.4byte	.LASF10
+ 496 0084 03       		.uleb128 0x3
+ 497 0085 01       		.byte	0x1
+ 498 0086 08       		.byte	0x8
+ 499 0087 82020000 		.4byte	.LASF11
+ 500 008b 05       		.uleb128 0x5
+ 501 008c 04       		.byte	0x4
+ 502 008d 91000000 		.4byte	0x91
+ 503 0091 06       		.uleb128 0x6
+ 504 0092 04       		.uleb128 0x4
+ 505 0093 63020000 		.4byte	.LASF13
+ 506 0097 03       		.byte	0x3
+ 507 0098 2C       		.byte	0x2c
+ 508 0099 5D000000 		.4byte	0x5d
+ 509 009d 07       		.uleb128 0x7
+ 510 009e A5010000 		.4byte	.LASF14
+ 511 00a2 04       		.byte	0x4
+ 512 00a3 9201     		.2byte	0x192
+ 513 00a5 48000000 		.4byte	0x48
+ 514 00a9 07       		.uleb128 0x7
+ 515 00aa 24020000 		.4byte	.LASF15
+ 516 00ae 04       		.byte	0x4
+ 517 00af 9401     		.2byte	0x194
+ 518 00b1 6F000000 		.4byte	0x6f
+ 519 00b5 03       		.uleb128 0x3
+ 520 00b6 04       		.byte	0x4
+ 521 00b7 04       		.byte	0x4
+ 522 00b8 D8000000 		.4byte	.LASF16
+ 523 00bc 03       		.uleb128 0x3
+ 524 00bd 08       		.byte	0x8
+ 525 00be 04       		.byte	0x4
+ 526 00bf E8010000 		.4byte	.LASF17
+ 527 00c3 07       		.uleb128 0x7
+ 528 00c4 8E010000 		.4byte	.LASF18
+ 529 00c8 04       		.byte	0x4
+ 530 00c9 3C02     		.2byte	0x23c
+ 531 00cb CF000000 		.4byte	0xcf
+ 532 00cf 08       		.uleb128 0x8
+ 533 00d0 9D000000 		.4byte	0x9d
+ 534 00d4 07       		.uleb128 0x7
+ 535 00d5 00000000 		.4byte	.LASF19
+ 536 00d9 04       		.byte	0x4
+ 537 00da 3E02     		.2byte	0x23e
+ 538 00dc E0000000 		.4byte	0xe0
+ 539 00e0 08       		.uleb128 0x8
+ 540 00e1 A9000000 		.4byte	0xa9
+ARM GAS  C:\Users\growo\AppData\Local\Temp\cc8OHj2a.s 			page 18
+
+
+ 541 00e5 07       		.uleb128 0x7
+ 542 00e6 56020000 		.4byte	.LASF20
+ 543 00ea 04       		.byte	0x4
+ 544 00eb 4E02     		.2byte	0x24e
+ 545 00ed 8B000000 		.4byte	0x8b
+ 546 00f1 09       		.uleb128 0x9
+ 547 00f2 0E020000 		.4byte	.LASF21
+ 548 00f6 01       		.byte	0x1
+ 549 00f7 A7       		.byte	0xa7
+ 550 00f8 00000000 		.4byte	.LFB3
+ 551 00fc 3C000000 		.4byte	.LFE3-.LFB3
+ 552 0100 01       		.uleb128 0x1
+ 553 0101 9C       		.byte	0x9c
+ 554 0102 1F010000 		.4byte	0x11f
+ 555 0106 0A       		.uleb128 0xa
+ 556 0107 0E000000 		.4byte	.LVL0
+ 557 010b 4B030000 		.4byte	0x34b
+ 558 010f 0B       		.uleb128 0xb
+ 559 0110 2A000000 		.4byte	.LVL1
+ 560 0114 56030000 		.4byte	0x356
+ 561 0118 0C       		.uleb128 0xc
+ 562 0119 01       		.uleb128 0x1
+ 563 011a 50       		.byte	0x50
+ 564 011b 01       		.uleb128 0x1
+ 565 011c 30       		.byte	0x30
+ 566 011d 00       		.byte	0
+ 567 011e 00       		.byte	0
+ 568 011f 09       		.uleb128 0x9
+ 569 0120 60000000 		.4byte	.LASF22
+ 570 0124 01       		.byte	0x1
+ 571 0125 D5       		.byte	0xd5
+ 572 0126 00000000 		.4byte	.LFB4
+ 573 012a 0C000000 		.4byte	.LFE4-.LFB4
+ 574 012e 01       		.uleb128 0x1
+ 575 012f 9C       		.byte	0x9c
+ 576 0130 4F010000 		.4byte	0x14f
+ 577 0134 0D       		.uleb128 0xd
+ 578 0135 37020000 		.4byte	.LASF25
+ 579 0139 01       		.byte	0x1
+ 580 013a D5       		.byte	0xd5
+ 581 013b E5000000 		.4byte	0xe5
+ 582 013f 01       		.uleb128 0x1
+ 583 0140 50       		.byte	0x50
+ 584 0141 0E       		.uleb128 0xe
+ 585 0142 87020000 		.4byte	.LASF23
+ 586 0146 01       		.byte	0x1
+ 587 0147 D7       		.byte	0xd7
+ 588 0148 4F010000 		.4byte	0x14f
+ 589 014c 01       		.uleb128 0x1
+ 590 014d 53       		.byte	0x53
+ 591 014e 00       		.byte	0
+ 592 014f 05       		.uleb128 0x5
+ 593 0150 04       		.byte	0x4
+ 594 0151 E5000000 		.4byte	0xe5
+ 595 0155 0F       		.uleb128 0xf
+ 596 0156 FD010000 		.4byte	.LASF27
+ 597 015a 01       		.byte	0x1
+ARM GAS  C:\Users\growo\AppData\Local\Temp\cc8OHj2a.s 			page 19
+
+
+ 598 015b ED       		.byte	0xed
+ 599 015c E5000000 		.4byte	0xe5
+ 600 0160 00000000 		.4byte	.LFB5
+ 601 0164 0C000000 		.4byte	.LFE5-.LFB5
+ 602 0168 01       		.uleb128 0x1
+ 603 0169 9C       		.byte	0x9c
+ 604 016a 7C010000 		.4byte	0x17c
+ 605 016e 0E       		.uleb128 0xe
+ 606 016f 87020000 		.4byte	.LASF23
+ 607 0173 01       		.byte	0x1
+ 608 0174 EF       		.byte	0xef
+ 609 0175 4F010000 		.4byte	0x14f
+ 610 0179 01       		.uleb128 0x1
+ 611 017a 53       		.byte	0x53
+ 612 017b 00       		.byte	0
+ 613 017c 10       		.uleb128 0x10
+ 614 017d D5010000 		.4byte	.LASF24
+ 615 0181 01       		.byte	0x1
+ 616 0182 0F01     		.2byte	0x10f
+ 617 0184 00000000 		.4byte	.LFB6
+ 618 0188 10000000 		.4byte	.LFE6-.LFB6
+ 619 018c 01       		.uleb128 0x1
+ 620 018d 9C       		.byte	0x9c
+ 621 018e A3010000 		.4byte	0x1a3
+ 622 0192 11       		.uleb128 0x11
+ 623 0193 CC010000 		.4byte	.LASF26
+ 624 0197 01       		.byte	0x1
+ 625 0198 0F01     		.2byte	0x10f
+ 626 019a 9D000000 		.4byte	0x9d
+ 627 019e 00000000 		.4byte	.LLST0
+ 628 01a2 00       		.byte	0
+ 629 01a3 12       		.uleb128 0x12
+ 630 01a4 84000000 		.4byte	.LASF28
+ 631 01a8 01       		.byte	0x1
+ 632 01a9 2501     		.2byte	0x125
+ 633 01ab 9D000000 		.4byte	0x9d
+ 634 01af 00000000 		.4byte	.LFB7
+ 635 01b3 0C000000 		.4byte	.LFE7-.LFB7
+ 636 01b7 01       		.uleb128 0x1
+ 637 01b8 9C       		.byte	0x9c
+ 638 01b9 CE010000 		.4byte	0x1ce
+ 639 01bd 13       		.uleb128 0x13
+ 640 01be CC010000 		.4byte	.LASF26
+ 641 01c2 01       		.byte	0x1
+ 642 01c3 2701     		.2byte	0x127
+ 643 01c5 9D000000 		.4byte	0x9d
+ 644 01c9 21000000 		.4byte	.LLST1
+ 645 01cd 00       		.byte	0
+ 646 01ce 14       		.uleb128 0x14
+ 647 01cf EF010000 		.4byte	.LASF29
+ 648 01d3 01       		.byte	0x1
+ 649 01d4 4001     		.2byte	0x140
+ 650 01d6 00000000 		.4byte	.LFB8
+ 651 01da 0C000000 		.4byte	.LFE8-.LFB8
+ 652 01de 01       		.uleb128 0x1
+ 653 01df 9C       		.byte	0x9c
+ 654 01e0 15       		.uleb128 0x15
+ARM GAS  C:\Users\growo\AppData\Local\Temp\cc8OHj2a.s 			page 20
+
+
+ 655 01e1 B9000000 		.4byte	.LASF43
+ 656 01e5 01       		.byte	0x1
+ 657 01e6 5501     		.2byte	0x155
+ 658 01e8 9D000000 		.4byte	0x9d
+ 659 01ec 00000000 		.4byte	.LFB9
+ 660 01f0 18000000 		.4byte	.LFE9-.LFB9
+ 661 01f4 01       		.uleb128 0x1
+ 662 01f5 9C       		.byte	0x9c
+ 663 01f6 14       		.uleb128 0x14
+ 664 01f7 BD010000 		.4byte	.LASF30
+ 665 01fb 01       		.byte	0x1
+ 666 01fc 6A01     		.2byte	0x16a
+ 667 01fe 00000000 		.4byte	.LFB10
+ 668 0202 0C000000 		.4byte	.LFE10-.LFB10
+ 669 0206 01       		.uleb128 0x1
+ 670 0207 9C       		.byte	0x9c
+ 671 0208 09       		.uleb128 0x9
+ 672 0209 53000000 		.4byte	.LASF31
+ 673 020d 01       		.byte	0x1
+ 674 020e 44       		.byte	0x44
+ 675 020f 00000000 		.4byte	.LFB0
+ 676 0213 1C000000 		.4byte	.LFE0-.LFB0
+ 677 0217 01       		.uleb128 0x1
+ 678 0218 9C       		.byte	0x9c
+ 679 0219 5A020000 		.4byte	0x25a
+ 680 021d 0A       		.uleb128 0xa
+ 681 021e 06000000 		.4byte	.LVL9
+ 682 0222 F6010000 		.4byte	0x1f6
+ 683 0226 16       		.uleb128 0x16
+ 684 0227 0C000000 		.4byte	.LVL10
+ 685 022b 1F010000 		.4byte	0x11f
+ 686 022f 3D020000 		.4byte	0x23d
+ 687 0233 0C       		.uleb128 0xc
+ 688 0234 01       		.uleb128 0x1
+ 689 0235 50       		.byte	0x50
+ 690 0236 05       		.uleb128 0x5
+ 691 0237 03       		.byte	0x3
+ 692 0238 00000000 		.4byte	isr_HA_Interrupt
+ 693 023c 00       		.byte	0
+ 694 023d 16       		.uleb128 0x16
+ 695 023e 12000000 		.4byte	.LVL11
+ 696 0242 7C010000 		.4byte	0x17c
+ 697 0246 50020000 		.4byte	0x250
+ 698 024a 0C       		.uleb128 0xc
+ 699 024b 01       		.uleb128 0x1
+ 700 024c 50       		.byte	0x50
+ 701 024d 01       		.uleb128 0x1
+ 702 024e 37       		.byte	0x37
+ 703 024f 00       		.byte	0
+ 704 0250 0A       		.uleb128 0xa
+ 705 0251 16000000 		.4byte	.LVL12
+ 706 0255 CE010000 		.4byte	0x1ce
+ 707 0259 00       		.byte	0
+ 708 025a 09       		.uleb128 0x9
+ 709 025b C9000000 		.4byte	.LASF32
+ 710 025f 01       		.byte	0x1
+ 711 0260 6F       		.byte	0x6f
+ARM GAS  C:\Users\growo\AppData\Local\Temp\cc8OHj2a.s 			page 21
+
+
+ 712 0261 00000000 		.4byte	.LFB1
+ 713 0265 1A000000 		.4byte	.LFE1-.LFB1
+ 714 0269 01       		.uleb128 0x1
+ 715 026a 9C       		.byte	0x9c
+ 716 026b B8020000 		.4byte	0x2b8
+ 717 026f 17       		.uleb128 0x17
+ 718 0270 37020000 		.4byte	.LASF25
+ 719 0274 01       		.byte	0x1
+ 720 0275 6F       		.byte	0x6f
+ 721 0276 E5000000 		.4byte	0xe5
+ 722 027a 38000000 		.4byte	.LLST2
+ 723 027e 0A       		.uleb128 0xa
+ 724 027f 08000000 		.4byte	.LVL14
+ 725 0283 F6010000 		.4byte	0x1f6
+ 726 0287 16       		.uleb128 0x16
+ 727 0288 0E000000 		.4byte	.LVL15
+ 728 028c 1F010000 		.4byte	0x11f
+ 729 0290 9B020000 		.4byte	0x29b
+ 730 0294 0C       		.uleb128 0xc
+ 731 0295 01       		.uleb128 0x1
+ 732 0296 50       		.byte	0x50
+ 733 0297 02       		.uleb128 0x2
+ 734 0298 74       		.byte	0x74
+ 735 0299 00       		.sleb128 0
+ 736 029a 00       		.byte	0
+ 737 029b 16       		.uleb128 0x16
+ 738 029c 14000000 		.4byte	.LVL16
+ 739 02a0 7C010000 		.4byte	0x17c
+ 740 02a4 AE020000 		.4byte	0x2ae
+ 741 02a8 0C       		.uleb128 0xc
+ 742 02a9 01       		.uleb128 0x1
+ 743 02aa 50       		.byte	0x50
+ 744 02ab 01       		.uleb128 0x1
+ 745 02ac 37       		.byte	0x37
+ 746 02ad 00       		.byte	0
+ 747 02ae 0A       		.uleb128 0xa
+ 748 02af 18000000 		.4byte	.LVL17
+ 749 02b3 CE010000 		.4byte	0x1ce
+ 750 02b7 00       		.byte	0
+ 751 02b8 09       		.uleb128 0x9
+ 752 02b9 2B020000 		.4byte	.LASF33
+ 753 02bd 01       		.byte	0x1
+ 754 02be 8D       		.byte	0x8d
+ 755 02bf 00000000 		.4byte	.LFB2
+ 756 02c3 14000000 		.4byte	.LFE2-.LFB2
+ 757 02c7 01       		.uleb128 0x1
+ 758 02c8 9C       		.byte	0x9c
+ 759 02c9 E0020000 		.4byte	0x2e0
+ 760 02cd 0A       		.uleb128 0xa
+ 761 02ce 06000000 		.4byte	.LVL18
+ 762 02d2 F6010000 		.4byte	0x1f6
+ 763 02d6 0A       		.uleb128 0xa
+ 764 02d7 0C000000 		.4byte	.LVL19
+ 765 02db 1F010000 		.4byte	0x11f
+ 766 02df 00       		.byte	0
+ 767 02e0 14       		.uleb128 0x14
+ 768 02e1 AB010000 		.4byte	.LASF34
+ARM GAS  C:\Users\growo\AppData\Local\Temp\cc8OHj2a.s 			page 22
+
+
+ 769 02e5 01       		.byte	0x1
+ 770 02e6 8501     		.2byte	0x185
+ 771 02e8 00000000 		.4byte	.LFB11
+ 772 02ec 0C000000 		.4byte	.LFE11-.LFB11
+ 773 02f0 01       		.uleb128 0x1
+ 774 02f1 9C       		.byte	0x9c
+ 775 02f2 14       		.uleb128 0x14
+ 776 02f3 DE000000 		.4byte	.LASF35
+ 777 02f7 01       		.byte	0x1
+ 778 02f8 9E01     		.2byte	0x19e
+ 779 02fa 00000000 		.4byte	.LFB12
+ 780 02fe 0C000000 		.4byte	.LFE12-.LFB12
+ 781 0302 01       		.uleb128 0x1
+ 782 0303 9C       		.byte	0x9c
+ 783 0304 18       		.uleb128 0x18
+ 784 0305 1F020000 		.4byte	.LASF36
+ 785 0309 01       		.byte	0x1
+ 786 030a 20       		.byte	0x20
+ 787 030b 15030000 		.4byte	0x315
+ 788 030f 05       		.uleb128 0x5
+ 789 0310 03       		.byte	0x3
+ 790 0311 00000000 		.4byte	t_ha
+ 791 0315 08       		.uleb128 0x8
+ 792 0316 92000000 		.4byte	0x92
+ 793 031a 19       		.uleb128 0x19
+ 794 031b 636100   		.ascii	"ca\000"
+ 795 031e 01       		.byte	0x1
+ 796 031f 21       		.byte	0x21
+ 797 0320 15030000 		.4byte	0x315
+ 798 0324 05       		.uleb128 0x5
+ 799 0325 03       		.byte	0x3
+ 800 0326 00000000 		.4byte	ca
+ 801 032a 19       		.uleb128 0x19
+ 802 032b 6D6100   		.ascii	"ma\000"
+ 803 032e 01       		.byte	0x1
+ 804 032f 22       		.byte	0x22
+ 805 0330 15030000 		.4byte	0x315
+ 806 0334 05       		.uleb128 0x5
+ 807 0335 03       		.byte	0x3
+ 808 0336 00000000 		.4byte	ma
+ 809 033a 18       		.uleb128 0x18
+ 810 033b B2020000 		.4byte	.LASF37
+ 811 033f 01       		.byte	0x1
+ 812 0340 24       		.byte	0x24
+ 813 0341 15030000 		.4byte	0x315
+ 814 0345 05       		.uleb128 0x5
+ 815 0346 03       		.byte	0x3
+ 816 0347 00000000 		.4byte	HA_counter
+ 817 034b 1A       		.uleb128 0x1a
+ 818 034c A4000000 		.4byte	.LASF38
+ 819 0350 A4000000 		.4byte	.LASF38
+ 820 0354 05       		.byte	0x5
+ 821 0355 69       		.byte	0x69
+ 822 0356 1A       		.uleb128 0x1a
+ 823 0357 D5020000 		.4byte	.LASF39
+ 824 035b D5020000 		.4byte	.LASF39
+ 825 035f 05       		.byte	0x5
+ARM GAS  C:\Users\growo\AppData\Local\Temp\cc8OHj2a.s 			page 23
+
+
+ 826 0360 6A       		.byte	0x6a
+ 827 0361 00       		.byte	0
+ 828              		.section	.debug_abbrev,"",%progbits
+ 829              	.Ldebug_abbrev0:
+ 830 0000 01       		.uleb128 0x1
+ 831 0001 11       		.uleb128 0x11
+ 832 0002 01       		.byte	0x1
+ 833 0003 25       		.uleb128 0x25
+ 834 0004 0E       		.uleb128 0xe
+ 835 0005 13       		.uleb128 0x13
+ 836 0006 0B       		.uleb128 0xb
+ 837 0007 03       		.uleb128 0x3
+ 838 0008 0E       		.uleb128 0xe
+ 839 0009 1B       		.uleb128 0x1b
+ 840 000a 0E       		.uleb128 0xe
+ 841 000b 55       		.uleb128 0x55
+ 842 000c 17       		.uleb128 0x17
+ 843 000d 11       		.uleb128 0x11
+ 844 000e 01       		.uleb128 0x1
+ 845 000f 10       		.uleb128 0x10
+ 846 0010 17       		.uleb128 0x17
+ 847 0011 00       		.byte	0
+ 848 0012 00       		.byte	0
+ 849 0013 02       		.uleb128 0x2
+ 850 0014 24       		.uleb128 0x24
+ 851 0015 00       		.byte	0
+ 852 0016 0B       		.uleb128 0xb
+ 853 0017 0B       		.uleb128 0xb
+ 854 0018 3E       		.uleb128 0x3e
+ 855 0019 0B       		.uleb128 0xb
+ 856 001a 03       		.uleb128 0x3
+ 857 001b 08       		.uleb128 0x8
+ 858 001c 00       		.byte	0
+ 859 001d 00       		.byte	0
+ 860 001e 03       		.uleb128 0x3
+ 861 001f 24       		.uleb128 0x24
+ 862 0020 00       		.byte	0
+ 863 0021 0B       		.uleb128 0xb
+ 864 0022 0B       		.uleb128 0xb
+ 865 0023 3E       		.uleb128 0x3e
+ 866 0024 0B       		.uleb128 0xb
+ 867 0025 03       		.uleb128 0x3
+ 868 0026 0E       		.uleb128 0xe
+ 869 0027 00       		.byte	0
+ 870 0028 00       		.byte	0
+ 871 0029 04       		.uleb128 0x4
+ 872 002a 16       		.uleb128 0x16
+ 873 002b 00       		.byte	0
+ 874 002c 03       		.uleb128 0x3
+ 875 002d 0E       		.uleb128 0xe
+ 876 002e 3A       		.uleb128 0x3a
+ 877 002f 0B       		.uleb128 0xb
+ 878 0030 3B       		.uleb128 0x3b
+ 879 0031 0B       		.uleb128 0xb
+ 880 0032 49       		.uleb128 0x49
+ 881 0033 13       		.uleb128 0x13
+ 882 0034 00       		.byte	0
+ARM GAS  C:\Users\growo\AppData\Local\Temp\cc8OHj2a.s 			page 24
+
+
+ 883 0035 00       		.byte	0
+ 884 0036 05       		.uleb128 0x5
+ 885 0037 0F       		.uleb128 0xf
+ 886 0038 00       		.byte	0
+ 887 0039 0B       		.uleb128 0xb
+ 888 003a 0B       		.uleb128 0xb
+ 889 003b 49       		.uleb128 0x49
+ 890 003c 13       		.uleb128 0x13
+ 891 003d 00       		.byte	0
+ 892 003e 00       		.byte	0
+ 893 003f 06       		.uleb128 0x6
+ 894 0040 15       		.uleb128 0x15
+ 895 0041 00       		.byte	0
+ 896 0042 27       		.uleb128 0x27
+ 897 0043 19       		.uleb128 0x19
+ 898 0044 00       		.byte	0
+ 899 0045 00       		.byte	0
+ 900 0046 07       		.uleb128 0x7
+ 901 0047 16       		.uleb128 0x16
+ 902 0048 00       		.byte	0
+ 903 0049 03       		.uleb128 0x3
+ 904 004a 0E       		.uleb128 0xe
+ 905 004b 3A       		.uleb128 0x3a
+ 906 004c 0B       		.uleb128 0xb
+ 907 004d 3B       		.uleb128 0x3b
+ 908 004e 05       		.uleb128 0x5
+ 909 004f 49       		.uleb128 0x49
+ 910 0050 13       		.uleb128 0x13
+ 911 0051 00       		.byte	0
+ 912 0052 00       		.byte	0
+ 913 0053 08       		.uleb128 0x8
+ 914 0054 35       		.uleb128 0x35
+ 915 0055 00       		.byte	0
+ 916 0056 49       		.uleb128 0x49
+ 917 0057 13       		.uleb128 0x13
+ 918 0058 00       		.byte	0
+ 919 0059 00       		.byte	0
+ 920 005a 09       		.uleb128 0x9
+ 921 005b 2E       		.uleb128 0x2e
+ 922 005c 01       		.byte	0x1
+ 923 005d 3F       		.uleb128 0x3f
+ 924 005e 19       		.uleb128 0x19
+ 925 005f 03       		.uleb128 0x3
+ 926 0060 0E       		.uleb128 0xe
+ 927 0061 3A       		.uleb128 0x3a
+ 928 0062 0B       		.uleb128 0xb
+ 929 0063 3B       		.uleb128 0x3b
+ 930 0064 0B       		.uleb128 0xb
+ 931 0065 27       		.uleb128 0x27
+ 932 0066 19       		.uleb128 0x19
+ 933 0067 11       		.uleb128 0x11
+ 934 0068 01       		.uleb128 0x1
+ 935 0069 12       		.uleb128 0x12
+ 936 006a 06       		.uleb128 0x6
+ 937 006b 40       		.uleb128 0x40
+ 938 006c 18       		.uleb128 0x18
+ 939 006d 9742     		.uleb128 0x2117
+ARM GAS  C:\Users\growo\AppData\Local\Temp\cc8OHj2a.s 			page 25
+
+
+ 940 006f 19       		.uleb128 0x19
+ 941 0070 01       		.uleb128 0x1
+ 942 0071 13       		.uleb128 0x13
+ 943 0072 00       		.byte	0
+ 944 0073 00       		.byte	0
+ 945 0074 0A       		.uleb128 0xa
+ 946 0075 898201   		.uleb128 0x4109
+ 947 0078 00       		.byte	0
+ 948 0079 11       		.uleb128 0x11
+ 949 007a 01       		.uleb128 0x1
+ 950 007b 31       		.uleb128 0x31
+ 951 007c 13       		.uleb128 0x13
+ 952 007d 00       		.byte	0
+ 953 007e 00       		.byte	0
+ 954 007f 0B       		.uleb128 0xb
+ 955 0080 898201   		.uleb128 0x4109
+ 956 0083 01       		.byte	0x1
+ 957 0084 11       		.uleb128 0x11
+ 958 0085 01       		.uleb128 0x1
+ 959 0086 31       		.uleb128 0x31
+ 960 0087 13       		.uleb128 0x13
+ 961 0088 00       		.byte	0
+ 962 0089 00       		.byte	0
+ 963 008a 0C       		.uleb128 0xc
+ 964 008b 8A8201   		.uleb128 0x410a
+ 965 008e 00       		.byte	0
+ 966 008f 02       		.uleb128 0x2
+ 967 0090 18       		.uleb128 0x18
+ 968 0091 9142     		.uleb128 0x2111
+ 969 0093 18       		.uleb128 0x18
+ 970 0094 00       		.byte	0
+ 971 0095 00       		.byte	0
+ 972 0096 0D       		.uleb128 0xd
+ 973 0097 05       		.uleb128 0x5
+ 974 0098 00       		.byte	0
+ 975 0099 03       		.uleb128 0x3
+ 976 009a 0E       		.uleb128 0xe
+ 977 009b 3A       		.uleb128 0x3a
+ 978 009c 0B       		.uleb128 0xb
+ 979 009d 3B       		.uleb128 0x3b
+ 980 009e 0B       		.uleb128 0xb
+ 981 009f 49       		.uleb128 0x49
+ 982 00a0 13       		.uleb128 0x13
+ 983 00a1 02       		.uleb128 0x2
+ 984 00a2 18       		.uleb128 0x18
+ 985 00a3 00       		.byte	0
+ 986 00a4 00       		.byte	0
+ 987 00a5 0E       		.uleb128 0xe
+ 988 00a6 34       		.uleb128 0x34
+ 989 00a7 00       		.byte	0
+ 990 00a8 03       		.uleb128 0x3
+ 991 00a9 0E       		.uleb128 0xe
+ 992 00aa 3A       		.uleb128 0x3a
+ 993 00ab 0B       		.uleb128 0xb
+ 994 00ac 3B       		.uleb128 0x3b
+ 995 00ad 0B       		.uleb128 0xb
+ 996 00ae 49       		.uleb128 0x49
+ARM GAS  C:\Users\growo\AppData\Local\Temp\cc8OHj2a.s 			page 26
+
+
+ 997 00af 13       		.uleb128 0x13
+ 998 00b0 02       		.uleb128 0x2
+ 999 00b1 18       		.uleb128 0x18
+ 1000 00b2 00       		.byte	0
+ 1001 00b3 00       		.byte	0
+ 1002 00b4 0F       		.uleb128 0xf
+ 1003 00b5 2E       		.uleb128 0x2e
+ 1004 00b6 01       		.byte	0x1
+ 1005 00b7 3F       		.uleb128 0x3f
+ 1006 00b8 19       		.uleb128 0x19
+ 1007 00b9 03       		.uleb128 0x3
+ 1008 00ba 0E       		.uleb128 0xe
+ 1009 00bb 3A       		.uleb128 0x3a
+ 1010 00bc 0B       		.uleb128 0xb
+ 1011 00bd 3B       		.uleb128 0x3b
+ 1012 00be 0B       		.uleb128 0xb
+ 1013 00bf 27       		.uleb128 0x27
+ 1014 00c0 19       		.uleb128 0x19
+ 1015 00c1 49       		.uleb128 0x49
+ 1016 00c2 13       		.uleb128 0x13
+ 1017 00c3 11       		.uleb128 0x11
+ 1018 00c4 01       		.uleb128 0x1
+ 1019 00c5 12       		.uleb128 0x12
+ 1020 00c6 06       		.uleb128 0x6
+ 1021 00c7 40       		.uleb128 0x40
+ 1022 00c8 18       		.uleb128 0x18
+ 1023 00c9 9742     		.uleb128 0x2117
+ 1024 00cb 19       		.uleb128 0x19
+ 1025 00cc 01       		.uleb128 0x1
+ 1026 00cd 13       		.uleb128 0x13
+ 1027 00ce 00       		.byte	0
+ 1028 00cf 00       		.byte	0
+ 1029 00d0 10       		.uleb128 0x10
+ 1030 00d1 2E       		.uleb128 0x2e
+ 1031 00d2 01       		.byte	0x1
+ 1032 00d3 3F       		.uleb128 0x3f
+ 1033 00d4 19       		.uleb128 0x19
+ 1034 00d5 03       		.uleb128 0x3
+ 1035 00d6 0E       		.uleb128 0xe
+ 1036 00d7 3A       		.uleb128 0x3a
+ 1037 00d8 0B       		.uleb128 0xb
+ 1038 00d9 3B       		.uleb128 0x3b
+ 1039 00da 05       		.uleb128 0x5
+ 1040 00db 27       		.uleb128 0x27
+ 1041 00dc 19       		.uleb128 0x19
+ 1042 00dd 11       		.uleb128 0x11
+ 1043 00de 01       		.uleb128 0x1
+ 1044 00df 12       		.uleb128 0x12
+ 1045 00e0 06       		.uleb128 0x6
+ 1046 00e1 40       		.uleb128 0x40
+ 1047 00e2 18       		.uleb128 0x18
+ 1048 00e3 9742     		.uleb128 0x2117
+ 1049 00e5 19       		.uleb128 0x19
+ 1050 00e6 01       		.uleb128 0x1
+ 1051 00e7 13       		.uleb128 0x13
+ 1052 00e8 00       		.byte	0
+ 1053 00e9 00       		.byte	0
+ARM GAS  C:\Users\growo\AppData\Local\Temp\cc8OHj2a.s 			page 27
+
+
+ 1054 00ea 11       		.uleb128 0x11
+ 1055 00eb 05       		.uleb128 0x5
+ 1056 00ec 00       		.byte	0
+ 1057 00ed 03       		.uleb128 0x3
+ 1058 00ee 0E       		.uleb128 0xe
+ 1059 00ef 3A       		.uleb128 0x3a
+ 1060 00f0 0B       		.uleb128 0xb
+ 1061 00f1 3B       		.uleb128 0x3b
+ 1062 00f2 05       		.uleb128 0x5
+ 1063 00f3 49       		.uleb128 0x49
+ 1064 00f4 13       		.uleb128 0x13
+ 1065 00f5 02       		.uleb128 0x2
+ 1066 00f6 17       		.uleb128 0x17
+ 1067 00f7 00       		.byte	0
+ 1068 00f8 00       		.byte	0
+ 1069 00f9 12       		.uleb128 0x12
+ 1070 00fa 2E       		.uleb128 0x2e
+ 1071 00fb 01       		.byte	0x1
+ 1072 00fc 3F       		.uleb128 0x3f
+ 1073 00fd 19       		.uleb128 0x19
+ 1074 00fe 03       		.uleb128 0x3
+ 1075 00ff 0E       		.uleb128 0xe
+ 1076 0100 3A       		.uleb128 0x3a
+ 1077 0101 0B       		.uleb128 0xb
+ 1078 0102 3B       		.uleb128 0x3b
+ 1079 0103 05       		.uleb128 0x5
+ 1080 0104 27       		.uleb128 0x27
+ 1081 0105 19       		.uleb128 0x19
+ 1082 0106 49       		.uleb128 0x49
+ 1083 0107 13       		.uleb128 0x13
+ 1084 0108 11       		.uleb128 0x11
+ 1085 0109 01       		.uleb128 0x1
+ 1086 010a 12       		.uleb128 0x12
+ 1087 010b 06       		.uleb128 0x6
+ 1088 010c 40       		.uleb128 0x40
+ 1089 010d 18       		.uleb128 0x18
+ 1090 010e 9742     		.uleb128 0x2117
+ 1091 0110 19       		.uleb128 0x19
+ 1092 0111 01       		.uleb128 0x1
+ 1093 0112 13       		.uleb128 0x13
+ 1094 0113 00       		.byte	0
+ 1095 0114 00       		.byte	0
+ 1096 0115 13       		.uleb128 0x13
+ 1097 0116 34       		.uleb128 0x34
+ 1098 0117 00       		.byte	0
+ 1099 0118 03       		.uleb128 0x3
+ 1100 0119 0E       		.uleb128 0xe
+ 1101 011a 3A       		.uleb128 0x3a
+ 1102 011b 0B       		.uleb128 0xb
+ 1103 011c 3B       		.uleb128 0x3b
+ 1104 011d 05       		.uleb128 0x5
+ 1105 011e 49       		.uleb128 0x49
+ 1106 011f 13       		.uleb128 0x13
+ 1107 0120 02       		.uleb128 0x2
+ 1108 0121 17       		.uleb128 0x17
+ 1109 0122 00       		.byte	0
+ 1110 0123 00       		.byte	0
+ARM GAS  C:\Users\growo\AppData\Local\Temp\cc8OHj2a.s 			page 28
+
+
+ 1111 0124 14       		.uleb128 0x14
+ 1112 0125 2E       		.uleb128 0x2e
+ 1113 0126 00       		.byte	0
+ 1114 0127 3F       		.uleb128 0x3f
+ 1115 0128 19       		.uleb128 0x19
+ 1116 0129 03       		.uleb128 0x3
+ 1117 012a 0E       		.uleb128 0xe
+ 1118 012b 3A       		.uleb128 0x3a
+ 1119 012c 0B       		.uleb128 0xb
+ 1120 012d 3B       		.uleb128 0x3b
+ 1121 012e 05       		.uleb128 0x5
+ 1122 012f 27       		.uleb128 0x27
+ 1123 0130 19       		.uleb128 0x19
+ 1124 0131 11       		.uleb128 0x11
+ 1125 0132 01       		.uleb128 0x1
+ 1126 0133 12       		.uleb128 0x12
+ 1127 0134 06       		.uleb128 0x6
+ 1128 0135 40       		.uleb128 0x40
+ 1129 0136 18       		.uleb128 0x18
+ 1130 0137 9742     		.uleb128 0x2117
+ 1131 0139 19       		.uleb128 0x19
+ 1132 013a 00       		.byte	0
+ 1133 013b 00       		.byte	0
+ 1134 013c 15       		.uleb128 0x15
+ 1135 013d 2E       		.uleb128 0x2e
+ 1136 013e 00       		.byte	0
+ 1137 013f 3F       		.uleb128 0x3f
+ 1138 0140 19       		.uleb128 0x19
+ 1139 0141 03       		.uleb128 0x3
+ 1140 0142 0E       		.uleb128 0xe
+ 1141 0143 3A       		.uleb128 0x3a
+ 1142 0144 0B       		.uleb128 0xb
+ 1143 0145 3B       		.uleb128 0x3b
+ 1144 0146 05       		.uleb128 0x5
+ 1145 0147 27       		.uleb128 0x27
+ 1146 0148 19       		.uleb128 0x19
+ 1147 0149 49       		.uleb128 0x49
+ 1148 014a 13       		.uleb128 0x13
+ 1149 014b 11       		.uleb128 0x11
+ 1150 014c 01       		.uleb128 0x1
+ 1151 014d 12       		.uleb128 0x12
+ 1152 014e 06       		.uleb128 0x6
+ 1153 014f 40       		.uleb128 0x40
+ 1154 0150 18       		.uleb128 0x18
+ 1155 0151 9742     		.uleb128 0x2117
+ 1156 0153 19       		.uleb128 0x19
+ 1157 0154 00       		.byte	0
+ 1158 0155 00       		.byte	0
+ 1159 0156 16       		.uleb128 0x16
+ 1160 0157 898201   		.uleb128 0x4109
+ 1161 015a 01       		.byte	0x1
+ 1162 015b 11       		.uleb128 0x11
+ 1163 015c 01       		.uleb128 0x1
+ 1164 015d 31       		.uleb128 0x31
+ 1165 015e 13       		.uleb128 0x13
+ 1166 015f 01       		.uleb128 0x1
+ 1167 0160 13       		.uleb128 0x13
+ARM GAS  C:\Users\growo\AppData\Local\Temp\cc8OHj2a.s 			page 29
+
+
+ 1168 0161 00       		.byte	0
+ 1169 0162 00       		.byte	0
+ 1170 0163 17       		.uleb128 0x17
+ 1171 0164 05       		.uleb128 0x5
+ 1172 0165 00       		.byte	0
+ 1173 0166 03       		.uleb128 0x3
+ 1174 0167 0E       		.uleb128 0xe
+ 1175 0168 3A       		.uleb128 0x3a
+ 1176 0169 0B       		.uleb128 0xb
+ 1177 016a 3B       		.uleb128 0x3b
+ 1178 016b 0B       		.uleb128 0xb
+ 1179 016c 49       		.uleb128 0x49
+ 1180 016d 13       		.uleb128 0x13
+ 1181 016e 02       		.uleb128 0x2
+ 1182 016f 17       		.uleb128 0x17
+ 1183 0170 00       		.byte	0
+ 1184 0171 00       		.byte	0
+ 1185 0172 18       		.uleb128 0x18
+ 1186 0173 34       		.uleb128 0x34
+ 1187 0174 00       		.byte	0
+ 1188 0175 03       		.uleb128 0x3
+ 1189 0176 0E       		.uleb128 0xe
+ 1190 0177 3A       		.uleb128 0x3a
+ 1191 0178 0B       		.uleb128 0xb
+ 1192 0179 3B       		.uleb128 0x3b
+ 1193 017a 0B       		.uleb128 0xb
+ 1194 017b 49       		.uleb128 0x49
+ 1195 017c 13       		.uleb128 0x13
+ 1196 017d 3F       		.uleb128 0x3f
+ 1197 017e 19       		.uleb128 0x19
+ 1198 017f 02       		.uleb128 0x2
+ 1199 0180 18       		.uleb128 0x18
+ 1200 0181 00       		.byte	0
+ 1201 0182 00       		.byte	0
+ 1202 0183 19       		.uleb128 0x19
+ 1203 0184 34       		.uleb128 0x34
+ 1204 0185 00       		.byte	0
+ 1205 0186 03       		.uleb128 0x3
+ 1206 0187 08       		.uleb128 0x8
+ 1207 0188 3A       		.uleb128 0x3a
+ 1208 0189 0B       		.uleb128 0xb
+ 1209 018a 3B       		.uleb128 0x3b
+ 1210 018b 0B       		.uleb128 0xb
+ 1211 018c 49       		.uleb128 0x49
+ 1212 018d 13       		.uleb128 0x13
+ 1213 018e 3F       		.uleb128 0x3f
+ 1214 018f 19       		.uleb128 0x19
+ 1215 0190 02       		.uleb128 0x2
+ 1216 0191 18       		.uleb128 0x18
+ 1217 0192 00       		.byte	0
+ 1218 0193 00       		.byte	0
+ 1219 0194 1A       		.uleb128 0x1a
+ 1220 0195 2E       		.uleb128 0x2e
+ 1221 0196 00       		.byte	0
+ 1222 0197 3F       		.uleb128 0x3f
+ 1223 0198 19       		.uleb128 0x19
+ 1224 0199 3C       		.uleb128 0x3c
+ARM GAS  C:\Users\growo\AppData\Local\Temp\cc8OHj2a.s 			page 30
+
+
+ 1225 019a 19       		.uleb128 0x19
+ 1226 019b 6E       		.uleb128 0x6e
+ 1227 019c 0E       		.uleb128 0xe
+ 1228 019d 03       		.uleb128 0x3
+ 1229 019e 0E       		.uleb128 0xe
+ 1230 019f 3A       		.uleb128 0x3a
+ 1231 01a0 0B       		.uleb128 0xb
+ 1232 01a1 3B       		.uleb128 0x3b
+ 1233 01a2 0B       		.uleb128 0xb
+ 1234 01a3 00       		.byte	0
+ 1235 01a4 00       		.byte	0
+ 1236 01a5 00       		.byte	0
+ 1237              		.section	.debug_loc,"",%progbits
+ 1238              	.Ldebug_loc0:
+ 1239              	.LLST0:
+ 1240 0000 00000000 		.4byte	.LVL5
+ 1241 0004 02000000 		.4byte	.LVL6
+ 1242 0008 0100     		.2byte	0x1
+ 1243 000a 50       		.byte	0x50
+ 1244 000b 02000000 		.4byte	.LVL6
+ 1245 000f 10000000 		.4byte	.LFE6
+ 1246 0013 0400     		.2byte	0x4
+ 1247 0015 F3       		.byte	0xf3
+ 1248 0016 01       		.uleb128 0x1
+ 1249 0017 50       		.byte	0x50
+ 1250 0018 9F       		.byte	0x9f
+ 1251 0019 00000000 		.4byte	0
+ 1252 001d 00000000 		.4byte	0
+ 1253              	.LLST1:
+ 1254 0021 04000000 		.4byte	.LVL7
+ 1255 0025 06000000 		.4byte	.LVL8
+ 1256 0029 0500     		.2byte	0x5
+ 1257 002b 70       		.byte	0x70
+ 1258 002c 00       		.sleb128 0
+ 1259 002d 35       		.byte	0x35
+ 1260 002e 25       		.byte	0x25
+ 1261 002f 9F       		.byte	0x9f
+ 1262 0030 00000000 		.4byte	0
+ 1263 0034 00000000 		.4byte	0
+ 1264              	.LLST2:
+ 1265 0038 00000000 		.4byte	.LVL13
+ 1266 003c 07000000 		.4byte	.LVL14-1
+ 1267 0040 0100     		.2byte	0x1
+ 1268 0042 50       		.byte	0x50
+ 1269 0043 07000000 		.4byte	.LVL14-1
+ 1270 0047 1A000000 		.4byte	.LFE1
+ 1271 004b 0100     		.2byte	0x1
+ 1272 004d 54       		.byte	0x54
+ 1273 004e 00000000 		.4byte	0
+ 1274 0052 00000000 		.4byte	0
+ 1275              		.section	.debug_aranges,"",%progbits
+ 1276 0000 7C000000 		.4byte	0x7c
+ 1277 0004 0200     		.2byte	0x2
+ 1278 0006 00000000 		.4byte	.Ldebug_info0
+ 1279 000a 04       		.byte	0x4
+ 1280 000b 00       		.byte	0
+ 1281 000c 0000     		.2byte	0
+ARM GAS  C:\Users\growo\AppData\Local\Temp\cc8OHj2a.s 			page 31
+
+
+ 1282 000e 0000     		.2byte	0
+ 1283 0010 00000000 		.4byte	.LFB3
+ 1284 0014 3C000000 		.4byte	.LFE3-.LFB3
+ 1285 0018 00000000 		.4byte	.LFB4
+ 1286 001c 0C000000 		.4byte	.LFE4-.LFB4
+ 1287 0020 00000000 		.4byte	.LFB5
+ 1288 0024 0C000000 		.4byte	.LFE5-.LFB5
+ 1289 0028 00000000 		.4byte	.LFB6
+ 1290 002c 10000000 		.4byte	.LFE6-.LFB6
+ 1291 0030 00000000 		.4byte	.LFB7
+ 1292 0034 0C000000 		.4byte	.LFE7-.LFB7
+ 1293 0038 00000000 		.4byte	.LFB8
+ 1294 003c 0C000000 		.4byte	.LFE8-.LFB8
+ 1295 0040 00000000 		.4byte	.LFB9
+ 1296 0044 18000000 		.4byte	.LFE9-.LFB9
+ 1297 0048 00000000 		.4byte	.LFB10
+ 1298 004c 0C000000 		.4byte	.LFE10-.LFB10
+ 1299 0050 00000000 		.4byte	.LFB0
+ 1300 0054 1C000000 		.4byte	.LFE0-.LFB0
+ 1301 0058 00000000 		.4byte	.LFB1
+ 1302 005c 1A000000 		.4byte	.LFE1-.LFB1
+ 1303 0060 00000000 		.4byte	.LFB2
+ 1304 0064 14000000 		.4byte	.LFE2-.LFB2
+ 1305 0068 00000000 		.4byte	.LFB11
+ 1306 006c 0C000000 		.4byte	.LFE11-.LFB11
+ 1307 0070 00000000 		.4byte	.LFB12
+ 1308 0074 0C000000 		.4byte	.LFE12-.LFB12
+ 1309 0078 00000000 		.4byte	0
+ 1310 007c 00000000 		.4byte	0
+ 1311              		.section	.debug_ranges,"",%progbits
+ 1312              	.Ldebug_ranges0:
+ 1313 0000 00000000 		.4byte	.LFB3
+ 1314 0004 3C000000 		.4byte	.LFE3
+ 1315 0008 00000000 		.4byte	.LFB4
+ 1316 000c 0C000000 		.4byte	.LFE4
+ 1317 0010 00000000 		.4byte	.LFB5
+ 1318 0014 0C000000 		.4byte	.LFE5
+ 1319 0018 00000000 		.4byte	.LFB6
+ 1320 001c 10000000 		.4byte	.LFE6
+ 1321 0020 00000000 		.4byte	.LFB7
+ 1322 0024 0C000000 		.4byte	.LFE7
+ 1323 0028 00000000 		.4byte	.LFB8
+ 1324 002c 0C000000 		.4byte	.LFE8
+ 1325 0030 00000000 		.4byte	.LFB9
+ 1326 0034 18000000 		.4byte	.LFE9
+ 1327 0038 00000000 		.4byte	.LFB10
+ 1328 003c 0C000000 		.4byte	.LFE10
+ 1329 0040 00000000 		.4byte	.LFB0
+ 1330 0044 1C000000 		.4byte	.LFE0
+ 1331 0048 00000000 		.4byte	.LFB1
+ 1332 004c 1A000000 		.4byte	.LFE1
+ 1333 0050 00000000 		.4byte	.LFB2
+ 1334 0054 14000000 		.4byte	.LFE2
+ 1335 0058 00000000 		.4byte	.LFB11
+ 1336 005c 0C000000 		.4byte	.LFE11
+ 1337 0060 00000000 		.4byte	.LFB12
+ 1338 0064 0C000000 		.4byte	.LFE12
+ARM GAS  C:\Users\growo\AppData\Local\Temp\cc8OHj2a.s 			page 32
+
+
+ 1339 0068 00000000 		.4byte	0
+ 1340 006c 00000000 		.4byte	0
+ 1341              		.section	.debug_line,"",%progbits
+ 1342              	.Ldebug_line0:
+ 1343 0000 40020000 		.section	.debug_str,"MS",%progbits,1
+ 1343      02004E01 
+ 1343      00000201 
+ 1343      FB0E0D00 
+ 1343      01010101 
+ 1344              	.LASF19:
+ 1345 0000 72656733 		.ascii	"reg32\000"
+ 1345      3200
+ 1346              	.LASF42:
+ 1347 0006 443A5C44 		.ascii	"D:\\Dropbox\\Magister\\Tesis\\tesis-source\\master-"
+ 1347      726F7062 
+ 1347      6F785C4D 
+ 1347      61676973 
+ 1347      7465725C 
+ 1348 0034 74657369 		.ascii	"tesis\\dedo_v01.cydsn\000"
+ 1348      735C6465 
+ 1348      646F5F76 
+ 1348      30312E63 
+ 1348      7964736E 
+ 1349              	.LASF12:
+ 1350 0049 5F5F696E 		.ascii	"__int32_t\000"
+ 1350      7433325F 
+ 1350      7400
+ 1351              	.LASF31:
+ 1352 0053 6973725F 		.ascii	"isr_HA_Start\000"
+ 1352      48415F53 
+ 1352      74617274 
+ 1352      00
+ 1353              	.LASF22:
+ 1354 0060 6973725F 		.ascii	"isr_HA_SetVector\000"
+ 1354      48415F53 
+ 1354      65745665 
+ 1354      63746F72 
+ 1354      00
+ 1355              	.LASF6:
+ 1356 0071 73686F72 		.ascii	"short unsigned int\000"
+ 1356      7420756E 
+ 1356      7369676E 
+ 1356      65642069 
+ 1356      6E7400
+ 1357              	.LASF28:
+ 1358 0084 6973725F 		.ascii	"isr_HA_GetPriority\000"
+ 1358      48415F47 
+ 1358      65745072 
+ 1358      696F7269 
+ 1358      747900
+ 1359              	.LASF0:
+ 1360 0097 756E7369 		.ascii	"unsigned int\000"
+ 1360      676E6564 
+ 1360      20696E74 
+ 1360      00
+ 1361              	.LASF38:
+ 1362 00a4 54696D65 		.ascii	"Timer_ha_ReadCounter\000"
+ARM GAS  C:\Users\growo\AppData\Local\Temp\cc8OHj2a.s 			page 33
+
+
+ 1362      725F6861 
+ 1362      5F526561 
+ 1362      64436F75 
+ 1362      6E746572 
+ 1363              	.LASF43:
+ 1364 00b9 6973725F 		.ascii	"isr_HA_GetState\000"
+ 1364      48415F47 
+ 1364      65745374 
+ 1364      61746500 
+ 1365              	.LASF32:
+ 1366 00c9 6973725F 		.ascii	"isr_HA_StartEx\000"
+ 1366      48415F53 
+ 1366      74617274 
+ 1366      457800
+ 1367              	.LASF16:
+ 1368 00d8 666C6F61 		.ascii	"float\000"
+ 1368      7400
+ 1369              	.LASF35:
+ 1370 00de 6973725F 		.ascii	"isr_HA_ClearPending\000"
+ 1370      48415F43 
+ 1370      6C656172 
+ 1370      50656E64 
+ 1370      696E6700 
+ 1371              	.LASF4:
+ 1372 00f2 756E7369 		.ascii	"unsigned char\000"
+ 1372      676E6564 
+ 1372      20636861 
+ 1372      7200
+ 1373              	.LASF40:
+ 1374 0100 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 1374      43313120 
+ 1374      352E342E 
+ 1374      31203230 
+ 1374      31363036 
+ 1375 0133 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m3 -mthumb -g -O"
+ 1375      20726576 
+ 1375      6973696F 
+ 1375      6E203233 
+ 1375      37373135 
+ 1376 0166 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 1376      66756E63 
+ 1376      74696F6E 
+ 1376      2D736563 
+ 1376      74696F6E 
+ 1377              	.LASF18:
+ 1378 018e 72656738 		.ascii	"reg8\000"
+ 1378      00
+ 1379              	.LASF8:
+ 1380 0193 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1380      20756E73 
+ 1380      69676E65 
+ 1380      6420696E 
+ 1380      7400
+ 1381              	.LASF14:
+ 1382 01a5 75696E74 		.ascii	"uint8\000"
+ 1382      3800
+ 1383              	.LASF34:
+ARM GAS  C:\Users\growo\AppData\Local\Temp\cc8OHj2a.s 			page 34
+
+
+ 1384 01ab 6973725F 		.ascii	"isr_HA_SetPending\000"
+ 1384      48415F53 
+ 1384      65745065 
+ 1384      6E64696E 
+ 1384      6700
+ 1385              	.LASF30:
+ 1386 01bd 6973725F 		.ascii	"isr_HA_Disable\000"
+ 1386      48415F44 
+ 1386      69736162 
+ 1386      6C6500
+ 1387              	.LASF26:
+ 1388 01cc 7072696F 		.ascii	"priority\000"
+ 1388      72697479 
+ 1388      00
+ 1389              	.LASF24:
+ 1390 01d5 6973725F 		.ascii	"isr_HA_SetPriority\000"
+ 1390      48415F53 
+ 1390      65745072 
+ 1390      696F7269 
+ 1390      747900
+ 1391              	.LASF17:
+ 1392 01e8 646F7562 		.ascii	"double\000"
+ 1392      6C6500
+ 1393              	.LASF29:
+ 1394 01ef 6973725F 		.ascii	"isr_HA_Enable\000"
+ 1394      48415F45 
+ 1394      6E61626C 
+ 1394      6500
+ 1395              	.LASF27:
+ 1396 01fd 6973725F 		.ascii	"isr_HA_GetVector\000"
+ 1396      48415F47 
+ 1396      65745665 
+ 1396      63746F72 
+ 1396      00
+ 1397              	.LASF21:
+ 1398 020e 6973725F 		.ascii	"isr_HA_Interrupt\000"
+ 1398      48415F49 
+ 1398      6E746572 
+ 1398      72757074 
+ 1398      00
+ 1399              	.LASF36:
+ 1400 021f 745F6861 		.ascii	"t_ha\000"
+ 1400      00
+ 1401              	.LASF15:
+ 1402 0224 75696E74 		.ascii	"uint32\000"
+ 1402      333200
+ 1403              	.LASF33:
+ 1404 022b 6973725F 		.ascii	"isr_HA_Stop\000"
+ 1404      48415F53 
+ 1404      746F7000 
+ 1405              	.LASF25:
+ 1406 0237 61646472 		.ascii	"address\000"
+ 1406      65737300 
+ 1407              	.LASF9:
+ 1408 023f 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1408      206C6F6E 
+ 1408      6720756E 
+ARM GAS  C:\Users\growo\AppData\Local\Temp\cc8OHj2a.s 			page 35
+
+
+ 1408      7369676E 
+ 1408      65642069 
+ 1409              	.LASF20:
+ 1410 0256 63796973 		.ascii	"cyisraddress\000"
+ 1410      72616464 
+ 1410      72657373 
+ 1410      00
+ 1411              	.LASF13:
+ 1412 0263 696E7433 		.ascii	"int32_t\000"
+ 1412      325F7400 
+ 1413              	.LASF10:
+ 1414 026b 73697A65 		.ascii	"sizetype\000"
+ 1414      74797065 
+ 1414      00
+ 1415              	.LASF1:
+ 1416 0274 6C6F6E67 		.ascii	"long long int\000"
+ 1416      206C6F6E 
+ 1416      6720696E 
+ 1416      7400
+ 1417              	.LASF11:
+ 1418 0282 63686172 		.ascii	"char\000"
+ 1418      00
+ 1419              	.LASF23:
+ 1420 0287 72616D56 		.ascii	"ramVectorTable\000"
+ 1420      6563746F 
+ 1420      72546162 
+ 1420      6C6500
+ 1421              	.LASF5:
+ 1422 0296 73686F72 		.ascii	"short int\000"
+ 1422      7420696E 
+ 1422      7400
+ 1423              	.LASF41:
+ 1424 02a0 6973725F 		.ascii	"isr_HA.c\000"
+ 1424      48412E63 
+ 1424      00
+ 1425              	.LASF7:
+ 1426 02a9 6C6F6E67 		.ascii	"long int\000"
+ 1426      20696E74 
+ 1426      00
+ 1427              	.LASF37:
+ 1428 02b2 48415F63 		.ascii	"HA_counter\000"
+ 1428      6F756E74 
+ 1428      657200
+ 1429              	.LASF2:
+ 1430 02bd 6C6F6E67 		.ascii	"long double\000"
+ 1430      20646F75 
+ 1430      626C6500 
+ 1431              	.LASF3:
+ 1432 02c9 7369676E 		.ascii	"signed char\000"
+ 1432      65642063 
+ 1432      68617200 
+ 1433              	.LASF39:
+ 1434 02d5 54696D65 		.ascii	"Timer_ha_WriteCounter\000"
+ 1434      725F6861 
+ 1434      5F577269 
+ 1434      7465436F 
+ 1434      756E7465 
+ARM GAS  C:\Users\growo\AppData\Local\Temp\cc8OHj2a.s 			page 36
+
+
+ 1435              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

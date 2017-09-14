@@ -1,0 +1,2858 @@
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccuGpr3j.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"tensor_control_isr.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.tensor_control_isr_Interrupt,"ax",%progbits
+  20              		.align	2
+  21              		.global	tensor_control_isr_Interrupt
+  22              		.thumb
+  23              		.thumb_func
+  24              		.type	tensor_control_isr_Interrupt, %function
+  25              	tensor_control_isr_Interrupt:
+  26              	.LFB67:
+  27              		.file 1 "tensor_control_isr.c"
+   1:tensor_control_isr.c **** /*******************************************************************************
+   2:tensor_control_isr.c **** * File Name: tensor_control_isr.c  
+   3:tensor_control_isr.c **** * Version 1.70
+   4:tensor_control_isr.c **** *
+   5:tensor_control_isr.c **** *  Description:
+   6:tensor_control_isr.c **** *   API for controlling the state of an interrupt.
+   7:tensor_control_isr.c **** *
+   8:tensor_control_isr.c **** *
+   9:tensor_control_isr.c **** *  Note:
+  10:tensor_control_isr.c **** *
+  11:tensor_control_isr.c **** ********************************************************************************
+  12:tensor_control_isr.c **** * Copyright 2008-2015, Cypress Semiconductor Corporation.  All rights reserved.
+  13:tensor_control_isr.c **** * You may use this file only in accordance with the license, terms, conditions, 
+  14:tensor_control_isr.c **** * disclaimers, and limitations in the end user license agreement accompanying 
+  15:tensor_control_isr.c **** * the software package with which this file was provided.
+  16:tensor_control_isr.c **** *******************************************************************************/
+  17:tensor_control_isr.c **** 
+  18:tensor_control_isr.c **** 
+  19:tensor_control_isr.c **** #include <cydevice_trm.h>
+  20:tensor_control_isr.c **** #include <CyLib.h>
+  21:tensor_control_isr.c **** #include <tensor_control_isr.h>
+  22:tensor_control_isr.c **** #include "cyapicallbacks.h"
+  23:tensor_control_isr.c **** 
+  24:tensor_control_isr.c **** #if !defined(tensor_control_isr__REMOVED) /* Check for removal by optimization */
+  25:tensor_control_isr.c **** 
+  26:tensor_control_isr.c **** /*******************************************************************************
+  27:tensor_control_isr.c **** *  Place your includes, defines and code here 
+  28:tensor_control_isr.c **** ********************************************************************************/
+  29:tensor_control_isr.c **** /* `#START tensor_control_isr_intc` */
+  30:tensor_control_isr.c **** 
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccuGpr3j.s 			page 2
+
+
+  31:tensor_control_isr.c **** #include <global.h>
+  32:tensor_control_isr.c **** #include <stdlib.h>
+  33:tensor_control_isr.c ****     
+  34:tensor_control_isr.c **** volatile int16_t _tVal;
+  35:tensor_control_isr.c **** volatile int32_t actual_tension;
+  36:tensor_control_isr.c **** volatile int32_t tension_ref;
+  37:tensor_control_isr.c **** int32_t tension_pid_output;
+  38:tensor_control_isr.c ****     
+  39:tensor_control_isr.c **** PID_t tens_pid_;
+  40:tensor_control_isr.c ****    
+  41:tensor_control_isr.c **** volatile int32_t debug;
+  42:tensor_control_isr.c **** volatile int32_t current_pos;
+  43:tensor_control_isr.c ****     
+  44:tensor_control_isr.c **** /* `#END` */
+  45:tensor_control_isr.c **** 
+  46:tensor_control_isr.c **** #ifndef CYINT_IRQ_BASE
+  47:tensor_control_isr.c **** #define CYINT_IRQ_BASE      16
+  48:tensor_control_isr.c **** #endif /* CYINT_IRQ_BASE */
+  49:tensor_control_isr.c **** #ifndef CYINT_VECT_TABLE
+  50:tensor_control_isr.c **** #define CYINT_VECT_TABLE    ((cyisraddress **) CYREG_NVIC_VECT_OFFSET)
+  51:tensor_control_isr.c **** #endif /* CYINT_VECT_TABLE */
+  52:tensor_control_isr.c **** 
+  53:tensor_control_isr.c **** /* Declared in startup, used to set unused interrupts to. */
+  54:tensor_control_isr.c **** CY_ISR_PROTO(IntDefaultHandler);
+  55:tensor_control_isr.c **** 
+  56:tensor_control_isr.c **** 
+  57:tensor_control_isr.c **** /*******************************************************************************
+  58:tensor_control_isr.c **** * Function Name: tensor_control_isr_Start
+  59:tensor_control_isr.c **** ********************************************************************************
+  60:tensor_control_isr.c **** *
+  61:tensor_control_isr.c **** * Summary:
+  62:tensor_control_isr.c **** *  Set up the interrupt and enable it. This function disables the interrupt, 
+  63:tensor_control_isr.c **** *  sets the default interrupt vector, sets the priority from the value in the
+  64:tensor_control_isr.c **** *  Design Wide Resources Interrupt Editor, then enables the interrupt to the 
+  65:tensor_control_isr.c **** *  interrupt controller.
+  66:tensor_control_isr.c **** *
+  67:tensor_control_isr.c **** * Parameters:  
+  68:tensor_control_isr.c **** *   None
+  69:tensor_control_isr.c **** *
+  70:tensor_control_isr.c **** * Return:
+  71:tensor_control_isr.c **** *   None
+  72:tensor_control_isr.c **** *
+  73:tensor_control_isr.c **** *******************************************************************************/
+  74:tensor_control_isr.c **** void tensor_control_isr_Start(void)
+  75:tensor_control_isr.c **** {
+  76:tensor_control_isr.c ****     /* For all we know the interrupt is active. */
+  77:tensor_control_isr.c ****     tensor_control_isr_Disable();
+  78:tensor_control_isr.c **** 
+  79:tensor_control_isr.c ****     /* Set the ISR to point to the tensor_control_isr Interrupt. */
+  80:tensor_control_isr.c ****     tensor_control_isr_SetVector(&tensor_control_isr_Interrupt);
+  81:tensor_control_isr.c **** 
+  82:tensor_control_isr.c ****     /* Set the priority. */
+  83:tensor_control_isr.c ****     tensor_control_isr_SetPriority((uint8)tensor_control_isr_INTC_PRIOR_NUMBER);
+  84:tensor_control_isr.c **** 
+  85:tensor_control_isr.c ****     /* Enable it. */
+  86:tensor_control_isr.c ****     tensor_control_isr_Enable();
+  87:tensor_control_isr.c **** }
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccuGpr3j.s 			page 3
+
+
+  88:tensor_control_isr.c **** 
+  89:tensor_control_isr.c **** 
+  90:tensor_control_isr.c **** /*******************************************************************************
+  91:tensor_control_isr.c **** * Function Name: tensor_control_isr_StartEx
+  92:tensor_control_isr.c **** ********************************************************************************
+  93:tensor_control_isr.c **** *
+  94:tensor_control_isr.c **** * Summary:
+  95:tensor_control_isr.c **** *  Sets up the interrupt and enables it. This function disables the interrupt,
+  96:tensor_control_isr.c **** *  sets the interrupt vector based on the address passed in, sets the priority 
+  97:tensor_control_isr.c **** *  from the value in the Design Wide Resources Interrupt Editor, then enables 
+  98:tensor_control_isr.c **** *  the interrupt to the interrupt controller.
+  99:tensor_control_isr.c **** *  
+ 100:tensor_control_isr.c **** *  When defining ISR functions, the CY_ISR and CY_ISR_PROTO macros should be 
+ 101:tensor_control_isr.c **** *  used to provide consistent definition across compilers:
+ 102:tensor_control_isr.c **** *  
+ 103:tensor_control_isr.c **** *  Function definition example:
+ 104:tensor_control_isr.c **** *   CY_ISR(MyISR)
+ 105:tensor_control_isr.c **** *   {
+ 106:tensor_control_isr.c **** *   }
+ 107:tensor_control_isr.c **** *   Function prototype example:
+ 108:tensor_control_isr.c **** *   CY_ISR_PROTO(MyISR);
+ 109:tensor_control_isr.c **** *
+ 110:tensor_control_isr.c **** * Parameters:  
+ 111:tensor_control_isr.c **** *   address: Address of the ISR to set in the interrupt vector table.
+ 112:tensor_control_isr.c **** *
+ 113:tensor_control_isr.c **** * Return:
+ 114:tensor_control_isr.c **** *   None
+ 115:tensor_control_isr.c **** *
+ 116:tensor_control_isr.c **** *******************************************************************************/
+ 117:tensor_control_isr.c **** void tensor_control_isr_StartEx(cyisraddress address)
+ 118:tensor_control_isr.c **** {
+ 119:tensor_control_isr.c ****     /* For all we know the interrupt is active. */
+ 120:tensor_control_isr.c ****     tensor_control_isr_Disable();
+ 121:tensor_control_isr.c **** 
+ 122:tensor_control_isr.c ****     /* Set the ISR to point to the tensor_control_isr Interrupt. */
+ 123:tensor_control_isr.c ****     tensor_control_isr_SetVector(address);
+ 124:tensor_control_isr.c **** 
+ 125:tensor_control_isr.c ****     /* Set the priority. */
+ 126:tensor_control_isr.c ****     tensor_control_isr_SetPriority((uint8)tensor_control_isr_INTC_PRIOR_NUMBER);
+ 127:tensor_control_isr.c **** 
+ 128:tensor_control_isr.c ****     /* Enable it. */
+ 129:tensor_control_isr.c ****     tensor_control_isr_Enable();
+ 130:tensor_control_isr.c **** }
+ 131:tensor_control_isr.c **** 
+ 132:tensor_control_isr.c **** 
+ 133:tensor_control_isr.c **** /*******************************************************************************
+ 134:tensor_control_isr.c **** * Function Name: tensor_control_isr_Stop
+ 135:tensor_control_isr.c **** ********************************************************************************
+ 136:tensor_control_isr.c **** *
+ 137:tensor_control_isr.c **** * Summary:
+ 138:tensor_control_isr.c **** *   Disables and removes the interrupt.
+ 139:tensor_control_isr.c **** *
+ 140:tensor_control_isr.c **** * Parameters:  
+ 141:tensor_control_isr.c **** *   None
+ 142:tensor_control_isr.c **** *
+ 143:tensor_control_isr.c **** * Return:
+ 144:tensor_control_isr.c **** *   None
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccuGpr3j.s 			page 4
+
+
+ 145:tensor_control_isr.c **** *
+ 146:tensor_control_isr.c **** *******************************************************************************/
+ 147:tensor_control_isr.c **** void tensor_control_isr_Stop(void)
+ 148:tensor_control_isr.c **** {
+ 149:tensor_control_isr.c ****     /* Disable this interrupt. */
+ 150:tensor_control_isr.c ****     tensor_control_isr_Disable();
+ 151:tensor_control_isr.c **** 
+ 152:tensor_control_isr.c ****     /* Set the ISR to point to the passive one. */
+ 153:tensor_control_isr.c ****     tensor_control_isr_SetVector(&IntDefaultHandler);
+ 154:tensor_control_isr.c **** }
+ 155:tensor_control_isr.c **** 
+ 156:tensor_control_isr.c **** 
+ 157:tensor_control_isr.c **** /*******************************************************************************
+ 158:tensor_control_isr.c **** * Function Name: tensor_control_isr_Interrupt
+ 159:tensor_control_isr.c **** ********************************************************************************
+ 160:tensor_control_isr.c **** *
+ 161:tensor_control_isr.c **** * Summary:
+ 162:tensor_control_isr.c **** *   The default Interrupt Service Routine for tensor_control_isr.
+ 163:tensor_control_isr.c **** *
+ 164:tensor_control_isr.c **** *   Add custom code between the coments to keep the next version of this file
+ 165:tensor_control_isr.c **** *   from over writting your code.
+ 166:tensor_control_isr.c **** *
+ 167:tensor_control_isr.c **** * Parameters:  
+ 168:tensor_control_isr.c **** *
+ 169:tensor_control_isr.c **** * Return:
+ 170:tensor_control_isr.c **** *   None
+ 171:tensor_control_isr.c **** *
+ 172:tensor_control_isr.c **** *******************************************************************************/
+ 173:tensor_control_isr.c **** CY_ISR(tensor_control_isr_Interrupt)
+ 174:tensor_control_isr.c **** {
+  28              		.loc 1 174 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32 0000 30B5     		push	{r4, r5, lr}
+  33              		.cfi_def_cfa_offset 12
+  34              		.cfi_offset 4, -12
+  35              		.cfi_offset 5, -8
+  36              		.cfi_offset 14, -4
+  37 0002 83B0     		sub	sp, sp, #12
+  38              		.cfi_def_cfa_offset 24
+ 175:tensor_control_isr.c ****     #ifdef tensor_control_isr_INTERRUPT_INTERRUPT_CALLBACK
+ 176:tensor_control_isr.c ****         tensor_control_isr_Interrupt_InterruptCallback();
+ 177:tensor_control_isr.c ****     #endif /* tensor_control_isr_INTERRUPT_INTERRUPT_CALLBACK */ 
+ 178:tensor_control_isr.c **** 
+ 179:tensor_control_isr.c ****     /*  Place your Interrupt code here. */
+ 180:tensor_control_isr.c ****     /* `#START tensor_control_isr_Interrupt` */
+ 181:tensor_control_isr.c **** 
+ 182:tensor_control_isr.c ****     //int32_t L=4000,A=150,R=19;  /* valores multiplicados por 100 para calculos enteros */
+ 183:tensor_control_isr.c ****     //float P[] = {138.5965,-12.3874,0.578,-0.0124,0.0001};
+ 184:tensor_control_isr.c ****     /* Se obtiene RT(n) donde n es el numero de vueltas */
+ 185:tensor_control_isr.c ****     //float RT = P[0]+P[1]*current_pos+P[2]*(current_pos^2)+P[3]*(current_pos^3)+P[4]*(current_pos^
+ 186:tensor_control_isr.c ****     
+ 187:tensor_control_isr.c ****     actual_tension = _tVal;
+  39              		.loc 1 187 0
+  40 0004 0F4B     		ldr	r3, .L3
+  41 0006 1B88     		ldrh	r3, [r3]
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccuGpr3j.s 			page 5
+
+
+  42 0008 1BB2     		sxth	r3, r3
+  43 000a 0F4D     		ldr	r5, .L3+4
+  44 000c 2B60     		str	r3, [r5]
+ 188:tensor_control_isr.c ****     
+ 189:tensor_control_isr.c ****     PID_setRef(&tens_pid_,tension_ref);
+  45              		.loc 1 189 0
+  46 000e 0F4B     		ldr	r3, .L3+8
+  47 0010 1968     		ldr	r1, [r3]
+  48 0012 0F4C     		ldr	r4, .L3+12
+  49 0014 2046     		mov	r0, r4
+  50 0016 FFF7FEFF 		bl	PID_setRef
+  51              	.LVL0:
+ 190:tensor_control_isr.c ****     
+ 191:tensor_control_isr.c ****     tension_pid_output = PID_calculatePID(&tens_pid_,actual_tension);
+  52              		.loc 1 191 0
+  53 001a 2968     		ldr	r1, [r5]
+  54 001c 2046     		mov	r0, r4
+  55 001e FFF7FEFF 		bl	PID_calculatePID
+  56              	.LVL1:
+  57 0022 0C4B     		ldr	r3, .L3+16
+  58 0024 1860     		str	r0, [r3]
+  59              	.LVL2:
+ 192:tensor_control_isr.c ****     int aux = abs(tension_pid_output);
+ 193:tensor_control_isr.c ****     _pid_out = fn_mapper_8b(aux,0,4096,0,255);
+  60              		.loc 1 193 0
+  61 0026 FF23     		movs	r3, #255
+  62 0028 0093     		str	r3, [sp]
+  63 002a 0023     		movs	r3, #0
+  64 002c 4FF48052 		mov	r2, #4096
+  65 0030 1946     		mov	r1, r3
+  66 0032 0028     		cmp	r0, #0
+  67 0034 B8BF     		it	lt
+  68 0036 4042     		rsblt	r0, r0, #0
+  69              	.LVL3:
+  70 0038 FFF7FEFF 		bl	fn_mapper_8b
+  71              	.LVL4:
+  72 003c 064B     		ldr	r3, .L3+20
+  73 003e 1870     		strb	r0, [r3]
+ 194:tensor_control_isr.c ****     
+ 195:tensor_control_isr.c ****     #ifdef TENDON_TENSION_CONTROL
+ 196:tensor_control_isr.c ****         BRAKEn_Write(1);    
+ 197:tensor_control_isr.c ****             
+ 198:tensor_control_isr.c ****         /* change rotor direction according to pid output */
+ 199:tensor_control_isr.c ****         if(tension_pid_output < 0)
+ 200:tensor_control_isr.c ****             dir_state=1;
+ 201:tensor_control_isr.c ****         else
+ 202:tensor_control_isr.c ****             dir_state=0;
+ 203:tensor_control_isr.c ****         
+ 204:tensor_control_isr.c ****         //(int)fabs(Sigmoid(_pid_out,PWM_MAX,K_PWM));
+ 205:tensor_control_isr.c ****         VDAC8_Speed_SetValue((uint8)(_pid_out));
+ 206:tensor_control_isr.c ****         
+ 207:tensor_control_isr.c ****     #endif
+ 208:tensor_control_isr.c ****     
+ 209:tensor_control_isr.c ****     /* Con la tension medida se calcula el pwm que se le pasa al motor
+ 210:tensor_control_isr.c ****        para hacer el control de tension */
+ 211:tensor_control_isr.c ****     
+ 212:tensor_control_isr.c ****     /* `#END` */
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccuGpr3j.s 			page 6
+
+
+ 213:tensor_control_isr.c **** }
+  74              		.loc 1 213 0
+  75 0040 03B0     		add	sp, sp, #12
+  76              		.cfi_def_cfa_offset 12
+  77              		@ sp needed
+  78 0042 30BD     		pop	{r4, r5, pc}
+  79              	.L4:
+  80              		.align	2
+  81              	.L3:
+  82 0044 00000000 		.word	_tVal
+  83 0048 00000000 		.word	actual_tension
+  84 004c 00000000 		.word	tension_ref
+  85 0050 00000000 		.word	tens_pid_
+  86 0054 00000000 		.word	tension_pid_output
+  87 0058 00000000 		.word	_pid_out
+  88              		.cfi_endproc
+  89              	.LFE67:
+  90              		.size	tensor_control_isr_Interrupt, .-tensor_control_isr_Interrupt
+  91              		.section	.text.tensor_control_isr_SetVector,"ax",%progbits
+  92              		.align	2
+  93              		.global	tensor_control_isr_SetVector
+  94              		.thumb
+  95              		.thumb_func
+  96              		.type	tensor_control_isr_SetVector, %function
+  97              	tensor_control_isr_SetVector:
+  98              	.LFB68:
+ 214:tensor_control_isr.c **** 
+ 215:tensor_control_isr.c **** 
+ 216:tensor_control_isr.c **** /*******************************************************************************
+ 217:tensor_control_isr.c **** * Function Name: tensor_control_isr_SetVector
+ 218:tensor_control_isr.c **** ********************************************************************************
+ 219:tensor_control_isr.c **** *
+ 220:tensor_control_isr.c **** * Summary:
+ 221:tensor_control_isr.c **** *   Change the ISR vector for the Interrupt. Note calling tensor_control_isr_Start
+ 222:tensor_control_isr.c **** *   will override any effect this method would have had. To set the vector 
+ 223:tensor_control_isr.c **** *   before the component has been started use tensor_control_isr_StartEx instead.
+ 224:tensor_control_isr.c **** * 
+ 225:tensor_control_isr.c **** *   When defining ISR functions, the CY_ISR and CY_ISR_PROTO macros should be 
+ 226:tensor_control_isr.c **** *   used to provide consistent definition across compilers:
+ 227:tensor_control_isr.c **** *
+ 228:tensor_control_isr.c **** *   Function definition example:
+ 229:tensor_control_isr.c **** *   CY_ISR(MyISR)
+ 230:tensor_control_isr.c **** *   {
+ 231:tensor_control_isr.c **** *   }
+ 232:tensor_control_isr.c **** *
+ 233:tensor_control_isr.c **** *   Function prototype example:
+ 234:tensor_control_isr.c **** *     CY_ISR_PROTO(MyISR);
+ 235:tensor_control_isr.c **** *
+ 236:tensor_control_isr.c **** * Parameters:
+ 237:tensor_control_isr.c **** *   address: Address of the ISR to set in the interrupt vector table.
+ 238:tensor_control_isr.c **** *
+ 239:tensor_control_isr.c **** * Return:
+ 240:tensor_control_isr.c **** *   None
+ 241:tensor_control_isr.c **** *
+ 242:tensor_control_isr.c **** *******************************************************************************/
+ 243:tensor_control_isr.c **** void tensor_control_isr_SetVector(cyisraddress address)
+ 244:tensor_control_isr.c **** {
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccuGpr3j.s 			page 7
+
+
+  99              		.loc 1 244 0
+ 100              		.cfi_startproc
+ 101              		@ args = 0, pretend = 0, frame = 0
+ 102              		@ frame_needed = 0, uses_anonymous_args = 0
+ 103              		@ link register save eliminated.
+ 104              	.LVL5:
+ 245:tensor_control_isr.c ****     cyisraddress * ramVectorTable;
+ 246:tensor_control_isr.c **** 
+ 247:tensor_control_isr.c ****     ramVectorTable = (cyisraddress *) *CYINT_VECT_TABLE;
+ 105              		.loc 1 247 0
+ 106 0000 014B     		ldr	r3, .L6
+ 107 0002 1B68     		ldr	r3, [r3]
+ 108              	.LVL6:
+ 248:tensor_control_isr.c **** 
+ 249:tensor_control_isr.c ****     ramVectorTable[CYINT_IRQ_BASE + (uint32)tensor_control_isr__INTC_NUMBER] = address;
+ 109              		.loc 1 249 0
+ 110 0004 1866     		str	r0, [r3, #96]
+ 111 0006 7047     		bx	lr
+ 112              	.L7:
+ 113              		.align	2
+ 114              	.L6:
+ 115 0008 08ED00E0 		.word	-536810232
+ 116              		.cfi_endproc
+ 117              	.LFE68:
+ 118              		.size	tensor_control_isr_SetVector, .-tensor_control_isr_SetVector
+ 119              		.section	.text.tensor_control_isr_GetVector,"ax",%progbits
+ 120              		.align	2
+ 121              		.global	tensor_control_isr_GetVector
+ 122              		.thumb
+ 123              		.thumb_func
+ 124              		.type	tensor_control_isr_GetVector, %function
+ 125              	tensor_control_isr_GetVector:
+ 126              	.LFB69:
+ 250:tensor_control_isr.c **** }
+ 251:tensor_control_isr.c **** 
+ 252:tensor_control_isr.c **** 
+ 253:tensor_control_isr.c **** /*******************************************************************************
+ 254:tensor_control_isr.c **** * Function Name: tensor_control_isr_GetVector
+ 255:tensor_control_isr.c **** ********************************************************************************
+ 256:tensor_control_isr.c **** *
+ 257:tensor_control_isr.c **** * Summary:
+ 258:tensor_control_isr.c **** *   Gets the "address" of the current ISR vector for the Interrupt.
+ 259:tensor_control_isr.c **** *
+ 260:tensor_control_isr.c **** * Parameters:
+ 261:tensor_control_isr.c **** *   None
+ 262:tensor_control_isr.c **** *
+ 263:tensor_control_isr.c **** * Return:
+ 264:tensor_control_isr.c **** *   Address of the ISR in the interrupt vector table.
+ 265:tensor_control_isr.c **** *
+ 266:tensor_control_isr.c **** *******************************************************************************/
+ 267:tensor_control_isr.c **** cyisraddress tensor_control_isr_GetVector(void)
+ 268:tensor_control_isr.c **** {
+ 127              		.loc 1 268 0
+ 128              		.cfi_startproc
+ 129              		@ args = 0, pretend = 0, frame = 0
+ 130              		@ frame_needed = 0, uses_anonymous_args = 0
+ 131              		@ link register save eliminated.
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccuGpr3j.s 			page 8
+
+
+ 269:tensor_control_isr.c ****     cyisraddress * ramVectorTable;
+ 270:tensor_control_isr.c **** 
+ 271:tensor_control_isr.c ****     ramVectorTable = (cyisraddress *) *CYINT_VECT_TABLE;
+ 132              		.loc 1 271 0
+ 133 0000 014B     		ldr	r3, .L9
+ 134 0002 1B68     		ldr	r3, [r3]
+ 135              	.LVL7:
+ 272:tensor_control_isr.c **** 
+ 273:tensor_control_isr.c ****     return ramVectorTable[CYINT_IRQ_BASE + (uint32)tensor_control_isr__INTC_NUMBER];
+ 274:tensor_control_isr.c **** }
+ 136              		.loc 1 274 0
+ 137 0004 186E     		ldr	r0, [r3, #96]
+ 138 0006 7047     		bx	lr
+ 139              	.L10:
+ 140              		.align	2
+ 141              	.L9:
+ 142 0008 08ED00E0 		.word	-536810232
+ 143              		.cfi_endproc
+ 144              	.LFE69:
+ 145              		.size	tensor_control_isr_GetVector, .-tensor_control_isr_GetVector
+ 146              		.section	.text.tensor_control_isr_SetPriority,"ax",%progbits
+ 147              		.align	2
+ 148              		.global	tensor_control_isr_SetPriority
+ 149              		.thumb
+ 150              		.thumb_func
+ 151              		.type	tensor_control_isr_SetPriority, %function
+ 152              	tensor_control_isr_SetPriority:
+ 153              	.LFB70:
+ 275:tensor_control_isr.c **** 
+ 276:tensor_control_isr.c **** 
+ 277:tensor_control_isr.c **** /*******************************************************************************
+ 278:tensor_control_isr.c **** * Function Name: tensor_control_isr_SetPriority
+ 279:tensor_control_isr.c **** ********************************************************************************
+ 280:tensor_control_isr.c **** *
+ 281:tensor_control_isr.c **** * Summary:
+ 282:tensor_control_isr.c **** *   Sets the Priority of the Interrupt. 
+ 283:tensor_control_isr.c **** *
+ 284:tensor_control_isr.c **** *   Note calling tensor_control_isr_Start or tensor_control_isr_StartEx will 
+ 285:tensor_control_isr.c **** *   override any effect this API would have had. This API should only be called
+ 286:tensor_control_isr.c **** *   after tensor_control_isr_Start or tensor_control_isr_StartEx has been called. 
+ 287:tensor_control_isr.c **** *   To set the initial priority for the component, use the Design-Wide Resources
+ 288:tensor_control_isr.c **** *   Interrupt Editor.
+ 289:tensor_control_isr.c **** *
+ 290:tensor_control_isr.c **** *   Note This API has no effect on Non-maskable interrupt NMI).
+ 291:tensor_control_isr.c **** *
+ 292:tensor_control_isr.c **** * Parameters:
+ 293:tensor_control_isr.c **** *   priority: Priority of the interrupt, 0 being the highest priority
+ 294:tensor_control_isr.c **** *             PSoC 3 and PSoC 5LP: Priority is from 0 to 7.
+ 295:tensor_control_isr.c **** *             PSoC 4: Priority is from 0 to 3.
+ 296:tensor_control_isr.c **** *
+ 297:tensor_control_isr.c **** * Return:
+ 298:tensor_control_isr.c **** *   None
+ 299:tensor_control_isr.c **** *
+ 300:tensor_control_isr.c **** *******************************************************************************/
+ 301:tensor_control_isr.c **** void tensor_control_isr_SetPriority(uint8 priority)
+ 302:tensor_control_isr.c **** {
+ 154              		.loc 1 302 0
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccuGpr3j.s 			page 9
+
+
+ 155              		.cfi_startproc
+ 156              		@ args = 0, pretend = 0, frame = 0
+ 157              		@ frame_needed = 0, uses_anonymous_args = 0
+ 158              		@ link register save eliminated.
+ 159              	.LVL8:
+ 303:tensor_control_isr.c ****     *tensor_control_isr_INTC_PRIOR = priority << 5;
+ 160              		.loc 1 303 0
+ 161 0000 4001     		lsls	r0, r0, #5
+ 162              	.LVL9:
+ 163 0002 C0B2     		uxtb	r0, r0
+ 164 0004 014B     		ldr	r3, .L12
+ 165 0006 1870     		strb	r0, [r3]
+ 166 0008 7047     		bx	lr
+ 167              	.L13:
+ 168 000a 00BF     		.align	2
+ 169              	.L12:
+ 170 000c 08E400E0 		.word	-536812536
+ 171              		.cfi_endproc
+ 172              	.LFE70:
+ 173              		.size	tensor_control_isr_SetPriority, .-tensor_control_isr_SetPriority
+ 174              		.section	.text.tensor_control_isr_GetPriority,"ax",%progbits
+ 175              		.align	2
+ 176              		.global	tensor_control_isr_GetPriority
+ 177              		.thumb
+ 178              		.thumb_func
+ 179              		.type	tensor_control_isr_GetPriority, %function
+ 180              	tensor_control_isr_GetPriority:
+ 181              	.LFB71:
+ 304:tensor_control_isr.c **** }
+ 305:tensor_control_isr.c **** 
+ 306:tensor_control_isr.c **** 
+ 307:tensor_control_isr.c **** /*******************************************************************************
+ 308:tensor_control_isr.c **** * Function Name: tensor_control_isr_GetPriority
+ 309:tensor_control_isr.c **** ********************************************************************************
+ 310:tensor_control_isr.c **** *
+ 311:tensor_control_isr.c **** * Summary:
+ 312:tensor_control_isr.c **** *   Gets the Priority of the Interrupt.
+ 313:tensor_control_isr.c **** *
+ 314:tensor_control_isr.c **** * Parameters:
+ 315:tensor_control_isr.c **** *   None
+ 316:tensor_control_isr.c **** *
+ 317:tensor_control_isr.c **** * Return:
+ 318:tensor_control_isr.c **** *   Priority of the interrupt, 0 being the highest priority
+ 319:tensor_control_isr.c **** *    PSoC 3 and PSoC 5LP: Priority is from 0 to 7.
+ 320:tensor_control_isr.c **** *    PSoC 4: Priority is from 0 to 3.
+ 321:tensor_control_isr.c **** *
+ 322:tensor_control_isr.c **** *******************************************************************************/
+ 323:tensor_control_isr.c **** uint8 tensor_control_isr_GetPriority(void)
+ 324:tensor_control_isr.c **** {
+ 182              		.loc 1 324 0
+ 183              		.cfi_startproc
+ 184              		@ args = 0, pretend = 0, frame = 0
+ 185              		@ frame_needed = 0, uses_anonymous_args = 0
+ 186              		@ link register save eliminated.
+ 325:tensor_control_isr.c ****     uint8 priority;
+ 326:tensor_control_isr.c **** 
+ 327:tensor_control_isr.c **** 
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccuGpr3j.s 			page 10
+
+
+ 328:tensor_control_isr.c ****     priority = *tensor_control_isr_INTC_PRIOR >> 5;
+ 187              		.loc 1 328 0
+ 188 0000 014B     		ldr	r3, .L15
+ 189 0002 1878     		ldrb	r0, [r3]	@ zero_extendqisi2
+ 190              	.LVL10:
+ 329:tensor_control_isr.c **** 
+ 330:tensor_control_isr.c ****     return priority;
+ 331:tensor_control_isr.c **** }
+ 191              		.loc 1 331 0
+ 192 0004 4009     		lsrs	r0, r0, #5
+ 193              	.LVL11:
+ 194 0006 7047     		bx	lr
+ 195              	.L16:
+ 196              		.align	2
+ 197              	.L15:
+ 198 0008 08E400E0 		.word	-536812536
+ 199              		.cfi_endproc
+ 200              	.LFE71:
+ 201              		.size	tensor_control_isr_GetPriority, .-tensor_control_isr_GetPriority
+ 202              		.section	.text.tensor_control_isr_Enable,"ax",%progbits
+ 203              		.align	2
+ 204              		.global	tensor_control_isr_Enable
+ 205              		.thumb
+ 206              		.thumb_func
+ 207              		.type	tensor_control_isr_Enable, %function
+ 208              	tensor_control_isr_Enable:
+ 209              	.LFB72:
+ 332:tensor_control_isr.c **** 
+ 333:tensor_control_isr.c **** 
+ 334:tensor_control_isr.c **** /*******************************************************************************
+ 335:tensor_control_isr.c **** * Function Name: tensor_control_isr_Enable
+ 336:tensor_control_isr.c **** ********************************************************************************
+ 337:tensor_control_isr.c **** *
+ 338:tensor_control_isr.c **** * Summary:
+ 339:tensor_control_isr.c **** *   Enables the interrupt to the interrupt controller. Do not call this function
+ 340:tensor_control_isr.c **** *   unless ISR_Start() has been called or the functionality of the ISR_Start() 
+ 341:tensor_control_isr.c **** *   function, which sets the vector and the priority, has been called.
+ 342:tensor_control_isr.c **** *
+ 343:tensor_control_isr.c **** * Parameters:
+ 344:tensor_control_isr.c **** *   None
+ 345:tensor_control_isr.c **** *
+ 346:tensor_control_isr.c **** * Return:
+ 347:tensor_control_isr.c **** *   None
+ 348:tensor_control_isr.c **** *
+ 349:tensor_control_isr.c **** *******************************************************************************/
+ 350:tensor_control_isr.c **** void tensor_control_isr_Enable(void)
+ 351:tensor_control_isr.c **** {
+ 210              		.loc 1 351 0
+ 211              		.cfi_startproc
+ 212              		@ args = 0, pretend = 0, frame = 0
+ 213              		@ frame_needed = 0, uses_anonymous_args = 0
+ 214              		@ link register save eliminated.
+ 352:tensor_control_isr.c ****     /* Enable the general interrupt. */
+ 353:tensor_control_isr.c ****     *tensor_control_isr_INTC_SET_EN = tensor_control_isr__INTC_MASK;
+ 215              		.loc 1 353 0
+ 216 0000 4FF48072 		mov	r2, #256
+ 217 0004 014B     		ldr	r3, .L18
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccuGpr3j.s 			page 11
+
+
+ 218 0006 1A60     		str	r2, [r3]
+ 219 0008 7047     		bx	lr
+ 220              	.L19:
+ 221 000a 00BF     		.align	2
+ 222              	.L18:
+ 223 000c 00E100E0 		.word	-536813312
+ 224              		.cfi_endproc
+ 225              	.LFE72:
+ 226              		.size	tensor_control_isr_Enable, .-tensor_control_isr_Enable
+ 227              		.section	.text.tensor_control_isr_GetState,"ax",%progbits
+ 228              		.align	2
+ 229              		.global	tensor_control_isr_GetState
+ 230              		.thumb
+ 231              		.thumb_func
+ 232              		.type	tensor_control_isr_GetState, %function
+ 233              	tensor_control_isr_GetState:
+ 234              	.LFB73:
+ 354:tensor_control_isr.c **** }
+ 355:tensor_control_isr.c **** 
+ 356:tensor_control_isr.c **** 
+ 357:tensor_control_isr.c **** /*******************************************************************************
+ 358:tensor_control_isr.c **** * Function Name: tensor_control_isr_GetState
+ 359:tensor_control_isr.c **** ********************************************************************************
+ 360:tensor_control_isr.c **** *
+ 361:tensor_control_isr.c **** * Summary:
+ 362:tensor_control_isr.c **** *   Gets the state (enabled, disabled) of the Interrupt.
+ 363:tensor_control_isr.c **** *
+ 364:tensor_control_isr.c **** * Parameters:
+ 365:tensor_control_isr.c **** *   None
+ 366:tensor_control_isr.c **** *
+ 367:tensor_control_isr.c **** * Return:
+ 368:tensor_control_isr.c **** *   1 if enabled, 0 if disabled.
+ 369:tensor_control_isr.c **** *
+ 370:tensor_control_isr.c **** *******************************************************************************/
+ 371:tensor_control_isr.c **** uint8 tensor_control_isr_GetState(void)
+ 372:tensor_control_isr.c **** {
+ 235              		.loc 1 372 0
+ 236              		.cfi_startproc
+ 237              		@ args = 0, pretend = 0, frame = 0
+ 238              		@ frame_needed = 0, uses_anonymous_args = 0
+ 239              		@ link register save eliminated.
+ 373:tensor_control_isr.c ****     /* Get the state of the general interrupt. */
+ 374:tensor_control_isr.c ****     return ((*tensor_control_isr_INTC_SET_EN & (uint32)tensor_control_isr__INTC_MASK) != 0u) ? 1u:0
+ 240              		.loc 1 374 0
+ 241 0000 044B     		ldr	r3, .L23
+ 242 0002 1B68     		ldr	r3, [r3]
+ 243 0004 13F4807F 		tst	r3, #256
+ 244 0008 01D0     		beq	.L22
+ 245 000a 0120     		movs	r0, #1
+ 246 000c 7047     		bx	lr
+ 247              	.L22:
+ 248 000e 0020     		movs	r0, #0
+ 375:tensor_control_isr.c **** }
+ 249              		.loc 1 375 0
+ 250 0010 7047     		bx	lr
+ 251              	.L24:
+ 252 0012 00BF     		.align	2
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccuGpr3j.s 			page 12
+
+
+ 253              	.L23:
+ 254 0014 00E100E0 		.word	-536813312
+ 255              		.cfi_endproc
+ 256              	.LFE73:
+ 257              		.size	tensor_control_isr_GetState, .-tensor_control_isr_GetState
+ 258              		.section	.text.tensor_control_isr_Disable,"ax",%progbits
+ 259              		.align	2
+ 260              		.global	tensor_control_isr_Disable
+ 261              		.thumb
+ 262              		.thumb_func
+ 263              		.type	tensor_control_isr_Disable, %function
+ 264              	tensor_control_isr_Disable:
+ 265              	.LFB74:
+ 376:tensor_control_isr.c **** 
+ 377:tensor_control_isr.c **** 
+ 378:tensor_control_isr.c **** /*******************************************************************************
+ 379:tensor_control_isr.c **** * Function Name: tensor_control_isr_Disable
+ 380:tensor_control_isr.c **** ********************************************************************************
+ 381:tensor_control_isr.c **** *
+ 382:tensor_control_isr.c **** * Summary:
+ 383:tensor_control_isr.c **** *   Disables the Interrupt in the interrupt controller.
+ 384:tensor_control_isr.c **** *
+ 385:tensor_control_isr.c **** * Parameters:
+ 386:tensor_control_isr.c **** *   None
+ 387:tensor_control_isr.c **** *
+ 388:tensor_control_isr.c **** * Return:
+ 389:tensor_control_isr.c **** *   None
+ 390:tensor_control_isr.c **** *
+ 391:tensor_control_isr.c **** *******************************************************************************/
+ 392:tensor_control_isr.c **** void tensor_control_isr_Disable(void)
+ 393:tensor_control_isr.c **** {
+ 266              		.loc 1 393 0
+ 267              		.cfi_startproc
+ 268              		@ args = 0, pretend = 0, frame = 0
+ 269              		@ frame_needed = 0, uses_anonymous_args = 0
+ 270              		@ link register save eliminated.
+ 394:tensor_control_isr.c ****     /* Disable the general interrupt. */
+ 395:tensor_control_isr.c ****     *tensor_control_isr_INTC_CLR_EN = tensor_control_isr__INTC_MASK;
+ 271              		.loc 1 395 0
+ 272 0000 4FF48072 		mov	r2, #256
+ 273 0004 014B     		ldr	r3, .L26
+ 274 0006 1A60     		str	r2, [r3]
+ 275 0008 7047     		bx	lr
+ 276              	.L27:
+ 277 000a 00BF     		.align	2
+ 278              	.L26:
+ 279 000c 80E100E0 		.word	-536813184
+ 280              		.cfi_endproc
+ 281              	.LFE74:
+ 282              		.size	tensor_control_isr_Disable, .-tensor_control_isr_Disable
+ 283              		.section	.text.tensor_control_isr_Start,"ax",%progbits
+ 284              		.align	2
+ 285              		.global	tensor_control_isr_Start
+ 286              		.thumb
+ 287              		.thumb_func
+ 288              		.type	tensor_control_isr_Start, %function
+ 289              	tensor_control_isr_Start:
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccuGpr3j.s 			page 13
+
+
+ 290              	.LFB64:
+  75:tensor_control_isr.c ****     /* For all we know the interrupt is active. */
+ 291              		.loc 1 75 0
+ 292              		.cfi_startproc
+ 293              		@ args = 0, pretend = 0, frame = 0
+ 294              		@ frame_needed = 0, uses_anonymous_args = 0
+ 295 0000 08B5     		push	{r3, lr}
+ 296              		.cfi_def_cfa_offset 8
+ 297              		.cfi_offset 3, -8
+ 298              		.cfi_offset 14, -4
+  77:tensor_control_isr.c **** 
+ 299              		.loc 1 77 0
+ 300 0002 FFF7FEFF 		bl	tensor_control_isr_Disable
+ 301              	.LVL12:
+  80:tensor_control_isr.c **** 
+ 302              		.loc 1 80 0
+ 303 0006 0448     		ldr	r0, .L30
+ 304 0008 FFF7FEFF 		bl	tensor_control_isr_SetVector
+ 305              	.LVL13:
+  83:tensor_control_isr.c **** 
+ 306              		.loc 1 83 0
+ 307 000c 0720     		movs	r0, #7
+ 308 000e FFF7FEFF 		bl	tensor_control_isr_SetPriority
+ 309              	.LVL14:
+  86:tensor_control_isr.c **** }
+ 310              		.loc 1 86 0
+ 311 0012 FFF7FEFF 		bl	tensor_control_isr_Enable
+ 312              	.LVL15:
+ 313 0016 08BD     		pop	{r3, pc}
+ 314              	.L31:
+ 315              		.align	2
+ 316              	.L30:
+ 317 0018 00000000 		.word	tensor_control_isr_Interrupt
+ 318              		.cfi_endproc
+ 319              	.LFE64:
+ 320              		.size	tensor_control_isr_Start, .-tensor_control_isr_Start
+ 321              		.section	.text.tensor_control_isr_StartEx,"ax",%progbits
+ 322              		.align	2
+ 323              		.global	tensor_control_isr_StartEx
+ 324              		.thumb
+ 325              		.thumb_func
+ 326              		.type	tensor_control_isr_StartEx, %function
+ 327              	tensor_control_isr_StartEx:
+ 328              	.LFB65:
+ 118:tensor_control_isr.c ****     /* For all we know the interrupt is active. */
+ 329              		.loc 1 118 0
+ 330              		.cfi_startproc
+ 331              		@ args = 0, pretend = 0, frame = 0
+ 332              		@ frame_needed = 0, uses_anonymous_args = 0
+ 333              	.LVL16:
+ 334 0000 10B5     		push	{r4, lr}
+ 335              		.cfi_def_cfa_offset 8
+ 336              		.cfi_offset 4, -8
+ 337              		.cfi_offset 14, -4
+ 338 0002 0446     		mov	r4, r0
+ 120:tensor_control_isr.c **** 
+ 339              		.loc 1 120 0
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccuGpr3j.s 			page 14
+
+
+ 340 0004 FFF7FEFF 		bl	tensor_control_isr_Disable
+ 341              	.LVL17:
+ 123:tensor_control_isr.c **** 
+ 342              		.loc 1 123 0
+ 343 0008 2046     		mov	r0, r4
+ 344 000a FFF7FEFF 		bl	tensor_control_isr_SetVector
+ 345              	.LVL18:
+ 126:tensor_control_isr.c **** 
+ 346              		.loc 1 126 0
+ 347 000e 0720     		movs	r0, #7
+ 348 0010 FFF7FEFF 		bl	tensor_control_isr_SetPriority
+ 349              	.LVL19:
+ 129:tensor_control_isr.c **** }
+ 350              		.loc 1 129 0
+ 351 0014 FFF7FEFF 		bl	tensor_control_isr_Enable
+ 352              	.LVL20:
+ 353 0018 10BD     		pop	{r4, pc}
+ 354              		.cfi_endproc
+ 355              	.LFE65:
+ 356              		.size	tensor_control_isr_StartEx, .-tensor_control_isr_StartEx
+ 357 001a 00BF     		.section	.text.tensor_control_isr_Stop,"ax",%progbits
+ 358              		.align	2
+ 359              		.global	tensor_control_isr_Stop
+ 360              		.thumb
+ 361              		.thumb_func
+ 362              		.type	tensor_control_isr_Stop, %function
+ 363              	tensor_control_isr_Stop:
+ 364              	.LFB66:
+ 148:tensor_control_isr.c ****     /* Disable this interrupt. */
+ 365              		.loc 1 148 0
+ 366              		.cfi_startproc
+ 367              		@ args = 0, pretend = 0, frame = 0
+ 368              		@ frame_needed = 0, uses_anonymous_args = 0
+ 369 0000 08B5     		push	{r3, lr}
+ 370              		.cfi_def_cfa_offset 8
+ 371              		.cfi_offset 3, -8
+ 372              		.cfi_offset 14, -4
+ 150:tensor_control_isr.c **** 
+ 373              		.loc 1 150 0
+ 374 0002 FFF7FEFF 		bl	tensor_control_isr_Disable
+ 375              	.LVL21:
+ 153:tensor_control_isr.c **** }
+ 376              		.loc 1 153 0
+ 377 0006 0248     		ldr	r0, .L36
+ 378 0008 FFF7FEFF 		bl	tensor_control_isr_SetVector
+ 379              	.LVL22:
+ 380 000c 08BD     		pop	{r3, pc}
+ 381              	.L37:
+ 382 000e 00BF     		.align	2
+ 383              	.L36:
+ 384 0010 00000000 		.word	IntDefaultHandler
+ 385              		.cfi_endproc
+ 386              	.LFE66:
+ 387              		.size	tensor_control_isr_Stop, .-tensor_control_isr_Stop
+ 388              		.section	.text.tensor_control_isr_SetPending,"ax",%progbits
+ 389              		.align	2
+ 390              		.global	tensor_control_isr_SetPending
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccuGpr3j.s 			page 15
+
+
+ 391              		.thumb
+ 392              		.thumb_func
+ 393              		.type	tensor_control_isr_SetPending, %function
+ 394              	tensor_control_isr_SetPending:
+ 395              	.LFB75:
+ 396:tensor_control_isr.c **** }
+ 397:tensor_control_isr.c **** 
+ 398:tensor_control_isr.c **** 
+ 399:tensor_control_isr.c **** /*******************************************************************************
+ 400:tensor_control_isr.c **** * Function Name: tensor_control_isr_SetPending
+ 401:tensor_control_isr.c **** ********************************************************************************
+ 402:tensor_control_isr.c **** *
+ 403:tensor_control_isr.c **** * Summary:
+ 404:tensor_control_isr.c **** *   Causes the Interrupt to enter the pending state, a software method of
+ 405:tensor_control_isr.c **** *   generating the interrupt.
+ 406:tensor_control_isr.c **** *
+ 407:tensor_control_isr.c **** * Parameters:
+ 408:tensor_control_isr.c **** *   None
+ 409:tensor_control_isr.c **** *
+ 410:tensor_control_isr.c **** * Return:
+ 411:tensor_control_isr.c **** *   None
+ 412:tensor_control_isr.c **** *
+ 413:tensor_control_isr.c **** * Side Effects:
+ 414:tensor_control_isr.c **** *   If interrupts are enabled and the interrupt is set up properly, the ISR is
+ 415:tensor_control_isr.c **** *   entered (depending on the priority of this interrupt and other pending 
+ 416:tensor_control_isr.c **** *   interrupts).
+ 417:tensor_control_isr.c **** *
+ 418:tensor_control_isr.c **** *******************************************************************************/
+ 419:tensor_control_isr.c **** void tensor_control_isr_SetPending(void)
+ 420:tensor_control_isr.c **** {
+ 396              		.loc 1 420 0
+ 397              		.cfi_startproc
+ 398              		@ args = 0, pretend = 0, frame = 0
+ 399              		@ frame_needed = 0, uses_anonymous_args = 0
+ 400              		@ link register save eliminated.
+ 421:tensor_control_isr.c ****     *tensor_control_isr_INTC_SET_PD = tensor_control_isr__INTC_MASK;
+ 401              		.loc 1 421 0
+ 402 0000 4FF48072 		mov	r2, #256
+ 403 0004 014B     		ldr	r3, .L39
+ 404 0006 1A60     		str	r2, [r3]
+ 405 0008 7047     		bx	lr
+ 406              	.L40:
+ 407 000a 00BF     		.align	2
+ 408              	.L39:
+ 409 000c 00E200E0 		.word	-536813056
+ 410              		.cfi_endproc
+ 411              	.LFE75:
+ 412              		.size	tensor_control_isr_SetPending, .-tensor_control_isr_SetPending
+ 413              		.section	.text.tensor_control_isr_ClearPending,"ax",%progbits
+ 414              		.align	2
+ 415              		.global	tensor_control_isr_ClearPending
+ 416              		.thumb
+ 417              		.thumb_func
+ 418              		.type	tensor_control_isr_ClearPending, %function
+ 419              	tensor_control_isr_ClearPending:
+ 420              	.LFB76:
+ 422:tensor_control_isr.c **** }
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccuGpr3j.s 			page 16
+
+
+ 423:tensor_control_isr.c **** 
+ 424:tensor_control_isr.c **** 
+ 425:tensor_control_isr.c **** /*******************************************************************************
+ 426:tensor_control_isr.c **** * Function Name: tensor_control_isr_ClearPending
+ 427:tensor_control_isr.c **** ********************************************************************************
+ 428:tensor_control_isr.c **** *
+ 429:tensor_control_isr.c **** * Summary:
+ 430:tensor_control_isr.c **** *   Clears a pending interrupt in the interrupt controller.
+ 431:tensor_control_isr.c **** *
+ 432:tensor_control_isr.c **** *   Note Some interrupt sources are clear-on-read and require the block 
+ 433:tensor_control_isr.c **** *   interrupt/status register to be read/cleared with the appropriate block API 
+ 434:tensor_control_isr.c **** *   (GPIO, UART, and so on). Otherwise the ISR will continue to remain in 
+ 435:tensor_control_isr.c **** *   pending state even though the interrupt itself is cleared using this API.
+ 436:tensor_control_isr.c **** *
+ 437:tensor_control_isr.c **** * Parameters:
+ 438:tensor_control_isr.c **** *   None
+ 439:tensor_control_isr.c **** *
+ 440:tensor_control_isr.c **** * Return:
+ 441:tensor_control_isr.c **** *   None
+ 442:tensor_control_isr.c **** *
+ 443:tensor_control_isr.c **** *******************************************************************************/
+ 444:tensor_control_isr.c **** void tensor_control_isr_ClearPending(void)
+ 445:tensor_control_isr.c **** {
+ 421              		.loc 1 445 0
+ 422              		.cfi_startproc
+ 423              		@ args = 0, pretend = 0, frame = 0
+ 424              		@ frame_needed = 0, uses_anonymous_args = 0
+ 425              		@ link register save eliminated.
+ 446:tensor_control_isr.c ****     *tensor_control_isr_INTC_CLR_PD = tensor_control_isr__INTC_MASK;
+ 426              		.loc 1 446 0
+ 427 0000 4FF48072 		mov	r2, #256
+ 428 0004 014B     		ldr	r3, .L42
+ 429 0006 1A60     		str	r2, [r3]
+ 430 0008 7047     		bx	lr
+ 431              	.L43:
+ 432 000a 00BF     		.align	2
+ 433              	.L42:
+ 434 000c 80E200E0 		.word	-536812928
+ 435              		.cfi_endproc
+ 436              	.LFE76:
+ 437              		.size	tensor_control_isr_ClearPending, .-tensor_control_isr_ClearPending
+ 438              		.comm	current_pos,4,4
+ 439              		.comm	debug,4,4
+ 440              		.comm	tens_pid_,44,4
+ 441              		.comm	tension_pid_output,4,4
+ 442              		.comm	tension_ref,4,4
+ 443              		.comm	actual_tension,4,4
+ 444              		.comm	_tVal,2,2
+ 445              		.comm	_state_,4,4
+ 446              		.comm	_uart_Reset,1,1
+ 447              		.comm	SendEmulatedData,1,1
+ 448              		.comm	SendSingleByte,1,1
+ 449              		.comm	ContinuouslySendData,1,1
+ 450              		.comm	Ch,1,1
+ 451              		.comm	PB,16,4
+ 452              		.comm	RB,20,4
+ 453              		.text
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccuGpr3j.s 			page 17
+
+
+ 454              	.Letext0:
+ 455              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.1\\psoc creator\\import\\gnu\\arm\\5.4.
+ 456              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.1\\psoc creator\\import\\gnu\\arm\\5.4.
+ 457              		.file 4 "Generated_Source\\PSoC5/cytypes.h"
+ 458              		.file 5 "./pid.h"
+ 459              		.file 6 "./myUART.h"
+ 460              		.file 7 "./global.h"
+ 461              		.file 8 "Generated_Source\\PSoC5/core_cm3.h"
+ 462              		.section	.debug_info,"",%progbits
+ 463              	.Ldebug_info0:
+ 464 0000 EF050000 		.4byte	0x5ef
+ 465 0004 0400     		.2byte	0x4
+ 466 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 467 000a 04       		.byte	0x4
+ 468 000b 01       		.uleb128 0x1
+ 469 000c 9D030000 		.4byte	.LASF69
+ 470 0010 0C       		.byte	0xc
+ 471 0011 84040000 		.4byte	.LASF70
+ 472 0015 94000000 		.4byte	.LASF71
+ 473 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 474 001d 00000000 		.4byte	0
+ 475 0021 00000000 		.4byte	.Ldebug_line0
+ 476 0025 02       		.uleb128 0x2
+ 477 0026 04       		.byte	0x4
+ 478 0027 05       		.byte	0x5
+ 479 0028 696E7400 		.ascii	"int\000"
+ 480 002c 03       		.uleb128 0x3
+ 481 002d 04       		.byte	0x4
+ 482 002e 07       		.byte	0x7
+ 483 002f 4A020000 		.4byte	.LASF0
+ 484 0033 03       		.uleb128 0x3
+ 485 0034 08       		.byte	0x8
+ 486 0035 05       		.byte	0x5
+ 487 0036 2E010000 		.4byte	.LASF1
+ 488 003a 03       		.uleb128 0x3
+ 489 003b 08       		.byte	0x8
+ 490 003c 04       		.byte	0x4
+ 491 003d 88000000 		.4byte	.LASF2
+ 492 0041 03       		.uleb128 0x3
+ 493 0042 01       		.byte	0x1
+ 494 0043 06       		.byte	0x6
+ 495 0044 F8010000 		.4byte	.LASF3
+ 496 0048 03       		.uleb128 0x3
+ 497 0049 01       		.byte	0x1
+ 498 004a 08       		.byte	0x8
+ 499 004b 82010000 		.4byte	.LASF4
+ 500 004f 04       		.uleb128 0x4
+ 501 0050 64030000 		.4byte	.LASF7
+ 502 0054 02       		.byte	0x2
+ 503 0055 29       		.byte	0x29
+ 504 0056 5A000000 		.4byte	0x5a
+ 505 005a 03       		.uleb128 0x3
+ 506 005b 02       		.byte	0x2
+ 507 005c 05       		.byte	0x5
+ 508 005d 2F000000 		.4byte	.LASF5
+ 509 0061 03       		.uleb128 0x3
+ 510 0062 02       		.byte	0x2
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccuGpr3j.s 			page 18
+
+
+ 511 0063 07       		.byte	0x7
+ 512 0064 C9020000 		.4byte	.LASF6
+ 513 0068 04       		.uleb128 0x4
+ 514 0069 5A030000 		.4byte	.LASF8
+ 515 006d 02       		.byte	0x2
+ 516 006e 3F       		.byte	0x3f
+ 517 006f 73000000 		.4byte	0x73
+ 518 0073 03       		.uleb128 0x3
+ 519 0074 04       		.byte	0x4
+ 520 0075 05       		.byte	0x5
+ 521 0076 3C010000 		.4byte	.LASF9
+ 522 007a 03       		.uleb128 0x3
+ 523 007b 04       		.byte	0x4
+ 524 007c 07       		.byte	0x7
+ 525 007d 16030000 		.4byte	.LASF10
+ 526 0081 03       		.uleb128 0x3
+ 527 0082 08       		.byte	0x8
+ 528 0083 07       		.byte	0x7
+ 529 0084 0C020000 		.4byte	.LASF11
+ 530 0088 03       		.uleb128 0x3
+ 531 0089 04       		.byte	0x4
+ 532 008a 07       		.byte	0x7
+ 533 008b 56000000 		.4byte	.LASF12
+ 534 008f 05       		.uleb128 0x5
+ 535 0090 04       		.byte	0x4
+ 536 0091 95000000 		.4byte	0x95
+ 537 0095 03       		.uleb128 0x3
+ 538 0096 01       		.byte	0x1
+ 539 0097 08       		.byte	0x8
+ 540 0098 A9020000 		.4byte	.LASF13
+ 541 009c 05       		.uleb128 0x5
+ 542 009d 04       		.byte	0x4
+ 543 009e A2000000 		.4byte	0xa2
+ 544 00a2 06       		.uleb128 0x6
+ 545 00a3 04       		.uleb128 0x4
+ 546 00a4 DC020000 		.4byte	.LASF14
+ 547 00a8 03       		.byte	0x3
+ 548 00a9 20       		.byte	0x20
+ 549 00aa 4F000000 		.4byte	0x4f
+ 550 00ae 04       		.uleb128 0x4
+ 551 00af 04020000 		.4byte	.LASF15
+ 552 00b3 03       		.byte	0x3
+ 553 00b4 2C       		.byte	0x2c
+ 554 00b5 68000000 		.4byte	0x68
+ 555 00b9 07       		.uleb128 0x7
+ 556 00ba E4000000 		.4byte	.LASF16
+ 557 00be 04       		.byte	0x4
+ 558 00bf 9201     		.2byte	0x192
+ 559 00c1 48000000 		.4byte	0x48
+ 560 00c5 07       		.uleb128 0x7
+ 561 00c6 0A030000 		.4byte	.LASF17
+ 562 00ca 04       		.byte	0x4
+ 563 00cb 9401     		.2byte	0x194
+ 564 00cd 7A000000 		.4byte	0x7a
+ 565 00d1 03       		.uleb128 0x3
+ 566 00d2 04       		.byte	0x4
+ 567 00d3 04       		.byte	0x4
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccuGpr3j.s 			page 19
+
+
+ 568 00d4 28010000 		.4byte	.LASF18
+ 569 00d8 03       		.uleb128 0x3
+ 570 00d9 08       		.byte	0x8
+ 571 00da 04       		.byte	0x4
+ 572 00db 28030000 		.4byte	.LASF19
+ 573 00df 07       		.uleb128 0x7
+ 574 00e0 11030000 		.4byte	.LASF20
+ 575 00e4 04       		.byte	0x4
+ 576 00e5 3C02     		.2byte	0x23c
+ 577 00e7 EB000000 		.4byte	0xeb
+ 578 00eb 08       		.uleb128 0x8
+ 579 00ec B9000000 		.4byte	0xb9
+ 580 00f0 07       		.uleb128 0x7
+ 581 00f1 8B020000 		.4byte	.LASF21
+ 582 00f5 04       		.byte	0x4
+ 583 00f6 3E02     		.2byte	0x23e
+ 584 00f8 FC000000 		.4byte	0xfc
+ 585 00fc 08       		.uleb128 0x8
+ 586 00fd C5000000 		.4byte	0xc5
+ 587 0101 07       		.uleb128 0x7
+ 588 0102 DC010000 		.4byte	.LASF22
+ 589 0106 04       		.byte	0x4
+ 590 0107 4E02     		.2byte	0x24e
+ 591 0109 9C000000 		.4byte	0x9c
+ 592 010d 09       		.uleb128 0x9
+ 593 010e 2C       		.byte	0x2c
+ 594 010f 05       		.byte	0x5
+ 595 0110 14       		.byte	0x14
+ 596 0111 97010000 		.4byte	0x197
+ 597 0115 0A       		.uleb128 0xa
+ 598 0116 6B5000   		.ascii	"kP\000"
+ 599 0119 05       		.byte	0x5
+ 600 011a 16       		.byte	0x16
+ 601 011b AE000000 		.4byte	0xae
+ 602 011f 00       		.byte	0
+ 603 0120 0A       		.uleb128 0xa
+ 604 0121 6B4900   		.ascii	"kI\000"
+ 605 0124 05       		.byte	0x5
+ 606 0125 17       		.byte	0x17
+ 607 0126 AE000000 		.4byte	0xae
+ 608 012a 04       		.byte	0x4
+ 609 012b 0A       		.uleb128 0xa
+ 610 012c 6B4400   		.ascii	"kD\000"
+ 611 012f 05       		.byte	0x5
+ 612 0130 18       		.byte	0x18
+ 613 0131 AE000000 		.4byte	0xae
+ 614 0135 08       		.byte	0x8
+ 615 0136 0B       		.uleb128 0xb
+ 616 0137 EA000000 		.4byte	.LASF23
+ 617 013b 05       		.byte	0x5
+ 618 013c 19       		.byte	0x19
+ 619 013d AE000000 		.4byte	0xae
+ 620 0141 0C       		.byte	0xc
+ 621 0142 0B       		.uleb128 0xb
+ 622 0143 B5010000 		.4byte	.LASF24
+ 623 0147 05       		.byte	0x5
+ 624 0148 1A       		.byte	0x1a
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccuGpr3j.s 			page 20
+
+
+ 625 0149 AE000000 		.4byte	0xae
+ 626 014d 10       		.byte	0x10
+ 627 014e 0B       		.uleb128 0xb
+ 628 014f 45010000 		.4byte	.LASF25
+ 629 0153 05       		.byte	0x5
+ 630 0154 1B       		.byte	0x1b
+ 631 0155 AE000000 		.4byte	0xae
+ 632 0159 14       		.byte	0x14
+ 633 015a 0B       		.uleb128 0xb
+ 634 015b 48030000 		.4byte	.LASF26
+ 635 015f 05       		.byte	0x5
+ 636 0160 1C       		.byte	0x1c
+ 637 0161 AE000000 		.4byte	0xae
+ 638 0165 18       		.byte	0x18
+ 639 0166 0B       		.uleb128 0xb
+ 640 0167 0E010000 		.4byte	.LASF27
+ 641 016b 05       		.byte	0x5
+ 642 016c 1D       		.byte	0x1d
+ 643 016d AE000000 		.4byte	0xae
+ 644 0171 1C       		.byte	0x1c
+ 645 0172 0B       		.uleb128 0xb
+ 646 0173 4F010000 		.4byte	.LASF28
+ 647 0177 05       		.byte	0x5
+ 648 0178 1E       		.byte	0x1e
+ 649 0179 AE000000 		.4byte	0xae
+ 650 017d 20       		.byte	0x20
+ 651 017e 0B       		.uleb128 0xb
+ 652 017f 08000000 		.4byte	.LASF29
+ 653 0183 05       		.byte	0x5
+ 654 0184 1F       		.byte	0x1f
+ 655 0185 AE000000 		.4byte	0xae
+ 656 0189 24       		.byte	0x24
+ 657 018a 0B       		.uleb128 0xb
+ 658 018b 2B040000 		.4byte	.LASF30
+ 659 018f 05       		.byte	0x5
+ 660 0190 20       		.byte	0x20
+ 661 0191 AE000000 		.4byte	0xae
+ 662 0195 28       		.byte	0x28
+ 663 0196 00       		.byte	0
+ 664 0197 04       		.uleb128 0x4
+ 665 0198 5F040000 		.4byte	.LASF31
+ 666 019c 05       		.byte	0x5
+ 667 019d 21       		.byte	0x21
+ 668 019e 0D010000 		.4byte	0x10d
+ 669 01a2 09       		.uleb128 0x9
+ 670 01a3 14       		.byte	0x14
+ 671 01a4 06       		.byte	0x6
+ 672 01a5 1C       		.byte	0x1c
+ 673 01a6 C3010000 		.4byte	0x1c3
+ 674 01aa 0A       		.uleb128 0xa
+ 675 01ab 636D6400 		.ascii	"cmd\000"
+ 676 01af 06       		.byte	0x6
+ 677 01b0 1D       		.byte	0x1d
+ 678 01b1 95000000 		.4byte	0x95
+ 679 01b5 00       		.byte	0
+ 680 01b6 0B       		.uleb128 0xb
+ 681 01b7 A2020000 		.4byte	.LASF32
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccuGpr3j.s 			page 21
+
+
+ 682 01bb 06       		.byte	0x6
+ 683 01bc 1E       		.byte	0x1e
+ 684 01bd C3010000 		.4byte	0x1c3
+ 685 01c1 01       		.byte	0x1
+ 686 01c2 00       		.byte	0
+ 687 01c3 0C       		.uleb128 0xc
+ 688 01c4 95000000 		.4byte	0x95
+ 689 01c8 D3010000 		.4byte	0x1d3
+ 690 01cc 0D       		.uleb128 0xd
+ 691 01cd 88000000 		.4byte	0x88
+ 692 01d1 12       		.byte	0x12
+ 693 01d2 00       		.byte	0
+ 694 01d3 0E       		.uleb128 0xe
+ 695 01d4 40020000 		.4byte	.LASF72
+ 696 01d8 14       		.byte	0x14
+ 697 01d9 06       		.byte	0x6
+ 698 01da 1A       		.byte	0x1a
+ 699 01db F0010000 		.4byte	0x1f0
+ 700 01df 0F       		.uleb128 0xf
+ 701 01e0 04030000 		.4byte	.LASF73
+ 702 01e4 06       		.byte	0x6
+ 703 01e5 1B       		.byte	0x1b
+ 704 01e6 F0010000 		.4byte	0x1f0
+ 705 01ea 10       		.uleb128 0x10
+ 706 01eb A2010000 		.4byte	0x1a2
+ 707 01ef 00       		.byte	0
+ 708 01f0 0C       		.uleb128 0xc
+ 709 01f1 95000000 		.4byte	0x95
+ 710 01f5 00020000 		.4byte	0x200
+ 711 01f9 0D       		.uleb128 0xd
+ 712 01fa 88000000 		.4byte	0x88
+ 713 01fe 13       		.byte	0x13
+ 714 01ff 00       		.byte	0
+ 715 0200 11       		.uleb128 0x11
+ 716 0201 7E020000 		.4byte	.LASF74
+ 717 0205 10       		.byte	0x10
+ 718 0206 07       		.byte	0x7
+ 719 0207 1A       		.byte	0x1a
+ 720 0208 3D020000 		.4byte	0x23d
+ 721 020c 0A       		.uleb128 0xa
+ 722 020d 636D6400 		.ascii	"cmd\000"
+ 723 0211 07       		.byte	0x7
+ 724 0212 1B       		.byte	0x1b
+ 725 0213 8F000000 		.4byte	0x8f
+ 726 0217 00       		.byte	0
+ 727 0218 0B       		.uleb128 0xb
+ 728 0219 12000000 		.4byte	.LASF33
+ 729 021d 07       		.byte	0x7
+ 730 021e 1C       		.byte	0x1c
+ 731 021f 25000000 		.4byte	0x25
+ 732 0223 04       		.byte	0x4
+ 733 0224 0B       		.uleb128 0xb
+ 734 0225 DF000000 		.4byte	.LASF34
+ 735 0229 07       		.byte	0x7
+ 736 022a 1C       		.byte	0x1c
+ 737 022b 25000000 		.4byte	0x25
+ 738 022f 08       		.byte	0x8
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccuGpr3j.s 			page 22
+
+
+ 739 0230 0B       		.uleb128 0xb
+ 740 0231 35040000 		.4byte	.LASF35
+ 741 0235 07       		.byte	0x7
+ 742 0236 1C       		.byte	0x1c
+ 743 0237 25000000 		.4byte	0x25
+ 744 023b 0C       		.byte	0xc
+ 745 023c 00       		.byte	0
+ 746 023d 04       		.uleb128 0x4
+ 747 023e 7B030000 		.4byte	.LASF36
+ 748 0242 07       		.byte	0x7
+ 749 0243 1D       		.byte	0x1d
+ 750 0244 00020000 		.4byte	0x200
+ 751 0248 12       		.uleb128 0x12
+ 752 0249 F1000000 		.4byte	.LASF37
+ 753 024d 01       		.byte	0x1
+ 754 024e AD       		.byte	0xad
+ 755 024f 00000000 		.4byte	.LFB67
+ 756 0253 5C000000 		.4byte	.LFE67-.LFB67
+ 757 0257 01       		.uleb128 0x1
+ 758 0258 9C       		.byte	0x9c
+ 759 0259 C8020000 		.4byte	0x2c8
+ 760 025d 13       		.uleb128 0x13
+ 761 025e 61757800 		.ascii	"aux\000"
+ 762 0262 01       		.byte	0x1
+ 763 0263 C0       		.byte	0xc0
+ 764 0264 25000000 		.4byte	0x25
+ 765 0268 00000000 		.4byte	.LLST0
+ 766 026c 14       		.uleb128 0x14
+ 767 026d 6E030000 		.4byte	.LASF68
+ 768 0271 01       		.byte	0x1
+ 769 0272 C1       		.byte	0xc1
+ 770 0273 25000000 		.4byte	0x25
+ 771 0277 7D020000 		.4byte	0x27d
+ 772 027b 15       		.uleb128 0x15
+ 773 027c 00       		.byte	0
+ 774 027d 16       		.uleb128 0x16
+ 775 027e 1A000000 		.4byte	.LVL0
+ 776 0282 D1050000 		.4byte	0x5d1
+ 777 0286 91020000 		.4byte	0x291
+ 778 028a 17       		.uleb128 0x17
+ 779 028b 01       		.uleb128 0x1
+ 780 028c 50       		.byte	0x50
+ 781 028d 02       		.uleb128 0x2
+ 782 028e 74       		.byte	0x74
+ 783 028f 00       		.sleb128 0
+ 784 0290 00       		.byte	0
+ 785 0291 16       		.uleb128 0x16
+ 786 0292 22000000 		.4byte	.LVL1
+ 787 0296 DC050000 		.4byte	0x5dc
+ 788 029a A5020000 		.4byte	0x2a5
+ 789 029e 17       		.uleb128 0x17
+ 790 029f 01       		.uleb128 0x1
+ 791 02a0 50       		.byte	0x50
+ 792 02a1 02       		.uleb128 0x2
+ 793 02a2 74       		.byte	0x74
+ 794 02a3 00       		.sleb128 0
+ 795 02a4 00       		.byte	0
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccuGpr3j.s 			page 23
+
+
+ 796 02a5 18       		.uleb128 0x18
+ 797 02a6 3C000000 		.4byte	.LVL4
+ 798 02aa E7050000 		.4byte	0x5e7
+ 799 02ae 17       		.uleb128 0x17
+ 800 02af 01       		.uleb128 0x1
+ 801 02b0 51       		.byte	0x51
+ 802 02b1 01       		.uleb128 0x1
+ 803 02b2 30       		.byte	0x30
+ 804 02b3 17       		.uleb128 0x17
+ 805 02b4 01       		.uleb128 0x1
+ 806 02b5 52       		.byte	0x52
+ 807 02b6 03       		.uleb128 0x3
+ 808 02b7 0A       		.byte	0xa
+ 809 02b8 0010     		.2byte	0x1000
+ 810 02ba 17       		.uleb128 0x17
+ 811 02bb 01       		.uleb128 0x1
+ 812 02bc 53       		.byte	0x53
+ 813 02bd 01       		.uleb128 0x1
+ 814 02be 30       		.byte	0x30
+ 815 02bf 17       		.uleb128 0x17
+ 816 02c0 02       		.uleb128 0x2
+ 817 02c1 7D       		.byte	0x7d
+ 818 02c2 00       		.sleb128 0
+ 819 02c3 02       		.uleb128 0x2
+ 820 02c4 08       		.byte	0x8
+ 821 02c5 FF       		.byte	0xff
+ 822 02c6 00       		.byte	0
+ 823 02c7 00       		.byte	0
+ 824 02c8 12       		.uleb128 0x12
+ 825 02c9 23020000 		.4byte	.LASF38
+ 826 02cd 01       		.byte	0x1
+ 827 02ce F3       		.byte	0xf3
+ 828 02cf 00000000 		.4byte	.LFB68
+ 829 02d3 0C000000 		.4byte	.LFE68-.LFB68
+ 830 02d7 01       		.uleb128 0x1
+ 831 02d8 9C       		.byte	0x9c
+ 832 02d9 F8020000 		.4byte	0x2f8
+ 833 02dd 19       		.uleb128 0x19
+ 834 02de D7000000 		.4byte	.LASF41
+ 835 02e2 01       		.byte	0x1
+ 836 02e3 F3       		.byte	0xf3
+ 837 02e4 01010000 		.4byte	0x101
+ 838 02e8 01       		.uleb128 0x1
+ 839 02e9 50       		.byte	0x50
+ 840 02ea 1A       		.uleb128 0x1a
+ 841 02eb 58010000 		.4byte	.LASF39
+ 842 02ef 01       		.byte	0x1
+ 843 02f0 F5       		.byte	0xf5
+ 844 02f1 F8020000 		.4byte	0x2f8
+ 845 02f5 01       		.uleb128 0x1
+ 846 02f6 53       		.byte	0x53
+ 847 02f7 00       		.byte	0
+ 848 02f8 05       		.uleb128 0x5
+ 849 02f9 04       		.byte	0x4
+ 850 02fa 01010000 		.4byte	0x101
+ 851 02fe 1B       		.uleb128 0x1b
+ 852 02ff 39000000 		.4byte	.LASF43
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccuGpr3j.s 			page 24
+
+
+ 853 0303 01       		.byte	0x1
+ 854 0304 0B01     		.2byte	0x10b
+ 855 0306 01010000 		.4byte	0x101
+ 856 030a 00000000 		.4byte	.LFB69
+ 857 030e 0C000000 		.4byte	.LFE69-.LFB69
+ 858 0312 01       		.uleb128 0x1
+ 859 0313 9C       		.byte	0x9c
+ 860 0314 27030000 		.4byte	0x327
+ 861 0318 1C       		.uleb128 0x1c
+ 862 0319 58010000 		.4byte	.LASF39
+ 863 031d 01       		.byte	0x1
+ 864 031e 0D01     		.2byte	0x10d
+ 865 0320 F8020000 		.4byte	0x2f8
+ 866 0324 01       		.uleb128 0x1
+ 867 0325 53       		.byte	0x53
+ 868 0326 00       		.byte	0
+ 869 0327 1D       		.uleb128 0x1d
+ 870 0328 65040000 		.4byte	.LASF40
+ 871 032c 01       		.byte	0x1
+ 872 032d 2D01     		.2byte	0x12d
+ 873 032f 00000000 		.4byte	.LFB70
+ 874 0333 10000000 		.4byte	.LFE70-.LFB70
+ 875 0337 01       		.uleb128 0x1
+ 876 0338 9C       		.byte	0x9c
+ 877 0339 4E030000 		.4byte	0x34e
+ 878 033d 1E       		.uleb128 0x1e
+ 879 033e 17000000 		.4byte	.LASF42
+ 880 0342 01       		.byte	0x1
+ 881 0343 2D01     		.2byte	0x12d
+ 882 0345 B9000000 		.4byte	0xb9
+ 883 0349 28000000 		.4byte	.LLST1
+ 884 034d 00       		.byte	0
+ 885 034e 1B       		.uleb128 0x1b
+ 886 034f 5F000000 		.4byte	.LASF44
+ 887 0353 01       		.byte	0x1
+ 888 0354 4301     		.2byte	0x143
+ 889 0356 B9000000 		.4byte	0xb9
+ 890 035a 00000000 		.4byte	.LFB71
+ 891 035e 0C000000 		.4byte	.LFE71-.LFB71
+ 892 0362 01       		.uleb128 0x1
+ 893 0363 9C       		.byte	0x9c
+ 894 0364 79030000 		.4byte	0x379
+ 895 0368 1F       		.uleb128 0x1f
+ 896 0369 17000000 		.4byte	.LASF42
+ 897 036d 01       		.byte	0x1
+ 898 036e 4501     		.2byte	0x145
+ 899 0370 B9000000 		.4byte	0xb9
+ 900 0374 49000000 		.4byte	.LLST2
+ 901 0378 00       		.byte	0
+ 902 0379 20       		.uleb128 0x20
+ 903 037a 45040000 		.4byte	.LASF45
+ 904 037e 01       		.byte	0x1
+ 905 037f 5E01     		.2byte	0x15e
+ 906 0381 00000000 		.4byte	.LFB72
+ 907 0385 10000000 		.4byte	.LFE72-.LFB72
+ 908 0389 01       		.uleb128 0x1
+ 909 038a 9C       		.byte	0x9c
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccuGpr3j.s 			page 25
+
+
+ 910 038b 21       		.uleb128 0x21
+ 911 038c C0010000 		.4byte	.LASF75
+ 912 0390 01       		.byte	0x1
+ 913 0391 7301     		.2byte	0x173
+ 914 0393 B9000000 		.4byte	0xb9
+ 915 0397 00000000 		.4byte	.LFB73
+ 916 039b 18000000 		.4byte	.LFE73-.LFB73
+ 917 039f 01       		.uleb128 0x1
+ 918 03a0 9C       		.byte	0x9c
+ 919 03a1 20       		.uleb128 0x20
+ 920 03a2 67010000 		.4byte	.LASF46
+ 921 03a6 01       		.byte	0x1
+ 922 03a7 8801     		.2byte	0x188
+ 923 03a9 00000000 		.4byte	.LFB74
+ 924 03ad 10000000 		.4byte	.LFE74-.LFB74
+ 925 03b1 01       		.uleb128 0x1
+ 926 03b2 9C       		.byte	0x9c
+ 927 03b3 12       		.uleb128 0x12
+ 928 03b4 90010000 		.4byte	.LASF47
+ 929 03b8 01       		.byte	0x1
+ 930 03b9 4A       		.byte	0x4a
+ 931 03ba 00000000 		.4byte	.LFB64
+ 932 03be 1C000000 		.4byte	.LFE64-.LFB64
+ 933 03c2 01       		.uleb128 0x1
+ 934 03c3 9C       		.byte	0x9c
+ 935 03c4 05040000 		.4byte	0x405
+ 936 03c8 22       		.uleb128 0x22
+ 937 03c9 06000000 		.4byte	.LVL12
+ 938 03cd A1030000 		.4byte	0x3a1
+ 939 03d1 16       		.uleb128 0x16
+ 940 03d2 0C000000 		.4byte	.LVL13
+ 941 03d6 C8020000 		.4byte	0x2c8
+ 942 03da E8030000 		.4byte	0x3e8
+ 943 03de 17       		.uleb128 0x17
+ 944 03df 01       		.uleb128 0x1
+ 945 03e0 50       		.byte	0x50
+ 946 03e1 05       		.uleb128 0x5
+ 947 03e2 03       		.byte	0x3
+ 948 03e3 00000000 		.4byte	tensor_control_isr_Interrupt
+ 949 03e7 00       		.byte	0
+ 950 03e8 16       		.uleb128 0x16
+ 951 03e9 12000000 		.4byte	.LVL14
+ 952 03ed 27030000 		.4byte	0x327
+ 953 03f1 FB030000 		.4byte	0x3fb
+ 954 03f5 17       		.uleb128 0x17
+ 955 03f6 01       		.uleb128 0x1
+ 956 03f7 50       		.byte	0x50
+ 957 03f8 01       		.uleb128 0x1
+ 958 03f9 37       		.byte	0x37
+ 959 03fa 00       		.byte	0
+ 960 03fb 22       		.uleb128 0x22
+ 961 03fc 16000000 		.4byte	.LVL15
+ 962 0400 79030000 		.4byte	0x379
+ 963 0404 00       		.byte	0
+ 964 0405 12       		.uleb128 0x12
+ 965 0406 AE020000 		.4byte	.LASF48
+ 966 040a 01       		.byte	0x1
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccuGpr3j.s 			page 26
+
+
+ 967 040b 75       		.byte	0x75
+ 968 040c 00000000 		.4byte	.LFB65
+ 969 0410 1A000000 		.4byte	.LFE65-.LFB65
+ 970 0414 01       		.uleb128 0x1
+ 971 0415 9C       		.byte	0x9c
+ 972 0416 63040000 		.4byte	0x463
+ 973 041a 23       		.uleb128 0x23
+ 974 041b D7000000 		.4byte	.LASF41
+ 975 041f 01       		.byte	0x1
+ 976 0420 75       		.byte	0x75
+ 977 0421 01010000 		.4byte	0x101
+ 978 0425 60000000 		.4byte	.LLST3
+ 979 0429 22       		.uleb128 0x22
+ 980 042a 08000000 		.4byte	.LVL17
+ 981 042e A1030000 		.4byte	0x3a1
+ 982 0432 16       		.uleb128 0x16
+ 983 0433 0E000000 		.4byte	.LVL18
+ 984 0437 C8020000 		.4byte	0x2c8
+ 985 043b 46040000 		.4byte	0x446
+ 986 043f 17       		.uleb128 0x17
+ 987 0440 01       		.uleb128 0x1
+ 988 0441 50       		.byte	0x50
+ 989 0442 02       		.uleb128 0x2
+ 990 0443 74       		.byte	0x74
+ 991 0444 00       		.sleb128 0
+ 992 0445 00       		.byte	0
+ 993 0446 16       		.uleb128 0x16
+ 994 0447 14000000 		.4byte	.LVL19
+ 995 044b 27030000 		.4byte	0x327
+ 996 044f 59040000 		.4byte	0x459
+ 997 0453 17       		.uleb128 0x17
+ 998 0454 01       		.uleb128 0x1
+ 999 0455 50       		.byte	0x50
+ 1000 0456 01       		.uleb128 0x1
+ 1001 0457 37       		.byte	0x37
+ 1002 0458 00       		.byte	0
+ 1003 0459 22       		.uleb128 0x22
+ 1004 045a 18000000 		.4byte	.LVL20
+ 1005 045e 79030000 		.4byte	0x379
+ 1006 0462 00       		.byte	0
+ 1007 0463 12       		.uleb128 0x12
+ 1008 0464 99040000 		.4byte	.LASF49
+ 1009 0468 01       		.byte	0x1
+ 1010 0469 93       		.byte	0x93
+ 1011 046a 00000000 		.4byte	.LFB66
+ 1012 046e 14000000 		.4byte	.LFE66-.LFB66
+ 1013 0472 01       		.uleb128 0x1
+ 1014 0473 9C       		.byte	0x9c
+ 1015 0474 8B040000 		.4byte	0x48b
+ 1016 0478 22       		.uleb128 0x22
+ 1017 0479 06000000 		.4byte	.LVL21
+ 1018 047d A1030000 		.4byte	0x3a1
+ 1019 0481 22       		.uleb128 0x22
+ 1020 0482 0C000000 		.4byte	.LVL22
+ 1021 0486 C8020000 		.4byte	0x2c8
+ 1022 048a 00       		.byte	0
+ 1023 048b 20       		.uleb128 0x20
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccuGpr3j.s 			page 27
+
+
+ 1024 048c B1040000 		.4byte	.LASF50
+ 1025 0490 01       		.byte	0x1
+ 1026 0491 A301     		.2byte	0x1a3
+ 1027 0493 00000000 		.4byte	.LFB75
+ 1028 0497 10000000 		.4byte	.LFE75-.LFB75
+ 1029 049b 01       		.uleb128 0x1
+ 1030 049c 9C       		.byte	0x9c
+ 1031 049d 20       		.uleb128 0x20
+ 1032 049e E4020000 		.4byte	.LASF51
+ 1033 04a2 01       		.byte	0x1
+ 1034 04a3 BC01     		.2byte	0x1bc
+ 1035 04a5 00000000 		.4byte	.LFB76
+ 1036 04a9 10000000 		.4byte	.LFE76-.LFB76
+ 1037 04ad 01       		.uleb128 0x1
+ 1038 04ae 9C       		.byte	0x9c
+ 1039 04af 24       		.uleb128 0x24
+ 1040 04b0 90030000 		.4byte	.LASF52
+ 1041 04b4 08       		.byte	0x8
+ 1042 04b5 1207     		.2byte	0x712
+ 1043 04b7 BB040000 		.4byte	0x4bb
+ 1044 04bb 08       		.uleb128 0x8
+ 1045 04bc AE000000 		.4byte	0xae
+ 1046 04c0 25       		.uleb128 0x25
+ 1047 04c1 524200   		.ascii	"RB\000"
+ 1048 04c4 06       		.byte	0x6
+ 1049 04c5 20       		.byte	0x20
+ 1050 04c6 D3010000 		.4byte	0x1d3
+ 1051 04ca 05       		.uleb128 0x5
+ 1052 04cb 03       		.byte	0x3
+ 1053 04cc 00000000 		.4byte	RB
+ 1054 04d0 25       		.uleb128 0x25
+ 1055 04d1 504200   		.ascii	"PB\000"
+ 1056 04d4 07       		.byte	0x7
+ 1057 04d5 1E       		.byte	0x1e
+ 1058 04d6 E0040000 		.4byte	0x4e0
+ 1059 04da 05       		.uleb128 0x5
+ 1060 04db 03       		.byte	0x3
+ 1061 04dc 00000000 		.4byte	PB
+ 1062 04e0 08       		.uleb128 0x8
+ 1063 04e1 3D020000 		.4byte	0x23d
+ 1064 04e5 25       		.uleb128 0x25
+ 1065 04e6 436800   		.ascii	"Ch\000"
+ 1066 04e9 07       		.byte	0x7
+ 1067 04ea 4F       		.byte	0x4f
+ 1068 04eb EB000000 		.4byte	0xeb
+ 1069 04ef 05       		.uleb128 0x5
+ 1070 04f0 03       		.byte	0x3
+ 1071 04f1 00000000 		.4byte	Ch
+ 1072 04f5 26       		.uleb128 0x26
+ 1073 04f6 57020000 		.4byte	.LASF53
+ 1074 04fa 07       		.byte	0x7
+ 1075 04fb 51       		.byte	0x51
+ 1076 04fc EB000000 		.4byte	0xeb
+ 1077 0500 05       		.uleb128 0x5
+ 1078 0501 03       		.byte	0x3
+ 1079 0502 00000000 		.4byte	ContinuouslySendData
+ 1080 0506 26       		.uleb128 0x26
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccuGpr3j.s 			page 28
+
+
+ 1081 0507 E9010000 		.4byte	.LASF54
+ 1082 050b 07       		.byte	0x7
+ 1083 050c 52       		.byte	0x52
+ 1084 050d EB000000 		.4byte	0xeb
+ 1085 0511 05       		.uleb128 0x5
+ 1086 0512 03       		.byte	0x3
+ 1087 0513 00000000 		.4byte	SendSingleByte
+ 1088 0517 26       		.uleb128 0x26
+ 1089 0518 91020000 		.4byte	.LASF55
+ 1090 051c 07       		.byte	0x7
+ 1091 051d 53       		.byte	0x53
+ 1092 051e EB000000 		.4byte	0xeb
+ 1093 0522 05       		.uleb128 0x5
+ 1094 0523 03       		.byte	0x3
+ 1095 0524 00000000 		.4byte	SendEmulatedData
+ 1096 0528 26       		.uleb128 0x26
+ 1097 0529 A9010000 		.4byte	.LASF56
+ 1098 052d 07       		.byte	0x7
+ 1099 052e 54       		.byte	0x54
+ 1100 052f EB000000 		.4byte	0xeb
+ 1101 0533 05       		.uleb128 0x5
+ 1102 0534 03       		.byte	0x3
+ 1103 0535 00000000 		.4byte	_uart_Reset
+ 1104 0539 26       		.uleb128 0x26
+ 1105 053a 00000000 		.4byte	.LASF57
+ 1106 053e 07       		.byte	0x7
+ 1107 053f 57       		.byte	0x57
+ 1108 0540 25000000 		.4byte	0x25
+ 1109 0544 05       		.uleb128 0x5
+ 1110 0545 03       		.byte	0x3
+ 1111 0546 00000000 		.4byte	_state_
+ 1112 054a 26       		.uleb128 0x26
+ 1113 054b 7E000000 		.4byte	.LASF58
+ 1114 054f 01       		.byte	0x1
+ 1115 0550 27       		.byte	0x27
+ 1116 0551 97010000 		.4byte	0x197
+ 1117 0555 05       		.uleb128 0x5
+ 1118 0556 03       		.byte	0x3
+ 1119 0557 00000000 		.4byte	tens_pid_
+ 1120 055b 26       		.uleb128 0x26
+ 1121 055c 20000000 		.4byte	.LASF59
+ 1122 0560 01       		.byte	0x1
+ 1123 0561 23       		.byte	0x23
+ 1124 0562 BB040000 		.4byte	0x4bb
+ 1125 0566 05       		.uleb128 0x5
+ 1126 0567 03       		.byte	0x3
+ 1127 0568 00000000 		.4byte	actual_tension
+ 1128 056c 26       		.uleb128 0x26
+ 1129 056d 6C020000 		.4byte	.LASF60
+ 1130 0571 01       		.byte	0x1
+ 1131 0572 24       		.byte	0x24
+ 1132 0573 BB040000 		.4byte	0x4bb
+ 1133 0577 05       		.uleb128 0x5
+ 1134 0578 03       		.byte	0x3
+ 1135 0579 00000000 		.4byte	tension_ref
+ 1136 057d 26       		.uleb128 0x26
+ 1137 057e 2F030000 		.4byte	.LASF61
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccuGpr3j.s 			page 29
+
+
+ 1138 0582 01       		.byte	0x1
+ 1139 0583 22       		.byte	0x22
+ 1140 0584 8E050000 		.4byte	0x58e
+ 1141 0588 05       		.uleb128 0x5
+ 1142 0589 03       		.byte	0x3
+ 1143 058a 00000000 		.4byte	_tVal
+ 1144 058e 08       		.uleb128 0x8
+ 1145 058f A3000000 		.4byte	0xa3
+ 1146 0593 26       		.uleb128 0x26
+ 1147 0594 78020000 		.4byte	.LASF62
+ 1148 0598 01       		.byte	0x1
+ 1149 0599 29       		.byte	0x29
+ 1150 059a BB040000 		.4byte	0x4bb
+ 1151 059e 05       		.uleb128 0x5
+ 1152 059f 03       		.byte	0x3
+ 1153 05a0 00000000 		.4byte	debug
+ 1154 05a4 27       		.uleb128 0x27
+ 1155 05a5 87030000 		.4byte	.LASF63
+ 1156 05a9 07       		.byte	0x7
+ 1157 05aa 75       		.byte	0x75
+ 1158 05ab B9000000 		.4byte	0xb9
+ 1159 05af 26       		.uleb128 0x26
+ 1160 05b0 35030000 		.4byte	.LASF64
+ 1161 05b4 01       		.byte	0x1
+ 1162 05b5 25       		.byte	0x25
+ 1163 05b6 AE000000 		.4byte	0xae
+ 1164 05ba 05       		.uleb128 0x5
+ 1165 05bb 03       		.byte	0x3
+ 1166 05bc 00000000 		.4byte	tension_pid_output
+ 1167 05c0 26       		.uleb128 0x26
+ 1168 05c1 4E030000 		.4byte	.LASF65
+ 1169 05c5 01       		.byte	0x1
+ 1170 05c6 2A       		.byte	0x2a
+ 1171 05c7 BB040000 		.4byte	0x4bb
+ 1172 05cb 05       		.uleb128 0x5
+ 1173 05cc 03       		.byte	0x3
+ 1174 05cd 00000000 		.4byte	current_pos
+ 1175 05d1 28       		.uleb128 0x28
+ 1176 05d2 3A040000 		.4byte	.LASF66
+ 1177 05d6 3A040000 		.4byte	.LASF66
+ 1178 05da 05       		.byte	0x5
+ 1179 05db 26       		.byte	0x26
+ 1180 05dc 28       		.uleb128 0x28
+ 1181 05dd 17010000 		.4byte	.LASF67
+ 1182 05e1 17010000 		.4byte	.LASF67
+ 1183 05e5 05       		.byte	0x5
+ 1184 05e6 29       		.byte	0x29
+ 1185 05e7 28       		.uleb128 0x28
+ 1186 05e8 6E030000 		.4byte	.LASF68
+ 1187 05ec 6E030000 		.4byte	.LASF68
+ 1188 05f0 01       		.byte	0x1
+ 1189 05f1 C1       		.byte	0xc1
+ 1190 05f2 00       		.byte	0
+ 1191              		.section	.debug_abbrev,"",%progbits
+ 1192              	.Ldebug_abbrev0:
+ 1193 0000 01       		.uleb128 0x1
+ 1194 0001 11       		.uleb128 0x11
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccuGpr3j.s 			page 30
+
+
+ 1195 0002 01       		.byte	0x1
+ 1196 0003 25       		.uleb128 0x25
+ 1197 0004 0E       		.uleb128 0xe
+ 1198 0005 13       		.uleb128 0x13
+ 1199 0006 0B       		.uleb128 0xb
+ 1200 0007 03       		.uleb128 0x3
+ 1201 0008 0E       		.uleb128 0xe
+ 1202 0009 1B       		.uleb128 0x1b
+ 1203 000a 0E       		.uleb128 0xe
+ 1204 000b 55       		.uleb128 0x55
+ 1205 000c 17       		.uleb128 0x17
+ 1206 000d 11       		.uleb128 0x11
+ 1207 000e 01       		.uleb128 0x1
+ 1208 000f 10       		.uleb128 0x10
+ 1209 0010 17       		.uleb128 0x17
+ 1210 0011 00       		.byte	0
+ 1211 0012 00       		.byte	0
+ 1212 0013 02       		.uleb128 0x2
+ 1213 0014 24       		.uleb128 0x24
+ 1214 0015 00       		.byte	0
+ 1215 0016 0B       		.uleb128 0xb
+ 1216 0017 0B       		.uleb128 0xb
+ 1217 0018 3E       		.uleb128 0x3e
+ 1218 0019 0B       		.uleb128 0xb
+ 1219 001a 03       		.uleb128 0x3
+ 1220 001b 08       		.uleb128 0x8
+ 1221 001c 00       		.byte	0
+ 1222 001d 00       		.byte	0
+ 1223 001e 03       		.uleb128 0x3
+ 1224 001f 24       		.uleb128 0x24
+ 1225 0020 00       		.byte	0
+ 1226 0021 0B       		.uleb128 0xb
+ 1227 0022 0B       		.uleb128 0xb
+ 1228 0023 3E       		.uleb128 0x3e
+ 1229 0024 0B       		.uleb128 0xb
+ 1230 0025 03       		.uleb128 0x3
+ 1231 0026 0E       		.uleb128 0xe
+ 1232 0027 00       		.byte	0
+ 1233 0028 00       		.byte	0
+ 1234 0029 04       		.uleb128 0x4
+ 1235 002a 16       		.uleb128 0x16
+ 1236 002b 00       		.byte	0
+ 1237 002c 03       		.uleb128 0x3
+ 1238 002d 0E       		.uleb128 0xe
+ 1239 002e 3A       		.uleb128 0x3a
+ 1240 002f 0B       		.uleb128 0xb
+ 1241 0030 3B       		.uleb128 0x3b
+ 1242 0031 0B       		.uleb128 0xb
+ 1243 0032 49       		.uleb128 0x49
+ 1244 0033 13       		.uleb128 0x13
+ 1245 0034 00       		.byte	0
+ 1246 0035 00       		.byte	0
+ 1247 0036 05       		.uleb128 0x5
+ 1248 0037 0F       		.uleb128 0xf
+ 1249 0038 00       		.byte	0
+ 1250 0039 0B       		.uleb128 0xb
+ 1251 003a 0B       		.uleb128 0xb
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccuGpr3j.s 			page 31
+
+
+ 1252 003b 49       		.uleb128 0x49
+ 1253 003c 13       		.uleb128 0x13
+ 1254 003d 00       		.byte	0
+ 1255 003e 00       		.byte	0
+ 1256 003f 06       		.uleb128 0x6
+ 1257 0040 15       		.uleb128 0x15
+ 1258 0041 00       		.byte	0
+ 1259 0042 27       		.uleb128 0x27
+ 1260 0043 19       		.uleb128 0x19
+ 1261 0044 00       		.byte	0
+ 1262 0045 00       		.byte	0
+ 1263 0046 07       		.uleb128 0x7
+ 1264 0047 16       		.uleb128 0x16
+ 1265 0048 00       		.byte	0
+ 1266 0049 03       		.uleb128 0x3
+ 1267 004a 0E       		.uleb128 0xe
+ 1268 004b 3A       		.uleb128 0x3a
+ 1269 004c 0B       		.uleb128 0xb
+ 1270 004d 3B       		.uleb128 0x3b
+ 1271 004e 05       		.uleb128 0x5
+ 1272 004f 49       		.uleb128 0x49
+ 1273 0050 13       		.uleb128 0x13
+ 1274 0051 00       		.byte	0
+ 1275 0052 00       		.byte	0
+ 1276 0053 08       		.uleb128 0x8
+ 1277 0054 35       		.uleb128 0x35
+ 1278 0055 00       		.byte	0
+ 1279 0056 49       		.uleb128 0x49
+ 1280 0057 13       		.uleb128 0x13
+ 1281 0058 00       		.byte	0
+ 1282 0059 00       		.byte	0
+ 1283 005a 09       		.uleb128 0x9
+ 1284 005b 13       		.uleb128 0x13
+ 1285 005c 01       		.byte	0x1
+ 1286 005d 0B       		.uleb128 0xb
+ 1287 005e 0B       		.uleb128 0xb
+ 1288 005f 3A       		.uleb128 0x3a
+ 1289 0060 0B       		.uleb128 0xb
+ 1290 0061 3B       		.uleb128 0x3b
+ 1291 0062 0B       		.uleb128 0xb
+ 1292 0063 01       		.uleb128 0x1
+ 1293 0064 13       		.uleb128 0x13
+ 1294 0065 00       		.byte	0
+ 1295 0066 00       		.byte	0
+ 1296 0067 0A       		.uleb128 0xa
+ 1297 0068 0D       		.uleb128 0xd
+ 1298 0069 00       		.byte	0
+ 1299 006a 03       		.uleb128 0x3
+ 1300 006b 08       		.uleb128 0x8
+ 1301 006c 3A       		.uleb128 0x3a
+ 1302 006d 0B       		.uleb128 0xb
+ 1303 006e 3B       		.uleb128 0x3b
+ 1304 006f 0B       		.uleb128 0xb
+ 1305 0070 49       		.uleb128 0x49
+ 1306 0071 13       		.uleb128 0x13
+ 1307 0072 38       		.uleb128 0x38
+ 1308 0073 0B       		.uleb128 0xb
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccuGpr3j.s 			page 32
+
+
+ 1309 0074 00       		.byte	0
+ 1310 0075 00       		.byte	0
+ 1311 0076 0B       		.uleb128 0xb
+ 1312 0077 0D       		.uleb128 0xd
+ 1313 0078 00       		.byte	0
+ 1314 0079 03       		.uleb128 0x3
+ 1315 007a 0E       		.uleb128 0xe
+ 1316 007b 3A       		.uleb128 0x3a
+ 1317 007c 0B       		.uleb128 0xb
+ 1318 007d 3B       		.uleb128 0x3b
+ 1319 007e 0B       		.uleb128 0xb
+ 1320 007f 49       		.uleb128 0x49
+ 1321 0080 13       		.uleb128 0x13
+ 1322 0081 38       		.uleb128 0x38
+ 1323 0082 0B       		.uleb128 0xb
+ 1324 0083 00       		.byte	0
+ 1325 0084 00       		.byte	0
+ 1326 0085 0C       		.uleb128 0xc
+ 1327 0086 01       		.uleb128 0x1
+ 1328 0087 01       		.byte	0x1
+ 1329 0088 49       		.uleb128 0x49
+ 1330 0089 13       		.uleb128 0x13
+ 1331 008a 01       		.uleb128 0x1
+ 1332 008b 13       		.uleb128 0x13
+ 1333 008c 00       		.byte	0
+ 1334 008d 00       		.byte	0
+ 1335 008e 0D       		.uleb128 0xd
+ 1336 008f 21       		.uleb128 0x21
+ 1337 0090 00       		.byte	0
+ 1338 0091 49       		.uleb128 0x49
+ 1339 0092 13       		.uleb128 0x13
+ 1340 0093 2F       		.uleb128 0x2f
+ 1341 0094 0B       		.uleb128 0xb
+ 1342 0095 00       		.byte	0
+ 1343 0096 00       		.byte	0
+ 1344 0097 0E       		.uleb128 0xe
+ 1345 0098 17       		.uleb128 0x17
+ 1346 0099 01       		.byte	0x1
+ 1347 009a 03       		.uleb128 0x3
+ 1348 009b 0E       		.uleb128 0xe
+ 1349 009c 0B       		.uleb128 0xb
+ 1350 009d 0B       		.uleb128 0xb
+ 1351 009e 3A       		.uleb128 0x3a
+ 1352 009f 0B       		.uleb128 0xb
+ 1353 00a0 3B       		.uleb128 0x3b
+ 1354 00a1 0B       		.uleb128 0xb
+ 1355 00a2 01       		.uleb128 0x1
+ 1356 00a3 13       		.uleb128 0x13
+ 1357 00a4 00       		.byte	0
+ 1358 00a5 00       		.byte	0
+ 1359 00a6 0F       		.uleb128 0xf
+ 1360 00a7 0D       		.uleb128 0xd
+ 1361 00a8 00       		.byte	0
+ 1362 00a9 03       		.uleb128 0x3
+ 1363 00aa 0E       		.uleb128 0xe
+ 1364 00ab 3A       		.uleb128 0x3a
+ 1365 00ac 0B       		.uleb128 0xb
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccuGpr3j.s 			page 33
+
+
+ 1366 00ad 3B       		.uleb128 0x3b
+ 1367 00ae 0B       		.uleb128 0xb
+ 1368 00af 49       		.uleb128 0x49
+ 1369 00b0 13       		.uleb128 0x13
+ 1370 00b1 00       		.byte	0
+ 1371 00b2 00       		.byte	0
+ 1372 00b3 10       		.uleb128 0x10
+ 1373 00b4 0D       		.uleb128 0xd
+ 1374 00b5 00       		.byte	0
+ 1375 00b6 49       		.uleb128 0x49
+ 1376 00b7 13       		.uleb128 0x13
+ 1377 00b8 00       		.byte	0
+ 1378 00b9 00       		.byte	0
+ 1379 00ba 11       		.uleb128 0x11
+ 1380 00bb 13       		.uleb128 0x13
+ 1381 00bc 01       		.byte	0x1
+ 1382 00bd 03       		.uleb128 0x3
+ 1383 00be 0E       		.uleb128 0xe
+ 1384 00bf 0B       		.uleb128 0xb
+ 1385 00c0 0B       		.uleb128 0xb
+ 1386 00c1 3A       		.uleb128 0x3a
+ 1387 00c2 0B       		.uleb128 0xb
+ 1388 00c3 3B       		.uleb128 0x3b
+ 1389 00c4 0B       		.uleb128 0xb
+ 1390 00c5 01       		.uleb128 0x1
+ 1391 00c6 13       		.uleb128 0x13
+ 1392 00c7 00       		.byte	0
+ 1393 00c8 00       		.byte	0
+ 1394 00c9 12       		.uleb128 0x12
+ 1395 00ca 2E       		.uleb128 0x2e
+ 1396 00cb 01       		.byte	0x1
+ 1397 00cc 3F       		.uleb128 0x3f
+ 1398 00cd 19       		.uleb128 0x19
+ 1399 00ce 03       		.uleb128 0x3
+ 1400 00cf 0E       		.uleb128 0xe
+ 1401 00d0 3A       		.uleb128 0x3a
+ 1402 00d1 0B       		.uleb128 0xb
+ 1403 00d2 3B       		.uleb128 0x3b
+ 1404 00d3 0B       		.uleb128 0xb
+ 1405 00d4 27       		.uleb128 0x27
+ 1406 00d5 19       		.uleb128 0x19
+ 1407 00d6 11       		.uleb128 0x11
+ 1408 00d7 01       		.uleb128 0x1
+ 1409 00d8 12       		.uleb128 0x12
+ 1410 00d9 06       		.uleb128 0x6
+ 1411 00da 40       		.uleb128 0x40
+ 1412 00db 18       		.uleb128 0x18
+ 1413 00dc 9742     		.uleb128 0x2117
+ 1414 00de 19       		.uleb128 0x19
+ 1415 00df 01       		.uleb128 0x1
+ 1416 00e0 13       		.uleb128 0x13
+ 1417 00e1 00       		.byte	0
+ 1418 00e2 00       		.byte	0
+ 1419 00e3 13       		.uleb128 0x13
+ 1420 00e4 34       		.uleb128 0x34
+ 1421 00e5 00       		.byte	0
+ 1422 00e6 03       		.uleb128 0x3
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccuGpr3j.s 			page 34
+
+
+ 1423 00e7 08       		.uleb128 0x8
+ 1424 00e8 3A       		.uleb128 0x3a
+ 1425 00e9 0B       		.uleb128 0xb
+ 1426 00ea 3B       		.uleb128 0x3b
+ 1427 00eb 0B       		.uleb128 0xb
+ 1428 00ec 49       		.uleb128 0x49
+ 1429 00ed 13       		.uleb128 0x13
+ 1430 00ee 02       		.uleb128 0x2
+ 1431 00ef 17       		.uleb128 0x17
+ 1432 00f0 00       		.byte	0
+ 1433 00f1 00       		.byte	0
+ 1434 00f2 14       		.uleb128 0x14
+ 1435 00f3 2E       		.uleb128 0x2e
+ 1436 00f4 01       		.byte	0x1
+ 1437 00f5 3F       		.uleb128 0x3f
+ 1438 00f6 19       		.uleb128 0x19
+ 1439 00f7 03       		.uleb128 0x3
+ 1440 00f8 0E       		.uleb128 0xe
+ 1441 00f9 3A       		.uleb128 0x3a
+ 1442 00fa 0B       		.uleb128 0xb
+ 1443 00fb 3B       		.uleb128 0x3b
+ 1444 00fc 0B       		.uleb128 0xb
+ 1445 00fd 49       		.uleb128 0x49
+ 1446 00fe 13       		.uleb128 0x13
+ 1447 00ff 3C       		.uleb128 0x3c
+ 1448 0100 19       		.uleb128 0x19
+ 1449 0101 01       		.uleb128 0x1
+ 1450 0102 13       		.uleb128 0x13
+ 1451 0103 00       		.byte	0
+ 1452 0104 00       		.byte	0
+ 1453 0105 15       		.uleb128 0x15
+ 1454 0106 18       		.uleb128 0x18
+ 1455 0107 00       		.byte	0
+ 1456 0108 00       		.byte	0
+ 1457 0109 00       		.byte	0
+ 1458 010a 16       		.uleb128 0x16
+ 1459 010b 898201   		.uleb128 0x4109
+ 1460 010e 01       		.byte	0x1
+ 1461 010f 11       		.uleb128 0x11
+ 1462 0110 01       		.uleb128 0x1
+ 1463 0111 31       		.uleb128 0x31
+ 1464 0112 13       		.uleb128 0x13
+ 1465 0113 01       		.uleb128 0x1
+ 1466 0114 13       		.uleb128 0x13
+ 1467 0115 00       		.byte	0
+ 1468 0116 00       		.byte	0
+ 1469 0117 17       		.uleb128 0x17
+ 1470 0118 8A8201   		.uleb128 0x410a
+ 1471 011b 00       		.byte	0
+ 1472 011c 02       		.uleb128 0x2
+ 1473 011d 18       		.uleb128 0x18
+ 1474 011e 9142     		.uleb128 0x2111
+ 1475 0120 18       		.uleb128 0x18
+ 1476 0121 00       		.byte	0
+ 1477 0122 00       		.byte	0
+ 1478 0123 18       		.uleb128 0x18
+ 1479 0124 898201   		.uleb128 0x4109
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccuGpr3j.s 			page 35
+
+
+ 1480 0127 01       		.byte	0x1
+ 1481 0128 11       		.uleb128 0x11
+ 1482 0129 01       		.uleb128 0x1
+ 1483 012a 31       		.uleb128 0x31
+ 1484 012b 13       		.uleb128 0x13
+ 1485 012c 00       		.byte	0
+ 1486 012d 00       		.byte	0
+ 1487 012e 19       		.uleb128 0x19
+ 1488 012f 05       		.uleb128 0x5
+ 1489 0130 00       		.byte	0
+ 1490 0131 03       		.uleb128 0x3
+ 1491 0132 0E       		.uleb128 0xe
+ 1492 0133 3A       		.uleb128 0x3a
+ 1493 0134 0B       		.uleb128 0xb
+ 1494 0135 3B       		.uleb128 0x3b
+ 1495 0136 0B       		.uleb128 0xb
+ 1496 0137 49       		.uleb128 0x49
+ 1497 0138 13       		.uleb128 0x13
+ 1498 0139 02       		.uleb128 0x2
+ 1499 013a 18       		.uleb128 0x18
+ 1500 013b 00       		.byte	0
+ 1501 013c 00       		.byte	0
+ 1502 013d 1A       		.uleb128 0x1a
+ 1503 013e 34       		.uleb128 0x34
+ 1504 013f 00       		.byte	0
+ 1505 0140 03       		.uleb128 0x3
+ 1506 0141 0E       		.uleb128 0xe
+ 1507 0142 3A       		.uleb128 0x3a
+ 1508 0143 0B       		.uleb128 0xb
+ 1509 0144 3B       		.uleb128 0x3b
+ 1510 0145 0B       		.uleb128 0xb
+ 1511 0146 49       		.uleb128 0x49
+ 1512 0147 13       		.uleb128 0x13
+ 1513 0148 02       		.uleb128 0x2
+ 1514 0149 18       		.uleb128 0x18
+ 1515 014a 00       		.byte	0
+ 1516 014b 00       		.byte	0
+ 1517 014c 1B       		.uleb128 0x1b
+ 1518 014d 2E       		.uleb128 0x2e
+ 1519 014e 01       		.byte	0x1
+ 1520 014f 3F       		.uleb128 0x3f
+ 1521 0150 19       		.uleb128 0x19
+ 1522 0151 03       		.uleb128 0x3
+ 1523 0152 0E       		.uleb128 0xe
+ 1524 0153 3A       		.uleb128 0x3a
+ 1525 0154 0B       		.uleb128 0xb
+ 1526 0155 3B       		.uleb128 0x3b
+ 1527 0156 05       		.uleb128 0x5
+ 1528 0157 27       		.uleb128 0x27
+ 1529 0158 19       		.uleb128 0x19
+ 1530 0159 49       		.uleb128 0x49
+ 1531 015a 13       		.uleb128 0x13
+ 1532 015b 11       		.uleb128 0x11
+ 1533 015c 01       		.uleb128 0x1
+ 1534 015d 12       		.uleb128 0x12
+ 1535 015e 06       		.uleb128 0x6
+ 1536 015f 40       		.uleb128 0x40
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccuGpr3j.s 			page 36
+
+
+ 1537 0160 18       		.uleb128 0x18
+ 1538 0161 9742     		.uleb128 0x2117
+ 1539 0163 19       		.uleb128 0x19
+ 1540 0164 01       		.uleb128 0x1
+ 1541 0165 13       		.uleb128 0x13
+ 1542 0166 00       		.byte	0
+ 1543 0167 00       		.byte	0
+ 1544 0168 1C       		.uleb128 0x1c
+ 1545 0169 34       		.uleb128 0x34
+ 1546 016a 00       		.byte	0
+ 1547 016b 03       		.uleb128 0x3
+ 1548 016c 0E       		.uleb128 0xe
+ 1549 016d 3A       		.uleb128 0x3a
+ 1550 016e 0B       		.uleb128 0xb
+ 1551 016f 3B       		.uleb128 0x3b
+ 1552 0170 05       		.uleb128 0x5
+ 1553 0171 49       		.uleb128 0x49
+ 1554 0172 13       		.uleb128 0x13
+ 1555 0173 02       		.uleb128 0x2
+ 1556 0174 18       		.uleb128 0x18
+ 1557 0175 00       		.byte	0
+ 1558 0176 00       		.byte	0
+ 1559 0177 1D       		.uleb128 0x1d
+ 1560 0178 2E       		.uleb128 0x2e
+ 1561 0179 01       		.byte	0x1
+ 1562 017a 3F       		.uleb128 0x3f
+ 1563 017b 19       		.uleb128 0x19
+ 1564 017c 03       		.uleb128 0x3
+ 1565 017d 0E       		.uleb128 0xe
+ 1566 017e 3A       		.uleb128 0x3a
+ 1567 017f 0B       		.uleb128 0xb
+ 1568 0180 3B       		.uleb128 0x3b
+ 1569 0181 05       		.uleb128 0x5
+ 1570 0182 27       		.uleb128 0x27
+ 1571 0183 19       		.uleb128 0x19
+ 1572 0184 11       		.uleb128 0x11
+ 1573 0185 01       		.uleb128 0x1
+ 1574 0186 12       		.uleb128 0x12
+ 1575 0187 06       		.uleb128 0x6
+ 1576 0188 40       		.uleb128 0x40
+ 1577 0189 18       		.uleb128 0x18
+ 1578 018a 9742     		.uleb128 0x2117
+ 1579 018c 19       		.uleb128 0x19
+ 1580 018d 01       		.uleb128 0x1
+ 1581 018e 13       		.uleb128 0x13
+ 1582 018f 00       		.byte	0
+ 1583 0190 00       		.byte	0
+ 1584 0191 1E       		.uleb128 0x1e
+ 1585 0192 05       		.uleb128 0x5
+ 1586 0193 00       		.byte	0
+ 1587 0194 03       		.uleb128 0x3
+ 1588 0195 0E       		.uleb128 0xe
+ 1589 0196 3A       		.uleb128 0x3a
+ 1590 0197 0B       		.uleb128 0xb
+ 1591 0198 3B       		.uleb128 0x3b
+ 1592 0199 05       		.uleb128 0x5
+ 1593 019a 49       		.uleb128 0x49
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccuGpr3j.s 			page 37
+
+
+ 1594 019b 13       		.uleb128 0x13
+ 1595 019c 02       		.uleb128 0x2
+ 1596 019d 17       		.uleb128 0x17
+ 1597 019e 00       		.byte	0
+ 1598 019f 00       		.byte	0
+ 1599 01a0 1F       		.uleb128 0x1f
+ 1600 01a1 34       		.uleb128 0x34
+ 1601 01a2 00       		.byte	0
+ 1602 01a3 03       		.uleb128 0x3
+ 1603 01a4 0E       		.uleb128 0xe
+ 1604 01a5 3A       		.uleb128 0x3a
+ 1605 01a6 0B       		.uleb128 0xb
+ 1606 01a7 3B       		.uleb128 0x3b
+ 1607 01a8 05       		.uleb128 0x5
+ 1608 01a9 49       		.uleb128 0x49
+ 1609 01aa 13       		.uleb128 0x13
+ 1610 01ab 02       		.uleb128 0x2
+ 1611 01ac 17       		.uleb128 0x17
+ 1612 01ad 00       		.byte	0
+ 1613 01ae 00       		.byte	0
+ 1614 01af 20       		.uleb128 0x20
+ 1615 01b0 2E       		.uleb128 0x2e
+ 1616 01b1 00       		.byte	0
+ 1617 01b2 3F       		.uleb128 0x3f
+ 1618 01b3 19       		.uleb128 0x19
+ 1619 01b4 03       		.uleb128 0x3
+ 1620 01b5 0E       		.uleb128 0xe
+ 1621 01b6 3A       		.uleb128 0x3a
+ 1622 01b7 0B       		.uleb128 0xb
+ 1623 01b8 3B       		.uleb128 0x3b
+ 1624 01b9 05       		.uleb128 0x5
+ 1625 01ba 27       		.uleb128 0x27
+ 1626 01bb 19       		.uleb128 0x19
+ 1627 01bc 11       		.uleb128 0x11
+ 1628 01bd 01       		.uleb128 0x1
+ 1629 01be 12       		.uleb128 0x12
+ 1630 01bf 06       		.uleb128 0x6
+ 1631 01c0 40       		.uleb128 0x40
+ 1632 01c1 18       		.uleb128 0x18
+ 1633 01c2 9742     		.uleb128 0x2117
+ 1634 01c4 19       		.uleb128 0x19
+ 1635 01c5 00       		.byte	0
+ 1636 01c6 00       		.byte	0
+ 1637 01c7 21       		.uleb128 0x21
+ 1638 01c8 2E       		.uleb128 0x2e
+ 1639 01c9 00       		.byte	0
+ 1640 01ca 3F       		.uleb128 0x3f
+ 1641 01cb 19       		.uleb128 0x19
+ 1642 01cc 03       		.uleb128 0x3
+ 1643 01cd 0E       		.uleb128 0xe
+ 1644 01ce 3A       		.uleb128 0x3a
+ 1645 01cf 0B       		.uleb128 0xb
+ 1646 01d0 3B       		.uleb128 0x3b
+ 1647 01d1 05       		.uleb128 0x5
+ 1648 01d2 27       		.uleb128 0x27
+ 1649 01d3 19       		.uleb128 0x19
+ 1650 01d4 49       		.uleb128 0x49
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccuGpr3j.s 			page 38
+
+
+ 1651 01d5 13       		.uleb128 0x13
+ 1652 01d6 11       		.uleb128 0x11
+ 1653 01d7 01       		.uleb128 0x1
+ 1654 01d8 12       		.uleb128 0x12
+ 1655 01d9 06       		.uleb128 0x6
+ 1656 01da 40       		.uleb128 0x40
+ 1657 01db 18       		.uleb128 0x18
+ 1658 01dc 9742     		.uleb128 0x2117
+ 1659 01de 19       		.uleb128 0x19
+ 1660 01df 00       		.byte	0
+ 1661 01e0 00       		.byte	0
+ 1662 01e1 22       		.uleb128 0x22
+ 1663 01e2 898201   		.uleb128 0x4109
+ 1664 01e5 00       		.byte	0
+ 1665 01e6 11       		.uleb128 0x11
+ 1666 01e7 01       		.uleb128 0x1
+ 1667 01e8 31       		.uleb128 0x31
+ 1668 01e9 13       		.uleb128 0x13
+ 1669 01ea 00       		.byte	0
+ 1670 01eb 00       		.byte	0
+ 1671 01ec 23       		.uleb128 0x23
+ 1672 01ed 05       		.uleb128 0x5
+ 1673 01ee 00       		.byte	0
+ 1674 01ef 03       		.uleb128 0x3
+ 1675 01f0 0E       		.uleb128 0xe
+ 1676 01f1 3A       		.uleb128 0x3a
+ 1677 01f2 0B       		.uleb128 0xb
+ 1678 01f3 3B       		.uleb128 0x3b
+ 1679 01f4 0B       		.uleb128 0xb
+ 1680 01f5 49       		.uleb128 0x49
+ 1681 01f6 13       		.uleb128 0x13
+ 1682 01f7 02       		.uleb128 0x2
+ 1683 01f8 17       		.uleb128 0x17
+ 1684 01f9 00       		.byte	0
+ 1685 01fa 00       		.byte	0
+ 1686 01fb 24       		.uleb128 0x24
+ 1687 01fc 34       		.uleb128 0x34
+ 1688 01fd 00       		.byte	0
+ 1689 01fe 03       		.uleb128 0x3
+ 1690 01ff 0E       		.uleb128 0xe
+ 1691 0200 3A       		.uleb128 0x3a
+ 1692 0201 0B       		.uleb128 0xb
+ 1693 0202 3B       		.uleb128 0x3b
+ 1694 0203 05       		.uleb128 0x5
+ 1695 0204 49       		.uleb128 0x49
+ 1696 0205 13       		.uleb128 0x13
+ 1697 0206 3F       		.uleb128 0x3f
+ 1698 0207 19       		.uleb128 0x19
+ 1699 0208 3C       		.uleb128 0x3c
+ 1700 0209 19       		.uleb128 0x19
+ 1701 020a 00       		.byte	0
+ 1702 020b 00       		.byte	0
+ 1703 020c 25       		.uleb128 0x25
+ 1704 020d 34       		.uleb128 0x34
+ 1705 020e 00       		.byte	0
+ 1706 020f 03       		.uleb128 0x3
+ 1707 0210 08       		.uleb128 0x8
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccuGpr3j.s 			page 39
+
+
+ 1708 0211 3A       		.uleb128 0x3a
+ 1709 0212 0B       		.uleb128 0xb
+ 1710 0213 3B       		.uleb128 0x3b
+ 1711 0214 0B       		.uleb128 0xb
+ 1712 0215 49       		.uleb128 0x49
+ 1713 0216 13       		.uleb128 0x13
+ 1714 0217 3F       		.uleb128 0x3f
+ 1715 0218 19       		.uleb128 0x19
+ 1716 0219 02       		.uleb128 0x2
+ 1717 021a 18       		.uleb128 0x18
+ 1718 021b 00       		.byte	0
+ 1719 021c 00       		.byte	0
+ 1720 021d 26       		.uleb128 0x26
+ 1721 021e 34       		.uleb128 0x34
+ 1722 021f 00       		.byte	0
+ 1723 0220 03       		.uleb128 0x3
+ 1724 0221 0E       		.uleb128 0xe
+ 1725 0222 3A       		.uleb128 0x3a
+ 1726 0223 0B       		.uleb128 0xb
+ 1727 0224 3B       		.uleb128 0x3b
+ 1728 0225 0B       		.uleb128 0xb
+ 1729 0226 49       		.uleb128 0x49
+ 1730 0227 13       		.uleb128 0x13
+ 1731 0228 3F       		.uleb128 0x3f
+ 1732 0229 19       		.uleb128 0x19
+ 1733 022a 02       		.uleb128 0x2
+ 1734 022b 18       		.uleb128 0x18
+ 1735 022c 00       		.byte	0
+ 1736 022d 00       		.byte	0
+ 1737 022e 27       		.uleb128 0x27
+ 1738 022f 34       		.uleb128 0x34
+ 1739 0230 00       		.byte	0
+ 1740 0231 03       		.uleb128 0x3
+ 1741 0232 0E       		.uleb128 0xe
+ 1742 0233 3A       		.uleb128 0x3a
+ 1743 0234 0B       		.uleb128 0xb
+ 1744 0235 3B       		.uleb128 0x3b
+ 1745 0236 0B       		.uleb128 0xb
+ 1746 0237 49       		.uleb128 0x49
+ 1747 0238 13       		.uleb128 0x13
+ 1748 0239 3F       		.uleb128 0x3f
+ 1749 023a 19       		.uleb128 0x19
+ 1750 023b 3C       		.uleb128 0x3c
+ 1751 023c 19       		.uleb128 0x19
+ 1752 023d 00       		.byte	0
+ 1753 023e 00       		.byte	0
+ 1754 023f 28       		.uleb128 0x28
+ 1755 0240 2E       		.uleb128 0x2e
+ 1756 0241 00       		.byte	0
+ 1757 0242 3F       		.uleb128 0x3f
+ 1758 0243 19       		.uleb128 0x19
+ 1759 0244 3C       		.uleb128 0x3c
+ 1760 0245 19       		.uleb128 0x19
+ 1761 0246 6E       		.uleb128 0x6e
+ 1762 0247 0E       		.uleb128 0xe
+ 1763 0248 03       		.uleb128 0x3
+ 1764 0249 0E       		.uleb128 0xe
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccuGpr3j.s 			page 40
+
+
+ 1765 024a 3A       		.uleb128 0x3a
+ 1766 024b 0B       		.uleb128 0xb
+ 1767 024c 3B       		.uleb128 0x3b
+ 1768 024d 0B       		.uleb128 0xb
+ 1769 024e 00       		.byte	0
+ 1770 024f 00       		.byte	0
+ 1771 0250 00       		.byte	0
+ 1772              		.section	.debug_loc,"",%progbits
+ 1773              	.Ldebug_loc0:
+ 1774              	.LLST0:
+ 1775 0000 26000000 		.4byte	.LVL2
+ 1776 0004 38000000 		.4byte	.LVL3
+ 1777 0008 0400     		.2byte	0x4
+ 1778 000a 70       		.byte	0x70
+ 1779 000b 00       		.sleb128 0
+ 1780 000c 19       		.byte	0x19
+ 1781 000d 9F       		.byte	0x9f
+ 1782 000e 38000000 		.4byte	.LVL3
+ 1783 0012 3B000000 		.4byte	.LVL4-1
+ 1784 0016 0800     		.2byte	0x8
+ 1785 0018 03       		.byte	0x3
+ 1786 0019 00000000 		.4byte	tension_pid_output
+ 1787 001d 06       		.byte	0x6
+ 1788 001e 19       		.byte	0x19
+ 1789 001f 9F       		.byte	0x9f
+ 1790 0020 00000000 		.4byte	0
+ 1791 0024 00000000 		.4byte	0
+ 1792              	.LLST1:
+ 1793 0028 00000000 		.4byte	.LVL8
+ 1794 002c 02000000 		.4byte	.LVL9
+ 1795 0030 0100     		.2byte	0x1
+ 1796 0032 50       		.byte	0x50
+ 1797 0033 02000000 		.4byte	.LVL9
+ 1798 0037 10000000 		.4byte	.LFE70
+ 1799 003b 0400     		.2byte	0x4
+ 1800 003d F3       		.byte	0xf3
+ 1801 003e 01       		.uleb128 0x1
+ 1802 003f 50       		.byte	0x50
+ 1803 0040 9F       		.byte	0x9f
+ 1804 0041 00000000 		.4byte	0
+ 1805 0045 00000000 		.4byte	0
+ 1806              	.LLST2:
+ 1807 0049 04000000 		.4byte	.LVL10
+ 1808 004d 06000000 		.4byte	.LVL11
+ 1809 0051 0500     		.2byte	0x5
+ 1810 0053 70       		.byte	0x70
+ 1811 0054 00       		.sleb128 0
+ 1812 0055 35       		.byte	0x35
+ 1813 0056 25       		.byte	0x25
+ 1814 0057 9F       		.byte	0x9f
+ 1815 0058 00000000 		.4byte	0
+ 1816 005c 00000000 		.4byte	0
+ 1817              	.LLST3:
+ 1818 0060 00000000 		.4byte	.LVL16
+ 1819 0064 07000000 		.4byte	.LVL17-1
+ 1820 0068 0100     		.2byte	0x1
+ 1821 006a 50       		.byte	0x50
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccuGpr3j.s 			page 41
+
+
+ 1822 006b 07000000 		.4byte	.LVL17-1
+ 1823 006f 1A000000 		.4byte	.LFE65
+ 1824 0073 0100     		.2byte	0x1
+ 1825 0075 54       		.byte	0x54
+ 1826 0076 00000000 		.4byte	0
+ 1827 007a 00000000 		.4byte	0
+ 1828              		.section	.debug_aranges,"",%progbits
+ 1829 0000 7C000000 		.4byte	0x7c
+ 1830 0004 0200     		.2byte	0x2
+ 1831 0006 00000000 		.4byte	.Ldebug_info0
+ 1832 000a 04       		.byte	0x4
+ 1833 000b 00       		.byte	0
+ 1834 000c 0000     		.2byte	0
+ 1835 000e 0000     		.2byte	0
+ 1836 0010 00000000 		.4byte	.LFB67
+ 1837 0014 5C000000 		.4byte	.LFE67-.LFB67
+ 1838 0018 00000000 		.4byte	.LFB68
+ 1839 001c 0C000000 		.4byte	.LFE68-.LFB68
+ 1840 0020 00000000 		.4byte	.LFB69
+ 1841 0024 0C000000 		.4byte	.LFE69-.LFB69
+ 1842 0028 00000000 		.4byte	.LFB70
+ 1843 002c 10000000 		.4byte	.LFE70-.LFB70
+ 1844 0030 00000000 		.4byte	.LFB71
+ 1845 0034 0C000000 		.4byte	.LFE71-.LFB71
+ 1846 0038 00000000 		.4byte	.LFB72
+ 1847 003c 10000000 		.4byte	.LFE72-.LFB72
+ 1848 0040 00000000 		.4byte	.LFB73
+ 1849 0044 18000000 		.4byte	.LFE73-.LFB73
+ 1850 0048 00000000 		.4byte	.LFB74
+ 1851 004c 10000000 		.4byte	.LFE74-.LFB74
+ 1852 0050 00000000 		.4byte	.LFB64
+ 1853 0054 1C000000 		.4byte	.LFE64-.LFB64
+ 1854 0058 00000000 		.4byte	.LFB65
+ 1855 005c 1A000000 		.4byte	.LFE65-.LFB65
+ 1856 0060 00000000 		.4byte	.LFB66
+ 1857 0064 14000000 		.4byte	.LFE66-.LFB66
+ 1858 0068 00000000 		.4byte	.LFB75
+ 1859 006c 10000000 		.4byte	.LFE75-.LFB75
+ 1860 0070 00000000 		.4byte	.LFB76
+ 1861 0074 10000000 		.4byte	.LFE76-.LFB76
+ 1862 0078 00000000 		.4byte	0
+ 1863 007c 00000000 		.4byte	0
+ 1864              		.section	.debug_ranges,"",%progbits
+ 1865              	.Ldebug_ranges0:
+ 1866 0000 00000000 		.4byte	.LFB67
+ 1867 0004 5C000000 		.4byte	.LFE67
+ 1868 0008 00000000 		.4byte	.LFB68
+ 1869 000c 0C000000 		.4byte	.LFE68
+ 1870 0010 00000000 		.4byte	.LFB69
+ 1871 0014 0C000000 		.4byte	.LFE69
+ 1872 0018 00000000 		.4byte	.LFB70
+ 1873 001c 10000000 		.4byte	.LFE70
+ 1874 0020 00000000 		.4byte	.LFB71
+ 1875 0024 0C000000 		.4byte	.LFE71
+ 1876 0028 00000000 		.4byte	.LFB72
+ 1877 002c 10000000 		.4byte	.LFE72
+ 1878 0030 00000000 		.4byte	.LFB73
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccuGpr3j.s 			page 42
+
+
+ 1879 0034 18000000 		.4byte	.LFE73
+ 1880 0038 00000000 		.4byte	.LFB74
+ 1881 003c 10000000 		.4byte	.LFE74
+ 1882 0040 00000000 		.4byte	.LFB64
+ 1883 0044 1C000000 		.4byte	.LFE64
+ 1884 0048 00000000 		.4byte	.LFB65
+ 1885 004c 1A000000 		.4byte	.LFE65
+ 1886 0050 00000000 		.4byte	.LFB66
+ 1887 0054 14000000 		.4byte	.LFE66
+ 1888 0058 00000000 		.4byte	.LFB75
+ 1889 005c 10000000 		.4byte	.LFE75
+ 1890 0060 00000000 		.4byte	.LFB76
+ 1891 0064 10000000 		.4byte	.LFE76
+ 1892 0068 00000000 		.4byte	0
+ 1893 006c 00000000 		.4byte	0
+ 1894              		.section	.debug_line,"",%progbits
+ 1895              	.Ldebug_line0:
+ 1896 0000 77020000 		.section	.debug_str,"MS",%progbits,1
+ 1896      02008101 
+ 1896      00000201 
+ 1896      FB0E0D00 
+ 1896      01010101 
+ 1897              	.LASF57:
+ 1898 0000 5F737461 		.ascii	"_state_\000"
+ 1898      74655F00 
+ 1899              	.LASF29:
+ 1900 0008 7363616C 		.ascii	"scaledMin\000"
+ 1900      65644D69 
+ 1900      6E00
+ 1901              	.LASF33:
+ 1902 0012 7056616C 		.ascii	"pVal\000"
+ 1902      00
+ 1903              	.LASF42:
+ 1904 0017 7072696F 		.ascii	"priority\000"
+ 1904      72697479 
+ 1904      00
+ 1905              	.LASF59:
+ 1906 0020 61637475 		.ascii	"actual_tension\000"
+ 1906      616C5F74 
+ 1906      656E7369 
+ 1906      6F6E00
+ 1907              	.LASF5:
+ 1908 002f 73686F72 		.ascii	"short int\000"
+ 1908      7420696E 
+ 1908      7400
+ 1909              	.LASF43:
+ 1910 0039 74656E73 		.ascii	"tensor_control_isr_GetVector\000"
+ 1910      6F725F63 
+ 1910      6F6E7472 
+ 1910      6F6C5F69 
+ 1910      73725F47 
+ 1911              	.LASF12:
+ 1912 0056 73697A65 		.ascii	"sizetype\000"
+ 1912      74797065 
+ 1912      00
+ 1913              	.LASF44:
+ 1914 005f 74656E73 		.ascii	"tensor_control_isr_GetPriority\000"
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccuGpr3j.s 			page 43
+
+
+ 1914      6F725F63 
+ 1914      6F6E7472 
+ 1914      6F6C5F69 
+ 1914      73725F47 
+ 1915              	.LASF58:
+ 1916 007e 74656E73 		.ascii	"tens_pid_\000"
+ 1916      5F706964 
+ 1916      5F00
+ 1917              	.LASF2:
+ 1918 0088 6C6F6E67 		.ascii	"long double\000"
+ 1918      20646F75 
+ 1918      626C6500 
+ 1919              	.LASF71:
+ 1920 0094 443A5C44 		.ascii	"D:\\Dropbox\\Magister\\Tesis\\tesis-source\\master-"
+ 1920      726F7062 
+ 1920      6F785C4D 
+ 1920      61676973 
+ 1920      7465725C 
+ 1921 00c2 74657369 		.ascii	"tesis\\dedo_v01.cydsn\000"
+ 1921      735C6465 
+ 1921      646F5F76 
+ 1921      30312E63 
+ 1921      7964736E 
+ 1922              	.LASF41:
+ 1923 00d7 61646472 		.ascii	"address\000"
+ 1923      65737300 
+ 1924              	.LASF34:
+ 1925 00df 6956616C 		.ascii	"iVal\000"
+ 1925      00
+ 1926              	.LASF16:
+ 1927 00e4 75696E74 		.ascii	"uint8\000"
+ 1927      3800
+ 1928              	.LASF23:
+ 1929 00ea 72656656 		.ascii	"refVal\000"
+ 1929      616C00
+ 1930              	.LASF37:
+ 1931 00f1 74656E73 		.ascii	"tensor_control_isr_Interrupt\000"
+ 1931      6F725F63 
+ 1931      6F6E7472 
+ 1931      6F6C5F69 
+ 1931      73725F49 
+ 1932              	.LASF27:
+ 1933 010e 6D696E56 		.ascii	"minValue\000"
+ 1933      616C7565 
+ 1933      00
+ 1934              	.LASF67:
+ 1935 0117 5049445F 		.ascii	"PID_calculatePID\000"
+ 1935      63616C63 
+ 1935      756C6174 
+ 1935      65504944 
+ 1935      00
+ 1936              	.LASF18:
+ 1937 0128 666C6F61 		.ascii	"float\000"
+ 1937      7400
+ 1938              	.LASF1:
+ 1939 012e 6C6F6E67 		.ascii	"long long int\000"
+ 1939      206C6F6E 
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccuGpr3j.s 			page 44
+
+
+ 1939      6720696E 
+ 1939      7400
+ 1940              	.LASF9:
+ 1941 013c 6C6F6E67 		.ascii	"long int\000"
+ 1941      20696E74 
+ 1941      00
+ 1942              	.LASF25:
+ 1943 0145 6C617374 		.ascii	"lastValue\000"
+ 1943      56616C75 
+ 1943      6500
+ 1944              	.LASF28:
+ 1945 014f 6D617856 		.ascii	"maxValue\000"
+ 1945      616C7565 
+ 1945      00
+ 1946              	.LASF39:
+ 1947 0158 72616D56 		.ascii	"ramVectorTable\000"
+ 1947      6563746F 
+ 1947      72546162 
+ 1947      6C6500
+ 1948              	.LASF46:
+ 1949 0167 74656E73 		.ascii	"tensor_control_isr_Disable\000"
+ 1949      6F725F63 
+ 1949      6F6E7472 
+ 1949      6F6C5F69 
+ 1949      73725F44 
+ 1950              	.LASF4:
+ 1951 0182 756E7369 		.ascii	"unsigned char\000"
+ 1951      676E6564 
+ 1951      20636861 
+ 1951      7200
+ 1952              	.LASF47:
+ 1953 0190 74656E73 		.ascii	"tensor_control_isr_Start\000"
+ 1953      6F725F63 
+ 1953      6F6E7472 
+ 1953      6F6C5F69 
+ 1953      73725F53 
+ 1954              	.LASF56:
+ 1955 01a9 5F756172 		.ascii	"_uart_Reset\000"
+ 1955      745F5265 
+ 1955      73657400 
+ 1956              	.LASF24:
+ 1957 01b5 696E7075 		.ascii	"inputValue\000"
+ 1957      7456616C 
+ 1957      756500
+ 1958              	.LASF75:
+ 1959 01c0 74656E73 		.ascii	"tensor_control_isr_GetState\000"
+ 1959      6F725F63 
+ 1959      6F6E7472 
+ 1959      6F6C5F69 
+ 1959      73725F47 
+ 1960              	.LASF22:
+ 1961 01dc 63796973 		.ascii	"cyisraddress\000"
+ 1961      72616464 
+ 1961      72657373 
+ 1961      00
+ 1962              	.LASF54:
+ 1963 01e9 53656E64 		.ascii	"SendSingleByte\000"
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccuGpr3j.s 			page 45
+
+
+ 1963      53696E67 
+ 1963      6C654279 
+ 1963      746500
+ 1964              	.LASF3:
+ 1965 01f8 7369676E 		.ascii	"signed char\000"
+ 1965      65642063 
+ 1965      68617200 
+ 1966              	.LASF15:
+ 1967 0204 696E7433 		.ascii	"int32_t\000"
+ 1967      325F7400 
+ 1968              	.LASF11:
+ 1969 020c 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1969      206C6F6E 
+ 1969      6720756E 
+ 1969      7369676E 
+ 1969      65642069 
+ 1970              	.LASF38:
+ 1971 0223 74656E73 		.ascii	"tensor_control_isr_SetVector\000"
+ 1971      6F725F63 
+ 1971      6F6E7472 
+ 1971      6F6C5F69 
+ 1971      73725F53 
+ 1972              	.LASF72:
+ 1973 0240 54527842 		.ascii	"TRxBuffer\000"
+ 1973      75666665 
+ 1973      7200
+ 1974              	.LASF0:
+ 1975 024a 756E7369 		.ascii	"unsigned int\000"
+ 1975      676E6564 
+ 1975      20696E74 
+ 1975      00
+ 1976              	.LASF53:
+ 1977 0257 436F6E74 		.ascii	"ContinuouslySendData\000"
+ 1977      696E756F 
+ 1977      75736C79 
+ 1977      53656E64 
+ 1977      44617461 
+ 1978              	.LASF60:
+ 1979 026c 74656E73 		.ascii	"tension_ref\000"
+ 1979      696F6E5F 
+ 1979      72656600 
+ 1980              	.LASF62:
+ 1981 0278 64656275 		.ascii	"debug\000"
+ 1981      6700
+ 1982              	.LASF74:
+ 1983 027e 54506172 		.ascii	"TParamBuffer\000"
+ 1983      616D4275 
+ 1983      66666572 
+ 1983      00
+ 1984              	.LASF21:
+ 1985 028b 72656733 		.ascii	"reg32\000"
+ 1985      3200
+ 1986              	.LASF55:
+ 1987 0291 53656E64 		.ascii	"SendEmulatedData\000"
+ 1987      456D756C 
+ 1987      61746564 
+ 1987      44617461 
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccuGpr3j.s 			page 46
+
+
+ 1987      00
+ 1988              	.LASF32:
+ 1989 02a2 76616C73 		.ascii	"valstr\000"
+ 1989      747200
+ 1990              	.LASF13:
+ 1991 02a9 63686172 		.ascii	"char\000"
+ 1991      00
+ 1992              	.LASF48:
+ 1993 02ae 74656E73 		.ascii	"tensor_control_isr_StartEx\000"
+ 1993      6F725F63 
+ 1993      6F6E7472 
+ 1993      6F6C5F69 
+ 1993      73725F53 
+ 1994              	.LASF6:
+ 1995 02c9 73686F72 		.ascii	"short unsigned int\000"
+ 1995      7420756E 
+ 1995      7369676E 
+ 1995      65642069 
+ 1995      6E7400
+ 1996              	.LASF14:
+ 1997 02dc 696E7431 		.ascii	"int16_t\000"
+ 1997      365F7400 
+ 1998              	.LASF51:
+ 1999 02e4 74656E73 		.ascii	"tensor_control_isr_ClearPending\000"
+ 1999      6F725F63 
+ 1999      6F6E7472 
+ 1999      6F6C5F69 
+ 1999      73725F43 
+ 2000              	.LASF73:
+ 2001 0304 52785374 		.ascii	"RxStr\000"
+ 2001      7200
+ 2002              	.LASF17:
+ 2003 030a 75696E74 		.ascii	"uint32\000"
+ 2003      333200
+ 2004              	.LASF20:
+ 2005 0311 72656738 		.ascii	"reg8\000"
+ 2005      00
+ 2006              	.LASF10:
+ 2007 0316 6C6F6E67 		.ascii	"long unsigned int\000"
+ 2007      20756E73 
+ 2007      69676E65 
+ 2007      6420696E 
+ 2007      7400
+ 2008              	.LASF19:
+ 2009 0328 646F7562 		.ascii	"double\000"
+ 2009      6C6500
+ 2010              	.LASF61:
+ 2011 032f 5F745661 		.ascii	"_tVal\000"
+ 2011      6C00
+ 2012              	.LASF64:
+ 2013 0335 74656E73 		.ascii	"tension_pid_output\000"
+ 2013      696F6E5F 
+ 2013      7069645F 
+ 2013      6F757470 
+ 2013      757400
+ 2014              	.LASF26:
+ 2015 0348 69546572 		.ascii	"iTerm\000"
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccuGpr3j.s 			page 47
+
+
+ 2015      6D00
+ 2016              	.LASF65:
+ 2017 034e 63757272 		.ascii	"current_pos\000"
+ 2017      656E745F 
+ 2017      706F7300 
+ 2018              	.LASF8:
+ 2019 035a 5F5F696E 		.ascii	"__int32_t\000"
+ 2019      7433325F 
+ 2019      7400
+ 2020              	.LASF7:
+ 2021 0364 5F5F696E 		.ascii	"__int16_t\000"
+ 2021      7431365F 
+ 2021      7400
+ 2022              	.LASF68:
+ 2023 036e 666E5F6D 		.ascii	"fn_mapper_8b\000"
+ 2023      61707065 
+ 2023      725F3862 
+ 2023      00
+ 2024              	.LASF36:
+ 2025 037b 50617261 		.ascii	"ParamBuffer\000"
+ 2025      6D427566 
+ 2025      66657200 
+ 2026              	.LASF63:
+ 2027 0387 5F706964 		.ascii	"_pid_out\000"
+ 2027      5F6F7574 
+ 2027      00
+ 2028              	.LASF52:
+ 2029 0390 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 2029      52784275 
+ 2029      66666572 
+ 2029      00
+ 2030              	.LASF69:
+ 2031 039d 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 2031      43313120 
+ 2031      352E342E 
+ 2031      31203230 
+ 2031      31363036 
+ 2032 03d0 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m3 -mthumb -g -O"
+ 2032      20726576 
+ 2032      6973696F 
+ 2032      6E203233 
+ 2032      37373135 
+ 2033 0403 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 2033      66756E63 
+ 2033      74696F6E 
+ 2033      2D736563 
+ 2033      74696F6E 
+ 2034              	.LASF30:
+ 2035 042b 7363616C 		.ascii	"scaledMax\000"
+ 2035      65644D61 
+ 2035      7800
+ 2036              	.LASF35:
+ 2037 0435 6456616C 		.ascii	"dVal\000"
+ 2037      00
+ 2038              	.LASF66:
+ 2039 043a 5049445F 		.ascii	"PID_setRef\000"
+ 2039      73657452 
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccuGpr3j.s 			page 48
+
+
+ 2039      656600
+ 2040              	.LASF45:
+ 2041 0445 74656E73 		.ascii	"tensor_control_isr_Enable\000"
+ 2041      6F725F63 
+ 2041      6F6E7472 
+ 2041      6F6C5F69 
+ 2041      73725F45 
+ 2042              	.LASF31:
+ 2043 045f 5049445F 		.ascii	"PID_t\000"
+ 2043      7400
+ 2044              	.LASF40:
+ 2045 0465 74656E73 		.ascii	"tensor_control_isr_SetPriority\000"
+ 2045      6F725F63 
+ 2045      6F6E7472 
+ 2045      6F6C5F69 
+ 2045      73725F53 
+ 2046              	.LASF70:
+ 2047 0484 74656E73 		.ascii	"tensor_control_isr.c\000"
+ 2047      6F725F63 
+ 2047      6F6E7472 
+ 2047      6F6C5F69 
+ 2047      73722E63 
+ 2048              	.LASF49:
+ 2049 0499 74656E73 		.ascii	"tensor_control_isr_Stop\000"
+ 2049      6F725F63 
+ 2049      6F6E7472 
+ 2049      6F6C5F69 
+ 2049      73725F53 
+ 2050              	.LASF50:
+ 2051 04b1 74656E73 		.ascii	"tensor_control_isr_SetPending\000"
+ 2051      6F725F63 
+ 2051      6F6E7472 
+ 2051      6F6C5F69 
+ 2051      73725F53 
+ 2052              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

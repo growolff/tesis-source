@@ -1,0 +1,1413 @@
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccqCJOZF.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"pid.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.global	__aeabi_fmul
+  20              		.global	__aeabi_f2iz
+  21              		.section	.text.PID_init,"ax",%progbits
+  22              		.align	2
+  23              		.global	PID_init
+  24              		.thumb
+  25              		.thumb_func
+  26              		.type	PID_init, %function
+  27              	PID_init:
+  28              	.LFB0:
+  29              		.file 1 "pid.c"
+   1:pid.c         **** /* ========================================
+   2:pid.c         ****  *
+   3:pid.c         ****  * Copyright YOUR COMPANY, THE YEAR
+   4:pid.c         ****  * All Rights Reserved
+   5:pid.c         ****  * UNPUBLISHED, LICENSED SOFTWARE.
+   6:pid.c         ****  *
+   7:pid.c         ****  * CONFIDENTIAL AND PROPRIETARY INFORMATION
+   8:pid.c         ****  * WHICH IS THE PROPERTY OF your company.
+   9:pid.c         ****  *
+  10:pid.c         ****  * ========================================
+  11:pid.c         **** */
+  12:pid.c         **** #include "pid.h"
+  13:pid.c         **** 
+  14:pid.c         **** void PID_init(PID_t* pid, float p, float i, float d)
+  15:pid.c         **** {
+  30              		.loc 1 15 0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              	.LVL0:
+  35 0000 70B5     		push	{r4, r5, r6, lr}
+  36              		.cfi_def_cfa_offset 16
+  37              		.cfi_offset 4, -16
+  38              		.cfi_offset 5, -12
+  39              		.cfi_offset 6, -8
+  40              		.cfi_offset 14, -4
+  41 0002 0446     		mov	r4, r0
+  42 0004 0846     		mov	r0, r1
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccqCJOZF.s 			page 2
+
+
+  43              	.LVL1:
+  44 0006 1646     		mov	r6, r2
+  45 0008 1D46     		mov	r5, r3
+  16:pid.c         ****     pid->kP = (int32_t)(p * FLOAT_TO_INT_SCALE);
+  46              		.loc 1 16 0
+  47 000a 4FF08B41 		mov	r1, #1166016512
+  48              	.LVL2:
+  49 000e FFF7FEFF 		bl	__aeabi_fmul
+  50              	.LVL3:
+  51 0012 FFF7FEFF 		bl	__aeabi_f2iz
+  52              	.LVL4:
+  53 0016 2060     		str	r0, [r4]
+  17:pid.c         ****     pid->kI = (int32_t)(i * FLOAT_TO_INT_SCALE);
+  54              		.loc 1 17 0
+  55 0018 4FF08B41 		mov	r1, #1166016512
+  56 001c 3046     		mov	r0, r6
+  57 001e FFF7FEFF 		bl	__aeabi_fmul
+  58              	.LVL5:
+  59 0022 FFF7FEFF 		bl	__aeabi_f2iz
+  60              	.LVL6:
+  61 0026 6060     		str	r0, [r4, #4]
+  18:pid.c         ****     pid->kD = (int32_t)(d * FLOAT_TO_INT_SCALE);
+  62              		.loc 1 18 0
+  63 0028 4FF08B41 		mov	r1, #1166016512
+  64 002c 2846     		mov	r0, r5
+  65 002e FFF7FEFF 		bl	__aeabi_fmul
+  66              	.LVL7:
+  67 0032 FFF7FEFF 		bl	__aeabi_f2iz
+  68              	.LVL8:
+  69 0036 A060     		str	r0, [r4, #8]
+  19:pid.c         ****     pid->refVal = 0;
+  70              		.loc 1 19 0
+  71 0038 0023     		movs	r3, #0
+  72 003a E360     		str	r3, [r4, #12]
+  20:pid.c         ****     pid->inputValue = 0;
+  73              		.loc 1 20 0
+  74 003c 2361     		str	r3, [r4, #16]
+  21:pid.c         ****     pid->iTerm = 0;
+  75              		.loc 1 21 0
+  76 003e A361     		str	r3, [r4, #24]
+  22:pid.c         ****     pid->lastValue = 0;
+  77              		.loc 1 22 0
+  78 0040 6361     		str	r3, [r4, #20]
+  79 0042 70BD     		pop	{r4, r5, r6, pc}
+  80              		.cfi_endproc
+  81              	.LFE0:
+  82              		.size	PID_init, .-PID_init
+  83              		.section	.text.PID_setCoeffs,"ax",%progbits
+  84              		.align	2
+  85              		.global	PID_setCoeffs
+  86              		.thumb
+  87              		.thumb_func
+  88              		.type	PID_setCoeffs, %function
+  89              	PID_setCoeffs:
+  90              	.LFB1:
+  23:pid.c         **** }
+  24:pid.c         **** 
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccqCJOZF.s 			page 3
+
+
+  25:pid.c         **** void PID_setCoeffs(PID_t* pid, float p, float i, float d)
+  26:pid.c         **** {
+  91              		.loc 1 26 0
+  92              		.cfi_startproc
+  93              		@ args = 0, pretend = 0, frame = 0
+  94              		@ frame_needed = 0, uses_anonymous_args = 0
+  95              	.LVL9:
+  96 0000 70B5     		push	{r4, r5, r6, lr}
+  97              		.cfi_def_cfa_offset 16
+  98              		.cfi_offset 4, -16
+  99              		.cfi_offset 5, -12
+ 100              		.cfi_offset 6, -8
+ 101              		.cfi_offset 14, -4
+ 102 0002 0446     		mov	r4, r0
+ 103 0004 0846     		mov	r0, r1
+ 104              	.LVL10:
+ 105 0006 1646     		mov	r6, r2
+ 106 0008 1D46     		mov	r5, r3
+  27:pid.c         ****     pid->kP = (int32_t)(p * FLOAT_TO_INT_SCALE);
+ 107              		.loc 1 27 0
+ 108 000a 4FF08B41 		mov	r1, #1166016512
+ 109              	.LVL11:
+ 110 000e FFF7FEFF 		bl	__aeabi_fmul
+ 111              	.LVL12:
+ 112 0012 FFF7FEFF 		bl	__aeabi_f2iz
+ 113              	.LVL13:
+ 114 0016 2060     		str	r0, [r4]
+  28:pid.c         ****     pid->kI = (int32_t)(i * FLOAT_TO_INT_SCALE);
+ 115              		.loc 1 28 0
+ 116 0018 4FF08B41 		mov	r1, #1166016512
+ 117 001c 3046     		mov	r0, r6
+ 118 001e FFF7FEFF 		bl	__aeabi_fmul
+ 119              	.LVL14:
+ 120 0022 FFF7FEFF 		bl	__aeabi_f2iz
+ 121              	.LVL15:
+ 122 0026 6060     		str	r0, [r4, #4]
+  29:pid.c         ****     pid->kD = (int32_t)(d * FLOAT_TO_INT_SCALE);
+ 123              		.loc 1 29 0
+ 124 0028 4FF08B41 		mov	r1, #1166016512
+ 125 002c 2846     		mov	r0, r5
+ 126 002e FFF7FEFF 		bl	__aeabi_fmul
+ 127              	.LVL16:
+ 128 0032 FFF7FEFF 		bl	__aeabi_f2iz
+ 129              	.LVL17:
+ 130 0036 A060     		str	r0, [r4, #8]
+ 131 0038 70BD     		pop	{r4, r5, r6, pc}
+ 132              		.cfi_endproc
+ 133              	.LFE1:
+ 134              		.size	PID_setCoeffs, .-PID_setCoeffs
+ 135 003a 00BF     		.section	.text.PID_setRef,"ax",%progbits
+ 136              		.align	2
+ 137              		.global	PID_setRef
+ 138              		.thumb
+ 139              		.thumb_func
+ 140              		.type	PID_setRef, %function
+ 141              	PID_setRef:
+ 142              	.LFB2:
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccqCJOZF.s 			page 4
+
+
+  30:pid.c         **** }
+  31:pid.c         **** 
+  32:pid.c         **** void PID_setRef(PID_t* pid, int32_t pnt)
+  33:pid.c         **** {
+ 143              		.loc 1 33 0
+ 144              		.cfi_startproc
+ 145              		@ args = 0, pretend = 0, frame = 0
+ 146              		@ frame_needed = 0, uses_anonymous_args = 0
+ 147              		@ link register save eliminated.
+ 148              	.LVL18:
+  34:pid.c         ****     pid->refVal = pnt;
+ 149              		.loc 1 34 0
+ 150 0000 C160     		str	r1, [r0, #12]
+ 151 0002 7047     		bx	lr
+ 152              		.cfi_endproc
+ 153              	.LFE2:
+ 154              		.size	PID_setRef, .-PID_setRef
+ 155              		.section	.text.PID_setMinValue,"ax",%progbits
+ 156              		.align	2
+ 157              		.global	PID_setMinValue
+ 158              		.thumb
+ 159              		.thumb_func
+ 160              		.type	PID_setMinValue, %function
+ 161              	PID_setMinValue:
+ 162              	.LFB3:
+  35:pid.c         **** }
+  36:pid.c         **** void PID_setMinValue(PID_t* pid, int32_t mn)
+  37:pid.c         **** {
+ 163              		.loc 1 37 0
+ 164              		.cfi_startproc
+ 165              		@ args = 0, pretend = 0, frame = 0
+ 166              		@ frame_needed = 0, uses_anonymous_args = 0
+ 167              		@ link register save eliminated.
+ 168              	.LVL19:
+  38:pid.c         ****     pid->minValue = mn;
+ 169              		.loc 1 38 0
+ 170 0000 C161     		str	r1, [r0, #28]
+  39:pid.c         ****     pid->scaledMin = mn * FLOAT_TO_INT_SCALE;
+ 171              		.loc 1 39 0
+ 172 0002 0903     		lsls	r1, r1, #12
+ 173              	.LVL20:
+ 174 0004 4162     		str	r1, [r0, #36]
+ 175 0006 7047     		bx	lr
+ 176              		.cfi_endproc
+ 177              	.LFE3:
+ 178              		.size	PID_setMinValue, .-PID_setMinValue
+ 179              		.section	.text.PID_setMaxValue,"ax",%progbits
+ 180              		.align	2
+ 181              		.global	PID_setMaxValue
+ 182              		.thumb
+ 183              		.thumb_func
+ 184              		.type	PID_setMaxValue, %function
+ 185              	PID_setMaxValue:
+ 186              	.LFB4:
+  40:pid.c         **** }
+  41:pid.c         **** 
+  42:pid.c         **** void PID_setMaxValue(PID_t* pid, int32_t mx)
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccqCJOZF.s 			page 5
+
+
+  43:pid.c         **** {
+ 187              		.loc 1 43 0
+ 188              		.cfi_startproc
+ 189              		@ args = 0, pretend = 0, frame = 0
+ 190              		@ frame_needed = 0, uses_anonymous_args = 0
+ 191              		@ link register save eliminated.
+ 192              	.LVL21:
+  44:pid.c         ****     pid->maxValue = mx;
+ 193              		.loc 1 44 0
+ 194 0000 0162     		str	r1, [r0, #32]
+  45:pid.c         ****     pid->scaledMax = mx * FLOAT_TO_INT_SCALE;
+ 195              		.loc 1 45 0
+ 196 0002 0903     		lsls	r1, r1, #12
+ 197              	.LVL22:
+ 198 0004 8162     		str	r1, [r0, #40]
+ 199 0006 7047     		bx	lr
+ 200              		.cfi_endproc
+ 201              	.LFE4:
+ 202              		.size	PID_setMaxValue, .-PID_setMaxValue
+ 203              		.section	.text.PID_calculatePID,"ax",%progbits
+ 204              		.align	2
+ 205              		.global	PID_calculatePID
+ 206              		.thumb
+ 207              		.thumb_func
+ 208              		.type	PID_calculatePID, %function
+ 209              	PID_calculatePID:
+ 210              	.LFB5:
+  46:pid.c         **** }
+  47:pid.c         **** 
+  48:pid.c         **** int32_t PID_calculatePID(PID_t* pid, int32_t input)
+  49:pid.c         **** {
+ 211              		.loc 1 49 0
+ 212              		.cfi_startproc
+ 213              		@ args = 0, pretend = 0, frame = 0
+ 214              		@ frame_needed = 0, uses_anonymous_args = 0
+ 215              		@ link register save eliminated.
+ 216              	.LVL23:
+ 217 0000 30B4     		push	{r4, r5}
+ 218              		.cfi_def_cfa_offset 8
+ 219              		.cfi_offset 4, -8
+ 220              		.cfi_offset 5, -4
+ 221 0002 0346     		mov	r3, r0
+  50:pid.c         ****     int32_t output, error, diffInput;
+  51:pid.c         **** 
+  52:pid.c         ****     pid->inputValue = input;
+ 222              		.loc 1 52 0
+ 223 0004 0161     		str	r1, [r0, #16]
+  53:pid.c         ****     error = pid->refVal - pid->inputValue;
+ 224              		.loc 1 53 0
+ 225 0006 C468     		ldr	r4, [r0, #12]
+ 226 0008 641A     		subs	r4, r4, r1
+ 227              	.LVL24:
+  54:pid.c         ****     pid->iTerm += (pid->kI * error); //remember, all k* variables are scaled up
+ 228              		.loc 1 54 0
+ 229 000a 4268     		ldr	r2, [r0, #4]
+ 230 000c 8069     		ldr	r0, [r0, #24]
+ 231              	.LVL25:
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccqCJOZF.s 			page 6
+
+
+ 232 000e 02FB0402 		mla	r2, r2, r4, r0
+ 233 0012 9A61     		str	r2, [r3, #24]
+  55:pid.c         **** 
+  56:pid.c         ****     if (pid->iTerm > pid->scaledMax) pid->iTerm = pid->scaledMax;
+ 234              		.loc 1 56 0
+ 235 0014 986A     		ldr	r0, [r3, #40]
+ 236 0016 8242     		cmp	r2, r0
+ 237 0018 00DD     		ble	.L9
+ 238              		.loc 1 56 0 is_stmt 0 discriminator 1
+ 239 001a 9861     		str	r0, [r3, #24]
+ 240              	.L9:
+  57:pid.c         ****     if (pid->iTerm < pid->scaledMin) pid->iTerm = pid->scaledMin;
+ 241              		.loc 1 57 0 is_stmt 1
+ 242 001c 9869     		ldr	r0, [r3, #24]
+ 243 001e 5A6A     		ldr	r2, [r3, #36]
+ 244 0020 9042     		cmp	r0, r2
+ 245 0022 00DA     		bge	.L10
+ 246              		.loc 1 57 0 is_stmt 0 discriminator 1
+ 247 0024 9A61     		str	r2, [r3, #24]
+ 248              	.L10:
+  58:pid.c         **** 
+  59:pid.c         ****     diffInput = (pid->inputValue - pid->lastValue);
+ 249              		.loc 1 59 0 is_stmt 1
+ 250 0026 5A69     		ldr	r2, [r3, #20]
+ 251 0028 881A     		subs	r0, r1, r2
+ 252              	.LVL26:
+  60:pid.c         **** 
+  61:pid.c         ****     //it's traditional to try to avoid using division in microcontrollers but the
+  62:pid.c         ****     //SAM3X has a very fast hardware divider anyway. Besides, FLOAT_TO_INT_SCALE is
+  63:pid.c         ****     //an even power of 2 so it can be done via a shift which is even faster.
+  64:pid.c         ****     output = ((pid->kP * error) + (pid->iTerm) - (pid->kD * diffInput)) / FLOAT_TO_INT_SCALE;
+ 253              		.loc 1 64 0
+ 254 002a 1D68     		ldr	r5, [r3]
+ 255 002c 9A69     		ldr	r2, [r3, #24]
+ 256 002e 05FB0424 		mla	r4, r5, r4, r2
+ 257              	.LVL27:
+ 258 0032 9A68     		ldr	r2, [r3, #8]
+ 259 0034 02FB1042 		mls	r2, r2, r0, r4
+ 260 0038 002A     		cmp	r2, #0
+ 261 003a 01DA     		bge	.L11
+ 262 003c 02F6FF72 		addw	r2, r2, #4095
+ 263              	.L11:
+ 264 0040 1213     		asrs	r2, r2, #12
+ 265              	.LVL28:
+  65:pid.c         **** 
+  66:pid.c         ****     if (output > pid->maxValue) output = pid->maxValue;
+ 266              		.loc 1 66 0
+ 267 0042 1C6A     		ldr	r4, [r3, #32]
+ 268 0044 A242     		cmp	r2, r4
+ 269 0046 00DC     		bgt	.L12
+  64:pid.c         **** 
+ 270              		.loc 1 64 0
+ 271 0048 1446     		mov	r4, r2
+ 272              	.L12:
+ 273              	.LVL29:
+  67:pid.c         ****     if (output < pid->minValue) output = pid->minValue;
+ 274              		.loc 1 67 0
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccqCJOZF.s 			page 7
+
+
+ 275 004a D869     		ldr	r0, [r3, #28]
+ 276              	.LVL30:
+ 277 004c 8442     		cmp	r4, r0
+ 278 004e 00DB     		blt	.L13
+ 279 0050 2046     		mov	r0, r4
+ 280              	.L13:
+ 281              	.LVL31:
+  68:pid.c         **** 
+  69:pid.c         ****     pid->lastValue = pid->inputValue;
+ 282              		.loc 1 69 0
+ 283 0052 5961     		str	r1, [r3, #20]
+ 284              	.LVL32:
+  70:pid.c         **** 
+  71:pid.c         ****     return output;
+  72:pid.c         **** }
+ 285              		.loc 1 72 0
+ 286 0054 30BC     		pop	{r4, r5}
+ 287              		.cfi_restore 5
+ 288              		.cfi_restore 4
+ 289              		.cfi_def_cfa_offset 0
+ 290 0056 7047     		bx	lr
+ 291              		.cfi_endproc
+ 292              	.LFE5:
+ 293              		.size	PID_calculatePID, .-PID_calculatePID
+ 294              		.text
+ 295              	.Letext0:
+ 296              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.1\\psoc creator\\import\\gnu\\arm\\5.4.
+ 297              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.1\\psoc creator\\import\\gnu\\arm\\5.4.
+ 298              		.file 4 "pid.h"
+ 299              		.section	.debug_info,"",%progbits
+ 300              	.Ldebug_info0:
+ 301 0000 A9020000 		.4byte	0x2a9
+ 302 0004 0400     		.2byte	0x4
+ 303 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 304 000a 04       		.byte	0x4
+ 305 000b 01       		.uleb128 0x1
+ 306 000c 91000000 		.4byte	.LASF31
+ 307 0010 0C       		.byte	0xc
+ 308 0011 70000000 		.4byte	.LASF32
+ 309 0015 10000000 		.4byte	.LASF33
+ 310 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 311 001d 00000000 		.4byte	0
+ 312 0021 00000000 		.4byte	.Ldebug_line0
+ 313 0025 02       		.uleb128 0x2
+ 314 0026 04       		.byte	0x4
+ 315 0027 04       		.byte	0x4
+ 316 0028 7D000000 		.4byte	.LASF0
+ 317 002c 02       		.uleb128 0x2
+ 318 002d 01       		.byte	0x1
+ 319 002e 06       		.byte	0x6
+ 320 002f 0B020000 		.4byte	.LASF1
+ 321 0033 02       		.uleb128 0x2
+ 322 0034 01       		.byte	0x1
+ 323 0035 08       		.byte	0x8
+ 324 0036 83000000 		.4byte	.LASF2
+ 325 003a 02       		.uleb128 0x2
+ 326 003b 02       		.byte	0x2
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccqCJOZF.s 			page 8
+
+
+ 327 003c 05       		.byte	0x5
+ 328 003d CE010000 		.4byte	.LASF3
+ 329 0041 02       		.uleb128 0x2
+ 330 0042 02       		.byte	0x2
+ 331 0043 07       		.byte	0x7
+ 332 0044 48010000 		.4byte	.LASF4
+ 333 0048 03       		.uleb128 0x3
+ 334 0049 53000000 		.4byte	.LASF10
+ 335 004d 02       		.byte	0x2
+ 336 004e 3F       		.byte	0x3f
+ 337 004f 53000000 		.4byte	0x53
+ 338 0053 02       		.uleb128 0x2
+ 339 0054 04       		.byte	0x4
+ 340 0055 05       		.byte	0x5
+ 341 0056 F1010000 		.4byte	.LASF5
+ 342 005a 02       		.uleb128 0x2
+ 343 005b 04       		.byte	0x4
+ 344 005c 07       		.byte	0x7
+ 345 005d 2B010000 		.4byte	.LASF6
+ 346 0061 02       		.uleb128 0x2
+ 347 0062 08       		.byte	0x8
+ 348 0063 05       		.byte	0x5
+ 349 0064 C0010000 		.4byte	.LASF7
+ 350 0068 02       		.uleb128 0x2
+ 351 0069 08       		.byte	0x8
+ 352 006a 07       		.byte	0x7
+ 353 006b 9B010000 		.4byte	.LASF8
+ 354 006f 04       		.uleb128 0x4
+ 355 0070 04       		.byte	0x4
+ 356 0071 05       		.byte	0x5
+ 357 0072 696E7400 		.ascii	"int\000"
+ 358 0076 02       		.uleb128 0x2
+ 359 0077 04       		.byte	0x4
+ 360 0078 07       		.byte	0x7
+ 361 0079 84010000 		.4byte	.LASF9
+ 362 007d 03       		.uleb128 0x3
+ 363 007e B2010000 		.4byte	.LASF11
+ 364 0082 03       		.byte	0x3
+ 365 0083 2C       		.byte	0x2c
+ 366 0084 48000000 		.4byte	0x48
+ 367 0088 05       		.uleb128 0x5
+ 368 0089 2C       		.byte	0x2c
+ 369 008a 04       		.byte	0x4
+ 370 008b 14       		.byte	0x14
+ 371 008c 12010000 		.4byte	0x112
+ 372 0090 06       		.uleb128 0x6
+ 373 0091 6B5000   		.ascii	"kP\000"
+ 374 0094 04       		.byte	0x4
+ 375 0095 16       		.byte	0x16
+ 376 0096 7D000000 		.4byte	0x7d
+ 377 009a 00       		.byte	0
+ 378 009b 06       		.uleb128 0x6
+ 379 009c 6B4900   		.ascii	"kI\000"
+ 380 009f 04       		.byte	0x4
+ 381 00a0 17       		.byte	0x17
+ 382 00a1 7D000000 		.4byte	0x7d
+ 383 00a5 04       		.byte	0x4
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccqCJOZF.s 			page 9
+
+
+ 384 00a6 06       		.uleb128 0x6
+ 385 00a7 6B4400   		.ascii	"kD\000"
+ 386 00aa 04       		.byte	0x4
+ 387 00ab 18       		.byte	0x18
+ 388 00ac 7D000000 		.4byte	0x7d
+ 389 00b0 08       		.byte	0x8
+ 390 00b1 07       		.uleb128 0x7
+ 391 00b2 76000000 		.4byte	.LASF12
+ 392 00b6 04       		.byte	0x4
+ 393 00b7 19       		.byte	0x19
+ 394 00b8 7D000000 		.4byte	0x7d
+ 395 00bc 0C       		.byte	0xc
+ 396 00bd 07       		.uleb128 0x7
+ 397 00be D8010000 		.4byte	.LASF13
+ 398 00c2 04       		.byte	0x4
+ 399 00c3 1A       		.byte	0x1a
+ 400 00c4 7D000000 		.4byte	0x7d
+ 401 00c8 10       		.byte	0x10
+ 402 00c9 07       		.uleb128 0x7
+ 403 00ca 71010000 		.4byte	.LASF14
+ 404 00ce 04       		.byte	0x4
+ 405 00cf 1B       		.byte	0x1b
+ 406 00d0 7D000000 		.4byte	0x7d
+ 407 00d4 14       		.byte	0x14
+ 408 00d5 07       		.uleb128 0x7
+ 409 00d6 25010000 		.4byte	.LASF15
+ 410 00da 04       		.byte	0x4
+ 411 00db 1C       		.byte	0x1c
+ 412 00dc 7D000000 		.4byte	0x7d
+ 413 00e0 18       		.byte	0x18
+ 414 00e1 07       		.uleb128 0x7
+ 415 00e2 7B010000 		.4byte	.LASF16
+ 416 00e6 04       		.byte	0x4
+ 417 00e7 1D       		.byte	0x1d
+ 418 00e8 7D000000 		.4byte	0x7d
+ 419 00ec 1C       		.byte	0x1c
+ 420 00ed 07       		.uleb128 0x7
+ 421 00ee 1E020000 		.4byte	.LASF17
+ 422 00f2 04       		.byte	0x4
+ 423 00f3 1E       		.byte	0x1e
+ 424 00f4 7D000000 		.4byte	0x7d
+ 425 00f8 20       		.byte	0x20
+ 426 00f9 07       		.uleb128 0x7
+ 427 00fa 5D000000 		.4byte	.LASF18
+ 428 00fe 04       		.byte	0x4
+ 429 00ff 1F       		.byte	0x1f
+ 430 0100 7D000000 		.4byte	0x7d
+ 431 0104 24       		.byte	0x24
+ 432 0105 07       		.uleb128 0x7
+ 433 0106 27020000 		.4byte	.LASF19
+ 434 010a 04       		.byte	0x4
+ 435 010b 20       		.byte	0x20
+ 436 010c 7D000000 		.4byte	0x7d
+ 437 0110 28       		.byte	0x28
+ 438 0111 00       		.byte	0
+ 439 0112 03       		.uleb128 0x3
+ 440 0113 6B010000 		.4byte	.LASF20
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccqCJOZF.s 			page 10
+
+
+ 441 0117 04       		.byte	0x4
+ 442 0118 21       		.byte	0x21
+ 443 0119 88000000 		.4byte	0x88
+ 444 011d 08       		.uleb128 0x8
+ 445 011e 67000000 		.4byte	.LASF21
+ 446 0122 01       		.byte	0x1
+ 447 0123 0E       		.byte	0xe
+ 448 0124 00000000 		.4byte	.LFB0
+ 449 0128 44000000 		.4byte	.LFE0-.LFB0
+ 450 012c 01       		.uleb128 0x1
+ 451 012d 9C       		.byte	0x9c
+ 452 012e 69010000 		.4byte	0x169
+ 453 0132 09       		.uleb128 0x9
+ 454 0133 70696400 		.ascii	"pid\000"
+ 455 0137 01       		.byte	0x1
+ 456 0138 0E       		.byte	0xe
+ 457 0139 69010000 		.4byte	0x169
+ 458 013d 00000000 		.4byte	.LLST0
+ 459 0141 09       		.uleb128 0x9
+ 460 0142 7000     		.ascii	"p\000"
+ 461 0144 01       		.byte	0x1
+ 462 0145 0E       		.byte	0xe
+ 463 0146 25000000 		.4byte	0x25
+ 464 014a 1E000000 		.4byte	.LLST1
+ 465 014e 09       		.uleb128 0x9
+ 466 014f 6900     		.ascii	"i\000"
+ 467 0151 01       		.byte	0x1
+ 468 0152 0E       		.byte	0xe
+ 469 0153 25000000 		.4byte	0x25
+ 470 0157 4C000000 		.4byte	.LLST2
+ 471 015b 09       		.uleb128 0x9
+ 472 015c 6400     		.ascii	"d\000"
+ 473 015e 01       		.byte	0x1
+ 474 015f 0E       		.byte	0xe
+ 475 0160 25000000 		.4byte	0x25
+ 476 0164 6A000000 		.4byte	.LLST3
+ 477 0168 00       		.byte	0
+ 478 0169 0A       		.uleb128 0xa
+ 479 016a 04       		.byte	0x4
+ 480 016b 12010000 		.4byte	0x112
+ 481 016f 08       		.uleb128 0x8
+ 482 0170 E3010000 		.4byte	.LASF22
+ 483 0174 01       		.byte	0x1
+ 484 0175 19       		.byte	0x19
+ 485 0176 00000000 		.4byte	.LFB1
+ 486 017a 3A000000 		.4byte	.LFE1-.LFB1
+ 487 017e 01       		.uleb128 0x1
+ 488 017f 9C       		.byte	0x9c
+ 489 0180 BB010000 		.4byte	0x1bb
+ 490 0184 09       		.uleb128 0x9
+ 491 0185 70696400 		.ascii	"pid\000"
+ 492 0189 01       		.byte	0x1
+ 493 018a 19       		.byte	0x19
+ 494 018b 69010000 		.4byte	0x169
+ 495 018f 88000000 		.4byte	.LLST4
+ 496 0193 09       		.uleb128 0x9
+ 497 0194 7000     		.ascii	"p\000"
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccqCJOZF.s 			page 11
+
+
+ 498 0196 01       		.byte	0x1
+ 499 0197 19       		.byte	0x19
+ 500 0198 25000000 		.4byte	0x25
+ 501 019c A6000000 		.4byte	.LLST5
+ 502 01a0 09       		.uleb128 0x9
+ 503 01a1 6900     		.ascii	"i\000"
+ 504 01a3 01       		.byte	0x1
+ 505 01a4 19       		.byte	0x19
+ 506 01a5 25000000 		.4byte	0x25
+ 507 01a9 D4000000 		.4byte	.LLST6
+ 508 01ad 09       		.uleb128 0x9
+ 509 01ae 6400     		.ascii	"d\000"
+ 510 01b0 01       		.byte	0x1
+ 511 01b1 19       		.byte	0x19
+ 512 01b2 25000000 		.4byte	0x25
+ 513 01b6 F2000000 		.4byte	.LLST7
+ 514 01ba 00       		.byte	0
+ 515 01bb 0B       		.uleb128 0xb
+ 516 01bc 3D010000 		.4byte	.LASF23
+ 517 01c0 01       		.byte	0x1
+ 518 01c1 20       		.byte	0x20
+ 519 01c2 00000000 		.4byte	.LFB2
+ 520 01c6 04000000 		.4byte	.LFE2-.LFB2
+ 521 01ca 01       		.uleb128 0x1
+ 522 01cb 9C       		.byte	0x9c
+ 523 01cc EB010000 		.4byte	0x1eb
+ 524 01d0 0C       		.uleb128 0xc
+ 525 01d1 70696400 		.ascii	"pid\000"
+ 526 01d5 01       		.byte	0x1
+ 527 01d6 20       		.byte	0x20
+ 528 01d7 69010000 		.4byte	0x169
+ 529 01db 01       		.uleb128 0x1
+ 530 01dc 50       		.byte	0x50
+ 531 01dd 0C       		.uleb128 0xc
+ 532 01de 706E7400 		.ascii	"pnt\000"
+ 533 01e2 01       		.byte	0x1
+ 534 01e3 20       		.byte	0x20
+ 535 01e4 7D000000 		.4byte	0x7d
+ 536 01e8 01       		.uleb128 0x1
+ 537 01e9 51       		.byte	0x51
+ 538 01ea 00       		.byte	0
+ 539 01eb 0B       		.uleb128 0xb
+ 540 01ec 5B010000 		.4byte	.LASF24
+ 541 01f0 01       		.byte	0x1
+ 542 01f1 24       		.byte	0x24
+ 543 01f2 00000000 		.4byte	.LFB3
+ 544 01f6 08000000 		.4byte	.LFE3-.LFB3
+ 545 01fa 01       		.uleb128 0x1
+ 546 01fb 9C       		.byte	0x9c
+ 547 01fc 1C020000 		.4byte	0x21c
+ 548 0200 0C       		.uleb128 0xc
+ 549 0201 70696400 		.ascii	"pid\000"
+ 550 0205 01       		.byte	0x1
+ 551 0206 24       		.byte	0x24
+ 552 0207 69010000 		.4byte	0x169
+ 553 020b 01       		.uleb128 0x1
+ 554 020c 50       		.byte	0x50
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccqCJOZF.s 			page 12
+
+
+ 555 020d 09       		.uleb128 0x9
+ 556 020e 6D6E00   		.ascii	"mn\000"
+ 557 0211 01       		.byte	0x1
+ 558 0212 24       		.byte	0x24
+ 559 0213 7D000000 		.4byte	0x7d
+ 560 0217 10010000 		.4byte	.LLST8
+ 561 021b 00       		.byte	0
+ 562 021c 0B       		.uleb128 0xb
+ 563 021d 00000000 		.4byte	.LASF25
+ 564 0221 01       		.byte	0x1
+ 565 0222 2A       		.byte	0x2a
+ 566 0223 00000000 		.4byte	.LFB4
+ 567 0227 08000000 		.4byte	.LFE4-.LFB4
+ 568 022b 01       		.uleb128 0x1
+ 569 022c 9C       		.byte	0x9c
+ 570 022d 4D020000 		.4byte	0x24d
+ 571 0231 0C       		.uleb128 0xc
+ 572 0232 70696400 		.ascii	"pid\000"
+ 573 0236 01       		.byte	0x1
+ 574 0237 2A       		.byte	0x2a
+ 575 0238 69010000 		.4byte	0x169
+ 576 023c 01       		.uleb128 0x1
+ 577 023d 50       		.byte	0x50
+ 578 023e 09       		.uleb128 0x9
+ 579 023f 6D7800   		.ascii	"mx\000"
+ 580 0242 01       		.byte	0x1
+ 581 0243 2A       		.byte	0x2a
+ 582 0244 7D000000 		.4byte	0x7d
+ 583 0248 2F010000 		.4byte	.LLST9
+ 584 024c 00       		.byte	0
+ 585 024d 0D       		.uleb128 0xd
+ 586 024e FA010000 		.4byte	.LASF26
+ 587 0252 01       		.byte	0x1
+ 588 0253 30       		.byte	0x30
+ 589 0254 7D000000 		.4byte	0x7d
+ 590 0258 00000000 		.4byte	.LFB5
+ 591 025c 58000000 		.4byte	.LFE5-.LFB5
+ 592 0260 01       		.uleb128 0x1
+ 593 0261 9C       		.byte	0x9c
+ 594 0262 09       		.uleb128 0x9
+ 595 0263 70696400 		.ascii	"pid\000"
+ 596 0267 01       		.byte	0x1
+ 597 0268 30       		.byte	0x30
+ 598 0269 69010000 		.4byte	0x169
+ 599 026d 4E010000 		.4byte	.LLST10
+ 600 0271 0E       		.uleb128 0xe
+ 601 0272 1F010000 		.4byte	.LASF27
+ 602 0276 01       		.byte	0x1
+ 603 0277 30       		.byte	0x30
+ 604 0278 7D000000 		.4byte	0x7d
+ 605 027c 01       		.uleb128 0x1
+ 606 027d 51       		.byte	0x51
+ 607 027e 0F       		.uleb128 0xf
+ 608 027f 17020000 		.4byte	.LASF28
+ 609 0283 01       		.byte	0x1
+ 610 0284 32       		.byte	0x32
+ 611 0285 7D000000 		.4byte	0x7d
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccqCJOZF.s 			page 13
+
+
+ 612 0289 6C010000 		.4byte	.LLST11
+ 613 028d 0F       		.uleb128 0xf
+ 614 028e BA010000 		.4byte	.LASF29
+ 615 0292 01       		.byte	0x1
+ 616 0293 32       		.byte	0x32
+ 617 0294 7D000000 		.4byte	0x7d
+ 618 0298 95010000 		.4byte	.LLST12
+ 619 029c 0F       		.uleb128 0xf
+ 620 029d 91010000 		.4byte	.LASF30
+ 621 02a1 01       		.byte	0x1
+ 622 02a2 32       		.byte	0x32
+ 623 02a3 7D000000 		.4byte	0x7d
+ 624 02a7 B9010000 		.4byte	.LLST13
+ 625 02ab 00       		.byte	0
+ 626 02ac 00       		.byte	0
+ 627              		.section	.debug_abbrev,"",%progbits
+ 628              	.Ldebug_abbrev0:
+ 629 0000 01       		.uleb128 0x1
+ 630 0001 11       		.uleb128 0x11
+ 631 0002 01       		.byte	0x1
+ 632 0003 25       		.uleb128 0x25
+ 633 0004 0E       		.uleb128 0xe
+ 634 0005 13       		.uleb128 0x13
+ 635 0006 0B       		.uleb128 0xb
+ 636 0007 03       		.uleb128 0x3
+ 637 0008 0E       		.uleb128 0xe
+ 638 0009 1B       		.uleb128 0x1b
+ 639 000a 0E       		.uleb128 0xe
+ 640 000b 55       		.uleb128 0x55
+ 641 000c 17       		.uleb128 0x17
+ 642 000d 11       		.uleb128 0x11
+ 643 000e 01       		.uleb128 0x1
+ 644 000f 10       		.uleb128 0x10
+ 645 0010 17       		.uleb128 0x17
+ 646 0011 00       		.byte	0
+ 647 0012 00       		.byte	0
+ 648 0013 02       		.uleb128 0x2
+ 649 0014 24       		.uleb128 0x24
+ 650 0015 00       		.byte	0
+ 651 0016 0B       		.uleb128 0xb
+ 652 0017 0B       		.uleb128 0xb
+ 653 0018 3E       		.uleb128 0x3e
+ 654 0019 0B       		.uleb128 0xb
+ 655 001a 03       		.uleb128 0x3
+ 656 001b 0E       		.uleb128 0xe
+ 657 001c 00       		.byte	0
+ 658 001d 00       		.byte	0
+ 659 001e 03       		.uleb128 0x3
+ 660 001f 16       		.uleb128 0x16
+ 661 0020 00       		.byte	0
+ 662 0021 03       		.uleb128 0x3
+ 663 0022 0E       		.uleb128 0xe
+ 664 0023 3A       		.uleb128 0x3a
+ 665 0024 0B       		.uleb128 0xb
+ 666 0025 3B       		.uleb128 0x3b
+ 667 0026 0B       		.uleb128 0xb
+ 668 0027 49       		.uleb128 0x49
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccqCJOZF.s 			page 14
+
+
+ 669 0028 13       		.uleb128 0x13
+ 670 0029 00       		.byte	0
+ 671 002a 00       		.byte	0
+ 672 002b 04       		.uleb128 0x4
+ 673 002c 24       		.uleb128 0x24
+ 674 002d 00       		.byte	0
+ 675 002e 0B       		.uleb128 0xb
+ 676 002f 0B       		.uleb128 0xb
+ 677 0030 3E       		.uleb128 0x3e
+ 678 0031 0B       		.uleb128 0xb
+ 679 0032 03       		.uleb128 0x3
+ 680 0033 08       		.uleb128 0x8
+ 681 0034 00       		.byte	0
+ 682 0035 00       		.byte	0
+ 683 0036 05       		.uleb128 0x5
+ 684 0037 13       		.uleb128 0x13
+ 685 0038 01       		.byte	0x1
+ 686 0039 0B       		.uleb128 0xb
+ 687 003a 0B       		.uleb128 0xb
+ 688 003b 3A       		.uleb128 0x3a
+ 689 003c 0B       		.uleb128 0xb
+ 690 003d 3B       		.uleb128 0x3b
+ 691 003e 0B       		.uleb128 0xb
+ 692 003f 01       		.uleb128 0x1
+ 693 0040 13       		.uleb128 0x13
+ 694 0041 00       		.byte	0
+ 695 0042 00       		.byte	0
+ 696 0043 06       		.uleb128 0x6
+ 697 0044 0D       		.uleb128 0xd
+ 698 0045 00       		.byte	0
+ 699 0046 03       		.uleb128 0x3
+ 700 0047 08       		.uleb128 0x8
+ 701 0048 3A       		.uleb128 0x3a
+ 702 0049 0B       		.uleb128 0xb
+ 703 004a 3B       		.uleb128 0x3b
+ 704 004b 0B       		.uleb128 0xb
+ 705 004c 49       		.uleb128 0x49
+ 706 004d 13       		.uleb128 0x13
+ 707 004e 38       		.uleb128 0x38
+ 708 004f 0B       		.uleb128 0xb
+ 709 0050 00       		.byte	0
+ 710 0051 00       		.byte	0
+ 711 0052 07       		.uleb128 0x7
+ 712 0053 0D       		.uleb128 0xd
+ 713 0054 00       		.byte	0
+ 714 0055 03       		.uleb128 0x3
+ 715 0056 0E       		.uleb128 0xe
+ 716 0057 3A       		.uleb128 0x3a
+ 717 0058 0B       		.uleb128 0xb
+ 718 0059 3B       		.uleb128 0x3b
+ 719 005a 0B       		.uleb128 0xb
+ 720 005b 49       		.uleb128 0x49
+ 721 005c 13       		.uleb128 0x13
+ 722 005d 38       		.uleb128 0x38
+ 723 005e 0B       		.uleb128 0xb
+ 724 005f 00       		.byte	0
+ 725 0060 00       		.byte	0
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccqCJOZF.s 			page 15
+
+
+ 726 0061 08       		.uleb128 0x8
+ 727 0062 2E       		.uleb128 0x2e
+ 728 0063 01       		.byte	0x1
+ 729 0064 3F       		.uleb128 0x3f
+ 730 0065 19       		.uleb128 0x19
+ 731 0066 03       		.uleb128 0x3
+ 732 0067 0E       		.uleb128 0xe
+ 733 0068 3A       		.uleb128 0x3a
+ 734 0069 0B       		.uleb128 0xb
+ 735 006a 3B       		.uleb128 0x3b
+ 736 006b 0B       		.uleb128 0xb
+ 737 006c 27       		.uleb128 0x27
+ 738 006d 19       		.uleb128 0x19
+ 739 006e 11       		.uleb128 0x11
+ 740 006f 01       		.uleb128 0x1
+ 741 0070 12       		.uleb128 0x12
+ 742 0071 06       		.uleb128 0x6
+ 743 0072 40       		.uleb128 0x40
+ 744 0073 18       		.uleb128 0x18
+ 745 0074 9642     		.uleb128 0x2116
+ 746 0076 19       		.uleb128 0x19
+ 747 0077 01       		.uleb128 0x1
+ 748 0078 13       		.uleb128 0x13
+ 749 0079 00       		.byte	0
+ 750 007a 00       		.byte	0
+ 751 007b 09       		.uleb128 0x9
+ 752 007c 05       		.uleb128 0x5
+ 753 007d 00       		.byte	0
+ 754 007e 03       		.uleb128 0x3
+ 755 007f 08       		.uleb128 0x8
+ 756 0080 3A       		.uleb128 0x3a
+ 757 0081 0B       		.uleb128 0xb
+ 758 0082 3B       		.uleb128 0x3b
+ 759 0083 0B       		.uleb128 0xb
+ 760 0084 49       		.uleb128 0x49
+ 761 0085 13       		.uleb128 0x13
+ 762 0086 02       		.uleb128 0x2
+ 763 0087 17       		.uleb128 0x17
+ 764 0088 00       		.byte	0
+ 765 0089 00       		.byte	0
+ 766 008a 0A       		.uleb128 0xa
+ 767 008b 0F       		.uleb128 0xf
+ 768 008c 00       		.byte	0
+ 769 008d 0B       		.uleb128 0xb
+ 770 008e 0B       		.uleb128 0xb
+ 771 008f 49       		.uleb128 0x49
+ 772 0090 13       		.uleb128 0x13
+ 773 0091 00       		.byte	0
+ 774 0092 00       		.byte	0
+ 775 0093 0B       		.uleb128 0xb
+ 776 0094 2E       		.uleb128 0x2e
+ 777 0095 01       		.byte	0x1
+ 778 0096 3F       		.uleb128 0x3f
+ 779 0097 19       		.uleb128 0x19
+ 780 0098 03       		.uleb128 0x3
+ 781 0099 0E       		.uleb128 0xe
+ 782 009a 3A       		.uleb128 0x3a
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccqCJOZF.s 			page 16
+
+
+ 783 009b 0B       		.uleb128 0xb
+ 784 009c 3B       		.uleb128 0x3b
+ 785 009d 0B       		.uleb128 0xb
+ 786 009e 27       		.uleb128 0x27
+ 787 009f 19       		.uleb128 0x19
+ 788 00a0 11       		.uleb128 0x11
+ 789 00a1 01       		.uleb128 0x1
+ 790 00a2 12       		.uleb128 0x12
+ 791 00a3 06       		.uleb128 0x6
+ 792 00a4 40       		.uleb128 0x40
+ 793 00a5 18       		.uleb128 0x18
+ 794 00a6 9742     		.uleb128 0x2117
+ 795 00a8 19       		.uleb128 0x19
+ 796 00a9 01       		.uleb128 0x1
+ 797 00aa 13       		.uleb128 0x13
+ 798 00ab 00       		.byte	0
+ 799 00ac 00       		.byte	0
+ 800 00ad 0C       		.uleb128 0xc
+ 801 00ae 05       		.uleb128 0x5
+ 802 00af 00       		.byte	0
+ 803 00b0 03       		.uleb128 0x3
+ 804 00b1 08       		.uleb128 0x8
+ 805 00b2 3A       		.uleb128 0x3a
+ 806 00b3 0B       		.uleb128 0xb
+ 807 00b4 3B       		.uleb128 0x3b
+ 808 00b5 0B       		.uleb128 0xb
+ 809 00b6 49       		.uleb128 0x49
+ 810 00b7 13       		.uleb128 0x13
+ 811 00b8 02       		.uleb128 0x2
+ 812 00b9 18       		.uleb128 0x18
+ 813 00ba 00       		.byte	0
+ 814 00bb 00       		.byte	0
+ 815 00bc 0D       		.uleb128 0xd
+ 816 00bd 2E       		.uleb128 0x2e
+ 817 00be 01       		.byte	0x1
+ 818 00bf 3F       		.uleb128 0x3f
+ 819 00c0 19       		.uleb128 0x19
+ 820 00c1 03       		.uleb128 0x3
+ 821 00c2 0E       		.uleb128 0xe
+ 822 00c3 3A       		.uleb128 0x3a
+ 823 00c4 0B       		.uleb128 0xb
+ 824 00c5 3B       		.uleb128 0x3b
+ 825 00c6 0B       		.uleb128 0xb
+ 826 00c7 27       		.uleb128 0x27
+ 827 00c8 19       		.uleb128 0x19
+ 828 00c9 49       		.uleb128 0x49
+ 829 00ca 13       		.uleb128 0x13
+ 830 00cb 11       		.uleb128 0x11
+ 831 00cc 01       		.uleb128 0x1
+ 832 00cd 12       		.uleb128 0x12
+ 833 00ce 06       		.uleb128 0x6
+ 834 00cf 40       		.uleb128 0x40
+ 835 00d0 18       		.uleb128 0x18
+ 836 00d1 9742     		.uleb128 0x2117
+ 837 00d3 19       		.uleb128 0x19
+ 838 00d4 00       		.byte	0
+ 839 00d5 00       		.byte	0
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccqCJOZF.s 			page 17
+
+
+ 840 00d6 0E       		.uleb128 0xe
+ 841 00d7 05       		.uleb128 0x5
+ 842 00d8 00       		.byte	0
+ 843 00d9 03       		.uleb128 0x3
+ 844 00da 0E       		.uleb128 0xe
+ 845 00db 3A       		.uleb128 0x3a
+ 846 00dc 0B       		.uleb128 0xb
+ 847 00dd 3B       		.uleb128 0x3b
+ 848 00de 0B       		.uleb128 0xb
+ 849 00df 49       		.uleb128 0x49
+ 850 00e0 13       		.uleb128 0x13
+ 851 00e1 02       		.uleb128 0x2
+ 852 00e2 18       		.uleb128 0x18
+ 853 00e3 00       		.byte	0
+ 854 00e4 00       		.byte	0
+ 855 00e5 0F       		.uleb128 0xf
+ 856 00e6 34       		.uleb128 0x34
+ 857 00e7 00       		.byte	0
+ 858 00e8 03       		.uleb128 0x3
+ 859 00e9 0E       		.uleb128 0xe
+ 860 00ea 3A       		.uleb128 0x3a
+ 861 00eb 0B       		.uleb128 0xb
+ 862 00ec 3B       		.uleb128 0x3b
+ 863 00ed 0B       		.uleb128 0xb
+ 864 00ee 49       		.uleb128 0x49
+ 865 00ef 13       		.uleb128 0x13
+ 866 00f0 02       		.uleb128 0x2
+ 867 00f1 17       		.uleb128 0x17
+ 868 00f2 00       		.byte	0
+ 869 00f3 00       		.byte	0
+ 870 00f4 00       		.byte	0
+ 871              		.section	.debug_loc,"",%progbits
+ 872              	.Ldebug_loc0:
+ 873              	.LLST0:
+ 874 0000 00000000 		.4byte	.LVL0
+ 875 0004 06000000 		.4byte	.LVL1
+ 876 0008 0100     		.2byte	0x1
+ 877 000a 50       		.byte	0x50
+ 878 000b 06000000 		.4byte	.LVL1
+ 879 000f 44000000 		.4byte	.LFE0
+ 880 0013 0100     		.2byte	0x1
+ 881 0015 54       		.byte	0x54
+ 882 0016 00000000 		.4byte	0
+ 883 001a 00000000 		.4byte	0
+ 884              	.LLST1:
+ 885 001e 00000000 		.4byte	.LVL0
+ 886 0022 0E000000 		.4byte	.LVL2
+ 887 0026 0100     		.2byte	0x1
+ 888 0028 51       		.byte	0x51
+ 889 0029 0E000000 		.4byte	.LVL2
+ 890 002d 11000000 		.4byte	.LVL3-1
+ 891 0031 0100     		.2byte	0x1
+ 892 0033 50       		.byte	0x50
+ 893 0034 11000000 		.4byte	.LVL3-1
+ 894 0038 44000000 		.4byte	.LFE0
+ 895 003c 0600     		.2byte	0x6
+ 896 003e F3       		.byte	0xf3
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccqCJOZF.s 			page 18
+
+
+ 897 003f 03       		.uleb128 0x3
+ 898 0040 F5       		.byte	0xf5
+ 899 0041 01       		.uleb128 0x1
+ 900 0042 25       		.uleb128 0x25
+ 901 0043 9F       		.byte	0x9f
+ 902 0044 00000000 		.4byte	0
+ 903 0048 00000000 		.4byte	0
+ 904              	.LLST2:
+ 905 004c 00000000 		.4byte	.LVL0
+ 906 0050 11000000 		.4byte	.LVL3-1
+ 907 0054 0100     		.2byte	0x1
+ 908 0056 52       		.byte	0x52
+ 909 0057 11000000 		.4byte	.LVL3-1
+ 910 005b 44000000 		.4byte	.LFE0
+ 911 005f 0100     		.2byte	0x1
+ 912 0061 56       		.byte	0x56
+ 913 0062 00000000 		.4byte	0
+ 914 0066 00000000 		.4byte	0
+ 915              	.LLST3:
+ 916 006a 00000000 		.4byte	.LVL0
+ 917 006e 11000000 		.4byte	.LVL3-1
+ 918 0072 0100     		.2byte	0x1
+ 919 0074 53       		.byte	0x53
+ 920 0075 11000000 		.4byte	.LVL3-1
+ 921 0079 44000000 		.4byte	.LFE0
+ 922 007d 0100     		.2byte	0x1
+ 923 007f 55       		.byte	0x55
+ 924 0080 00000000 		.4byte	0
+ 925 0084 00000000 		.4byte	0
+ 926              	.LLST4:
+ 927 0088 00000000 		.4byte	.LVL9
+ 928 008c 06000000 		.4byte	.LVL10
+ 929 0090 0100     		.2byte	0x1
+ 930 0092 50       		.byte	0x50
+ 931 0093 06000000 		.4byte	.LVL10
+ 932 0097 3A000000 		.4byte	.LFE1
+ 933 009b 0100     		.2byte	0x1
+ 934 009d 54       		.byte	0x54
+ 935 009e 00000000 		.4byte	0
+ 936 00a2 00000000 		.4byte	0
+ 937              	.LLST5:
+ 938 00a6 00000000 		.4byte	.LVL9
+ 939 00aa 0E000000 		.4byte	.LVL11
+ 940 00ae 0100     		.2byte	0x1
+ 941 00b0 51       		.byte	0x51
+ 942 00b1 0E000000 		.4byte	.LVL11
+ 943 00b5 11000000 		.4byte	.LVL12-1
+ 944 00b9 0100     		.2byte	0x1
+ 945 00bb 50       		.byte	0x50
+ 946 00bc 11000000 		.4byte	.LVL12-1
+ 947 00c0 3A000000 		.4byte	.LFE1
+ 948 00c4 0600     		.2byte	0x6
+ 949 00c6 F3       		.byte	0xf3
+ 950 00c7 03       		.uleb128 0x3
+ 951 00c8 F5       		.byte	0xf5
+ 952 00c9 01       		.uleb128 0x1
+ 953 00ca 25       		.uleb128 0x25
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccqCJOZF.s 			page 19
+
+
+ 954 00cb 9F       		.byte	0x9f
+ 955 00cc 00000000 		.4byte	0
+ 956 00d0 00000000 		.4byte	0
+ 957              	.LLST6:
+ 958 00d4 00000000 		.4byte	.LVL9
+ 959 00d8 11000000 		.4byte	.LVL12-1
+ 960 00dc 0100     		.2byte	0x1
+ 961 00de 52       		.byte	0x52
+ 962 00df 11000000 		.4byte	.LVL12-1
+ 963 00e3 3A000000 		.4byte	.LFE1
+ 964 00e7 0100     		.2byte	0x1
+ 965 00e9 56       		.byte	0x56
+ 966 00ea 00000000 		.4byte	0
+ 967 00ee 00000000 		.4byte	0
+ 968              	.LLST7:
+ 969 00f2 00000000 		.4byte	.LVL9
+ 970 00f6 11000000 		.4byte	.LVL12-1
+ 971 00fa 0100     		.2byte	0x1
+ 972 00fc 53       		.byte	0x53
+ 973 00fd 11000000 		.4byte	.LVL12-1
+ 974 0101 3A000000 		.4byte	.LFE1
+ 975 0105 0100     		.2byte	0x1
+ 976 0107 55       		.byte	0x55
+ 977 0108 00000000 		.4byte	0
+ 978 010c 00000000 		.4byte	0
+ 979              	.LLST8:
+ 980 0110 00000000 		.4byte	.LVL19
+ 981 0114 04000000 		.4byte	.LVL20
+ 982 0118 0100     		.2byte	0x1
+ 983 011a 51       		.byte	0x51
+ 984 011b 04000000 		.4byte	.LVL20
+ 985 011f 08000000 		.4byte	.LFE3
+ 986 0123 0200     		.2byte	0x2
+ 987 0125 70       		.byte	0x70
+ 988 0126 1C       		.sleb128 28
+ 989 0127 00000000 		.4byte	0
+ 990 012b 00000000 		.4byte	0
+ 991              	.LLST9:
+ 992 012f 00000000 		.4byte	.LVL21
+ 993 0133 04000000 		.4byte	.LVL22
+ 994 0137 0100     		.2byte	0x1
+ 995 0139 51       		.byte	0x51
+ 996 013a 04000000 		.4byte	.LVL22
+ 997 013e 08000000 		.4byte	.LFE4
+ 998 0142 0200     		.2byte	0x2
+ 999 0144 70       		.byte	0x70
+ 1000 0145 20       		.sleb128 32
+ 1001 0146 00000000 		.4byte	0
+ 1002 014a 00000000 		.4byte	0
+ 1003              	.LLST10:
+ 1004 014e 00000000 		.4byte	.LVL23
+ 1005 0152 0E000000 		.4byte	.LVL25
+ 1006 0156 0100     		.2byte	0x1
+ 1007 0158 50       		.byte	0x50
+ 1008 0159 0E000000 		.4byte	.LVL25
+ 1009 015d 58000000 		.4byte	.LFE5
+ 1010 0161 0100     		.2byte	0x1
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccqCJOZF.s 			page 20
+
+
+ 1011 0163 53       		.byte	0x53
+ 1012 0164 00000000 		.4byte	0
+ 1013 0168 00000000 		.4byte	0
+ 1014              	.LLST11:
+ 1015 016c 42000000 		.4byte	.LVL28
+ 1016 0170 4A000000 		.4byte	.LVL29
+ 1017 0174 0100     		.2byte	0x1
+ 1018 0176 52       		.byte	0x52
+ 1019 0177 4A000000 		.4byte	.LVL29
+ 1020 017b 52000000 		.4byte	.LVL31
+ 1021 017f 0100     		.2byte	0x1
+ 1022 0181 54       		.byte	0x54
+ 1023 0182 52000000 		.4byte	.LVL31
+ 1024 0186 58000000 		.4byte	.LFE5
+ 1025 018a 0100     		.2byte	0x1
+ 1026 018c 50       		.byte	0x50
+ 1027 018d 00000000 		.4byte	0
+ 1028 0191 00000000 		.4byte	0
+ 1029              	.LLST12:
+ 1030 0195 0A000000 		.4byte	.LVL24
+ 1031 0199 32000000 		.4byte	.LVL27
+ 1032 019d 0100     		.2byte	0x1
+ 1033 019f 54       		.byte	0x54
+ 1034 01a0 32000000 		.4byte	.LVL27
+ 1035 01a4 58000000 		.4byte	.LFE5
+ 1036 01a8 0700     		.2byte	0x7
+ 1037 01aa 73       		.byte	0x73
+ 1038 01ab 0C       		.sleb128 12
+ 1039 01ac 06       		.byte	0x6
+ 1040 01ad 71       		.byte	0x71
+ 1041 01ae 00       		.sleb128 0
+ 1042 01af 1C       		.byte	0x1c
+ 1043 01b0 9F       		.byte	0x9f
+ 1044 01b1 00000000 		.4byte	0
+ 1045 01b5 00000000 		.4byte	0
+ 1046              	.LLST13:
+ 1047 01b9 2A000000 		.4byte	.LVL26
+ 1048 01bd 4C000000 		.4byte	.LVL30
+ 1049 01c1 0100     		.2byte	0x1
+ 1050 01c3 50       		.byte	0x50
+ 1051 01c4 4C000000 		.4byte	.LVL30
+ 1052 01c8 54000000 		.4byte	.LVL32
+ 1053 01cc 0700     		.2byte	0x7
+ 1054 01ce 71       		.byte	0x71
+ 1055 01cf 00       		.sleb128 0
+ 1056 01d0 73       		.byte	0x73
+ 1057 01d1 14       		.sleb128 20
+ 1058 01d2 06       		.byte	0x6
+ 1059 01d3 1C       		.byte	0x1c
+ 1060 01d4 9F       		.byte	0x9f
+ 1061 01d5 00000000 		.4byte	0
+ 1062 01d9 00000000 		.4byte	0
+ 1063              		.section	.debug_aranges,"",%progbits
+ 1064 0000 44000000 		.4byte	0x44
+ 1065 0004 0200     		.2byte	0x2
+ 1066 0006 00000000 		.4byte	.Ldebug_info0
+ 1067 000a 04       		.byte	0x4
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccqCJOZF.s 			page 21
+
+
+ 1068 000b 00       		.byte	0
+ 1069 000c 0000     		.2byte	0
+ 1070 000e 0000     		.2byte	0
+ 1071 0010 00000000 		.4byte	.LFB0
+ 1072 0014 44000000 		.4byte	.LFE0-.LFB0
+ 1073 0018 00000000 		.4byte	.LFB1
+ 1074 001c 3A000000 		.4byte	.LFE1-.LFB1
+ 1075 0020 00000000 		.4byte	.LFB2
+ 1076 0024 04000000 		.4byte	.LFE2-.LFB2
+ 1077 0028 00000000 		.4byte	.LFB3
+ 1078 002c 08000000 		.4byte	.LFE3-.LFB3
+ 1079 0030 00000000 		.4byte	.LFB4
+ 1080 0034 08000000 		.4byte	.LFE4-.LFB4
+ 1081 0038 00000000 		.4byte	.LFB5
+ 1082 003c 58000000 		.4byte	.LFE5-.LFB5
+ 1083 0040 00000000 		.4byte	0
+ 1084 0044 00000000 		.4byte	0
+ 1085              		.section	.debug_ranges,"",%progbits
+ 1086              	.Ldebug_ranges0:
+ 1087 0000 00000000 		.4byte	.LFB0
+ 1088 0004 44000000 		.4byte	.LFE0
+ 1089 0008 00000000 		.4byte	.LFB1
+ 1090 000c 3A000000 		.4byte	.LFE1
+ 1091 0010 00000000 		.4byte	.LFB2
+ 1092 0014 04000000 		.4byte	.LFE2
+ 1093 0018 00000000 		.4byte	.LFB3
+ 1094 001c 08000000 		.4byte	.LFE3
+ 1095 0020 00000000 		.4byte	.LFB4
+ 1096 0024 08000000 		.4byte	.LFE4
+ 1097 0028 00000000 		.4byte	.LFB5
+ 1098 002c 58000000 		.4byte	.LFE5
+ 1099 0030 00000000 		.4byte	0
+ 1100 0034 00000000 		.4byte	0
+ 1101              		.section	.debug_line,"",%progbits
+ 1102              	.Ldebug_line0:
+ 1103 0000 AB010000 		.section	.debug_str,"MS",%progbits,1
+ 1103      02002201 
+ 1103      00000201 
+ 1103      FB0E0D00 
+ 1103      01010101 
+ 1104              	.LASF25:
+ 1105 0000 5049445F 		.ascii	"PID_setMaxValue\000"
+ 1105      7365744D 
+ 1105      61785661 
+ 1105      6C756500 
+ 1106              	.LASF33:
+ 1107 0010 443A5C44 		.ascii	"D:\\Dropbox\\Magister\\Tesis\\tesis-source\\master-"
+ 1107      726F7062 
+ 1107      6F785C4D 
+ 1107      61676973 
+ 1107      7465725C 
+ 1108 003e 74657369 		.ascii	"tesis\\dedo_v01.cydsn\000"
+ 1108      735C6465 
+ 1108      646F5F76 
+ 1108      30312E63 
+ 1108      7964736E 
+ 1109              	.LASF10:
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccqCJOZF.s 			page 22
+
+
+ 1110 0053 5F5F696E 		.ascii	"__int32_t\000"
+ 1110      7433325F 
+ 1110      7400
+ 1111              	.LASF18:
+ 1112 005d 7363616C 		.ascii	"scaledMin\000"
+ 1112      65644D69 
+ 1112      6E00
+ 1113              	.LASF21:
+ 1114 0067 5049445F 		.ascii	"PID_init\000"
+ 1114      696E6974 
+ 1114      00
+ 1115              	.LASF32:
+ 1116 0070 7069642E 		.ascii	"pid.c\000"
+ 1116      6300
+ 1117              	.LASF12:
+ 1118 0076 72656656 		.ascii	"refVal\000"
+ 1118      616C00
+ 1119              	.LASF0:
+ 1120 007d 666C6F61 		.ascii	"float\000"
+ 1120      7400
+ 1121              	.LASF2:
+ 1122 0083 756E7369 		.ascii	"unsigned char\000"
+ 1122      676E6564 
+ 1122      20636861 
+ 1122      7200
+ 1123              	.LASF31:
+ 1124 0091 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 1124      43313120 
+ 1124      352E342E 
+ 1124      31203230 
+ 1124      31363036 
+ 1125 00c4 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m3 -mthumb -g -O"
+ 1125      20726576 
+ 1125      6973696F 
+ 1125      6E203233 
+ 1125      37373135 
+ 1126 00f7 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 1126      66756E63 
+ 1126      74696F6E 
+ 1126      2D736563 
+ 1126      74696F6E 
+ 1127              	.LASF27:
+ 1128 011f 696E7075 		.ascii	"input\000"
+ 1128      7400
+ 1129              	.LASF15:
+ 1130 0125 69546572 		.ascii	"iTerm\000"
+ 1130      6D00
+ 1131              	.LASF6:
+ 1132 012b 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1132      20756E73 
+ 1132      69676E65 
+ 1132      6420696E 
+ 1132      7400
+ 1133              	.LASF23:
+ 1134 013d 5049445F 		.ascii	"PID_setRef\000"
+ 1134      73657452 
+ 1134      656600
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccqCJOZF.s 			page 23
+
+
+ 1135              	.LASF4:
+ 1136 0148 73686F72 		.ascii	"short unsigned int\000"
+ 1136      7420756E 
+ 1136      7369676E 
+ 1136      65642069 
+ 1136      6E7400
+ 1137              	.LASF24:
+ 1138 015b 5049445F 		.ascii	"PID_setMinValue\000"
+ 1138      7365744D 
+ 1138      696E5661 
+ 1138      6C756500 
+ 1139              	.LASF20:
+ 1140 016b 5049445F 		.ascii	"PID_t\000"
+ 1140      7400
+ 1141              	.LASF14:
+ 1142 0171 6C617374 		.ascii	"lastValue\000"
+ 1142      56616C75 
+ 1142      6500
+ 1143              	.LASF16:
+ 1144 017b 6D696E56 		.ascii	"minValue\000"
+ 1144      616C7565 
+ 1144      00
+ 1145              	.LASF9:
+ 1146 0184 756E7369 		.ascii	"unsigned int\000"
+ 1146      676E6564 
+ 1146      20696E74 
+ 1146      00
+ 1147              	.LASF30:
+ 1148 0191 64696666 		.ascii	"diffInput\000"
+ 1148      496E7075 
+ 1148      7400
+ 1149              	.LASF8:
+ 1150 019b 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1150      206C6F6E 
+ 1150      6720756E 
+ 1150      7369676E 
+ 1150      65642069 
+ 1151              	.LASF11:
+ 1152 01b2 696E7433 		.ascii	"int32_t\000"
+ 1152      325F7400 
+ 1153              	.LASF29:
+ 1154 01ba 6572726F 		.ascii	"error\000"
+ 1154      7200
+ 1155              	.LASF7:
+ 1156 01c0 6C6F6E67 		.ascii	"long long int\000"
+ 1156      206C6F6E 
+ 1156      6720696E 
+ 1156      7400
+ 1157              	.LASF3:
+ 1158 01ce 73686F72 		.ascii	"short int\000"
+ 1158      7420696E 
+ 1158      7400
+ 1159              	.LASF13:
+ 1160 01d8 696E7075 		.ascii	"inputValue\000"
+ 1160      7456616C 
+ 1160      756500
+ 1161              	.LASF22:
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccqCJOZF.s 			page 24
+
+
+ 1162 01e3 5049445F 		.ascii	"PID_setCoeffs\000"
+ 1162      73657443 
+ 1162      6F656666 
+ 1162      7300
+ 1163              	.LASF5:
+ 1164 01f1 6C6F6E67 		.ascii	"long int\000"
+ 1164      20696E74 
+ 1164      00
+ 1165              	.LASF26:
+ 1166 01fa 5049445F 		.ascii	"PID_calculatePID\000"
+ 1166      63616C63 
+ 1166      756C6174 
+ 1166      65504944 
+ 1166      00
+ 1167              	.LASF1:
+ 1168 020b 7369676E 		.ascii	"signed char\000"
+ 1168      65642063 
+ 1168      68617200 
+ 1169              	.LASF28:
+ 1170 0217 6F757470 		.ascii	"output\000"
+ 1170      757400
+ 1171              	.LASF17:
+ 1172 021e 6D617856 		.ascii	"maxValue\000"
+ 1172      616C7565 
+ 1172      00
+ 1173              	.LASF19:
+ 1174 0227 7363616C 		.ascii	"scaledMax\000"
+ 1174      65644D61 
+ 1174      7800
+ 1175              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

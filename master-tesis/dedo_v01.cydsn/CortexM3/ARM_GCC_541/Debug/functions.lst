@@ -1,0 +1,2274 @@
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccGj30F4.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"functions.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.global	__aeabi_i2d
+  20              		.global	__aeabi_ddiv
+  21              		.global	__aeabi_dmul
+  22              		.global	__aeabi_dadd
+  23              		.global	__aeabi_d2iz
+  24              		.section	.text.fn_mapper,"ax",%progbits
+  25              		.align	2
+  26              		.global	fn_mapper
+  27              		.thumb
+  28              		.thumb_func
+  29              		.type	fn_mapper, %function
+  30              	fn_mapper:
+  31              	.LFB64:
+  32              		.file 1 "functions.c"
+   1:functions.c   **** /* ========================================
+   2:functions.c   ****  *
+   3:functions.c   ****  * Copyright YOUR COMPANY, THE YEAR
+   4:functions.c   ****  * All Rights Reserved
+   5:functions.c   ****  * UNPUBLISHED, LICENSED SOFTWARE.
+   6:functions.c   ****  *
+   7:functions.c   ****  * CONFIDENTIAL AND PROPRIETARY INFORMATION
+   8:functions.c   ****  * WHICH IS THE PROPERTY OF your company.
+   9:functions.c   ****  *
+  10:functions.c   ****  * ========================================
+  11:functions.c   **** */
+  12:functions.c   **** 
+  13:functions.c   **** #include <functions.h>
+  14:functions.c   **** #include <stdlib.h>
+  15:functions.c   **** #include <math.h>
+  16:functions.c   **** 
+  17:functions.c   **** int32_t fn_mapper(int32_t x, int32_t in_min, int32_t in_max, int32_t out_min, int32_t out_max){
+  33              		.loc 1 17 0
+  34              		.cfi_startproc
+  35              		@ args = 4, pretend = 0, frame = 0
+  36              		@ frame_needed = 0, uses_anonymous_args = 0
+  37              	.LVL0:
+  38 0000 2DE9F843 		push	{r3, r4, r5, r6, r7, r8, r9, lr}
+  39              		.cfi_def_cfa_offset 32
+  40              		.cfi_offset 3, -32
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccGj30F4.s 			page 2
+
+
+  41              		.cfi_offset 4, -28
+  42              		.cfi_offset 5, -24
+  43              		.cfi_offset 6, -20
+  44              		.cfi_offset 7, -16
+  45              		.cfi_offset 8, -12
+  46              		.cfi_offset 9, -8
+  47              		.cfi_offset 14, -4
+  48 0004 8046     		mov	r8, r0
+  49 0006 0D46     		mov	r5, r1
+  50 0008 9146     		mov	r9, r2
+  51 000a 1C46     		mov	r4, r3
+  18:functions.c   ****     
+  19:functions.c   ****     double slope = 1.0 * (out_max - out_min)/(in_max - in_min);
+  52              		.loc 1 19 0
+  53 000c 0898     		ldr	r0, [sp, #32]
+  54              	.LVL1:
+  55 000e C01A     		subs	r0, r0, r3
+  56 0010 FFF7FEFF 		bl	__aeabi_i2d
+  57              	.LVL2:
+  58 0014 0646     		mov	r6, r0
+  59 0016 0F46     		mov	r7, r1
+  60 0018 C5EB0900 		rsb	r0, r5, r9
+  61 001c FFF7FEFF 		bl	__aeabi_i2d
+  62              	.LVL3:
+  63 0020 0246     		mov	r2, r0
+  64 0022 0B46     		mov	r3, r1
+  65 0024 3046     		mov	r0, r6
+  66 0026 3946     		mov	r1, r7
+  67 0028 FFF7FEFF 		bl	__aeabi_ddiv
+  68              	.LVL4:
+  69 002c 0646     		mov	r6, r0
+  70 002e 0F46     		mov	r7, r1
+  71              	.LVL5:
+  20:functions.c   ****     return (int32_t)(out_min + slope*(x - in_min));
+  72              		.loc 1 20 0
+  73 0030 C5EB0800 		rsb	r0, r5, r8
+  74 0034 FFF7FEFF 		bl	__aeabi_i2d
+  75              	.LVL6:
+  76 0038 3246     		mov	r2, r6
+  77 003a 3B46     		mov	r3, r7
+  78 003c FFF7FEFF 		bl	__aeabi_dmul
+  79              	.LVL7:
+  80 0040 0646     		mov	r6, r0
+  81              	.LVL8:
+  82 0042 0F46     		mov	r7, r1
+  83 0044 2046     		mov	r0, r4
+  84 0046 FFF7FEFF 		bl	__aeabi_i2d
+  85              	.LVL9:
+  86 004a 3246     		mov	r2, r6
+  87 004c 3B46     		mov	r3, r7
+  88 004e FFF7FEFF 		bl	__aeabi_dadd
+  89              	.LVL10:
+  90 0052 FFF7FEFF 		bl	__aeabi_d2iz
+  91              	.LVL11:
+  21:functions.c   ****     
+  22:functions.c   **** }
+  92              		.loc 1 22 0
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccGj30F4.s 			page 3
+
+
+  93 0056 BDE8F883 		pop	{r3, r4, r5, r6, r7, r8, r9, pc}
+  94              		.cfi_endproc
+  95              	.LFE64:
+  96              		.size	fn_mapper, .-fn_mapper
+  97              		.global	__aeabi_d2uiz
+  98 005a 00BF     		.section	.text.fn_mapper_8b,"ax",%progbits
+  99              		.align	2
+ 100              		.global	fn_mapper_8b
+ 101              		.thumb
+ 102              		.thumb_func
+ 103              		.type	fn_mapper_8b, %function
+ 104              	fn_mapper_8b:
+ 105              	.LFB65:
+  23:functions.c   **** 
+  24:functions.c   **** uint8 fn_mapper_8b(int32_t x, int32_t in_min, int32_t in_max, int32_t out_min, int32_t out_max){
+ 106              		.loc 1 24 0
+ 107              		.cfi_startproc
+ 108              		@ args = 4, pretend = 0, frame = 0
+ 109              		@ frame_needed = 0, uses_anonymous_args = 0
+ 110              	.LVL12:
+ 111 0000 2DE9F843 		push	{r3, r4, r5, r6, r7, r8, r9, lr}
+ 112              		.cfi_def_cfa_offset 32
+ 113              		.cfi_offset 3, -32
+ 114              		.cfi_offset 4, -28
+ 115              		.cfi_offset 5, -24
+ 116              		.cfi_offset 6, -20
+ 117              		.cfi_offset 7, -16
+ 118              		.cfi_offset 8, -12
+ 119              		.cfi_offset 9, -8
+ 120              		.cfi_offset 14, -4
+ 121 0004 8046     		mov	r8, r0
+ 122 0006 0D46     		mov	r5, r1
+ 123 0008 9146     		mov	r9, r2
+ 124 000a 1C46     		mov	r4, r3
+  25:functions.c   ****     
+  26:functions.c   ****     double slope = 1.0 * (out_max - out_min)/(in_max - in_min);
+ 125              		.loc 1 26 0
+ 126 000c 0898     		ldr	r0, [sp, #32]
+ 127              	.LVL13:
+ 128 000e C01A     		subs	r0, r0, r3
+ 129 0010 FFF7FEFF 		bl	__aeabi_i2d
+ 130              	.LVL14:
+ 131 0014 0646     		mov	r6, r0
+ 132 0016 0F46     		mov	r7, r1
+ 133 0018 C5EB0900 		rsb	r0, r5, r9
+ 134 001c FFF7FEFF 		bl	__aeabi_i2d
+ 135              	.LVL15:
+ 136 0020 0246     		mov	r2, r0
+ 137 0022 0B46     		mov	r3, r1
+ 138 0024 3046     		mov	r0, r6
+ 139 0026 3946     		mov	r1, r7
+ 140 0028 FFF7FEFF 		bl	__aeabi_ddiv
+ 141              	.LVL16:
+ 142 002c 0646     		mov	r6, r0
+ 143 002e 0F46     		mov	r7, r1
+ 144              	.LVL17:
+  27:functions.c   ****     return (uint8)(out_min + slope*(x - in_min));
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccGj30F4.s 			page 4
+
+
+ 145              		.loc 1 27 0
+ 146 0030 C5EB0800 		rsb	r0, r5, r8
+ 147 0034 FFF7FEFF 		bl	__aeabi_i2d
+ 148              	.LVL18:
+ 149 0038 3246     		mov	r2, r6
+ 150 003a 3B46     		mov	r3, r7
+ 151 003c FFF7FEFF 		bl	__aeabi_dmul
+ 152              	.LVL19:
+ 153 0040 0646     		mov	r6, r0
+ 154              	.LVL20:
+ 155 0042 0F46     		mov	r7, r1
+ 156 0044 2046     		mov	r0, r4
+ 157 0046 FFF7FEFF 		bl	__aeabi_i2d
+ 158              	.LVL21:
+ 159 004a 3246     		mov	r2, r6
+ 160 004c 3B46     		mov	r3, r7
+ 161 004e FFF7FEFF 		bl	__aeabi_dadd
+ 162              	.LVL22:
+ 163 0052 FFF7FEFF 		bl	__aeabi_d2uiz
+ 164              	.LVL23:
+  28:functions.c   ****     
+  29:functions.c   **** }
+ 165              		.loc 1 29 0
+ 166 0056 C0B2     		uxtb	r0, r0
+ 167 0058 BDE8F883 		pop	{r3, r4, r5, r6, r7, r8, r9, pc}
+ 168              		.cfi_endproc
+ 169              	.LFE65:
+ 170              		.size	fn_mapper_8b, .-fn_mapper_8b
+ 171              		.global	__aeabi_dsub
+ 172              		.section	.text.Sigmoid,"ax",%progbits
+ 173              		.align	2
+ 174              		.global	Sigmoid
+ 175              		.thumb
+ 176              		.thumb_func
+ 177              		.type	Sigmoid, %function
+ 178              	Sigmoid:
+ 179              	.LFB66:
+  30:functions.c   **** 
+  31:functions.c   **** double Sigmoid(double x,double a, double b){
+ 180              		.loc 1 31 0
+ 181              		.cfi_startproc
+ 182              		@ args = 8, pretend = 0, frame = 0
+ 183              		@ frame_needed = 0, uses_anonymous_args = 0
+ 184              	.LVL24:
+ 185 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 186              		.cfi_def_cfa_offset 24
+ 187              		.cfi_offset 3, -24
+ 188              		.cfi_offset 4, -20
+ 189              		.cfi_offset 5, -16
+ 190              		.cfi_offset 6, -12
+ 191              		.cfi_offset 7, -8
+ 192              		.cfi_offset 14, -4
+ 193 0002 1646     		mov	r6, r2
+ 194 0004 1F46     		mov	r7, r3
+  32:functions.c   ****     return a*(2/(1 + exp(-x*b))-1);
+ 195              		.loc 1 32 0
+ 196 0006 DDE90623 		ldrd	r2, [sp, #24]
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccGj30F4.s 			page 5
+
+
+ 197              	.LVL25:
+ 198 000a 01F10045 		add	r5, r1, #-2147483648
+ 199 000e 2946     		mov	r1, r5
+ 200 0010 FFF7FEFF 		bl	__aeabi_dmul
+ 201              	.LVL26:
+ 202 0014 FFF7FEFF 		bl	exp
+ 203              	.LVL27:
+ 204 0018 0022     		movs	r2, #0
+ 205 001a 094B     		ldr	r3, .L7
+ 206 001c FFF7FEFF 		bl	__aeabi_dadd
+ 207              	.LVL28:
+ 208 0020 0246     		mov	r2, r0
+ 209 0022 0B46     		mov	r3, r1
+ 210 0024 0020     		movs	r0, #0
+ 211 0026 4FF08041 		mov	r1, #1073741824
+ 212 002a FFF7FEFF 		bl	__aeabi_ddiv
+ 213              	.LVL29:
+ 214 002e 0022     		movs	r2, #0
+ 215 0030 034B     		ldr	r3, .L7
+ 216 0032 FFF7FEFF 		bl	__aeabi_dsub
+ 217              	.LVL30:
+ 218 0036 3246     		mov	r2, r6
+ 219 0038 3B46     		mov	r3, r7
+ 220 003a FFF7FEFF 		bl	__aeabi_dmul
+ 221              	.LVL31:
+  33:functions.c   **** }
+ 222              		.loc 1 33 0
+ 223 003e F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 224              	.LVL32:
+ 225              	.L8:
+ 226              		.align	2
+ 227              	.L7:
+ 228 0040 0000F03F 		.word	1072693248
+ 229              		.cfi_endproc
+ 230              	.LFE66:
+ 231              		.size	Sigmoid, .-Sigmoid
+ 232              		.global	__aeabi_i2f
+ 233              		.global	__aeabi_fdiv
+ 234              		.section	.text.ProcessCommandMsg,"ax",%progbits
+ 235              		.align	2
+ 236              		.global	ProcessCommandMsg
+ 237              		.thumb
+ 238              		.thumb_func
+ 239              		.type	ProcessCommandMsg, %function
+ 240              	ProcessCommandMsg:
+ 241              	.LFB67:
+  34:functions.c   **** 
+  35:functions.c   **** void ProcessCommandMsg(void){    
+ 242              		.loc 1 35 0
+ 243              		.cfi_startproc
+ 244              		@ args = 0, pretend = 0, frame = 0
+ 245              		@ frame_needed = 0, uses_anonymous_args = 0
+ 246 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 247              		.cfi_def_cfa_offset 24
+ 248              		.cfi_offset 3, -24
+ 249              		.cfi_offset 4, -20
+ 250              		.cfi_offset 5, -16
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccGj30F4.s 			page 6
+
+
+ 251              		.cfi_offset 6, -12
+ 252              		.cfi_offset 7, -8
+ 253              		.cfi_offset 14, -4
+ 254              	.LVL33:
+  36:functions.c   ****     //check received message for any valid command and execute it if necessary or report old value
+  37:functions.c   ****     //if command not recognized, then report error
+  38:functions.c   ****     //todo: add check for valid conversion string->value
+  39:functions.c   ****      
+  40:functions.c   ****     //sprintf(strMsg1,"%s\r", RB.RxStr); UART_PutString(strMsg1);
+  41:functions.c   ****    
+  42:functions.c   ****     //todo: ther are problems if terminator is "\r\n"
+  43:functions.c   ****     uint8 updatePID = FALSE;
+  44:functions.c   ****     
+  45:functions.c   ****     if (RB.cmd == 'P'){
+ 255              		.loc 1 45 0
+ 256 0002 474B     		ldr	r3, .L28
+ 257 0004 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 258 0006 502B     		cmp	r3, #80
+ 259 0008 0AD1     		bne	.L10
+  46:functions.c   ****         if(strlen(RB.valstr) > 0){
+ 260              		.loc 1 46 0
+ 261 000a 454B     		ldr	r3, .L28
+ 262 000c 5B78     		ldrb	r3, [r3, #1]	@ zero_extendqisi2
+ 263 000e 002B     		cmp	r3, #0
+ 264 0010 57D0     		beq	.L20
+ 265              	.LVL34:
+  47:functions.c   ****             updatePID = TRUE;
+  48:functions.c   ****             PB.pVal = atoi(RB.valstr);
+ 266              		.loc 1 48 0
+ 267 0012 4448     		ldr	r0, .L28+4
+ 268 0014 FFF7FEFF 		bl	atoi
+ 269              	.LVL35:
+ 270 0018 434B     		ldr	r3, .L28+8
+ 271 001a 5860     		str	r0, [r3, #4]
+  47:functions.c   ****             updatePID = TRUE;
+ 272              		.loc 1 47 0
+ 273 001c 0123     		movs	r3, #1
+ 274 001e 5DE0     		b	.L11
+ 275              	.LVL36:
+ 276              	.L10:
+  49:functions.c   ****             //sprintf(msg,"&%c: %s\r\n",RB.cmd,RB.valstr);
+  50:functions.c   ****             //UART_PutString(msg);
+  51:functions.c   ****         }
+  52:functions.c   ****     }
+  53:functions.c   ****     else if (RB.cmd == 'I'){
+ 277              		.loc 1 53 0
+ 278 0020 492B     		cmp	r3, #73
+ 279 0022 0AD1     		bne	.L12
+  54:functions.c   ****         if(strlen(RB.valstr) > 0){
+ 280              		.loc 1 54 0
+ 281 0024 3E4B     		ldr	r3, .L28
+ 282 0026 5B78     		ldrb	r3, [r3, #1]	@ zero_extendqisi2
+ 283 0028 002B     		cmp	r3, #0
+ 284 002a 4CD0     		beq	.L21
+ 285              	.LVL37:
+  55:functions.c   ****             updatePID = TRUE;
+  56:functions.c   ****             PB.iVal = atoi(RB.valstr);
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccGj30F4.s 			page 7
+
+
+ 286              		.loc 1 56 0
+ 287 002c 3D48     		ldr	r0, .L28+4
+ 288 002e FFF7FEFF 		bl	atoi
+ 289              	.LVL38:
+ 290 0032 3D4B     		ldr	r3, .L28+8
+ 291 0034 9860     		str	r0, [r3, #8]
+  55:functions.c   ****             updatePID = TRUE;
+ 292              		.loc 1 55 0
+ 293 0036 0123     		movs	r3, #1
+ 294 0038 50E0     		b	.L11
+ 295              	.LVL39:
+ 296              	.L12:
+  57:functions.c   ****             //sprintf(msg,"&%c: %s\r\n",RB.cmd,RB.valstr);
+  58:functions.c   ****             //UART_PutString(msg);
+  59:functions.c   ****         }
+  60:functions.c   ****     }
+  61:functions.c   ****     else if (RB.cmd == 'D'){
+ 297              		.loc 1 61 0
+ 298 003a 442B     		cmp	r3, #68
+ 299 003c 0AD1     		bne	.L13
+  62:functions.c   ****         if(strlen(RB.valstr) > 0){
+ 300              		.loc 1 62 0
+ 301 003e 384B     		ldr	r3, .L28
+ 302 0040 5B78     		ldrb	r3, [r3, #1]	@ zero_extendqisi2
+ 303 0042 002B     		cmp	r3, #0
+ 304 0044 41D0     		beq	.L22
+ 305              	.LVL40:
+  63:functions.c   ****             updatePID = TRUE;
+  64:functions.c   ****             PB.dVal = atoi(RB.valstr);
+ 306              		.loc 1 64 0
+ 307 0046 3748     		ldr	r0, .L28+4
+ 308 0048 FFF7FEFF 		bl	atoi
+ 309              	.LVL41:
+ 310 004c 364B     		ldr	r3, .L28+8
+ 311 004e D860     		str	r0, [r3, #12]
+  63:functions.c   ****             updatePID = TRUE;
+ 312              		.loc 1 63 0
+ 313 0050 0123     		movs	r3, #1
+ 314 0052 43E0     		b	.L11
+ 315              	.LVL42:
+ 316              	.L13:
+  65:functions.c   ****             //sprintf(msg,"&%c: %s\r\n",RB.cmd,RB.valstr);
+  66:functions.c   ****             //UART_PutString(msg);
+  67:functions.c   ****         }
+  68:functions.c   ****     }
+  69:functions.c   ****     else if (RB.cmd == 's'){
+ 317              		.loc 1 69 0
+ 318 0054 732B     		cmp	r3, #115
+ 319 0056 04D1     		bne	.L14
+  70:functions.c   ****         //UART_PutString("&S");
+  71:functions.c   ****         ContinuouslySendData = TRUE;
+ 320              		.loc 1 71 0
+ 321 0058 0122     		movs	r2, #1
+ 322 005a 344B     		ldr	r3, .L28+12
+ 323 005c 1A70     		strb	r2, [r3]
+  43:functions.c   ****     
+ 324              		.loc 1 43 0
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccGj30F4.s 			page 8
+
+
+ 325 005e 0023     		movs	r3, #0
+ 326 0060 3CE0     		b	.L11
+ 327              	.L14:
+  72:functions.c   ****     }
+  73:functions.c   ****     else if (RB.cmd == 'q'){
+ 328              		.loc 1 73 0
+ 329 0062 712B     		cmp	r3, #113
+ 330 0064 03D1     		bne	.L15
+  74:functions.c   ****         CySoftwareReset();
+ 331              		.loc 1 74 0
+ 332 0066 FFF7FEFF 		bl	CySoftwareReset
+ 333              	.LVL43:
+  43:functions.c   ****     
+ 334              		.loc 1 43 0
+ 335 006a 0023     		movs	r3, #0
+ 336 006c 36E0     		b	.L11
+ 337              	.L15:
+  75:functions.c   ****     }
+  76:functions.c   ****     else if (RB.cmd == 'x'){
+ 338              		.loc 1 76 0
+ 339 006e 782B     		cmp	r3, #120
+ 340 0070 03D1     		bne	.L16
+  77:functions.c   ****         //UART_PutString("&X");
+  78:functions.c   ****         ContinuouslySendData = FALSE;
+ 341              		.loc 1 78 0
+ 342 0072 0023     		movs	r3, #0
+ 343 0074 2D4A     		ldr	r2, .L28+12
+ 344 0076 1370     		strb	r3, [r2]
+ 345 0078 30E0     		b	.L11
+ 346              	.L16:
+  79:functions.c   ****     }
+  80:functions.c   ****     else if (RB.cmd == '!'){
+ 347              		.loc 1 80 0
+ 348 007a 212B     		cmp	r3, #33
+ 349 007c 09D1     		bne	.L17
+  81:functions.c   ****         if(strlen(RB.valstr) > 0){
+ 350              		.loc 1 81 0
+ 351 007e 284B     		ldr	r3, .L28
+ 352 0080 5B78     		ldrb	r3, [r3, #1]	@ zero_extendqisi2
+ 353 0082 23B3     		cbz	r3, .L23
+  82:functions.c   ****             pos_ref = atoi(RB.valstr);
+ 354              		.loc 1 82 0
+ 355 0084 2748     		ldr	r0, .L28+4
+ 356 0086 FFF7FEFF 		bl	atoi
+ 357              	.LVL44:
+ 358 008a 294B     		ldr	r3, .L28+16
+ 359 008c 1860     		str	r0, [r3]
+  43:functions.c   ****     
+ 360              		.loc 1 43 0
+ 361 008e 0023     		movs	r3, #0
+ 362 0090 24E0     		b	.L11
+ 363              	.L17:
+  83:functions.c   ****         }
+  84:functions.c   ****     }
+  85:functions.c   ****     else if (RB.cmd == '#'){
+ 364              		.loc 1 85 0
+ 365 0092 232B     		cmp	r3, #35
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccGj30F4.s 			page 9
+
+
+ 366 0094 09D1     		bne	.L18
+  86:functions.c   ****         if(strlen(RB.valstr) > 0){
+ 367              		.loc 1 86 0
+ 368 0096 224B     		ldr	r3, .L28
+ 369 0098 5B78     		ldrb	r3, [r3, #1]	@ zero_extendqisi2
+ 370 009a D3B1     		cbz	r3, .L24
+  87:functions.c   ****             speed_ref = atoi(RB.valstr);
+ 371              		.loc 1 87 0
+ 372 009c 2148     		ldr	r0, .L28+4
+ 373 009e FFF7FEFF 		bl	atoi
+ 374              	.LVL45:
+ 375 00a2 244B     		ldr	r3, .L28+20
+ 376 00a4 1860     		str	r0, [r3]
+  43:functions.c   ****     
+ 377              		.loc 1 43 0
+ 378 00a6 0023     		movs	r3, #0
+ 379 00a8 18E0     		b	.L11
+ 380              	.L18:
+  88:functions.c   ****         }
+  89:functions.c   ****     }
+  90:functions.c   ****     else if (RB.cmd == '$'){
+ 381              		.loc 1 90 0
+ 382 00aa 242B     		cmp	r3, #36
+ 383 00ac 13D1     		bne	.L25
+  91:functions.c   ****         if(strlen(RB.valstr) > 0){
+ 384              		.loc 1 91 0
+ 385 00ae 1C4B     		ldr	r3, .L28
+ 386 00b0 5B78     		ldrb	r3, [r3, #1]	@ zero_extendqisi2
+ 387 00b2 93B1     		cbz	r3, .L26
+  92:functions.c   ****             tension_ref = atoi(RB.valstr);
+ 388              		.loc 1 92 0
+ 389 00b4 1B48     		ldr	r0, .L28+4
+ 390 00b6 FFF7FEFF 		bl	atoi
+ 391              	.LVL46:
+ 392 00ba 1F4B     		ldr	r3, .L28+24
+ 393 00bc 1860     		str	r0, [r3]
+  43:functions.c   ****     
+ 394              		.loc 1 43 0
+ 395 00be 0023     		movs	r3, #0
+ 396 00c0 0CE0     		b	.L11
+ 397              	.L20:
+ 398 00c2 0023     		movs	r3, #0
+ 399 00c4 0AE0     		b	.L11
+ 400              	.L21:
+ 401 00c6 0023     		movs	r3, #0
+ 402 00c8 08E0     		b	.L11
+ 403              	.L22:
+ 404 00ca 0023     		movs	r3, #0
+ 405 00cc 06E0     		b	.L11
+ 406              	.L23:
+ 407 00ce 0023     		movs	r3, #0
+ 408 00d0 04E0     		b	.L11
+ 409              	.L24:
+ 410 00d2 0023     		movs	r3, #0
+ 411 00d4 02E0     		b	.L11
+ 412              	.L25:
+ 413 00d6 0023     		movs	r3, #0
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccGj30F4.s 			page 10
+
+
+ 414 00d8 00E0     		b	.L11
+ 415              	.L26:
+ 416 00da 0023     		movs	r3, #0
+ 417              	.LVL47:
+ 418              	.L11:
+  93:functions.c   ****         }
+  94:functions.c   ****     }
+  95:functions.c   ****     
+  96:functions.c   ****     if ( updatePID == TRUE ){
+ 419              		.loc 1 96 0
+ 420 00dc F3B1     		cbz	r3, .L9
+  97:functions.c   ****         PID_setCoeffs(&speed_pid_,(float)PB.pVal/100.0,(float)PB.iVal/100.0,(float)PB.dVal/100.0);
+ 421              		.loc 1 97 0
+ 422 00de 124C     		ldr	r4, .L28+8
+ 423 00e0 6068     		ldr	r0, [r4, #4]
+ 424 00e2 FFF7FEFF 		bl	__aeabi_i2f
+ 425              	.LVL48:
+ 426 00e6 0646     		mov	r6, r0
+ 427 00e8 A068     		ldr	r0, [r4, #8]
+ 428 00ea FFF7FEFF 		bl	__aeabi_i2f
+ 429              	.LVL49:
+ 430 00ee 0746     		mov	r7, r0
+ 431 00f0 E068     		ldr	r0, [r4, #12]
+ 432 00f2 FFF7FEFF 		bl	__aeabi_i2f
+ 433              	.LVL50:
+ 434 00f6 1149     		ldr	r1, .L28+28
+ 435 00f8 FFF7FEFF 		bl	__aeabi_fdiv
+ 436              	.LVL51:
+ 437 00fc 0546     		mov	r5, r0
+ 438 00fe 0F49     		ldr	r1, .L28+28
+ 439 0100 3846     		mov	r0, r7
+ 440 0102 FFF7FEFF 		bl	__aeabi_fdiv
+ 441              	.LVL52:
+ 442 0106 0446     		mov	r4, r0
+ 443 0108 0C49     		ldr	r1, .L28+28
+ 444 010a 3046     		mov	r0, r6
+ 445 010c FFF7FEFF 		bl	__aeabi_fdiv
+ 446              	.LVL53:
+ 447 0110 2B46     		mov	r3, r5
+ 448 0112 2246     		mov	r2, r4
+ 449 0114 0146     		mov	r1, r0
+ 450 0116 0A48     		ldr	r0, .L28+32
+ 451 0118 FFF7FEFF 		bl	PID_setCoeffs
+ 452              	.LVL54:
+ 453              	.L9:
+ 454 011c F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 455              	.L29:
+ 456 011e 00BF     		.align	2
+ 457              	.L28:
+ 458 0120 00000000 		.word	RB
+ 459 0124 01000000 		.word	RB+1
+ 460 0128 00000000 		.word	PB
+ 461 012c 00000000 		.word	ContinuouslySendData
+ 462 0130 00000000 		.word	pos_ref
+ 463 0134 00000000 		.word	speed_ref
+ 464 0138 00000000 		.word	tension_ref
+ 465 013c 0000C842 		.word	1120403456
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccGj30F4.s 			page 11
+
+
+ 466 0140 00000000 		.word	speed_pid_
+ 467              		.cfi_endproc
+ 468              	.LFE67:
+ 469              		.size	ProcessCommandMsg, .-ProcessCommandMsg
+ 470              		.comm	msg,20,4
+ 471              		.comm	_state_,4,4
+ 472              		.comm	_uart_Reset,1,1
+ 473              		.comm	SendEmulatedData,1,1
+ 474              		.comm	SendSingleByte,1,1
+ 475              		.comm	ContinuouslySendData,1,1
+ 476              		.comm	Ch,1,1
+ 477              		.comm	PB,16,4
+ 478              		.comm	RB,20,4
+ 479              		.text
+ 480              	.Letext0:
+ 481              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.1\\psoc creator\\import\\gnu\\arm\\5.4.
+ 482              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.1\\psoc creator\\import\\gnu\\arm\\5.4.
+ 483              		.file 4 "Generated_Source\\PSoC5/cytypes.h"
+ 484              		.file 5 "./pid.h"
+ 485              		.file 6 "./myUART.h"
+ 486              		.file 7 "./global.h"
+ 487              		.file 8 "Generated_Source\\PSoC5/core_cm3.h"
+ 488              		.file 9 "./functions.h"
+ 489              		.file 10 "c:\\program files (x86)\\cypress\\psoc creator\\4.1\\psoc creator\\import\\gnu\\arm\\5.4
+ 490              		.file 11 "Generated_Source\\PSoC5/CyLib.h"
+ 491              		.file 12 "c:\\program files (x86)\\cypress\\psoc creator\\4.1\\psoc creator\\import\\gnu\\arm\\5.4
+ 492              		.section	.debug_info,"",%progbits
+ 493              	.Ldebug_info0:
+ 494 0000 F3040000 		.4byte	0x4f3
+ 495 0004 0400     		.2byte	0x4
+ 496 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 497 000a 04       		.byte	0x4
+ 498 000b 01       		.uleb128 0x1
+ 499 000c 83020000 		.4byte	.LASF53
+ 500 0010 0C       		.byte	0xc
+ 501 0011 36020000 		.4byte	.LASF54
+ 502 0015 54000000 		.4byte	.LASF55
+ 503 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 504 001d 00000000 		.4byte	0
+ 505 0021 00000000 		.4byte	.Ldebug_line0
+ 506 0025 02       		.uleb128 0x2
+ 507 0026 08       		.byte	0x8
+ 508 0027 04       		.byte	0x4
+ 509 0028 2F020000 		.4byte	.LASF0
+ 510 002c 02       		.uleb128 0x2
+ 511 002d 04       		.byte	0x4
+ 512 002e 04       		.byte	0x4
+ 513 002f CE000000 		.4byte	.LASF1
+ 514 0033 02       		.uleb128 0x2
+ 515 0034 01       		.byte	0x1
+ 516 0035 06       		.byte	0x6
+ 517 0036 55010000 		.4byte	.LASF2
+ 518 003a 02       		.uleb128 0x2
+ 519 003b 01       		.byte	0x1
+ 520 003c 08       		.byte	0x8
+ 521 003d 38010000 		.4byte	.LASF3
+ 522 0041 02       		.uleb128 0x2
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccGj30F4.s 			page 12
+
+
+ 523 0042 02       		.byte	0x2
+ 524 0043 05       		.byte	0x5
+ 525 0044 97000000 		.4byte	.LASF4
+ 526 0048 02       		.uleb128 0x2
+ 527 0049 02       		.byte	0x2
+ 528 004a 07       		.byte	0x7
+ 529 004b EA010000 		.4byte	.LASF5
+ 530 004f 03       		.uleb128 0x3
+ 531 0050 48020000 		.4byte	.LASF11
+ 532 0054 02       		.byte	0x2
+ 533 0055 3F       		.byte	0x3f
+ 534 0056 5A000000 		.4byte	0x5a
+ 535 005a 02       		.uleb128 0x2
+ 536 005b 04       		.byte	0x4
+ 537 005c 05       		.byte	0x5
+ 538 005d E8000000 		.4byte	.LASF6
+ 539 0061 02       		.uleb128 0x2
+ 540 0062 04       		.byte	0x4
+ 541 0063 07       		.byte	0x7
+ 542 0064 13020000 		.4byte	.LASF7
+ 543 0068 02       		.uleb128 0x2
+ 544 0069 08       		.byte	0x8
+ 545 006a 05       		.byte	0x5
+ 546 006b DA000000 		.4byte	.LASF8
+ 547 006f 02       		.uleb128 0x2
+ 548 0070 08       		.byte	0x8
+ 549 0071 07       		.byte	0x7
+ 550 0072 61010000 		.4byte	.LASF9
+ 551 0076 04       		.uleb128 0x4
+ 552 0077 04       		.byte	0x4
+ 553 0078 05       		.byte	0x5
+ 554 0079 696E7400 		.ascii	"int\000"
+ 555 007d 02       		.uleb128 0x2
+ 556 007e 04       		.byte	0x4
+ 557 007f 07       		.byte	0x7
+ 558 0080 82010000 		.4byte	.LASF10
+ 559 0084 03       		.uleb128 0x3
+ 560 0085 E2010000 		.4byte	.LASF12
+ 561 0089 03       		.byte	0x3
+ 562 008a 2C       		.byte	0x2c
+ 563 008b 4F000000 		.4byte	0x4f
+ 564 008f 05       		.uleb128 0x5
+ 565 0090 B8000000 		.4byte	.LASF13
+ 566 0094 04       		.byte	0x4
+ 567 0095 9201     		.2byte	0x192
+ 568 0097 3A000000 		.4byte	0x3a
+ 569 009b 02       		.uleb128 0x2
+ 570 009c 01       		.byte	0x1
+ 571 009d 08       		.byte	0x8
+ 572 009e D5010000 		.4byte	.LASF14
+ 573 00a2 06       		.uleb128 0x6
+ 574 00a3 8F000000 		.4byte	0x8f
+ 575 00a7 02       		.uleb128 0x2
+ 576 00a8 08       		.byte	0x8
+ 577 00a9 04       		.byte	0x4
+ 578 00aa 48000000 		.4byte	.LASF15
+ 579 00ae 02       		.uleb128 0x2
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccGj30F4.s 			page 13
+
+
+ 580 00af 04       		.byte	0x4
+ 581 00b0 07       		.byte	0x7
+ 582 00b1 38000000 		.4byte	.LASF16
+ 583 00b5 07       		.uleb128 0x7
+ 584 00b6 04       		.byte	0x4
+ 585 00b7 9B000000 		.4byte	0x9b
+ 586 00bb 08       		.uleb128 0x8
+ 587 00bc 2C       		.byte	0x2c
+ 588 00bd 05       		.byte	0x5
+ 589 00be 14       		.byte	0x14
+ 590 00bf 45010000 		.4byte	0x145
+ 591 00c3 09       		.uleb128 0x9
+ 592 00c4 6B5000   		.ascii	"kP\000"
+ 593 00c7 05       		.byte	0x5
+ 594 00c8 16       		.byte	0x16
+ 595 00c9 84000000 		.4byte	0x84
+ 596 00cd 00       		.byte	0
+ 597 00ce 09       		.uleb128 0x9
+ 598 00cf 6B4900   		.ascii	"kI\000"
+ 599 00d2 05       		.byte	0x5
+ 600 00d3 17       		.byte	0x17
+ 601 00d4 84000000 		.4byte	0x84
+ 602 00d8 04       		.byte	0x4
+ 603 00d9 09       		.uleb128 0x9
+ 604 00da 6B4400   		.ascii	"kD\000"
+ 605 00dd 05       		.byte	0x5
+ 606 00de 18       		.byte	0x18
+ 607 00df 84000000 		.4byte	0x84
+ 608 00e3 08       		.byte	0x8
+ 609 00e4 0A       		.uleb128 0xa
+ 610 00e5 BE000000 		.4byte	.LASF17
+ 611 00e9 05       		.byte	0x5
+ 612 00ea 19       		.byte	0x19
+ 613 00eb 84000000 		.4byte	0x84
+ 614 00ef 0C       		.byte	0xc
+ 615 00f0 0A       		.uleb128 0xa
+ 616 00f1 2D010000 		.4byte	.LASF18
+ 617 00f5 05       		.byte	0x5
+ 618 00f6 1A       		.byte	0x1a
+ 619 00f7 84000000 		.4byte	0x84
+ 620 00fb 10       		.byte	0x10
+ 621 00fc 0A       		.uleb128 0xa
+ 622 00fd F1000000 		.4byte	.LASF19
+ 623 0101 05       		.byte	0x5
+ 624 0102 1B       		.byte	0x1b
+ 625 0103 84000000 		.4byte	0x84
+ 626 0107 14       		.byte	0x14
+ 627 0108 0A       		.uleb128 0xa
+ 628 0109 42020000 		.4byte	.LASF20
+ 629 010d 05       		.byte	0x5
+ 630 010e 1C       		.byte	0x1c
+ 631 010f 84000000 		.4byte	0x84
+ 632 0113 18       		.byte	0x18
+ 633 0114 0A       		.uleb128 0xa
+ 634 0115 C5000000 		.4byte	.LASF21
+ 635 0119 05       		.byte	0x5
+ 636 011a 1D       		.byte	0x1d
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccGj30F4.s 			page 14
+
+
+ 637 011b 84000000 		.4byte	0x84
+ 638 011f 1C       		.byte	0x1c
+ 639 0120 0A       		.uleb128 0xa
+ 640 0121 FB000000 		.4byte	.LASF22
+ 641 0125 05       		.byte	0x5
+ 642 0126 1E       		.byte	0x1e
+ 643 0127 84000000 		.4byte	0x84
+ 644 012b 20       		.byte	0x20
+ 645 012c 0A       		.uleb128 0xa
+ 646 012d 08000000 		.4byte	.LASF23
+ 647 0131 05       		.byte	0x5
+ 648 0132 1F       		.byte	0x1f
+ 649 0133 84000000 		.4byte	0x84
+ 650 0137 24       		.byte	0x24
+ 651 0138 0A       		.uleb128 0xa
+ 652 0139 11030000 		.4byte	.LASF24
+ 653 013d 05       		.byte	0x5
+ 654 013e 20       		.byte	0x20
+ 655 013f 84000000 		.4byte	0x84
+ 656 0143 28       		.byte	0x28
+ 657 0144 00       		.byte	0
+ 658 0145 03       		.uleb128 0x3
+ 659 0146 20030000 		.4byte	.LASF25
+ 660 014a 05       		.byte	0x5
+ 661 014b 21       		.byte	0x21
+ 662 014c BB000000 		.4byte	0xbb
+ 663 0150 08       		.uleb128 0x8
+ 664 0151 14       		.byte	0x14
+ 665 0152 06       		.byte	0x6
+ 666 0153 1C       		.byte	0x1c
+ 667 0154 71010000 		.4byte	0x171
+ 668 0158 09       		.uleb128 0x9
+ 669 0159 636D6400 		.ascii	"cmd\000"
+ 670 015d 06       		.byte	0x6
+ 671 015e 1D       		.byte	0x1d
+ 672 015f 9B000000 		.4byte	0x9b
+ 673 0163 00       		.byte	0
+ 674 0164 0A       		.uleb128 0xa
+ 675 0165 CE010000 		.4byte	.LASF26
+ 676 0169 06       		.byte	0x6
+ 677 016a 1E       		.byte	0x1e
+ 678 016b 71010000 		.4byte	0x171
+ 679 016f 01       		.byte	0x1
+ 680 0170 00       		.byte	0
+ 681 0171 0B       		.uleb128 0xb
+ 682 0172 9B000000 		.4byte	0x9b
+ 683 0176 81010000 		.4byte	0x181
+ 684 017a 0C       		.uleb128 0xc
+ 685 017b AE000000 		.4byte	0xae
+ 686 017f 12       		.byte	0x12
+ 687 0180 00       		.byte	0
+ 688 0181 0D       		.uleb128 0xd
+ 689 0182 78010000 		.4byte	.LASF56
+ 690 0186 14       		.byte	0x14
+ 691 0187 06       		.byte	0x6
+ 692 0188 1A       		.byte	0x1a
+ 693 0189 9E010000 		.4byte	0x19e
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccGj30F4.s 			page 15
+
+
+ 694 018d 0E       		.uleb128 0xe
+ 695 018e FD010000 		.4byte	.LASF57
+ 696 0192 06       		.byte	0x6
+ 697 0193 1B       		.byte	0x1b
+ 698 0194 9E010000 		.4byte	0x19e
+ 699 0198 0F       		.uleb128 0xf
+ 700 0199 50010000 		.4byte	0x150
+ 701 019d 00       		.byte	0
+ 702 019e 0B       		.uleb128 0xb
+ 703 019f 9B000000 		.4byte	0x9b
+ 704 01a3 AE010000 		.4byte	0x1ae
+ 705 01a7 0C       		.uleb128 0xc
+ 706 01a8 AE000000 		.4byte	0xae
+ 707 01ac 13       		.byte	0x13
+ 708 01ad 00       		.byte	0
+ 709 01ae 10       		.uleb128 0x10
+ 710 01af B0010000 		.4byte	.LASF58
+ 711 01b3 10       		.byte	0x10
+ 712 01b4 07       		.byte	0x7
+ 713 01b5 1A       		.byte	0x1a
+ 714 01b6 EB010000 		.4byte	0x1eb
+ 715 01ba 09       		.uleb128 0x9
+ 716 01bb 636D6400 		.ascii	"cmd\000"
+ 717 01bf 07       		.byte	0x7
+ 718 01c0 1B       		.byte	0x1b
+ 719 01c1 B5000000 		.4byte	0xb5
+ 720 01c5 00       		.byte	0
+ 721 01c6 0A       		.uleb128 0xa
+ 722 01c7 19000000 		.4byte	.LASF27
+ 723 01cb 07       		.byte	0x7
+ 724 01cc 1C       		.byte	0x1c
+ 725 01cd 76000000 		.4byte	0x76
+ 726 01d1 04       		.byte	0x4
+ 727 01d2 0A       		.uleb128 0xa
+ 728 01d3 B3000000 		.4byte	.LASF28
+ 729 01d7 07       		.byte	0x7
+ 730 01d8 1C       		.byte	0x1c
+ 731 01d9 76000000 		.4byte	0x76
+ 732 01dd 08       		.byte	0x8
+ 733 01de 0A       		.uleb128 0xa
+ 734 01df 1B030000 		.4byte	.LASF29
+ 735 01e3 07       		.byte	0x7
+ 736 01e4 1C       		.byte	0x1c
+ 737 01e5 76000000 		.4byte	0x76
+ 738 01e9 0C       		.byte	0xc
+ 739 01ea 00       		.byte	0
+ 740 01eb 03       		.uleb128 0x3
+ 741 01ec 6A020000 		.4byte	.LASF30
+ 742 01f0 07       		.byte	0x7
+ 743 01f1 1D       		.byte	0x1d
+ 744 01f2 AE010000 		.4byte	0x1ae
+ 745 01f6 11       		.uleb128 0x11
+ 746 01f7 04010000 		.4byte	.LASF35
+ 747 01fb 01       		.byte	0x1
+ 748 01fc 11       		.byte	0x11
+ 749 01fd 84000000 		.4byte	0x84
+ 750 0201 00000000 		.4byte	.LFB64
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccGj30F4.s 			page 16
+
+
+ 751 0205 5A000000 		.4byte	.LFE64-.LFB64
+ 752 0209 01       		.uleb128 0x1
+ 753 020a 9C       		.byte	0x9c
+ 754 020b 67020000 		.4byte	0x267
+ 755 020f 12       		.uleb128 0x12
+ 756 0210 7800     		.ascii	"x\000"
+ 757 0212 01       		.byte	0x1
+ 758 0213 11       		.byte	0x11
+ 759 0214 84000000 		.4byte	0x84
+ 760 0218 00000000 		.4byte	.LLST0
+ 761 021c 13       		.uleb128 0x13
+ 762 021d 41000000 		.4byte	.LASF31
+ 763 0221 01       		.byte	0x1
+ 764 0222 11       		.byte	0x11
+ 765 0223 84000000 		.4byte	0x84
+ 766 0227 1E000000 		.4byte	.LLST1
+ 767 022b 13       		.uleb128 0x13
+ 768 022c 12000000 		.4byte	.LASF32
+ 769 0230 01       		.byte	0x1
+ 770 0231 11       		.byte	0x11
+ 771 0232 84000000 		.4byte	0x84
+ 772 0236 3C000000 		.4byte	.LLST2
+ 773 023a 13       		.uleb128 0x13
+ 774 023b 1E000000 		.4byte	.LASF33
+ 775 023f 01       		.byte	0x1
+ 776 0240 11       		.byte	0x11
+ 777 0241 84000000 		.4byte	0x84
+ 778 0245 5A000000 		.4byte	.LLST3
+ 779 0249 14       		.uleb128 0x14
+ 780 024a 26030000 		.4byte	.LASF34
+ 781 024e 01       		.byte	0x1
+ 782 024f 11       		.byte	0x11
+ 783 0250 84000000 		.4byte	0x84
+ 784 0254 02       		.uleb128 0x2
+ 785 0255 91       		.byte	0x91
+ 786 0256 00       		.sleb128 0
+ 787 0257 15       		.uleb128 0x15
+ 788 0258 D4000000 		.4byte	.LASF37
+ 789 025c 01       		.byte	0x1
+ 790 025d 13       		.byte	0x13
+ 791 025e 25000000 		.4byte	0x25
+ 792 0262 78000000 		.4byte	.LLST4
+ 793 0266 00       		.byte	0
+ 794 0267 11       		.uleb128 0x11
+ 795 0268 52020000 		.4byte	.LASF36
+ 796 026c 01       		.byte	0x1
+ 797 026d 18       		.byte	0x18
+ 798 026e 8F000000 		.4byte	0x8f
+ 799 0272 00000000 		.4byte	.LFB65
+ 800 0276 5C000000 		.4byte	.LFE65-.LFB65
+ 801 027a 01       		.uleb128 0x1
+ 802 027b 9C       		.byte	0x9c
+ 803 027c D8020000 		.4byte	0x2d8
+ 804 0280 12       		.uleb128 0x12
+ 805 0281 7800     		.ascii	"x\000"
+ 806 0283 01       		.byte	0x1
+ 807 0284 18       		.byte	0x18
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccGj30F4.s 			page 17
+
+
+ 808 0285 84000000 		.4byte	0x84
+ 809 0289 90000000 		.4byte	.LLST5
+ 810 028d 13       		.uleb128 0x13
+ 811 028e 41000000 		.4byte	.LASF31
+ 812 0292 01       		.byte	0x1
+ 813 0293 18       		.byte	0x18
+ 814 0294 84000000 		.4byte	0x84
+ 815 0298 AE000000 		.4byte	.LLST6
+ 816 029c 13       		.uleb128 0x13
+ 817 029d 12000000 		.4byte	.LASF32
+ 818 02a1 01       		.byte	0x1
+ 819 02a2 18       		.byte	0x18
+ 820 02a3 84000000 		.4byte	0x84
+ 821 02a7 CC000000 		.4byte	.LLST7
+ 822 02ab 13       		.uleb128 0x13
+ 823 02ac 1E000000 		.4byte	.LASF33
+ 824 02b0 01       		.byte	0x1
+ 825 02b1 18       		.byte	0x18
+ 826 02b2 84000000 		.4byte	0x84
+ 827 02b6 EA000000 		.4byte	.LLST8
+ 828 02ba 14       		.uleb128 0x14
+ 829 02bb 26030000 		.4byte	.LASF34
+ 830 02bf 01       		.byte	0x1
+ 831 02c0 18       		.byte	0x18
+ 832 02c1 84000000 		.4byte	0x84
+ 833 02c5 02       		.uleb128 0x2
+ 834 02c6 91       		.byte	0x91
+ 835 02c7 00       		.sleb128 0
+ 836 02c8 15       		.uleb128 0x15
+ 837 02c9 D4000000 		.4byte	.LASF37
+ 838 02cd 01       		.byte	0x1
+ 839 02ce 1A       		.byte	0x1a
+ 840 02cf 25000000 		.4byte	0x25
+ 841 02d3 08010000 		.4byte	.LLST9
+ 842 02d7 00       		.byte	0
+ 843 02d8 11       		.uleb128 0x11
+ 844 02d9 AB000000 		.4byte	.LASF38
+ 845 02dd 01       		.byte	0x1
+ 846 02de 1F       		.byte	0x1f
+ 847 02df 25000000 		.4byte	0x25
+ 848 02e3 00000000 		.4byte	.LFB66
+ 849 02e7 44000000 		.4byte	.LFE66-.LFB66
+ 850 02eb 01       		.uleb128 0x1
+ 851 02ec 9C       		.byte	0x9c
+ 852 02ed 22030000 		.4byte	0x322
+ 853 02f1 12       		.uleb128 0x12
+ 854 02f2 7800     		.ascii	"x\000"
+ 855 02f4 01       		.byte	0x1
+ 856 02f5 1F       		.byte	0x1f
+ 857 02f6 25000000 		.4byte	0x25
+ 858 02fa 20010000 		.4byte	.LLST10
+ 859 02fe 12       		.uleb128 0x12
+ 860 02ff 6100     		.ascii	"a\000"
+ 861 0301 01       		.byte	0x1
+ 862 0302 1F       		.byte	0x1f
+ 863 0303 25000000 		.4byte	0x25
+ 864 0307 48010000 		.4byte	.LLST11
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccGj30F4.s 			page 18
+
+
+ 865 030b 12       		.uleb128 0x12
+ 866 030c 6200     		.ascii	"b\000"
+ 867 030e 01       		.byte	0x1
+ 868 030f 1F       		.byte	0x1f
+ 869 0310 25000000 		.4byte	0x25
+ 870 0314 70010000 		.4byte	.LLST12
+ 871 0318 16       		.uleb128 0x16
+ 872 0319 18000000 		.4byte	.LVL27
+ 873 031d CA040000 		.4byte	0x4ca
+ 874 0321 00       		.byte	0
+ 875 0322 17       		.uleb128 0x17
+ 876 0323 26000000 		.4byte	.LASF59
+ 877 0327 01       		.byte	0x1
+ 878 0328 23       		.byte	0x23
+ 879 0329 00000000 		.4byte	.LFB67
+ 880 032d 44010000 		.4byte	.LFE67-.LFB67
+ 881 0331 01       		.uleb128 0x1
+ 882 0332 9C       		.byte	0x9c
+ 883 0333 F2030000 		.4byte	0x3f2
+ 884 0337 15       		.uleb128 0x15
+ 885 0338 25020000 		.4byte	.LASF39
+ 886 033c 01       		.byte	0x1
+ 887 033d 2B       		.byte	0x2b
+ 888 033e 8F000000 		.4byte	0x8f
+ 889 0342 90010000 		.4byte	.LLST13
+ 890 0346 18       		.uleb128 0x18
+ 891 0347 18000000 		.4byte	.LVL35
+ 892 034b D5040000 		.4byte	0x4d5
+ 893 034f 5D030000 		.4byte	0x35d
+ 894 0353 19       		.uleb128 0x19
+ 895 0354 01       		.uleb128 0x1
+ 896 0355 50       		.byte	0x50
+ 897 0356 05       		.uleb128 0x5
+ 898 0357 03       		.byte	0x3
+ 899 0358 01000000 		.4byte	RB+1
+ 900 035c 00       		.byte	0
+ 901 035d 18       		.uleb128 0x18
+ 902 035e 32000000 		.4byte	.LVL38
+ 903 0362 D5040000 		.4byte	0x4d5
+ 904 0366 74030000 		.4byte	0x374
+ 905 036a 19       		.uleb128 0x19
+ 906 036b 01       		.uleb128 0x1
+ 907 036c 50       		.byte	0x50
+ 908 036d 05       		.uleb128 0x5
+ 909 036e 03       		.byte	0x3
+ 910 036f 01000000 		.4byte	RB+1
+ 911 0373 00       		.byte	0
+ 912 0374 18       		.uleb128 0x18
+ 913 0375 4C000000 		.4byte	.LVL41
+ 914 0379 D5040000 		.4byte	0x4d5
+ 915 037d 8B030000 		.4byte	0x38b
+ 916 0381 19       		.uleb128 0x19
+ 917 0382 01       		.uleb128 0x1
+ 918 0383 50       		.byte	0x50
+ 919 0384 05       		.uleb128 0x5
+ 920 0385 03       		.byte	0x3
+ 921 0386 01000000 		.4byte	RB+1
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccGj30F4.s 			page 19
+
+
+ 922 038a 00       		.byte	0
+ 923 038b 16       		.uleb128 0x16
+ 924 038c 6A000000 		.4byte	.LVL43
+ 925 0390 E0040000 		.4byte	0x4e0
+ 926 0394 18       		.uleb128 0x18
+ 927 0395 8A000000 		.4byte	.LVL44
+ 928 0399 D5040000 		.4byte	0x4d5
+ 929 039d AB030000 		.4byte	0x3ab
+ 930 03a1 19       		.uleb128 0x19
+ 931 03a2 01       		.uleb128 0x1
+ 932 03a3 50       		.byte	0x50
+ 933 03a4 05       		.uleb128 0x5
+ 934 03a5 03       		.byte	0x3
+ 935 03a6 01000000 		.4byte	RB+1
+ 936 03aa 00       		.byte	0
+ 937 03ab 18       		.uleb128 0x18
+ 938 03ac A2000000 		.4byte	.LVL45
+ 939 03b0 D5040000 		.4byte	0x4d5
+ 940 03b4 C2030000 		.4byte	0x3c2
+ 941 03b8 19       		.uleb128 0x19
+ 942 03b9 01       		.uleb128 0x1
+ 943 03ba 50       		.byte	0x50
+ 944 03bb 05       		.uleb128 0x5
+ 945 03bc 03       		.byte	0x3
+ 946 03bd 01000000 		.4byte	RB+1
+ 947 03c1 00       		.byte	0
+ 948 03c2 18       		.uleb128 0x18
+ 949 03c3 BA000000 		.4byte	.LVL46
+ 950 03c7 D5040000 		.4byte	0x4d5
+ 951 03cb D9030000 		.4byte	0x3d9
+ 952 03cf 19       		.uleb128 0x19
+ 953 03d0 01       		.uleb128 0x1
+ 954 03d1 50       		.byte	0x50
+ 955 03d2 05       		.uleb128 0x5
+ 956 03d3 03       		.byte	0x3
+ 957 03d4 01000000 		.4byte	RB+1
+ 958 03d8 00       		.byte	0
+ 959 03d9 1A       		.uleb128 0x1a
+ 960 03da 1C010000 		.4byte	.LVL54
+ 961 03de EB040000 		.4byte	0x4eb
+ 962 03e2 19       		.uleb128 0x19
+ 963 03e3 01       		.uleb128 0x1
+ 964 03e4 52       		.byte	0x52
+ 965 03e5 03       		.uleb128 0x3
+ 966 03e6 F5       		.byte	0xf5
+ 967 03e7 04       		.uleb128 0x4
+ 968 03e8 2C       		.uleb128 0x2c
+ 969 03e9 19       		.uleb128 0x19
+ 970 03ea 01       		.uleb128 0x1
+ 971 03eb 53       		.byte	0x53
+ 972 03ec 03       		.uleb128 0x3
+ 973 03ed F5       		.byte	0xf5
+ 974 03ee 05       		.uleb128 0x5
+ 975 03ef 2C       		.uleb128 0x2c
+ 976 03f0 00       		.byte	0
+ 977 03f1 00       		.byte	0
+ 978 03f2 1B       		.uleb128 0x1b
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccGj30F4.s 			page 20
+
+
+ 979 03f3 76020000 		.4byte	.LASF40
+ 980 03f7 08       		.byte	0x8
+ 981 03f8 1207     		.2byte	0x712
+ 982 03fa FE030000 		.4byte	0x3fe
+ 983 03fe 06       		.uleb128 0x6
+ 984 03ff 84000000 		.4byte	0x84
+ 985 0403 1C       		.uleb128 0x1c
+ 986 0404 524200   		.ascii	"RB\000"
+ 987 0407 06       		.byte	0x6
+ 988 0408 20       		.byte	0x20
+ 989 0409 81010000 		.4byte	0x181
+ 990 040d 05       		.uleb128 0x5
+ 991 040e 03       		.byte	0x3
+ 992 040f 00000000 		.4byte	RB
+ 993 0413 1C       		.uleb128 0x1c
+ 994 0414 504200   		.ascii	"PB\000"
+ 995 0417 07       		.byte	0x7
+ 996 0418 1E       		.byte	0x1e
+ 997 0419 23040000 		.4byte	0x423
+ 998 041d 05       		.uleb128 0x5
+ 999 041e 03       		.byte	0x3
+ 1000 041f 00000000 		.4byte	PB
+ 1001 0423 06       		.uleb128 0x6
+ 1002 0424 EB010000 		.4byte	0x1eb
+ 1003 0428 1C       		.uleb128 0x1c
+ 1004 0429 436800   		.ascii	"Ch\000"
+ 1005 042c 07       		.byte	0x7
+ 1006 042d 4F       		.byte	0x4f
+ 1007 042e A2000000 		.4byte	0xa2
+ 1008 0432 05       		.uleb128 0x5
+ 1009 0433 03       		.byte	0x3
+ 1010 0434 00000000 		.4byte	Ch
+ 1011 0438 1D       		.uleb128 0x1d
+ 1012 0439 8F010000 		.4byte	.LASF41
+ 1013 043d 07       		.byte	0x7
+ 1014 043e 51       		.byte	0x51
+ 1015 043f A2000000 		.4byte	0xa2
+ 1016 0443 05       		.uleb128 0x5
+ 1017 0444 03       		.byte	0x3
+ 1018 0445 00000000 		.4byte	ContinuouslySendData
+ 1019 0449 1D       		.uleb128 0x1d
+ 1020 044a 46010000 		.4byte	.LASF42
+ 1021 044e 07       		.byte	0x7
+ 1022 044f 52       		.byte	0x52
+ 1023 0450 A2000000 		.4byte	0xa2
+ 1024 0454 05       		.uleb128 0x5
+ 1025 0455 03       		.byte	0x3
+ 1026 0456 00000000 		.4byte	SendSingleByte
+ 1027 045a 1D       		.uleb128 0x1d
+ 1028 045b BD010000 		.4byte	.LASF43
+ 1029 045f 07       		.byte	0x7
+ 1030 0460 53       		.byte	0x53
+ 1031 0461 A2000000 		.4byte	0xa2
+ 1032 0465 05       		.uleb128 0x5
+ 1033 0466 03       		.byte	0x3
+ 1034 0467 00000000 		.4byte	SendEmulatedData
+ 1035 046b 1D       		.uleb128 0x1d
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccGj30F4.s 			page 21
+
+
+ 1036 046c 21010000 		.4byte	.LASF44
+ 1037 0470 07       		.byte	0x7
+ 1038 0471 54       		.byte	0x54
+ 1039 0472 A2000000 		.4byte	0xa2
+ 1040 0476 05       		.uleb128 0x5
+ 1041 0477 03       		.byte	0x3
+ 1042 0478 00000000 		.4byte	_uart_Reset
+ 1043 047c 1D       		.uleb128 0x1d
+ 1044 047d 00000000 		.4byte	.LASF45
+ 1045 0481 07       		.byte	0x7
+ 1046 0482 57       		.byte	0x57
+ 1047 0483 76000000 		.4byte	0x76
+ 1048 0487 05       		.uleb128 0x5
+ 1049 0488 03       		.byte	0x3
+ 1050 0489 00000000 		.4byte	_state_
+ 1051 048d 1E       		.uleb128 0x1e
+ 1052 048e A4010000 		.4byte	.LASF46
+ 1053 0492 07       		.byte	0x7
+ 1054 0493 64       		.byte	0x64
+ 1055 0494 FE030000 		.4byte	0x3fe
+ 1056 0498 1E       		.uleb128 0x1e
+ 1057 0499 DA010000 		.4byte	.LASF47
+ 1058 049d 07       		.byte	0x7
+ 1059 049e 6A       		.byte	0x6a
+ 1060 049f FE030000 		.4byte	0x3fe
+ 1061 04a3 1E       		.uleb128 0x1e
+ 1062 04a4 5F020000 		.4byte	.LASF48
+ 1063 04a8 07       		.byte	0x7
+ 1064 04a9 6E       		.byte	0x6e
+ 1065 04aa 45010000 		.4byte	0x145
+ 1066 04ae 1E       		.uleb128 0x1e
+ 1067 04af A1000000 		.4byte	.LASF49
+ 1068 04b3 07       		.byte	0x7
+ 1069 04b4 70       		.byte	0x70
+ 1070 04b5 FE030000 		.4byte	0x3fe
+ 1071 04b9 1C       		.uleb128 0x1c
+ 1072 04ba 6D736700 		.ascii	"msg\000"
+ 1073 04be 09       		.byte	0x9
+ 1074 04bf 11       		.byte	0x11
+ 1075 04c0 9E010000 		.4byte	0x19e
+ 1076 04c4 05       		.uleb128 0x5
+ 1077 04c5 03       		.byte	0x3
+ 1078 04c6 00000000 		.4byte	msg
+ 1079 04ca 1F       		.uleb128 0x1f
+ 1080 04cb 65787000 		.ascii	"exp\000"
+ 1081 04cf 65787000 		.ascii	"exp\000"
+ 1082 04d3 0C       		.byte	0xc
+ 1083 04d4 82       		.byte	0x82
+ 1084 04d5 20       		.uleb128 0x20
+ 1085 04d6 1C010000 		.4byte	.LASF50
+ 1086 04da 1C010000 		.4byte	.LASF50
+ 1087 04de 0A       		.byte	0xa
+ 1088 04df 4D       		.byte	0x4d
+ 1089 04e0 20       		.uleb128 0x20
+ 1090 04e1 03020000 		.4byte	.LASF51
+ 1091 04e5 03020000 		.4byte	.LASF51
+ 1092 04e9 0B       		.byte	0xb
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccGj30F4.s 			page 22
+
+
+ 1093 04ea 7B       		.byte	0x7b
+ 1094 04eb 20       		.uleb128 0x20
+ 1095 04ec 0E010000 		.4byte	.LASF52
+ 1096 04f0 0E010000 		.4byte	.LASF52
+ 1097 04f4 05       		.byte	0x5
+ 1098 04f5 25       		.byte	0x25
+ 1099 04f6 00       		.byte	0
+ 1100              		.section	.debug_abbrev,"",%progbits
+ 1101              	.Ldebug_abbrev0:
+ 1102 0000 01       		.uleb128 0x1
+ 1103 0001 11       		.uleb128 0x11
+ 1104 0002 01       		.byte	0x1
+ 1105 0003 25       		.uleb128 0x25
+ 1106 0004 0E       		.uleb128 0xe
+ 1107 0005 13       		.uleb128 0x13
+ 1108 0006 0B       		.uleb128 0xb
+ 1109 0007 03       		.uleb128 0x3
+ 1110 0008 0E       		.uleb128 0xe
+ 1111 0009 1B       		.uleb128 0x1b
+ 1112 000a 0E       		.uleb128 0xe
+ 1113 000b 55       		.uleb128 0x55
+ 1114 000c 17       		.uleb128 0x17
+ 1115 000d 11       		.uleb128 0x11
+ 1116 000e 01       		.uleb128 0x1
+ 1117 000f 10       		.uleb128 0x10
+ 1118 0010 17       		.uleb128 0x17
+ 1119 0011 00       		.byte	0
+ 1120 0012 00       		.byte	0
+ 1121 0013 02       		.uleb128 0x2
+ 1122 0014 24       		.uleb128 0x24
+ 1123 0015 00       		.byte	0
+ 1124 0016 0B       		.uleb128 0xb
+ 1125 0017 0B       		.uleb128 0xb
+ 1126 0018 3E       		.uleb128 0x3e
+ 1127 0019 0B       		.uleb128 0xb
+ 1128 001a 03       		.uleb128 0x3
+ 1129 001b 0E       		.uleb128 0xe
+ 1130 001c 00       		.byte	0
+ 1131 001d 00       		.byte	0
+ 1132 001e 03       		.uleb128 0x3
+ 1133 001f 16       		.uleb128 0x16
+ 1134 0020 00       		.byte	0
+ 1135 0021 03       		.uleb128 0x3
+ 1136 0022 0E       		.uleb128 0xe
+ 1137 0023 3A       		.uleb128 0x3a
+ 1138 0024 0B       		.uleb128 0xb
+ 1139 0025 3B       		.uleb128 0x3b
+ 1140 0026 0B       		.uleb128 0xb
+ 1141 0027 49       		.uleb128 0x49
+ 1142 0028 13       		.uleb128 0x13
+ 1143 0029 00       		.byte	0
+ 1144 002a 00       		.byte	0
+ 1145 002b 04       		.uleb128 0x4
+ 1146 002c 24       		.uleb128 0x24
+ 1147 002d 00       		.byte	0
+ 1148 002e 0B       		.uleb128 0xb
+ 1149 002f 0B       		.uleb128 0xb
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccGj30F4.s 			page 23
+
+
+ 1150 0030 3E       		.uleb128 0x3e
+ 1151 0031 0B       		.uleb128 0xb
+ 1152 0032 03       		.uleb128 0x3
+ 1153 0033 08       		.uleb128 0x8
+ 1154 0034 00       		.byte	0
+ 1155 0035 00       		.byte	0
+ 1156 0036 05       		.uleb128 0x5
+ 1157 0037 16       		.uleb128 0x16
+ 1158 0038 00       		.byte	0
+ 1159 0039 03       		.uleb128 0x3
+ 1160 003a 0E       		.uleb128 0xe
+ 1161 003b 3A       		.uleb128 0x3a
+ 1162 003c 0B       		.uleb128 0xb
+ 1163 003d 3B       		.uleb128 0x3b
+ 1164 003e 05       		.uleb128 0x5
+ 1165 003f 49       		.uleb128 0x49
+ 1166 0040 13       		.uleb128 0x13
+ 1167 0041 00       		.byte	0
+ 1168 0042 00       		.byte	0
+ 1169 0043 06       		.uleb128 0x6
+ 1170 0044 35       		.uleb128 0x35
+ 1171 0045 00       		.byte	0
+ 1172 0046 49       		.uleb128 0x49
+ 1173 0047 13       		.uleb128 0x13
+ 1174 0048 00       		.byte	0
+ 1175 0049 00       		.byte	0
+ 1176 004a 07       		.uleb128 0x7
+ 1177 004b 0F       		.uleb128 0xf
+ 1178 004c 00       		.byte	0
+ 1179 004d 0B       		.uleb128 0xb
+ 1180 004e 0B       		.uleb128 0xb
+ 1181 004f 49       		.uleb128 0x49
+ 1182 0050 13       		.uleb128 0x13
+ 1183 0051 00       		.byte	0
+ 1184 0052 00       		.byte	0
+ 1185 0053 08       		.uleb128 0x8
+ 1186 0054 13       		.uleb128 0x13
+ 1187 0055 01       		.byte	0x1
+ 1188 0056 0B       		.uleb128 0xb
+ 1189 0057 0B       		.uleb128 0xb
+ 1190 0058 3A       		.uleb128 0x3a
+ 1191 0059 0B       		.uleb128 0xb
+ 1192 005a 3B       		.uleb128 0x3b
+ 1193 005b 0B       		.uleb128 0xb
+ 1194 005c 01       		.uleb128 0x1
+ 1195 005d 13       		.uleb128 0x13
+ 1196 005e 00       		.byte	0
+ 1197 005f 00       		.byte	0
+ 1198 0060 09       		.uleb128 0x9
+ 1199 0061 0D       		.uleb128 0xd
+ 1200 0062 00       		.byte	0
+ 1201 0063 03       		.uleb128 0x3
+ 1202 0064 08       		.uleb128 0x8
+ 1203 0065 3A       		.uleb128 0x3a
+ 1204 0066 0B       		.uleb128 0xb
+ 1205 0067 3B       		.uleb128 0x3b
+ 1206 0068 0B       		.uleb128 0xb
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccGj30F4.s 			page 24
+
+
+ 1207 0069 49       		.uleb128 0x49
+ 1208 006a 13       		.uleb128 0x13
+ 1209 006b 38       		.uleb128 0x38
+ 1210 006c 0B       		.uleb128 0xb
+ 1211 006d 00       		.byte	0
+ 1212 006e 00       		.byte	0
+ 1213 006f 0A       		.uleb128 0xa
+ 1214 0070 0D       		.uleb128 0xd
+ 1215 0071 00       		.byte	0
+ 1216 0072 03       		.uleb128 0x3
+ 1217 0073 0E       		.uleb128 0xe
+ 1218 0074 3A       		.uleb128 0x3a
+ 1219 0075 0B       		.uleb128 0xb
+ 1220 0076 3B       		.uleb128 0x3b
+ 1221 0077 0B       		.uleb128 0xb
+ 1222 0078 49       		.uleb128 0x49
+ 1223 0079 13       		.uleb128 0x13
+ 1224 007a 38       		.uleb128 0x38
+ 1225 007b 0B       		.uleb128 0xb
+ 1226 007c 00       		.byte	0
+ 1227 007d 00       		.byte	0
+ 1228 007e 0B       		.uleb128 0xb
+ 1229 007f 01       		.uleb128 0x1
+ 1230 0080 01       		.byte	0x1
+ 1231 0081 49       		.uleb128 0x49
+ 1232 0082 13       		.uleb128 0x13
+ 1233 0083 01       		.uleb128 0x1
+ 1234 0084 13       		.uleb128 0x13
+ 1235 0085 00       		.byte	0
+ 1236 0086 00       		.byte	0
+ 1237 0087 0C       		.uleb128 0xc
+ 1238 0088 21       		.uleb128 0x21
+ 1239 0089 00       		.byte	0
+ 1240 008a 49       		.uleb128 0x49
+ 1241 008b 13       		.uleb128 0x13
+ 1242 008c 2F       		.uleb128 0x2f
+ 1243 008d 0B       		.uleb128 0xb
+ 1244 008e 00       		.byte	0
+ 1245 008f 00       		.byte	0
+ 1246 0090 0D       		.uleb128 0xd
+ 1247 0091 17       		.uleb128 0x17
+ 1248 0092 01       		.byte	0x1
+ 1249 0093 03       		.uleb128 0x3
+ 1250 0094 0E       		.uleb128 0xe
+ 1251 0095 0B       		.uleb128 0xb
+ 1252 0096 0B       		.uleb128 0xb
+ 1253 0097 3A       		.uleb128 0x3a
+ 1254 0098 0B       		.uleb128 0xb
+ 1255 0099 3B       		.uleb128 0x3b
+ 1256 009a 0B       		.uleb128 0xb
+ 1257 009b 01       		.uleb128 0x1
+ 1258 009c 13       		.uleb128 0x13
+ 1259 009d 00       		.byte	0
+ 1260 009e 00       		.byte	0
+ 1261 009f 0E       		.uleb128 0xe
+ 1262 00a0 0D       		.uleb128 0xd
+ 1263 00a1 00       		.byte	0
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccGj30F4.s 			page 25
+
+
+ 1264 00a2 03       		.uleb128 0x3
+ 1265 00a3 0E       		.uleb128 0xe
+ 1266 00a4 3A       		.uleb128 0x3a
+ 1267 00a5 0B       		.uleb128 0xb
+ 1268 00a6 3B       		.uleb128 0x3b
+ 1269 00a7 0B       		.uleb128 0xb
+ 1270 00a8 49       		.uleb128 0x49
+ 1271 00a9 13       		.uleb128 0x13
+ 1272 00aa 00       		.byte	0
+ 1273 00ab 00       		.byte	0
+ 1274 00ac 0F       		.uleb128 0xf
+ 1275 00ad 0D       		.uleb128 0xd
+ 1276 00ae 00       		.byte	0
+ 1277 00af 49       		.uleb128 0x49
+ 1278 00b0 13       		.uleb128 0x13
+ 1279 00b1 00       		.byte	0
+ 1280 00b2 00       		.byte	0
+ 1281 00b3 10       		.uleb128 0x10
+ 1282 00b4 13       		.uleb128 0x13
+ 1283 00b5 01       		.byte	0x1
+ 1284 00b6 03       		.uleb128 0x3
+ 1285 00b7 0E       		.uleb128 0xe
+ 1286 00b8 0B       		.uleb128 0xb
+ 1287 00b9 0B       		.uleb128 0xb
+ 1288 00ba 3A       		.uleb128 0x3a
+ 1289 00bb 0B       		.uleb128 0xb
+ 1290 00bc 3B       		.uleb128 0x3b
+ 1291 00bd 0B       		.uleb128 0xb
+ 1292 00be 01       		.uleb128 0x1
+ 1293 00bf 13       		.uleb128 0x13
+ 1294 00c0 00       		.byte	0
+ 1295 00c1 00       		.byte	0
+ 1296 00c2 11       		.uleb128 0x11
+ 1297 00c3 2E       		.uleb128 0x2e
+ 1298 00c4 01       		.byte	0x1
+ 1299 00c5 3F       		.uleb128 0x3f
+ 1300 00c6 19       		.uleb128 0x19
+ 1301 00c7 03       		.uleb128 0x3
+ 1302 00c8 0E       		.uleb128 0xe
+ 1303 00c9 3A       		.uleb128 0x3a
+ 1304 00ca 0B       		.uleb128 0xb
+ 1305 00cb 3B       		.uleb128 0x3b
+ 1306 00cc 0B       		.uleb128 0xb
+ 1307 00cd 27       		.uleb128 0x27
+ 1308 00ce 19       		.uleb128 0x19
+ 1309 00cf 49       		.uleb128 0x49
+ 1310 00d0 13       		.uleb128 0x13
+ 1311 00d1 11       		.uleb128 0x11
+ 1312 00d2 01       		.uleb128 0x1
+ 1313 00d3 12       		.uleb128 0x12
+ 1314 00d4 06       		.uleb128 0x6
+ 1315 00d5 40       		.uleb128 0x40
+ 1316 00d6 18       		.uleb128 0x18
+ 1317 00d7 9642     		.uleb128 0x2116
+ 1318 00d9 19       		.uleb128 0x19
+ 1319 00da 01       		.uleb128 0x1
+ 1320 00db 13       		.uleb128 0x13
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccGj30F4.s 			page 26
+
+
+ 1321 00dc 00       		.byte	0
+ 1322 00dd 00       		.byte	0
+ 1323 00de 12       		.uleb128 0x12
+ 1324 00df 05       		.uleb128 0x5
+ 1325 00e0 00       		.byte	0
+ 1326 00e1 03       		.uleb128 0x3
+ 1327 00e2 08       		.uleb128 0x8
+ 1328 00e3 3A       		.uleb128 0x3a
+ 1329 00e4 0B       		.uleb128 0xb
+ 1330 00e5 3B       		.uleb128 0x3b
+ 1331 00e6 0B       		.uleb128 0xb
+ 1332 00e7 49       		.uleb128 0x49
+ 1333 00e8 13       		.uleb128 0x13
+ 1334 00e9 02       		.uleb128 0x2
+ 1335 00ea 17       		.uleb128 0x17
+ 1336 00eb 00       		.byte	0
+ 1337 00ec 00       		.byte	0
+ 1338 00ed 13       		.uleb128 0x13
+ 1339 00ee 05       		.uleb128 0x5
+ 1340 00ef 00       		.byte	0
+ 1341 00f0 03       		.uleb128 0x3
+ 1342 00f1 0E       		.uleb128 0xe
+ 1343 00f2 3A       		.uleb128 0x3a
+ 1344 00f3 0B       		.uleb128 0xb
+ 1345 00f4 3B       		.uleb128 0x3b
+ 1346 00f5 0B       		.uleb128 0xb
+ 1347 00f6 49       		.uleb128 0x49
+ 1348 00f7 13       		.uleb128 0x13
+ 1349 00f8 02       		.uleb128 0x2
+ 1350 00f9 17       		.uleb128 0x17
+ 1351 00fa 00       		.byte	0
+ 1352 00fb 00       		.byte	0
+ 1353 00fc 14       		.uleb128 0x14
+ 1354 00fd 05       		.uleb128 0x5
+ 1355 00fe 00       		.byte	0
+ 1356 00ff 03       		.uleb128 0x3
+ 1357 0100 0E       		.uleb128 0xe
+ 1358 0101 3A       		.uleb128 0x3a
+ 1359 0102 0B       		.uleb128 0xb
+ 1360 0103 3B       		.uleb128 0x3b
+ 1361 0104 0B       		.uleb128 0xb
+ 1362 0105 49       		.uleb128 0x49
+ 1363 0106 13       		.uleb128 0x13
+ 1364 0107 02       		.uleb128 0x2
+ 1365 0108 18       		.uleb128 0x18
+ 1366 0109 00       		.byte	0
+ 1367 010a 00       		.byte	0
+ 1368 010b 15       		.uleb128 0x15
+ 1369 010c 34       		.uleb128 0x34
+ 1370 010d 00       		.byte	0
+ 1371 010e 03       		.uleb128 0x3
+ 1372 010f 0E       		.uleb128 0xe
+ 1373 0110 3A       		.uleb128 0x3a
+ 1374 0111 0B       		.uleb128 0xb
+ 1375 0112 3B       		.uleb128 0x3b
+ 1376 0113 0B       		.uleb128 0xb
+ 1377 0114 49       		.uleb128 0x49
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccGj30F4.s 			page 27
+
+
+ 1378 0115 13       		.uleb128 0x13
+ 1379 0116 02       		.uleb128 0x2
+ 1380 0117 17       		.uleb128 0x17
+ 1381 0118 00       		.byte	0
+ 1382 0119 00       		.byte	0
+ 1383 011a 16       		.uleb128 0x16
+ 1384 011b 898201   		.uleb128 0x4109
+ 1385 011e 00       		.byte	0
+ 1386 011f 11       		.uleb128 0x11
+ 1387 0120 01       		.uleb128 0x1
+ 1388 0121 31       		.uleb128 0x31
+ 1389 0122 13       		.uleb128 0x13
+ 1390 0123 00       		.byte	0
+ 1391 0124 00       		.byte	0
+ 1392 0125 17       		.uleb128 0x17
+ 1393 0126 2E       		.uleb128 0x2e
+ 1394 0127 01       		.byte	0x1
+ 1395 0128 3F       		.uleb128 0x3f
+ 1396 0129 19       		.uleb128 0x19
+ 1397 012a 03       		.uleb128 0x3
+ 1398 012b 0E       		.uleb128 0xe
+ 1399 012c 3A       		.uleb128 0x3a
+ 1400 012d 0B       		.uleb128 0xb
+ 1401 012e 3B       		.uleb128 0x3b
+ 1402 012f 0B       		.uleb128 0xb
+ 1403 0130 27       		.uleb128 0x27
+ 1404 0131 19       		.uleb128 0x19
+ 1405 0132 11       		.uleb128 0x11
+ 1406 0133 01       		.uleb128 0x1
+ 1407 0134 12       		.uleb128 0x12
+ 1408 0135 06       		.uleb128 0x6
+ 1409 0136 40       		.uleb128 0x40
+ 1410 0137 18       		.uleb128 0x18
+ 1411 0138 9642     		.uleb128 0x2116
+ 1412 013a 19       		.uleb128 0x19
+ 1413 013b 01       		.uleb128 0x1
+ 1414 013c 13       		.uleb128 0x13
+ 1415 013d 00       		.byte	0
+ 1416 013e 00       		.byte	0
+ 1417 013f 18       		.uleb128 0x18
+ 1418 0140 898201   		.uleb128 0x4109
+ 1419 0143 01       		.byte	0x1
+ 1420 0144 11       		.uleb128 0x11
+ 1421 0145 01       		.uleb128 0x1
+ 1422 0146 31       		.uleb128 0x31
+ 1423 0147 13       		.uleb128 0x13
+ 1424 0148 01       		.uleb128 0x1
+ 1425 0149 13       		.uleb128 0x13
+ 1426 014a 00       		.byte	0
+ 1427 014b 00       		.byte	0
+ 1428 014c 19       		.uleb128 0x19
+ 1429 014d 8A8201   		.uleb128 0x410a
+ 1430 0150 00       		.byte	0
+ 1431 0151 02       		.uleb128 0x2
+ 1432 0152 18       		.uleb128 0x18
+ 1433 0153 9142     		.uleb128 0x2111
+ 1434 0155 18       		.uleb128 0x18
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccGj30F4.s 			page 28
+
+
+ 1435 0156 00       		.byte	0
+ 1436 0157 00       		.byte	0
+ 1437 0158 1A       		.uleb128 0x1a
+ 1438 0159 898201   		.uleb128 0x4109
+ 1439 015c 01       		.byte	0x1
+ 1440 015d 11       		.uleb128 0x11
+ 1441 015e 01       		.uleb128 0x1
+ 1442 015f 31       		.uleb128 0x31
+ 1443 0160 13       		.uleb128 0x13
+ 1444 0161 00       		.byte	0
+ 1445 0162 00       		.byte	0
+ 1446 0163 1B       		.uleb128 0x1b
+ 1447 0164 34       		.uleb128 0x34
+ 1448 0165 00       		.byte	0
+ 1449 0166 03       		.uleb128 0x3
+ 1450 0167 0E       		.uleb128 0xe
+ 1451 0168 3A       		.uleb128 0x3a
+ 1452 0169 0B       		.uleb128 0xb
+ 1453 016a 3B       		.uleb128 0x3b
+ 1454 016b 05       		.uleb128 0x5
+ 1455 016c 49       		.uleb128 0x49
+ 1456 016d 13       		.uleb128 0x13
+ 1457 016e 3F       		.uleb128 0x3f
+ 1458 016f 19       		.uleb128 0x19
+ 1459 0170 3C       		.uleb128 0x3c
+ 1460 0171 19       		.uleb128 0x19
+ 1461 0172 00       		.byte	0
+ 1462 0173 00       		.byte	0
+ 1463 0174 1C       		.uleb128 0x1c
+ 1464 0175 34       		.uleb128 0x34
+ 1465 0176 00       		.byte	0
+ 1466 0177 03       		.uleb128 0x3
+ 1467 0178 08       		.uleb128 0x8
+ 1468 0179 3A       		.uleb128 0x3a
+ 1469 017a 0B       		.uleb128 0xb
+ 1470 017b 3B       		.uleb128 0x3b
+ 1471 017c 0B       		.uleb128 0xb
+ 1472 017d 49       		.uleb128 0x49
+ 1473 017e 13       		.uleb128 0x13
+ 1474 017f 3F       		.uleb128 0x3f
+ 1475 0180 19       		.uleb128 0x19
+ 1476 0181 02       		.uleb128 0x2
+ 1477 0182 18       		.uleb128 0x18
+ 1478 0183 00       		.byte	0
+ 1479 0184 00       		.byte	0
+ 1480 0185 1D       		.uleb128 0x1d
+ 1481 0186 34       		.uleb128 0x34
+ 1482 0187 00       		.byte	0
+ 1483 0188 03       		.uleb128 0x3
+ 1484 0189 0E       		.uleb128 0xe
+ 1485 018a 3A       		.uleb128 0x3a
+ 1486 018b 0B       		.uleb128 0xb
+ 1487 018c 3B       		.uleb128 0x3b
+ 1488 018d 0B       		.uleb128 0xb
+ 1489 018e 49       		.uleb128 0x49
+ 1490 018f 13       		.uleb128 0x13
+ 1491 0190 3F       		.uleb128 0x3f
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccGj30F4.s 			page 29
+
+
+ 1492 0191 19       		.uleb128 0x19
+ 1493 0192 02       		.uleb128 0x2
+ 1494 0193 18       		.uleb128 0x18
+ 1495 0194 00       		.byte	0
+ 1496 0195 00       		.byte	0
+ 1497 0196 1E       		.uleb128 0x1e
+ 1498 0197 34       		.uleb128 0x34
+ 1499 0198 00       		.byte	0
+ 1500 0199 03       		.uleb128 0x3
+ 1501 019a 0E       		.uleb128 0xe
+ 1502 019b 3A       		.uleb128 0x3a
+ 1503 019c 0B       		.uleb128 0xb
+ 1504 019d 3B       		.uleb128 0x3b
+ 1505 019e 0B       		.uleb128 0xb
+ 1506 019f 49       		.uleb128 0x49
+ 1507 01a0 13       		.uleb128 0x13
+ 1508 01a1 3F       		.uleb128 0x3f
+ 1509 01a2 19       		.uleb128 0x19
+ 1510 01a3 3C       		.uleb128 0x3c
+ 1511 01a4 19       		.uleb128 0x19
+ 1512 01a5 00       		.byte	0
+ 1513 01a6 00       		.byte	0
+ 1514 01a7 1F       		.uleb128 0x1f
+ 1515 01a8 2E       		.uleb128 0x2e
+ 1516 01a9 00       		.byte	0
+ 1517 01aa 3F       		.uleb128 0x3f
+ 1518 01ab 19       		.uleb128 0x19
+ 1519 01ac 3C       		.uleb128 0x3c
+ 1520 01ad 19       		.uleb128 0x19
+ 1521 01ae 6E       		.uleb128 0x6e
+ 1522 01af 08       		.uleb128 0x8
+ 1523 01b0 03       		.uleb128 0x3
+ 1524 01b1 08       		.uleb128 0x8
+ 1525 01b2 3A       		.uleb128 0x3a
+ 1526 01b3 0B       		.uleb128 0xb
+ 1527 01b4 3B       		.uleb128 0x3b
+ 1528 01b5 0B       		.uleb128 0xb
+ 1529 01b6 00       		.byte	0
+ 1530 01b7 00       		.byte	0
+ 1531 01b8 20       		.uleb128 0x20
+ 1532 01b9 2E       		.uleb128 0x2e
+ 1533 01ba 00       		.byte	0
+ 1534 01bb 3F       		.uleb128 0x3f
+ 1535 01bc 19       		.uleb128 0x19
+ 1536 01bd 3C       		.uleb128 0x3c
+ 1537 01be 19       		.uleb128 0x19
+ 1538 01bf 6E       		.uleb128 0x6e
+ 1539 01c0 0E       		.uleb128 0xe
+ 1540 01c1 03       		.uleb128 0x3
+ 1541 01c2 0E       		.uleb128 0xe
+ 1542 01c3 3A       		.uleb128 0x3a
+ 1543 01c4 0B       		.uleb128 0xb
+ 1544 01c5 3B       		.uleb128 0x3b
+ 1545 01c6 0B       		.uleb128 0xb
+ 1546 01c7 00       		.byte	0
+ 1547 01c8 00       		.byte	0
+ 1548 01c9 00       		.byte	0
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccGj30F4.s 			page 30
+
+
+ 1549              		.section	.debug_loc,"",%progbits
+ 1550              	.Ldebug_loc0:
+ 1551              	.LLST0:
+ 1552 0000 00000000 		.4byte	.LVL0
+ 1553 0004 0E000000 		.4byte	.LVL1
+ 1554 0008 0100     		.2byte	0x1
+ 1555 000a 50       		.byte	0x50
+ 1556 000b 0E000000 		.4byte	.LVL1
+ 1557 000f 5A000000 		.4byte	.LFE64
+ 1558 0013 0100     		.2byte	0x1
+ 1559 0015 58       		.byte	0x58
+ 1560 0016 00000000 		.4byte	0
+ 1561 001a 00000000 		.4byte	0
+ 1562              	.LLST1:
+ 1563 001e 00000000 		.4byte	.LVL0
+ 1564 0022 13000000 		.4byte	.LVL2-1
+ 1565 0026 0100     		.2byte	0x1
+ 1566 0028 51       		.byte	0x51
+ 1567 0029 13000000 		.4byte	.LVL2-1
+ 1568 002d 5A000000 		.4byte	.LFE64
+ 1569 0031 0100     		.2byte	0x1
+ 1570 0033 55       		.byte	0x55
+ 1571 0034 00000000 		.4byte	0
+ 1572 0038 00000000 		.4byte	0
+ 1573              	.LLST2:
+ 1574 003c 00000000 		.4byte	.LVL0
+ 1575 0040 13000000 		.4byte	.LVL2-1
+ 1576 0044 0100     		.2byte	0x1
+ 1577 0046 52       		.byte	0x52
+ 1578 0047 13000000 		.4byte	.LVL2-1
+ 1579 004b 5A000000 		.4byte	.LFE64
+ 1580 004f 0100     		.2byte	0x1
+ 1581 0051 59       		.byte	0x59
+ 1582 0052 00000000 		.4byte	0
+ 1583 0056 00000000 		.4byte	0
+ 1584              	.LLST3:
+ 1585 005a 00000000 		.4byte	.LVL0
+ 1586 005e 13000000 		.4byte	.LVL2-1
+ 1587 0062 0100     		.2byte	0x1
+ 1588 0064 53       		.byte	0x53
+ 1589 0065 13000000 		.4byte	.LVL2-1
+ 1590 0069 5A000000 		.4byte	.LFE64
+ 1591 006d 0100     		.2byte	0x1
+ 1592 006f 54       		.byte	0x54
+ 1593 0070 00000000 		.4byte	0
+ 1594 0074 00000000 		.4byte	0
+ 1595              	.LLST4:
+ 1596 0078 30000000 		.4byte	.LVL5
+ 1597 007c 42000000 		.4byte	.LVL8
+ 1598 0080 0600     		.2byte	0x6
+ 1599 0082 56       		.byte	0x56
+ 1600 0083 93       		.byte	0x93
+ 1601 0084 04       		.uleb128 0x4
+ 1602 0085 57       		.byte	0x57
+ 1603 0086 93       		.byte	0x93
+ 1604 0087 04       		.uleb128 0x4
+ 1605 0088 00000000 		.4byte	0
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccGj30F4.s 			page 31
+
+
+ 1606 008c 00000000 		.4byte	0
+ 1607              	.LLST5:
+ 1608 0090 00000000 		.4byte	.LVL12
+ 1609 0094 0E000000 		.4byte	.LVL13
+ 1610 0098 0100     		.2byte	0x1
+ 1611 009a 50       		.byte	0x50
+ 1612 009b 0E000000 		.4byte	.LVL13
+ 1613 009f 5C000000 		.4byte	.LFE65
+ 1614 00a3 0100     		.2byte	0x1
+ 1615 00a5 58       		.byte	0x58
+ 1616 00a6 00000000 		.4byte	0
+ 1617 00aa 00000000 		.4byte	0
+ 1618              	.LLST6:
+ 1619 00ae 00000000 		.4byte	.LVL12
+ 1620 00b2 13000000 		.4byte	.LVL14-1
+ 1621 00b6 0100     		.2byte	0x1
+ 1622 00b8 51       		.byte	0x51
+ 1623 00b9 13000000 		.4byte	.LVL14-1
+ 1624 00bd 5C000000 		.4byte	.LFE65
+ 1625 00c1 0100     		.2byte	0x1
+ 1626 00c3 55       		.byte	0x55
+ 1627 00c4 00000000 		.4byte	0
+ 1628 00c8 00000000 		.4byte	0
+ 1629              	.LLST7:
+ 1630 00cc 00000000 		.4byte	.LVL12
+ 1631 00d0 13000000 		.4byte	.LVL14-1
+ 1632 00d4 0100     		.2byte	0x1
+ 1633 00d6 52       		.byte	0x52
+ 1634 00d7 13000000 		.4byte	.LVL14-1
+ 1635 00db 5C000000 		.4byte	.LFE65
+ 1636 00df 0100     		.2byte	0x1
+ 1637 00e1 59       		.byte	0x59
+ 1638 00e2 00000000 		.4byte	0
+ 1639 00e6 00000000 		.4byte	0
+ 1640              	.LLST8:
+ 1641 00ea 00000000 		.4byte	.LVL12
+ 1642 00ee 13000000 		.4byte	.LVL14-1
+ 1643 00f2 0100     		.2byte	0x1
+ 1644 00f4 53       		.byte	0x53
+ 1645 00f5 13000000 		.4byte	.LVL14-1
+ 1646 00f9 5C000000 		.4byte	.LFE65
+ 1647 00fd 0100     		.2byte	0x1
+ 1648 00ff 54       		.byte	0x54
+ 1649 0100 00000000 		.4byte	0
+ 1650 0104 00000000 		.4byte	0
+ 1651              	.LLST9:
+ 1652 0108 30000000 		.4byte	.LVL17
+ 1653 010c 42000000 		.4byte	.LVL20
+ 1654 0110 0600     		.2byte	0x6
+ 1655 0112 56       		.byte	0x56
+ 1656 0113 93       		.byte	0x93
+ 1657 0114 04       		.uleb128 0x4
+ 1658 0115 57       		.byte	0x57
+ 1659 0116 93       		.byte	0x93
+ 1660 0117 04       		.uleb128 0x4
+ 1661 0118 00000000 		.4byte	0
+ 1662 011c 00000000 		.4byte	0
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccGj30F4.s 			page 32
+
+
+ 1663              	.LLST10:
+ 1664 0120 00000000 		.4byte	.LVL24
+ 1665 0124 13000000 		.4byte	.LVL26-1
+ 1666 0128 0600     		.2byte	0x6
+ 1667 012a 50       		.byte	0x50
+ 1668 012b 93       		.byte	0x93
+ 1669 012c 04       		.uleb128 0x4
+ 1670 012d 51       		.byte	0x51
+ 1671 012e 93       		.byte	0x93
+ 1672 012f 04       		.uleb128 0x4
+ 1673 0130 13000000 		.4byte	.LVL26-1
+ 1674 0134 44000000 		.4byte	.LFE66
+ 1675 0138 0600     		.2byte	0x6
+ 1676 013a F3       		.byte	0xf3
+ 1677 013b 03       		.uleb128 0x3
+ 1678 013c F5       		.byte	0xf5
+ 1679 013d 00       		.uleb128 0
+ 1680 013e 25       		.uleb128 0x25
+ 1681 013f 9F       		.byte	0x9f
+ 1682 0140 00000000 		.4byte	0
+ 1683 0144 00000000 		.4byte	0
+ 1684              	.LLST11:
+ 1685 0148 00000000 		.4byte	.LVL24
+ 1686 014c 0A000000 		.4byte	.LVL25
+ 1687 0150 0600     		.2byte	0x6
+ 1688 0152 52       		.byte	0x52
+ 1689 0153 93       		.byte	0x93
+ 1690 0154 04       		.uleb128 0x4
+ 1691 0155 53       		.byte	0x53
+ 1692 0156 93       		.byte	0x93
+ 1693 0157 04       		.uleb128 0x4
+ 1694 0158 0A000000 		.4byte	.LVL25
+ 1695 015c 44000000 		.4byte	.LFE66
+ 1696 0160 0600     		.2byte	0x6
+ 1697 0162 F3       		.byte	0xf3
+ 1698 0163 03       		.uleb128 0x3
+ 1699 0164 F5       		.byte	0xf5
+ 1700 0165 02       		.uleb128 0x2
+ 1701 0166 25       		.uleb128 0x25
+ 1702 0167 9F       		.byte	0x9f
+ 1703 0168 00000000 		.4byte	0
+ 1704 016c 00000000 		.4byte	0
+ 1705              	.LLST12:
+ 1706 0170 00000000 		.4byte	.LVL24
+ 1707 0174 40000000 		.4byte	.LVL32
+ 1708 0178 0200     		.2byte	0x2
+ 1709 017a 91       		.byte	0x91
+ 1710 017b 00       		.sleb128 0
+ 1711 017c 40000000 		.4byte	.LVL32
+ 1712 0180 44000000 		.4byte	.LFE66
+ 1713 0184 0200     		.2byte	0x2
+ 1714 0186 7D       		.byte	0x7d
+ 1715 0187 00       		.sleb128 0
+ 1716 0188 00000000 		.4byte	0
+ 1717 018c 00000000 		.4byte	0
+ 1718              	.LLST13:
+ 1719 0190 02000000 		.4byte	.LVL33
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccGj30F4.s 			page 33
+
+
+ 1720 0194 12000000 		.4byte	.LVL34
+ 1721 0198 0200     		.2byte	0x2
+ 1722 019a 30       		.byte	0x30
+ 1723 019b 9F       		.byte	0x9f
+ 1724 019c 12000000 		.4byte	.LVL34
+ 1725 01a0 20000000 		.4byte	.LVL36
+ 1726 01a4 0200     		.2byte	0x2
+ 1727 01a6 31       		.byte	0x31
+ 1728 01a7 9F       		.byte	0x9f
+ 1729 01a8 20000000 		.4byte	.LVL36
+ 1730 01ac 2C000000 		.4byte	.LVL37
+ 1731 01b0 0200     		.2byte	0x2
+ 1732 01b2 30       		.byte	0x30
+ 1733 01b3 9F       		.byte	0x9f
+ 1734 01b4 2C000000 		.4byte	.LVL37
+ 1735 01b8 3A000000 		.4byte	.LVL39
+ 1736 01bc 0200     		.2byte	0x2
+ 1737 01be 31       		.byte	0x31
+ 1738 01bf 9F       		.byte	0x9f
+ 1739 01c0 3A000000 		.4byte	.LVL39
+ 1740 01c4 46000000 		.4byte	.LVL40
+ 1741 01c8 0200     		.2byte	0x2
+ 1742 01ca 30       		.byte	0x30
+ 1743 01cb 9F       		.byte	0x9f
+ 1744 01cc 46000000 		.4byte	.LVL40
+ 1745 01d0 54000000 		.4byte	.LVL42
+ 1746 01d4 0200     		.2byte	0x2
+ 1747 01d6 31       		.byte	0x31
+ 1748 01d7 9F       		.byte	0x9f
+ 1749 01d8 54000000 		.4byte	.LVL42
+ 1750 01dc DC000000 		.4byte	.LVL47
+ 1751 01e0 0200     		.2byte	0x2
+ 1752 01e2 30       		.byte	0x30
+ 1753 01e3 9F       		.byte	0x9f
+ 1754 01e4 DC000000 		.4byte	.LVL47
+ 1755 01e8 E5000000 		.4byte	.LVL48-1
+ 1756 01ec 0100     		.2byte	0x1
+ 1757 01ee 53       		.byte	0x53
+ 1758 01ef 00000000 		.4byte	0
+ 1759 01f3 00000000 		.4byte	0
+ 1760              		.section	.debug_aranges,"",%progbits
+ 1761 0000 34000000 		.4byte	0x34
+ 1762 0004 0200     		.2byte	0x2
+ 1763 0006 00000000 		.4byte	.Ldebug_info0
+ 1764 000a 04       		.byte	0x4
+ 1765 000b 00       		.byte	0
+ 1766 000c 0000     		.2byte	0
+ 1767 000e 0000     		.2byte	0
+ 1768 0010 00000000 		.4byte	.LFB64
+ 1769 0014 5A000000 		.4byte	.LFE64-.LFB64
+ 1770 0018 00000000 		.4byte	.LFB65
+ 1771 001c 5C000000 		.4byte	.LFE65-.LFB65
+ 1772 0020 00000000 		.4byte	.LFB66
+ 1773 0024 44000000 		.4byte	.LFE66-.LFB66
+ 1774 0028 00000000 		.4byte	.LFB67
+ 1775 002c 44010000 		.4byte	.LFE67-.LFB67
+ 1776 0030 00000000 		.4byte	0
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccGj30F4.s 			page 34
+
+
+ 1777 0034 00000000 		.4byte	0
+ 1778              		.section	.debug_ranges,"",%progbits
+ 1779              	.Ldebug_ranges0:
+ 1780 0000 00000000 		.4byte	.LFB64
+ 1781 0004 5A000000 		.4byte	.LFE64
+ 1782 0008 00000000 		.4byte	.LFB65
+ 1783 000c 5C000000 		.4byte	.LFE65
+ 1784 0010 00000000 		.4byte	.LFB66
+ 1785 0014 44000000 		.4byte	.LFE66
+ 1786 0018 00000000 		.4byte	.LFB67
+ 1787 001c 44010000 		.4byte	.LFE67
+ 1788 0020 00000000 		.4byte	0
+ 1789 0024 00000000 		.4byte	0
+ 1790              		.section	.debug_line,"",%progbits
+ 1791              	.Ldebug_line0:
+ 1792 0000 99020000 		.section	.debug_str,"MS",%progbits,1
+ 1792      02001202 
+ 1792      00000201 
+ 1792      FB0E0D00 
+ 1792      01010101 
+ 1793              	.LASF45:
+ 1794 0000 5F737461 		.ascii	"_state_\000"
+ 1794      74655F00 
+ 1795              	.LASF23:
+ 1796 0008 7363616C 		.ascii	"scaledMin\000"
+ 1796      65644D69 
+ 1796      6E00
+ 1797              	.LASF32:
+ 1798 0012 696E5F6D 		.ascii	"in_max\000"
+ 1798      617800
+ 1799              	.LASF27:
+ 1800 0019 7056616C 		.ascii	"pVal\000"
+ 1800      00
+ 1801              	.LASF33:
+ 1802 001e 6F75745F 		.ascii	"out_min\000"
+ 1802      6D696E00 
+ 1803              	.LASF59:
+ 1804 0026 50726F63 		.ascii	"ProcessCommandMsg\000"
+ 1804      65737343 
+ 1804      6F6D6D61 
+ 1804      6E644D73 
+ 1804      6700
+ 1805              	.LASF16:
+ 1806 0038 73697A65 		.ascii	"sizetype\000"
+ 1806      74797065 
+ 1806      00
+ 1807              	.LASF31:
+ 1808 0041 696E5F6D 		.ascii	"in_min\000"
+ 1808      696E00
+ 1809              	.LASF15:
+ 1810 0048 6C6F6E67 		.ascii	"long double\000"
+ 1810      20646F75 
+ 1810      626C6500 
+ 1811              	.LASF55:
+ 1812 0054 443A5C44 		.ascii	"D:\\Dropbox\\Magister\\Tesis\\tesis-source\\master-"
+ 1812      726F7062 
+ 1812      6F785C4D 
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccGj30F4.s 			page 35
+
+
+ 1812      61676973 
+ 1812      7465725C 
+ 1813 0082 74657369 		.ascii	"tesis\\dedo_v01.cydsn\000"
+ 1813      735C6465 
+ 1813      646F5F76 
+ 1813      30312E63 
+ 1813      7964736E 
+ 1814              	.LASF4:
+ 1815 0097 73686F72 		.ascii	"short int\000"
+ 1815      7420696E 
+ 1815      7400
+ 1816              	.LASF49:
+ 1817 00a1 73706565 		.ascii	"speed_ref\000"
+ 1817      645F7265 
+ 1817      6600
+ 1818              	.LASF38:
+ 1819 00ab 5369676D 		.ascii	"Sigmoid\000"
+ 1819      6F696400 
+ 1820              	.LASF28:
+ 1821 00b3 6956616C 		.ascii	"iVal\000"
+ 1821      00
+ 1822              	.LASF13:
+ 1823 00b8 75696E74 		.ascii	"uint8\000"
+ 1823      3800
+ 1824              	.LASF17:
+ 1825 00be 72656656 		.ascii	"refVal\000"
+ 1825      616C00
+ 1826              	.LASF21:
+ 1827 00c5 6D696E56 		.ascii	"minValue\000"
+ 1827      616C7565 
+ 1827      00
+ 1828              	.LASF1:
+ 1829 00ce 666C6F61 		.ascii	"float\000"
+ 1829      7400
+ 1830              	.LASF37:
+ 1831 00d4 736C6F70 		.ascii	"slope\000"
+ 1831      6500
+ 1832              	.LASF8:
+ 1833 00da 6C6F6E67 		.ascii	"long long int\000"
+ 1833      206C6F6E 
+ 1833      6720696E 
+ 1833      7400
+ 1834              	.LASF6:
+ 1835 00e8 6C6F6E67 		.ascii	"long int\000"
+ 1835      20696E74 
+ 1835      00
+ 1836              	.LASF19:
+ 1837 00f1 6C617374 		.ascii	"lastValue\000"
+ 1837      56616C75 
+ 1837      6500
+ 1838              	.LASF22:
+ 1839 00fb 6D617856 		.ascii	"maxValue\000"
+ 1839      616C7565 
+ 1839      00
+ 1840              	.LASF35:
+ 1841 0104 666E5F6D 		.ascii	"fn_mapper\000"
+ 1841      61707065 
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccGj30F4.s 			page 36
+
+
+ 1841      7200
+ 1842              	.LASF52:
+ 1843 010e 5049445F 		.ascii	"PID_setCoeffs\000"
+ 1843      73657443 
+ 1843      6F656666 
+ 1843      7300
+ 1844              	.LASF50:
+ 1845 011c 61746F69 		.ascii	"atoi\000"
+ 1845      00
+ 1846              	.LASF44:
+ 1847 0121 5F756172 		.ascii	"_uart_Reset\000"
+ 1847      745F5265 
+ 1847      73657400 
+ 1848              	.LASF18:
+ 1849 012d 696E7075 		.ascii	"inputValue\000"
+ 1849      7456616C 
+ 1849      756500
+ 1850              	.LASF3:
+ 1851 0138 756E7369 		.ascii	"unsigned char\000"
+ 1851      676E6564 
+ 1851      20636861 
+ 1851      7200
+ 1852              	.LASF42:
+ 1853 0146 53656E64 		.ascii	"SendSingleByte\000"
+ 1853      53696E67 
+ 1853      6C654279 
+ 1853      746500
+ 1854              	.LASF2:
+ 1855 0155 7369676E 		.ascii	"signed char\000"
+ 1855      65642063 
+ 1855      68617200 
+ 1856              	.LASF9:
+ 1857 0161 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1857      206C6F6E 
+ 1857      6720756E 
+ 1857      7369676E 
+ 1857      65642069 
+ 1858              	.LASF56:
+ 1859 0178 54527842 		.ascii	"TRxBuffer\000"
+ 1859      75666665 
+ 1859      7200
+ 1860              	.LASF10:
+ 1861 0182 756E7369 		.ascii	"unsigned int\000"
+ 1861      676E6564 
+ 1861      20696E74 
+ 1861      00
+ 1862              	.LASF41:
+ 1863 018f 436F6E74 		.ascii	"ContinuouslySendData\000"
+ 1863      696E756F 
+ 1863      75736C79 
+ 1863      53656E64 
+ 1863      44617461 
+ 1864              	.LASF46:
+ 1865 01a4 74656E73 		.ascii	"tension_ref\000"
+ 1865      696F6E5F 
+ 1865      72656600 
+ 1866              	.LASF58:
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccGj30F4.s 			page 37
+
+
+ 1867 01b0 54506172 		.ascii	"TParamBuffer\000"
+ 1867      616D4275 
+ 1867      66666572 
+ 1867      00
+ 1868              	.LASF43:
+ 1869 01bd 53656E64 		.ascii	"SendEmulatedData\000"
+ 1869      456D756C 
+ 1869      61746564 
+ 1869      44617461 
+ 1869      00
+ 1870              	.LASF26:
+ 1871 01ce 76616C73 		.ascii	"valstr\000"
+ 1871      747200
+ 1872              	.LASF14:
+ 1873 01d5 63686172 		.ascii	"char\000"
+ 1873      00
+ 1874              	.LASF47:
+ 1875 01da 706F735F 		.ascii	"pos_ref\000"
+ 1875      72656600 
+ 1876              	.LASF12:
+ 1877 01e2 696E7433 		.ascii	"int32_t\000"
+ 1877      325F7400 
+ 1878              	.LASF5:
+ 1879 01ea 73686F72 		.ascii	"short unsigned int\000"
+ 1879      7420756E 
+ 1879      7369676E 
+ 1879      65642069 
+ 1879      6E7400
+ 1880              	.LASF57:
+ 1881 01fd 52785374 		.ascii	"RxStr\000"
+ 1881      7200
+ 1882              	.LASF51:
+ 1883 0203 4379536F 		.ascii	"CySoftwareReset\000"
+ 1883      66747761 
+ 1883      72655265 
+ 1883      73657400 
+ 1884              	.LASF7:
+ 1885 0213 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1885      20756E73 
+ 1885      69676E65 
+ 1885      6420696E 
+ 1885      7400
+ 1886              	.LASF39:
+ 1887 0225 75706461 		.ascii	"updatePID\000"
+ 1887      74655049 
+ 1887      4400
+ 1888              	.LASF0:
+ 1889 022f 646F7562 		.ascii	"double\000"
+ 1889      6C6500
+ 1890              	.LASF54:
+ 1891 0236 66756E63 		.ascii	"functions.c\000"
+ 1891      74696F6E 
+ 1891      732E6300 
+ 1892              	.LASF20:
+ 1893 0242 69546572 		.ascii	"iTerm\000"
+ 1893      6D00
+ 1894              	.LASF11:
+ARM GAS  C:\Users\growo\AppData\Local\Temp\ccGj30F4.s 			page 38
+
+
+ 1895 0248 5F5F696E 		.ascii	"__int32_t\000"
+ 1895      7433325F 
+ 1895      7400
+ 1896              	.LASF36:
+ 1897 0252 666E5F6D 		.ascii	"fn_mapper_8b\000"
+ 1897      61707065 
+ 1897      725F3862 
+ 1897      00
+ 1898              	.LASF48:
+ 1899 025f 73706565 		.ascii	"speed_pid_\000"
+ 1899      645F7069 
+ 1899      645F00
+ 1900              	.LASF30:
+ 1901 026a 50617261 		.ascii	"ParamBuffer\000"
+ 1901      6D427566 
+ 1901      66657200 
+ 1902              	.LASF40:
+ 1903 0276 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 1903      52784275 
+ 1903      66666572 
+ 1903      00
+ 1904              	.LASF53:
+ 1905 0283 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 1905      43313120 
+ 1905      352E342E 
+ 1905      31203230 
+ 1905      31363036 
+ 1906 02b6 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m3 -mthumb -g -O"
+ 1906      20726576 
+ 1906      6973696F 
+ 1906      6E203233 
+ 1906      37373135 
+ 1907 02e9 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 1907      66756E63 
+ 1907      74696F6E 
+ 1907      2D736563 
+ 1907      74696F6E 
+ 1908              	.LASF24:
+ 1909 0311 7363616C 		.ascii	"scaledMax\000"
+ 1909      65644D61 
+ 1909      7800
+ 1910              	.LASF29:
+ 1911 031b 6456616C 		.ascii	"dVal\000"
+ 1911      00
+ 1912              	.LASF25:
+ 1913 0320 5049445F 		.ascii	"PID_t\000"
+ 1913      7400
+ 1914              	.LASF34:
+ 1915 0326 6F75745F 		.ascii	"out_max\000"
+ 1915      6D617800 
+ 1916              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran
