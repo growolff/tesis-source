@@ -39,5 +39,5 @@ CY_ISR_PROTO(MyRxInt);          // process Rx interrupt
 uint8	IsCharReady(void);		// Returns TRUE when a char is ready
 uint8	GetRxStr(void);			// Extract command string from buffer, non-blocking 
 
-
+   
 /* [] END OF FILE */

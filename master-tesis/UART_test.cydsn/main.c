@@ -30,23 +30,29 @@ char msg[TRANSMIT_BUFFER_SIZE];
     volatile ParamBuffer PB;     //volatile struct TParamBuffer PB;
 
 void ProcessCommandMsg(void);// Process received command (do something...)
+int16 * StoreResults();
+
+#define NUM_SENSORS 6
+int16 * TS_array;
 
 void InitializeHardware(void){
     
     RxInt_StartEx(MyRxInt);
-    
+    ADC_TS_IRQ_Start();
+      
+    ADC_TS_Start();
     UART_Start();    
     CyDelay(250);
     UART_PutString("&UART Test\r\n");
     
+    ADC_TS_StartConvert();
 }
 
 int main(void){
 
-    InitializeHardware();
     CyGlobalIntEnable; /* Enable global interrupts. */
-
-    int c=0;
+    InitializeHardware();
+    
     for(;;)
     {
         while(IsCharReady()){
@@ -54,8 +60,24 @@ int main(void){
                 ProcessCommandMsg();
             }   
         }
-        c++;
+        if(ADC_TS_IsEndConversion(ADC_TS_RETURN_STATUS)!=0){
+            TS_array = StoreResults();
+        }
+        sprintf(msg,"1: %d\t2: %d\r\n",TS_array[0],TS_array[1]);
+        UART_PutString(msg);
+        CyDelay(10);
     }
+}
+
+int16 * StoreResults()
+{
+	uint16 i;
+    static int16 dest[NUM_SENSORS];
+	
+	for (i = 0; i < NUM_SENSORS; i++) {
+		dest[i] = ADC_TS_GetResult16(i);
+	}
+    return dest;
 }
 
 void ProcessCommandMsg(void){    

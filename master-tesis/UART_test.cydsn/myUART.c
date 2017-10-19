@@ -18,7 +18,7 @@ uint8  *RxWriteIndex = RxBuffer;    // pointer to position in RxBuffer to read a
 
 char   *RxStrIndex = RB.RxStr;      // pointer to command string buffer (processed messages)
                                     // each Rx command consists of: <byte command><string value><CR>
-
+volatile uint8 measurement_done = 0;
 //===========================================================================
 
 CY_ISR(MyRxInt) //interrupt on Rx byte received

@@ -25,8 +25,42 @@
   <file name="D:\Dropbox\Magister\Tesis\tesis-source\master-tesis\UART_test.cydsn\codegentemp\UART_BOOT.c" value="SOURCE_C;CortexM3;;;;UART" />
   <file name="D:\Dropbox\Magister\Tesis\tesis-source\master-tesis\UART_test.cydsn\codegentemp\RxInt.c" value="SOURCE_C;CortexM3;;;;RxInt" />
   <file name="D:\Dropbox\Magister\Tesis\tesis-source\master-tesis\UART_test.cydsn\codegentemp\RxInt.h" value="HEADER;;;;;RxInt" />
+  <file name="D:\Dropbox\Magister\Tesis\tesis-source\master-tesis\UART_test.cydsn\codegentemp\ADC_TS.c" value="SOURCE_C;CortexM3;;;;ADC_TS" />
+  <file name="D:\Dropbox\Magister\Tesis\tesis-source\master-tesis\UART_test.cydsn\codegentemp\ADC_TS.h" value="HEADER;;;;;ADC_TS" />
+  <file name="D:\Dropbox\Magister\Tesis\tesis-source\master-tesis\UART_test.cydsn\codegentemp\ADC_TS_PM.c" value="SOURCE_C;CortexM3;;;;ADC_TS" />
+  <file name="D:\Dropbox\Magister\Tesis\tesis-source\master-tesis\UART_test.cydsn\codegentemp\ADC_TS_INT.c" value="SOURCE_C;CortexM3;;;;ADC_TS" />
+  <file name="D:\Dropbox\Magister\Tesis\tesis-source\master-tesis\UART_test.cydsn\codegentemp\Pin_1_aliases.h" value="HEADER;;;;;Pin_1" />
+  <file name="D:\Dropbox\Magister\Tesis\tesis-source\master-tesis\UART_test.cydsn\codegentemp\Pin_1.c" value="SOURCE_C;CortexM3;;;;Pin_1" />
+  <file name="D:\Dropbox\Magister\Tesis\tesis-source\master-tesis\UART_test.cydsn\codegentemp\Pin_1.h" value="HEADER;;;;;Pin_1" />
+  <file name="D:\Dropbox\Magister\Tesis\tesis-source\master-tesis\UART_test.cydsn\codegentemp\Pin_2_aliases.h" value="HEADER;;;;;Pin_2" />
+  <file name="D:\Dropbox\Magister\Tesis\tesis-source\master-tesis\UART_test.cydsn\codegentemp\Pin_2.c" value="SOURCE_C;CortexM3;;;;Pin_2" />
+  <file name="D:\Dropbox\Magister\Tesis\tesis-source\master-tesis\UART_test.cydsn\codegentemp\Pin_2.h" value="HEADER;;;;;Pin_2" />
+  <file name="D:\Dropbox\Magister\Tesis\tesis-source\master-tesis\UART_test.cydsn\codegentemp\Pin_3_aliases.h" value="HEADER;;;;;Pin_3" />
+  <file name="D:\Dropbox\Magister\Tesis\tesis-source\master-tesis\UART_test.cydsn\codegentemp\Pin_3.c" value="SOURCE_C;CortexM3;;;;Pin_3" />
+  <file name="D:\Dropbox\Magister\Tesis\tesis-source\master-tesis\UART_test.cydsn\codegentemp\Pin_3.h" value="HEADER;;;;;Pin_3" />
+  <file name="D:\Dropbox\Magister\Tesis\tesis-source\master-tesis\UART_test.cydsn\codegentemp\Pin_4_aliases.h" value="HEADER;;;;;Pin_4" />
+  <file name="D:\Dropbox\Magister\Tesis\tesis-source\master-tesis\UART_test.cydsn\codegentemp\Pin_4.c" value="SOURCE_C;CortexM3;;;;Pin_4" />
+  <file name="D:\Dropbox\Magister\Tesis\tesis-source\master-tesis\UART_test.cydsn\codegentemp\Pin_4.h" value="HEADER;;;;;Pin_4" />
+  <file name="D:\Dropbox\Magister\Tesis\tesis-source\master-tesis\UART_test.cydsn\codegentemp\Pin_5_aliases.h" value="HEADER;;;;;Pin_5" />
+  <file name="D:\Dropbox\Magister\Tesis\tesis-source\master-tesis\UART_test.cydsn\codegentemp\Pin_5.c" value="SOURCE_C;CortexM3;;;;Pin_5" />
+  <file name="D:\Dropbox\Magister\Tesis\tesis-source\master-tesis\UART_test.cydsn\codegentemp\Pin_5.h" value="HEADER;;;;;Pin_5" />
+  <file name="D:\Dropbox\Magister\Tesis\tesis-source\master-tesis\UART_test.cydsn\codegentemp\Pin_6_aliases.h" value="HEADER;;;;;Pin_6" />
+  <file name="D:\Dropbox\Magister\Tesis\tesis-source\master-tesis\UART_test.cydsn\codegentemp\Pin_6.c" value="SOURCE_C;CortexM3;;;;Pin_6" />
+  <file name="D:\Dropbox\Magister\Tesis\tesis-source\master-tesis\UART_test.cydsn\codegentemp\Pin_6.h" value="HEADER;;;;;Pin_6" />
   <file name="D:\Dropbox\Magister\Tesis\tesis-source\master-tesis\UART_test.cydsn\codegentemp\UART_IntClock.c" value="SOURCE_C;CortexM3;;;;UART_IntClock" />
   <file name="D:\Dropbox\Magister\Tesis\tesis-source\master-tesis\UART_test.cydsn\codegentemp\UART_IntClock.h" value="HEADER;;;;;UART_IntClock" />
+  <file name="D:\Dropbox\Magister\Tesis\tesis-source\master-tesis\UART_test.cydsn\codegentemp\ADC_TS_SAR.c" value="SOURCE_C;CortexM3;;;;ADC_TS_SAR" />
+  <file name="D:\Dropbox\Magister\Tesis\tesis-source\master-tesis\UART_test.cydsn\codegentemp\ADC_TS_SAR.h" value="HEADER;;;;;ADC_TS_SAR" />
+  <file name="D:\Dropbox\Magister\Tesis\tesis-source\master-tesis\UART_test.cydsn\codegentemp\ADC_TS_SAR_INT.c" value="SOURCE_C;CortexM3;;;;ADC_TS_SAR" />
+  <file name="D:\Dropbox\Magister\Tesis\tesis-source\master-tesis\UART_test.cydsn\codegentemp\ADC_TS_SAR_PM.c" value="SOURCE_C;CortexM3;;;;ADC_TS_SAR" />
+  <file name="D:\Dropbox\Magister\Tesis\tesis-source\master-tesis\UART_test.cydsn\codegentemp\ADC_TS_IntClock.c" value="SOURCE_C;CortexM3;;;;ADC_TS_IntClock" />
+  <file name="D:\Dropbox\Magister\Tesis\tesis-source\master-tesis\UART_test.cydsn\codegentemp\ADC_TS_IntClock.h" value="HEADER;;;;;ADC_TS_IntClock" />
+  <file name="D:\Dropbox\Magister\Tesis\tesis-source\master-tesis\UART_test.cydsn\codegentemp\ADC_TS_TempBuf_dma.c" value="SOURCE_C;CortexM3;;;;ADC_TS_TempBuf" />
+  <file name="D:\Dropbox\Magister\Tesis\tesis-source\master-tesis\UART_test.cydsn\codegentemp\ADC_TS_TempBuf_dma.h" value="HEADER;;;;;ADC_TS_TempBuf" />
+  <file name="D:\Dropbox\Magister\Tesis\tesis-source\master-tesis\UART_test.cydsn\codegentemp\ADC_TS_FinalBuf_dma.c" value="SOURCE_C;CortexM3;;;;ADC_TS_FinalBuf" />
+  <file name="D:\Dropbox\Magister\Tesis\tesis-source\master-tesis\UART_test.cydsn\codegentemp\ADC_TS_FinalBuf_dma.h" value="HEADER;;;;;ADC_TS_FinalBuf" />
+  <file name="D:\Dropbox\Magister\Tesis\tesis-source\master-tesis\UART_test.cydsn\codegentemp\ADC_TS_IRQ.c" value="SOURCE_C;CortexM3;;;;ADC_TS_IRQ" />
+  <file name="D:\Dropbox\Magister\Tesis\tesis-source\master-tesis\UART_test.cydsn\codegentemp\ADC_TS_IRQ.h" value="HEADER;;;;;ADC_TS_IRQ" />
   <file name="D:\Dropbox\Magister\Tesis\tesis-source\master-tesis\UART_test.cydsn\codegentemp\cm3gcc.ld" value="LINKER_SCRIPT;;;b98f980c-3bd1-4fc7-a887-c56a20a46fdd;;cy_boot" />
   <file name="D:\Dropbox\Magister\Tesis\tesis-source\master-tesis\UART_test.cydsn\codegentemp\Cm3RealView.scat" value="LINKER_SCRIPT;;;fdb8e1ae-f83a-46cf-9446-1d703716f38a;;cy_boot" />
   <file name="D:\Dropbox\Magister\Tesis\tesis-source\master-tesis\UART_test.cydsn\codegentemp\Cm3Start.c" value="SOURCE_C;CortexM3;;;;cy_boot" />

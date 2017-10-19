@@ -100,6 +100,40 @@
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\UART_IntClock.h</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\RxInt.c</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\RxInt.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Pin_1_aliases.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Pin_1.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Pin_1.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Pin_2_aliases.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Pin_2.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Pin_2.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Pin_3_aliases.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Pin_3.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Pin_3.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Pin_4_aliases.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Pin_4.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Pin_4.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Pin_5_aliases.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Pin_5.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Pin_5.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Pin_6_aliases.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Pin_6.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Pin_6.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\ADC_TS.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\ADC_TS.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\ADC_TS_PM.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\ADC_TS_INT.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\ADC_TS_SAR.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\ADC_TS_SAR.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\ADC_TS_SAR_INT.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\ADC_TS_SAR_PM.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\ADC_TS_IntClock.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\ADC_TS_IntClock.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\ADC_TS_TempBuf_dma.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\ADC_TS_TempBuf_dma.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\ADC_TS_FinalBuf_dma.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\ADC_TS_FinalBuf_dma.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\ADC_TS_IRQ.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\ADC_TS_IRQ.h</File>
         </Files>
       </Folder>
       <Folder BuildType="STRICT" Path="D:\Dropbox\Magister\Tesis\tesis-source\master-tesis\UART_test.cydsn\Export\ARM_GCC_Generic">

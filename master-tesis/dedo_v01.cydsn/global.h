@@ -116,6 +116,8 @@ extern volatile int32_t debug;
 
 extern uint8 _pid_out;
 
+extern uint8 _braken_state;
+
 #endif // GLOBAL_VARIABLES_FILE_H
 
 /* [] END OF FILE */

@@ -14,25 +14,25 @@
 #include <stdlib.h>
 #include <math.h>
 
-int32_t fn_mapper(int32_t x, int32_t in_min, int32_t in_max, int32_t out_min, int32_t out_max){
-    
+int32_t fn_mapper(int32_t x, int32_t in_min, int32_t in_max, int32_t out_min, int32_t out_max)
+{    
     double slope = 1.0 * (out_max - out_min)/(in_max - in_min);
-    return (int32_t)(out_min + slope*(x - in_min));
-    
+    return (int32_t)(out_min + slope*(x - in_min));   
 }
 
-uint8 fn_mapper_8b(int32_t x, int32_t in_min, int32_t in_max, int32_t out_min, int32_t out_max){
-    
+uint8 fn_mapper_8b(int32_t x, int32_t in_min, int32_t in_max, int32_t out_min, int32_t out_max)
+{
     double slope = 1.0 * (out_max - out_min)/(in_max - in_min);
     return (uint8)(out_min + slope*(x - in_min));
-    
 }
 
-double Sigmoid(double x,double a, double b){
+double Sigmoid(double x,double a, double b)
+{
     return a*(2/(1 + exp(-x*b))-1);
 }
 
-void ProcessCommandMsg(void){    
+void ProcessCommandMsg(void)
+{    
     //check received message for any valid command and execute it if necessary or report old value
     //if command not recognized, then report error
     //todo: add check for valid conversion string->value
@@ -77,6 +77,9 @@ void ProcessCommandMsg(void){
         //UART_PutString("&X");
         ContinuouslySendData = FALSE;
     }
+    else if (RB.cmd == 'b'){
+        HandBrake();
+    }
     else if (RB.cmd == '!'){
         if(strlen(RB.valstr) > 0){
             pos_ref = atoi(RB.valstr);
@@ -92,11 +95,40 @@ void ProcessCommandMsg(void){
             tension_ref = atoi(RB.valstr);
         }
     }
+    else if (RB.cmd == '1'){
+        pos_ref = 20;
+    }
+    else if (RB.cmd == '0'){
+        pos_ref = 0;
+    }
     
     if ( updatePID == TRUE ){
         PID_setCoeffs(&speed_pid_,(float)PB.pVal/100.0,(float)PB.iVal/100.0,(float)PB.dVal/100.0);
         updatePID = FALSE;
     }
+}
+
+void HandBrake()
+{
+    if (_braken_state == 0){
+        BRAKEn_Write(1);
+        _braken_state = 1;
+    }
+    else{
+        BRAKEn_Write(0);
+        _braken_state = 0;
+    }
+}
+
+int16 * StoreResults() // store ADC conversion result in a sensor data array
+{
+	uint16 i;
+    static int16 dest[NUM_SENSORS];
+	
+	for (i = 0; i < NUM_SENSORS; i++) {
+		dest[i] = ADC_TS_GetResult16(i);
+	}
+    return dest;
 }
 
 /* [] END OF FILE */

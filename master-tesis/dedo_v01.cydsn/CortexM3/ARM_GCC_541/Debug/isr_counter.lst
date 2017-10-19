@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 1
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccAKYHzh.s 			page 1
 
 
    1              		.syntax unified
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 1
   28:isr_counter.c **** ********************************************************************************/
   29:isr_counter.c **** /* `#START isr_counter_intc` */
   30:isr_counter.c **** 
-ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 2
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccAKYHzh.s 			page 2
 
 
   31:isr_counter.c **** #include "global.h"
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 1
   85:isr_counter.c **** /*******************************************************************************
   86:isr_counter.c **** * Function Name: isr_counter_StartEx
   87:isr_counter.c **** ********************************************************************************
-ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 3
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccAKYHzh.s 			page 3
 
 
   88:isr_counter.c **** *
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 1
  142:isr_counter.c **** void isr_counter_Stop(void)
  143:isr_counter.c **** {
  144:isr_counter.c ****     /* Disable this interrupt. */
-ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 4
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccAKYHzh.s 			page 4
 
 
  145:isr_counter.c ****     isr_counter_Disable();
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 1
   47 001a 5A00     		lsls	r2, r3, #1
   48 001c 9142     		cmp	r1, r2
   49 001e 1BD1     		bne	.L2
-ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 5
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccAKYHzh.s 			page 5
 
 
  180:isr_counter.c ****         // checks if motor is rotating, if not, set velocity to zero for motion control
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 1
   87              	.L2:
  197:isr_counter.c ****         }
  198:isr_counter.c ****     }
-ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 6
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccAKYHzh.s 			page 6
 
 
  199:isr_counter.c ****     /* update variable */
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 1
  227:isr_counter.c **** * Parameters:
  228:isr_counter.c **** *   address: Address of the ISR to set in the interrupt vector table.
  229:isr_counter.c **** *
-ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 7
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccAKYHzh.s 			page 7
 
 
  230:isr_counter.c **** * Return:
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 1
  256:isr_counter.c **** *
  257:isr_counter.c **** *******************************************************************************/
  258:isr_counter.c **** cyisraddress isr_counter_GetVector(void)
-ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 8
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccAKYHzh.s 			page 8
 
 
  259:isr_counter.c **** {
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 1
  286:isr_counter.c **** *             PSoC 4: Priority is from 0 to 3.
  287:isr_counter.c **** *
  288:isr_counter.c **** * Return:
-ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 9
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccAKYHzh.s 			page 9
 
 
  289:isr_counter.c **** *   None
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 1
  315:isr_counter.c **** {
  197              		.loc 1 315 0
  198              		.cfi_startproc
-ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 10
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccAKYHzh.s 			page 10
 
 
  199              		@ args = 0, pretend = 0, frame = 0
@@ -598,7 +598,7 @@ ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 1
  226              		.cfi_startproc
  227              		@ args = 0, pretend = 0, frame = 0
  228              		@ frame_needed = 0, uses_anonymous_args = 0
-ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 11
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccAKYHzh.s 			page 11
 
 
  229              		@ link register save eliminated.
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 1
  260 000a 0120     		movs	r0, #1
  261 000c 7047     		bx	lr
  262              	.L25:
-ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 12
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccAKYHzh.s 			page 12
 
 
  263 000e 0020     		movs	r0, #0
@@ -718,7 +718,7 @@ ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 1
  296              	.LFE74:
  297              		.size	isr_counter_Disable, .-isr_counter_Disable
  298              		.section	.text.isr_counter_Start,"ax",%progbits
-ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 13
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccAKYHzh.s 			page 13
 
 
  299              		.align	2
@@ -778,7 +778,7 @@ ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 1
  347              		@ frame_needed = 0, uses_anonymous_args = 0
  348              	.LVL12:
  349 0000 10B5     		push	{r4, lr}
-ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 14
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccAKYHzh.s 			page 14
 
 
  350              		.cfi_def_cfa_offset 8
@@ -838,7 +838,7 @@ ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 1
  397 000e 00BF     		.align	2
  398              	.L39:
  399 0010 00000000 		.word	IntDefaultHandler
-ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 15
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccAKYHzh.s 			page 15
 
 
  400              		.cfi_endproc
@@ -898,7 +898,7 @@ ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 1
  428              		.section	.text.isr_counter_ClearPending,"ax",%progbits
  429              		.align	2
  430              		.global	isr_counter_ClearPending
-ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 16
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccAKYHzh.s 			page 16
 
 
  431              		.thumb
@@ -958,7 +958,7 @@ ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 1
  460              		.comm	SendEmulatedData,1,1
  461              		.comm	SendSingleByte,1,1
  462              		.comm	ContinuouslySendData,1,1
-ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 17
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccAKYHzh.s 			page 17
 
 
  463              		.comm	Ch,1,1
@@ -980,10 +980,10 @@ ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 1
  479 0006 00000000 		.4byte	.Ldebug_abbrev0
  480 000a 04       		.byte	0x4
  481 000b 01       		.uleb128 0x1
- 482 000c 2B030000 		.4byte	.LASF53
+ 482 000c 4A030000 		.4byte	.LASF53
  483 0010 0C       		.byte	0xc
- 484 0011 50010000 		.4byte	.LASF54
- 485 0015 49000000 		.4byte	.LASF55
+ 484 0011 6F010000 		.4byte	.LASF54
+ 485 0015 A3000000 		.4byte	.LASF55
  486 0019 00000000 		.4byte	.Ldebug_ranges0+0
  487 001d 00000000 		.4byte	0
  488 0021 00000000 		.4byte	.Ldebug_line0
@@ -994,23 +994,23 @@ ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 1
  493 002c 03       		.uleb128 0x3
  494 002d 04       		.byte	0x4
  495 002e 07       		.byte	0x7
- 496 002f B2010000 		.4byte	.LASF0
+ 496 002f D1010000 		.4byte	.LASF0
  497 0033 03       		.uleb128 0x3
  498 0034 08       		.byte	0x8
  499 0035 05       		.byte	0x5
- 500 0036 B8000000 		.4byte	.LASF1
+ 500 0036 75000000 		.4byte	.LASF1
  501 003a 03       		.uleb128 0x3
  502 003b 08       		.byte	0x8
  503 003c 04       		.byte	0x4
- 504 003d 37010000 		.4byte	.LASF2
+ 504 003d 56010000 		.4byte	.LASF2
  505 0041 03       		.uleb128 0x3
  506 0042 01       		.byte	0x1
  507 0043 06       		.byte	0x6
- 508 0044 6D010000 		.4byte	.LASF3
+ 508 0044 8C010000 		.4byte	.LASF3
  509 0048 03       		.uleb128 0x3
  510 0049 01       		.byte	0x1
  511 004a 08       		.byte	0x8
- 512 004b 1D010000 		.4byte	.LASF4
+ 512 004b 3C010000 		.4byte	.LASF4
  513 004f 03       		.uleb128 0x3
  514 0050 02       		.byte	0x2
  515 0051 05       		.byte	0x5
@@ -1018,94 +1018,94 @@ ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 1
  517 0056 03       		.uleb128 0x3
  518 0057 02       		.byte	0x2
  519 0058 07       		.byte	0x7
-ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 18
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccAKYHzh.s 			page 18
 
 
- 520 0059 4F020000 		.4byte	.LASF6
+ 520 0059 6E020000 		.4byte	.LASF6
  521 005d 04       		.uleb128 0x4
- 522 005e EE020000 		.4byte	.LASF12
+ 522 005e 0D030000 		.4byte	.LASF12
  523 0062 02       		.byte	0x2
  524 0063 3F       		.byte	0x3f
  525 0064 68000000 		.4byte	0x68
  526 0068 03       		.uleb128 0x3
  527 0069 04       		.byte	0x4
  528 006a 05       		.byte	0x5
- 529 006b CB000000 		.4byte	.LASF7
+ 529 006b 88000000 		.4byte	.LASF7
  530 006f 03       		.uleb128 0x3
  531 0070 04       		.byte	0x4
  532 0071 07       		.byte	0x7
- 533 0072 D5020000 		.4byte	.LASF8
+ 533 0072 F4020000 		.4byte	.LASF8
  534 0076 03       		.uleb128 0x3
  535 0077 08       		.byte	0x8
  536 0078 07       		.byte	0x7
- 537 0079 79010000 		.4byte	.LASF9
+ 537 0079 98010000 		.4byte	.LASF9
  538 007d 03       		.uleb128 0x3
  539 007e 04       		.byte	0x4
  540 007f 07       		.byte	0x7
- 541 0080 0E030000 		.4byte	.LASF10
+ 541 0080 2D030000 		.4byte	.LASF10
  542 0084 05       		.uleb128 0x5
  543 0085 04       		.byte	0x4
  544 0086 8A000000 		.4byte	0x8a
  545 008a 03       		.uleb128 0x3
  546 008b 01       		.byte	0x1
  547 008c 08       		.byte	0x8
- 548 008d 2E020000 		.4byte	.LASF11
+ 548 008d 4D020000 		.4byte	.LASF11
  549 0091 05       		.uleb128 0x5
  550 0092 04       		.byte	0x4
  551 0093 97000000 		.4byte	0x97
  552 0097 06       		.uleb128 0x6
  553 0098 04       		.uleb128 0x4
- 554 0099 47020000 		.4byte	.LASF13
+ 554 0099 66020000 		.4byte	.LASF13
  555 009d 03       		.byte	0x3
  556 009e 2C       		.byte	0x2c
  557 009f 5D000000 		.4byte	0x5d
  558 00a3 07       		.uleb128 0x7
- 559 00a4 AC000000 		.4byte	.LASF14
+ 559 00a4 69000000 		.4byte	.LASF14
  560 00a8 04       		.byte	0x4
  561 00a9 9201     		.2byte	0x192
  562 00ab 48000000 		.4byte	0x48
  563 00af 07       		.uleb128 0x7
- 564 00b0 E7020000 		.4byte	.LASF15
+ 564 00b0 06030000 		.4byte	.LASF15
  565 00b4 04       		.byte	0x4
  566 00b5 9401     		.2byte	0x194
  567 00b7 6F000000 		.4byte	0x6f
  568 00bb 07       		.uleb128 0x7
- 569 00bc C6000000 		.4byte	.LASF16
+ 569 00bc 83000000 		.4byte	.LASF16
  570 00c0 04       		.byte	0x4
  571 00c1 9501     		.2byte	0x195
  572 00c3 41000000 		.4byte	0x41
  573 00c7 07       		.uleb128 0x7
- 574 00c8 A1000000 		.4byte	.LASF17
+ 574 00c8 5E000000 		.4byte	.LASF17
  575 00cc 04       		.byte	0x4
  576 00cd 9601     		.2byte	0x196
-ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 19
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccAKYHzh.s 			page 19
 
 
  577 00cf 4F000000 		.4byte	0x4f
  578 00d3 03       		.uleb128 0x3
  579 00d4 04       		.byte	0x4
  580 00d5 04       		.byte	0x4
- 581 00d6 B2000000 		.4byte	.LASF18
+ 581 00d6 6F000000 		.4byte	.LASF18
  582 00da 03       		.uleb128 0x3
  583 00db 08       		.byte	0x8
  584 00dc 04       		.byte	0x4
- 585 00dd 17030000 		.4byte	.LASF19
+ 585 00dd 36030000 		.4byte	.LASF19
  586 00e1 07       		.uleb128 0x7
- 587 00e2 D0020000 		.4byte	.LASF20
+ 587 00e2 EF020000 		.4byte	.LASF20
  588 00e6 04       		.byte	0x4
  589 00e7 3C02     		.2byte	0x23c
  590 00e9 ED000000 		.4byte	0xed
  591 00ed 08       		.uleb128 0x8
  592 00ee A3000000 		.4byte	0xa3
  593 00f2 07       		.uleb128 0x7
- 594 00f3 10020000 		.4byte	.LASF21
+ 594 00f3 2F020000 		.4byte	.LASF21
  595 00f7 04       		.byte	0x4
  596 00f8 3E02     		.2byte	0x23e
  597 00fa FE000000 		.4byte	0xfe
  598 00fe 08       		.uleb128 0x8
  599 00ff AF000000 		.4byte	0xaf
  600 0103 07       		.uleb128 0x7
- 601 0104 43010000 		.4byte	.LASF22
+ 601 0104 62010000 		.4byte	.LASF22
  602 0108 04       		.byte	0x4
  603 0109 4E02     		.2byte	0x24e
  604 010b 91000000 		.4byte	0x91
@@ -1121,7 +1121,7 @@ ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 1
  614 011e 8A000000 		.4byte	0x8a
  615 0122 00       		.byte	0
  616 0123 0B       		.uleb128 0xb
- 617 0124 27020000 		.4byte	.LASF23
+ 617 0124 46020000 		.4byte	.LASF23
  618 0128 05       		.byte	0x5
  619 0129 1E       		.byte	0x1e
  620 012a 30010000 		.4byte	0x130
@@ -1135,16 +1135,16 @@ ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 1
  628 013e 12       		.byte	0x12
  629 013f 00       		.byte	0
  630 0140 0E       		.uleb128 0xe
- 631 0141 A8010000 		.4byte	.LASF56
+ 631 0141 C7010000 		.4byte	.LASF56
  632 0145 14       		.byte	0x14
  633 0146 05       		.byte	0x5
-ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 20
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccAKYHzh.s 			page 20
 
 
  634 0147 1A       		.byte	0x1a
  635 0148 5D010000 		.4byte	0x15d
  636 014c 0F       		.uleb128 0xf
- 637 014d 85020000 		.4byte	.LASF57
+ 637 014d A4020000 		.4byte	.LASF57
  638 0151 05       		.byte	0x5
  639 0152 1B       		.byte	0x1b
  640 0153 5D010000 		.4byte	0x15d
@@ -1159,7 +1159,7 @@ ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 1
  649 016b 13       		.byte	0x13
  650 016c 00       		.byte	0
  651 016d 11       		.uleb128 0x11
- 652 016e 03020000 		.4byte	.LASF58
+ 652 016e 22020000 		.4byte	.LASF58
  653 0172 10       		.byte	0x10
  654 0173 06       		.byte	0x6
  655 0174 1A       		.byte	0x1a
@@ -1177,28 +1177,28 @@ ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 1
  667 018c 25000000 		.4byte	0x25
  668 0190 04       		.byte	0x4
  669 0191 0B       		.uleb128 0xb
- 670 0192 A7000000 		.4byte	.LASF25
+ 670 0192 64000000 		.4byte	.LASF25
  671 0196 06       		.byte	0x6
  672 0197 1C       		.byte	0x1c
  673 0198 25000000 		.4byte	0x25
  674 019c 08       		.byte	0x8
  675 019d 0B       		.uleb128 0xb
- 676 019e B9030000 		.4byte	.LASF26
+ 676 019e D8030000 		.4byte	.LASF26
  677 01a2 06       		.byte	0x6
  678 01a3 1C       		.byte	0x1c
  679 01a4 25000000 		.4byte	0x25
  680 01a8 0C       		.byte	0xc
  681 01a9 00       		.byte	0
  682 01aa 04       		.uleb128 0x4
- 683 01ab AD020000 		.4byte	.LASF27
+ 683 01ab CC020000 		.4byte	.LASF27
  684 01af 06       		.byte	0x6
  685 01b0 1D       		.byte	0x1d
  686 01b1 6D010000 		.4byte	0x16d
  687 01b5 12       		.uleb128 0x12
- 688 01b6 ED010000 		.4byte	.LASF28
+ 688 01b6 0C020000 		.4byte	.LASF28
  689 01ba 01       		.byte	0x1
  690 01bb A8       		.byte	0xa8
-ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 21
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccAKYHzh.s 			page 21
 
 
  691 01bc 00000000 		.4byte	.LFB67
@@ -1211,7 +1211,7 @@ ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 1
  698 01cf B0040000 		.4byte	0x4b0
  699 01d3 00       		.byte	0
  700 01d4 12       		.uleb128 0x12
- 701 01d5 F8020000 		.4byte	.LASF29
+ 701 01d5 17030000 		.4byte	.LASF29
  702 01d9 01       		.byte	0x1
  703 01da EA       		.byte	0xea
  704 01db 00000000 		.4byte	.LFB68
@@ -1220,14 +1220,14 @@ ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 1
  707 01e4 9C       		.byte	0x9c
  708 01e5 04020000 		.4byte	0x204
  709 01e9 14       		.uleb128 0x14
- 710 01ea E6000000 		.4byte	.LASF32
+ 710 01ea 05010000 		.4byte	.LASF32
  711 01ee 01       		.byte	0x1
  712 01ef EA       		.byte	0xea
  713 01f0 03010000 		.4byte	0x103
  714 01f4 01       		.uleb128 0x1
  715 01f5 50       		.byte	0x50
  716 01f6 15       		.uleb128 0x15
- 717 01f7 8B020000 		.4byte	.LASF30
+ 717 01f7 AA020000 		.4byte	.LASF30
  718 01fb 01       		.byte	0x1
  719 01fc EC       		.byte	0xec
  720 01fd 04020000 		.4byte	0x204
@@ -1238,7 +1238,7 @@ ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 1
  725 0205 04       		.byte	0x4
  726 0206 03010000 		.4byte	0x103
  727 020a 16       		.uleb128 0x16
- 728 020b F3000000 		.4byte	.LASF34
+ 728 020b 12010000 		.4byte	.LASF34
  729 020f 01       		.byte	0x1
  730 0210 0201     		.2byte	0x102
  731 0212 03010000 		.4byte	0x103
@@ -1248,7 +1248,7 @@ ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 1
  735 021f 9C       		.byte	0x9c
  736 0220 33020000 		.4byte	0x233
  737 0224 17       		.uleb128 0x17
- 738 0225 8B020000 		.4byte	.LASF30
+ 738 0225 AA020000 		.4byte	.LASF30
  739 0229 01       		.byte	0x1
  740 022a 0401     		.2byte	0x104
  741 022c 04020000 		.4byte	0x204
@@ -1256,9 +1256,9 @@ ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 1
  743 0231 53       		.byte	0x53
  744 0232 00       		.byte	0
  745 0233 18       		.uleb128 0x18
- 746 0234 90010000 		.4byte	.LASF31
+ 746 0234 AF010000 		.4byte	.LASF31
  747 0238 01       		.byte	0x1
-ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 22
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccAKYHzh.s 			page 22
 
 
  748 0239 2401     		.2byte	0x124
@@ -1275,7 +1275,7 @@ ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 1
  759 0255 00000000 		.4byte	.LLST0
  760 0259 00       		.byte	0
  761 025a 16       		.uleb128 0x16
- 762 025b 6D020000 		.4byte	.LASF35
+ 762 025b 8C020000 		.4byte	.LASF35
  763 025f 01       		.byte	0x1
  764 0260 3A01     		.2byte	0x13a
  765 0262 A3000000 		.4byte	0xa3
@@ -1292,7 +1292,7 @@ ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 1
  776 0280 21000000 		.4byte	.LLST1
  777 0284 00       		.byte	0
  778 0285 1B       		.uleb128 0x1b
- 779 0286 9A020000 		.4byte	.LASF36
+ 779 0286 B9020000 		.4byte	.LASF36
  780 028a 01       		.byte	0x1
  781 028b 5501     		.2byte	0x155
  782 028d 00000000 		.4byte	.LFB72
@@ -1300,7 +1300,7 @@ ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 1
  784 0295 01       		.uleb128 0x1
  785 0296 9C       		.byte	0x9c
  786 0297 1C       		.uleb128 0x1c
- 787 0298 8C000000 		.4byte	.LASF59
+ 787 0298 49000000 		.4byte	.LASF59
  788 029c 01       		.byte	0x1
  789 029d 6A01     		.2byte	0x16a
  790 029f A3000000 		.4byte	0xa3
@@ -1309,7 +1309,7 @@ ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 1
  793 02ab 01       		.uleb128 0x1
  794 02ac 9C       		.byte	0x9c
  795 02ad 1B       		.uleb128 0x1b
- 796 02ae 09010000 		.4byte	.LASF37
+ 796 02ae 28010000 		.4byte	.LASF37
  797 02b2 01       		.byte	0x1
  798 02b3 7F01     		.2byte	0x17f
  799 02b5 00000000 		.4byte	.LFB74
@@ -1317,8 +1317,8 @@ ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 1
  801 02bd 01       		.uleb128 0x1
  802 02be 9C       		.byte	0x9c
  803 02bf 12       		.uleb128 0x12
- 804 02c0 D4000000 		.4byte	.LASF38
-ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 23
+ 804 02c0 91000000 		.4byte	.LASF38
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccAKYHzh.s 			page 23
 
 
  805 02c4 01       		.byte	0x1
@@ -1357,7 +1357,7 @@ ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 1
  838 030c 85020000 		.4byte	0x285
  839 0310 00       		.byte	0
  840 0311 12       		.uleb128 0x12
- 841 0312 33020000 		.4byte	.LASF39
+ 841 0312 52020000 		.4byte	.LASF39
  842 0316 01       		.byte	0x1
  843 0317 70       		.byte	0x70
  844 0318 00000000 		.4byte	.LFB65
@@ -1366,7 +1366,7 @@ ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 1
  847 0321 9C       		.byte	0x9c
  848 0322 6F030000 		.4byte	0x36f
  849 0326 1F       		.uleb128 0x1f
- 850 0327 E6000000 		.4byte	.LASF32
+ 850 0327 05010000 		.4byte	.LASF32
  851 032b 01       		.byte	0x1
  852 032c 70       		.byte	0x70
  853 032d 03010000 		.4byte	0x103
@@ -1378,7 +1378,7 @@ ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 1
  859 033f 0E000000 		.4byte	.LVL14
  860 0343 D4010000 		.4byte	0x1d4
  861 0347 52030000 		.4byte	0x352
-ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 24
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccAKYHzh.s 			page 24
 
 
  862 034b 1E       		.uleb128 0x1e
@@ -1419,7 +1419,7 @@ ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 1
  897 0392 D4010000 		.4byte	0x1d4
  898 0396 00       		.byte	0
  899 0397 1B       		.uleb128 0x1b
- 900 0398 B9020000 		.4byte	.LASF41
+ 900 0398 D8020000 		.4byte	.LASF41
  901 039c 01       		.byte	0x1
  902 039d 9A01     		.2byte	0x19a
  903 039f 00000000 		.4byte	.LFB75
@@ -1427,7 +1427,7 @@ ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 1
  905 03a7 01       		.uleb128 0x1
  906 03a8 9C       		.byte	0x9c
  907 03a9 1B       		.uleb128 0x1b
- 908 03aa D4010000 		.4byte	.LASF42
+ 908 03aa F3010000 		.4byte	.LASF42
  909 03ae 01       		.byte	0x1
  910 03af B301     		.2byte	0x1b3
  911 03b1 00000000 		.4byte	.LFB76
@@ -1435,10 +1435,10 @@ ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 1
  913 03b9 01       		.uleb128 0x1
  914 03ba 9C       		.byte	0x9c
  915 03bb 20       		.uleb128 0x20
- 916 03bc 1E030000 		.4byte	.LASF43
+ 916 03bc 3D030000 		.4byte	.LASF43
  917 03c0 07       		.byte	0x7
  918 03c1 1207     		.2byte	0x712
-ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 25
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccAKYHzh.s 			page 25
 
 
  919 03c3 C7030000 		.4byte	0x3c7
@@ -1471,7 +1471,7 @@ ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 1
  946 03fc 03       		.byte	0x3
  947 03fd 00000000 		.4byte	Ch
  948 0401 22       		.uleb128 0x22
- 949 0402 BF010000 		.4byte	.LASF44
+ 949 0402 DE010000 		.4byte	.LASF44
  950 0406 06       		.byte	0x6
  951 0407 51       		.byte	0x51
  952 0408 ED000000 		.4byte	0xed
@@ -1479,7 +1479,7 @@ ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 1
  954 040d 03       		.byte	0x3
  955 040e 00000000 		.4byte	ContinuouslySendData
  956 0412 22       		.uleb128 0x22
- 957 0413 5E010000 		.4byte	.LASF45
+ 957 0413 7D010000 		.4byte	.LASF45
  958 0417 06       		.byte	0x6
  959 0418 52       		.byte	0x52
  960 0419 ED000000 		.4byte	0xed
@@ -1487,7 +1487,7 @@ ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 1
  962 041e 03       		.byte	0x3
  963 041f 00000000 		.4byte	SendSingleByte
  964 0423 22       		.uleb128 0x22
- 965 0424 16020000 		.4byte	.LASF46
+ 965 0424 35020000 		.4byte	.LASF46
  966 0428 06       		.byte	0x6
  967 0429 53       		.byte	0x53
  968 042a ED000000 		.4byte	0xed
@@ -1495,10 +1495,10 @@ ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 1
  970 042f 03       		.byte	0x3
  971 0430 00000000 		.4byte	SendEmulatedData
  972 0434 22       		.uleb128 0x22
- 973 0435 2B010000 		.4byte	.LASF47
+ 973 0435 4A010000 		.4byte	.LASF47
  974 0439 06       		.byte	0x6
  975 043a 54       		.byte	0x54
-ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 26
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccAKYHzh.s 			page 26
 
 
  976 043b ED000000 		.4byte	0xed
@@ -1524,7 +1524,7 @@ ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 1
  996 0467 08       		.uleb128 0x8
  997 0468 BB000000 		.4byte	0xbb
  998 046c 22       		.uleb128 0x22
- 999 046d EE000000 		.4byte	.LASF50
+ 999 046d 0D010000 		.4byte	.LASF50
  1000 0471 01       		.byte	0x1
  1001 0472 25       		.byte	0x25
  1002 0473 C7030000 		.4byte	0x3c7
@@ -1540,7 +1540,7 @@ ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 1
  1012 0489 03       		.byte	0x3
  1013 048a 00000000 		.4byte	counter
  1014 048e 22       		.uleb128 0x22
- 1015 048f 62020000 		.4byte	.LASF52
+ 1015 048f 81020000 		.4byte	.LASF52
  1016 0493 01       		.byte	0x1
  1017 0494 23       		.byte	0x23
  1018 0495 C7000000 		.4byte	0xc7
@@ -1556,9 +1556,9 @@ ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 1
  1028 04ab 03       		.byte	0x3
  1029 04ac 00000000 		.4byte	aux
  1030 04b0 23       		.uleb128 0x23
- 1031 04b1 BE030000 		.4byte	.LASF60
- 1032 04b5 BE030000 		.4byte	.LASF60
-ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 27
+ 1031 04b1 DD030000 		.4byte	.LASF60
+ 1032 04b5 DD030000 		.4byte	.LASF60
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccAKYHzh.s 			page 27
 
 
  1033 04b9 08       		.byte	0x8
@@ -1618,7 +1618,7 @@ ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 1
  1087 0031 0B       		.uleb128 0xb
  1088 0032 49       		.uleb128 0x49
  1089 0033 13       		.uleb128 0x13
-ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 28
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccAKYHzh.s 			page 28
 
 
  1090 0034 00       		.byte	0
@@ -1678,7 +1678,7 @@ ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 1
  1144 006a 03       		.uleb128 0x3
  1145 006b 08       		.uleb128 0x8
  1146 006c 3A       		.uleb128 0x3a
-ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 29
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccAKYHzh.s 			page 29
 
 
  1147 006d 0B       		.uleb128 0xb
@@ -1738,7 +1738,7 @@ ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 1
  1201 00a3 13       		.uleb128 0x13
  1202 00a4 00       		.byte	0
  1203 00a5 00       		.byte	0
-ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 30
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccAKYHzh.s 			page 30
 
 
  1204 00a6 0F       		.uleb128 0xf
@@ -1798,7 +1798,7 @@ ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 1
  1258 00dc 9742     		.uleb128 0x2117
  1259 00de 19       		.uleb128 0x19
  1260 00df 01       		.uleb128 0x1
-ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 31
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccAKYHzh.s 			page 31
 
 
  1261 00e0 13       		.uleb128 0x13
@@ -1858,7 +1858,7 @@ ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 1
  1315 0118 19       		.uleb128 0x19
  1316 0119 49       		.uleb128 0x49
  1317 011a 13       		.uleb128 0x13
-ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 32
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccAKYHzh.s 			page 32
 
 
  1318 011b 11       		.uleb128 0x11
@@ -1918,7 +1918,7 @@ ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 1
  1372 0153 00       		.byte	0
  1373 0154 03       		.uleb128 0x3
  1374 0155 0E       		.uleb128 0xe
-ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 33
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccAKYHzh.s 			page 33
 
 
  1375 0156 3A       		.uleb128 0x3a
@@ -1978,7 +1978,7 @@ ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 1
  1429 018d 0E       		.uleb128 0xe
  1430 018e 3A       		.uleb128 0x3a
  1431 018f 0B       		.uleb128 0xb
-ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 34
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccAKYHzh.s 			page 34
 
 
  1432 0190 3B       		.uleb128 0x3b
@@ -2038,7 +2038,7 @@ ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 1
  1486 01cc 03       		.uleb128 0x3
  1487 01cd 0E       		.uleb128 0xe
  1488 01ce 3A       		.uleb128 0x3a
-ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 35
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccAKYHzh.s 			page 35
 
 
  1489 01cf 0B       		.uleb128 0xb
@@ -2098,7 +2098,7 @@ ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 1
  1543 0205 03       		.uleb128 0x3
  1544 0206 0E       		.uleb128 0xe
  1545 0207 3A       		.uleb128 0x3a
-ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 36
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccAKYHzh.s 			page 36
 
 
  1546 0208 0B       		.uleb128 0xb
@@ -2158,7 +2158,7 @@ ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 1
  1600 0018 00000000 		.4byte	.LFB68
  1601 001c 0C000000 		.4byte	.LFE68-.LFB68
  1602 0020 00000000 		.4byte	.LFB69
-ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 37
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccAKYHzh.s 			page 37
 
 
  1603 0024 0C000000 		.4byte	.LFE69-.LFB69
@@ -2218,7 +2218,7 @@ ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 1
  1657              	.Ldebug_line0:
  1658 0000 73020000 		.section	.debug_str,"MS",%progbits,1
  1658      02007B01 
-ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 38
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccAKYHzh.s 			page 38
 
 
  1658      00000201 
@@ -2252,283 +2252,284 @@ ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 1
  1672      7465725F 
  1672      53746F70 
  1672      00
- 1673              	.LASF55:
- 1674 0049 443A5C44 		.ascii	"D:\\Dropbox\\Magister\\Tesis\\tesis-source\\master-"
- 1674      726F7062 
- 1674      6F785C4D 
- 1674      61676973 
- 1674      7465725C 
- 1675 0077 74657369 		.ascii	"tesis\\dedo_v01.cydsn\000"
- 1675      735C6465 
- 1675      646F5F76 
- 1675      30312E63 
- 1675      7964736E 
- 1676              	.LASF59:
- 1677 008c 6973725F 		.ascii	"isr_counter_GetState\000"
- 1677      636F756E 
- 1677      7465725F 
- 1677      47657453 
- 1677      74617465 
- 1678              	.LASF17:
- 1679 00a1 696E7431 		.ascii	"int16\000"
- 1679      3600
- 1680              	.LASF25:
- 1681 00a7 6956616C 		.ascii	"iVal\000"
- 1681      00
- 1682              	.LASF14:
- 1683 00ac 75696E74 		.ascii	"uint8\000"
- 1683      3800
-ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 39
+ 1673              	.LASF59:
+ 1674 0049 6973725F 		.ascii	"isr_counter_GetState\000"
+ 1674      636F756E 
+ 1674      7465725F 
+ 1674      47657453 
+ 1674      74617465 
+ 1675              	.LASF17:
+ 1676 005e 696E7431 		.ascii	"int16\000"
+ 1676      3600
+ 1677              	.LASF25:
+ 1678 0064 6956616C 		.ascii	"iVal\000"
+ 1678      00
+ 1679              	.LASF14:
+ 1680 0069 75696E74 		.ascii	"uint8\000"
+ 1680      3800
+ 1681              	.LASF18:
+ 1682 006f 666C6F61 		.ascii	"float\000"
+ 1682      7400
+ 1683              	.LASF1:
+ 1684 0075 6C6F6E67 		.ascii	"long long int\000"
+ 1684      206C6F6E 
+ 1684      6720696E 
+ 1684      7400
+ 1685              	.LASF16:
+ 1686 0083 696E7438 		.ascii	"int8\000"
+ 1686      00
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccAKYHzh.s 			page 39
 
 
- 1684              	.LASF18:
- 1685 00b2 666C6F61 		.ascii	"float\000"
- 1685      7400
- 1686              	.LASF1:
- 1687 00b8 6C6F6E67 		.ascii	"long long int\000"
- 1687      206C6F6E 
- 1687      6720696E 
- 1687      7400
- 1688              	.LASF16:
- 1689 00c6 696E7438 		.ascii	"int8\000"
- 1689      00
- 1690              	.LASF7:
- 1691 00cb 6C6F6E67 		.ascii	"long int\000"
- 1691      20696E74 
- 1691      00
- 1692              	.LASF38:
- 1693 00d4 6973725F 		.ascii	"isr_counter_Start\000"
- 1693      636F756E 
- 1693      7465725F 
- 1693      53746172 
- 1693      7400
- 1694              	.LASF32:
- 1695 00e6 61646472 		.ascii	"address\000"
- 1695      65737300 
- 1696              	.LASF50:
- 1697 00ee 745F6861 		.ascii	"t_ha\000"
- 1697      00
- 1698              	.LASF34:
- 1699 00f3 6973725F 		.ascii	"isr_counter_GetVector\000"
- 1699      636F756E 
- 1699      7465725F 
- 1699      47657456 
- 1699      6563746F 
- 1700              	.LASF37:
- 1701 0109 6973725F 		.ascii	"isr_counter_Disable\000"
- 1701      636F756E 
- 1701      7465725F 
- 1701      44697361 
- 1701      626C6500 
- 1702              	.LASF4:
- 1703 011d 756E7369 		.ascii	"unsigned char\000"
- 1703      676E6564 
- 1703      20636861 
- 1703      7200
- 1704              	.LASF47:
- 1705 012b 5F756172 		.ascii	"_uart_Reset\000"
- 1705      745F5265 
- 1705      73657400 
- 1706              	.LASF2:
- 1707 0137 6C6F6E67 		.ascii	"long double\000"
- 1707      20646F75 
- 1707      626C6500 
- 1708              	.LASF22:
- 1709 0143 63796973 		.ascii	"cyisraddress\000"
- 1709      72616464 
- 1709      72657373 
- 1709      00
-ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 40
+ 1687              	.LASF7:
+ 1688 0088 6C6F6E67 		.ascii	"long int\000"
+ 1688      20696E74 
+ 1688      00
+ 1689              	.LASF38:
+ 1690 0091 6973725F 		.ascii	"isr_counter_Start\000"
+ 1690      636F756E 
+ 1690      7465725F 
+ 1690      53746172 
+ 1690      7400
+ 1691              	.LASF55:
+ 1692 00a3 433A5C55 		.ascii	"C:\\Users\\Gonzalo Olave\\Dropbox (Personal)\\Magis"
+ 1692      73657273 
+ 1692      5C476F6E 
+ 1692      7A616C6F 
+ 1692      204F6C61 
+ 1693 00d2 7465725C 		.ascii	"ter\\Tesis\\tesis-source\\master-tesis\\dedo_v01.cy"
+ 1693      54657369 
+ 1693      735C7465 
+ 1693      7369732D 
+ 1693      736F7572 
+ 1694 0101 64736E00 		.ascii	"dsn\000"
+ 1695              	.LASF32:
+ 1696 0105 61646472 		.ascii	"address\000"
+ 1696      65737300 
+ 1697              	.LASF50:
+ 1698 010d 745F6861 		.ascii	"t_ha\000"
+ 1698      00
+ 1699              	.LASF34:
+ 1700 0112 6973725F 		.ascii	"isr_counter_GetVector\000"
+ 1700      636F756E 
+ 1700      7465725F 
+ 1700      47657456 
+ 1700      6563746F 
+ 1701              	.LASF37:
+ 1702 0128 6973725F 		.ascii	"isr_counter_Disable\000"
+ 1702      636F756E 
+ 1702      7465725F 
+ 1702      44697361 
+ 1702      626C6500 
+ 1703              	.LASF4:
+ 1704 013c 756E7369 		.ascii	"unsigned char\000"
+ 1704      676E6564 
+ 1704      20636861 
+ 1704      7200
+ 1705              	.LASF47:
+ 1706 014a 5F756172 		.ascii	"_uart_Reset\000"
+ 1706      745F5265 
+ 1706      73657400 
+ 1707              	.LASF2:
+ 1708 0156 6C6F6E67 		.ascii	"long double\000"
+ 1708      20646F75 
+ 1708      626C6500 
+ 1709              	.LASF22:
+ 1710 0162 63796973 		.ascii	"cyisraddress\000"
+ 1710      72616464 
+ 1710      72657373 
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccAKYHzh.s 			page 40
 
 
- 1710              	.LASF54:
- 1711 0150 6973725F 		.ascii	"isr_counter.c\000"
- 1711      636F756E 
- 1711      7465722E 
- 1711      6300
- 1712              	.LASF45:
- 1713 015e 53656E64 		.ascii	"SendSingleByte\000"
- 1713      53696E67 
- 1713      6C654279 
- 1713      746500
- 1714              	.LASF3:
- 1715 016d 7369676E 		.ascii	"signed char\000"
- 1715      65642063 
- 1715      68617200 
- 1716              	.LASF9:
- 1717 0179 6C6F6E67 		.ascii	"long long unsigned int\000"
- 1717      206C6F6E 
- 1717      6720756E 
- 1717      7369676E 
- 1717      65642069 
- 1718              	.LASF31:
- 1719 0190 6973725F 		.ascii	"isr_counter_SetPriority\000"
- 1719      636F756E 
- 1719      7465725F 
- 1719      53657450 
- 1719      72696F72 
- 1720              	.LASF56:
- 1721 01a8 54527842 		.ascii	"TRxBuffer\000"
- 1721      75666665 
- 1721      7200
- 1722              	.LASF0:
- 1723 01b2 756E7369 		.ascii	"unsigned int\000"
- 1723      676E6564 
- 1723      20696E74 
- 1723      00
- 1724              	.LASF44:
- 1725 01bf 436F6E74 		.ascii	"ContinuouslySendData\000"
- 1725      696E756F 
- 1725      75736C79 
- 1725      53656E64 
- 1725      44617461 
- 1726              	.LASF42:
- 1727 01d4 6973725F 		.ascii	"isr_counter_ClearPending\000"
- 1727      636F756E 
- 1727      7465725F 
- 1727      436C6561 
- 1727      7250656E 
- 1728              	.LASF28:
- 1729 01ed 6973725F 		.ascii	"isr_counter_Interrupt\000"
- 1729      636F756E 
- 1729      7465725F 
- 1729      496E7465 
- 1729      72727570 
- 1730              	.LASF58:
- 1731 0203 54506172 		.ascii	"TParamBuffer\000"
- 1731      616D4275 
- 1731      66666572 
-ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 41
+ 1710      00
+ 1711              	.LASF54:
+ 1712 016f 6973725F 		.ascii	"isr_counter.c\000"
+ 1712      636F756E 
+ 1712      7465722E 
+ 1712      6300
+ 1713              	.LASF45:
+ 1714 017d 53656E64 		.ascii	"SendSingleByte\000"
+ 1714      53696E67 
+ 1714      6C654279 
+ 1714      746500
+ 1715              	.LASF3:
+ 1716 018c 7369676E 		.ascii	"signed char\000"
+ 1716      65642063 
+ 1716      68617200 
+ 1717              	.LASF9:
+ 1718 0198 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1718      206C6F6E 
+ 1718      6720756E 
+ 1718      7369676E 
+ 1718      65642069 
+ 1719              	.LASF31:
+ 1720 01af 6973725F 		.ascii	"isr_counter_SetPriority\000"
+ 1720      636F756E 
+ 1720      7465725F 
+ 1720      53657450 
+ 1720      72696F72 
+ 1721              	.LASF56:
+ 1722 01c7 54527842 		.ascii	"TRxBuffer\000"
+ 1722      75666665 
+ 1722      7200
+ 1723              	.LASF0:
+ 1724 01d1 756E7369 		.ascii	"unsigned int\000"
+ 1724      676E6564 
+ 1724      20696E74 
+ 1724      00
+ 1725              	.LASF44:
+ 1726 01de 436F6E74 		.ascii	"ContinuouslySendData\000"
+ 1726      696E756F 
+ 1726      75736C79 
+ 1726      53656E64 
+ 1726      44617461 
+ 1727              	.LASF42:
+ 1728 01f3 6973725F 		.ascii	"isr_counter_ClearPending\000"
+ 1728      636F756E 
+ 1728      7465725F 
+ 1728      436C6561 
+ 1728      7250656E 
+ 1729              	.LASF28:
+ 1730 020c 6973725F 		.ascii	"isr_counter_Interrupt\000"
+ 1730      636F756E 
+ 1730      7465725F 
+ 1730      496E7465 
+ 1730      72727570 
+ 1731              	.LASF58:
+ 1732 0222 54506172 		.ascii	"TParamBuffer\000"
+ 1732      616D4275 
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccAKYHzh.s 			page 41
 
 
- 1731      00
- 1732              	.LASF21:
- 1733 0210 72656733 		.ascii	"reg32\000"
- 1733      3200
- 1734              	.LASF46:
- 1735 0216 53656E64 		.ascii	"SendEmulatedData\000"
- 1735      456D756C 
- 1735      61746564 
- 1735      44617461 
- 1735      00
- 1736              	.LASF23:
- 1737 0227 76616C73 		.ascii	"valstr\000"
- 1737      747200
- 1738              	.LASF11:
- 1739 022e 63686172 		.ascii	"char\000"
- 1739      00
- 1740              	.LASF39:
- 1741 0233 6973725F 		.ascii	"isr_counter_StartEx\000"
- 1741      636F756E 
- 1741      7465725F 
- 1741      53746172 
- 1741      74457800 
- 1742              	.LASF13:
- 1743 0247 696E7433 		.ascii	"int32_t\000"
- 1743      325F7400 
- 1744              	.LASF6:
- 1745 024f 73686F72 		.ascii	"short unsigned int\000"
- 1745      7420756E 
- 1745      7369676E 
- 1745      65642069 
- 1745      6E7400
- 1746              	.LASF52:
- 1747 0262 6C617374 		.ascii	"last_count\000"
- 1747      5F636F75 
- 1747      6E7400
- 1748              	.LASF35:
- 1749 026d 6973725F 		.ascii	"isr_counter_GetPriority\000"
- 1749      636F756E 
- 1749      7465725F 
- 1749      47657450 
- 1749      72696F72 
- 1750              	.LASF57:
- 1751 0285 52785374 		.ascii	"RxStr\000"
- 1751      7200
- 1752              	.LASF30:
- 1753 028b 72616D56 		.ascii	"ramVectorTable\000"
- 1753      6563746F 
- 1753      72546162 
- 1753      6C6500
- 1754              	.LASF36:
- 1755 029a 6973725F 		.ascii	"isr_counter_Enable\000"
- 1755      636F756E 
- 1755      7465725F 
- 1755      456E6162 
- 1755      6C6500
- 1756              	.LASF27:
- 1757 02ad 50617261 		.ascii	"ParamBuffer\000"
-ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 42
+ 1732      66666572 
+ 1732      00
+ 1733              	.LASF21:
+ 1734 022f 72656733 		.ascii	"reg32\000"
+ 1734      3200
+ 1735              	.LASF46:
+ 1736 0235 53656E64 		.ascii	"SendEmulatedData\000"
+ 1736      456D756C 
+ 1736      61746564 
+ 1736      44617461 
+ 1736      00
+ 1737              	.LASF23:
+ 1738 0246 76616C73 		.ascii	"valstr\000"
+ 1738      747200
+ 1739              	.LASF11:
+ 1740 024d 63686172 		.ascii	"char\000"
+ 1740      00
+ 1741              	.LASF39:
+ 1742 0252 6973725F 		.ascii	"isr_counter_StartEx\000"
+ 1742      636F756E 
+ 1742      7465725F 
+ 1742      53746172 
+ 1742      74457800 
+ 1743              	.LASF13:
+ 1744 0266 696E7433 		.ascii	"int32_t\000"
+ 1744      325F7400 
+ 1745              	.LASF6:
+ 1746 026e 73686F72 		.ascii	"short unsigned int\000"
+ 1746      7420756E 
+ 1746      7369676E 
+ 1746      65642069 
+ 1746      6E7400
+ 1747              	.LASF52:
+ 1748 0281 6C617374 		.ascii	"last_count\000"
+ 1748      5F636F75 
+ 1748      6E7400
+ 1749              	.LASF35:
+ 1750 028c 6973725F 		.ascii	"isr_counter_GetPriority\000"
+ 1750      636F756E 
+ 1750      7465725F 
+ 1750      47657450 
+ 1750      72696F72 
+ 1751              	.LASF57:
+ 1752 02a4 52785374 		.ascii	"RxStr\000"
+ 1752      7200
+ 1753              	.LASF30:
+ 1754 02aa 72616D56 		.ascii	"ramVectorTable\000"
+ 1754      6563746F 
+ 1754      72546162 
+ 1754      6C6500
+ 1755              	.LASF36:
+ 1756 02b9 6973725F 		.ascii	"isr_counter_Enable\000"
+ 1756      636F756E 
+ 1756      7465725F 
+ 1756      456E6162 
+ 1756      6C6500
+ 1757              	.LASF27:
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccAKYHzh.s 			page 42
 
 
- 1757      6D427566 
- 1757      66657200 
- 1758              	.LASF41:
- 1759 02b9 6973725F 		.ascii	"isr_counter_SetPending\000"
- 1759      636F756E 
- 1759      7465725F 
- 1759      53657450 
- 1759      656E6469 
- 1760              	.LASF20:
- 1761 02d0 72656738 		.ascii	"reg8\000"
- 1761      00
- 1762              	.LASF8:
- 1763 02d5 6C6F6E67 		.ascii	"long unsigned int\000"
- 1763      20756E73 
- 1763      69676E65 
- 1763      6420696E 
- 1763      7400
- 1764              	.LASF15:
- 1765 02e7 75696E74 		.ascii	"uint32\000"
- 1765      333200
- 1766              	.LASF12:
- 1767 02ee 5F5F696E 		.ascii	"__int32_t\000"
- 1767      7433325F 
- 1767      7400
- 1768              	.LASF29:
- 1769 02f8 6973725F 		.ascii	"isr_counter_SetVector\000"
- 1769      636F756E 
- 1769      7465725F 
- 1769      53657456 
- 1769      6563746F 
- 1770              	.LASF10:
- 1771 030e 73697A65 		.ascii	"sizetype\000"
- 1771      74797065 
- 1771      00
- 1772              	.LASF19:
- 1773 0317 646F7562 		.ascii	"double\000"
- 1773      6C6500
- 1774              	.LASF43:
- 1775 031e 49544D5F 		.ascii	"ITM_RxBuffer\000"
- 1775      52784275 
- 1775      66666572 
- 1775      00
- 1776              	.LASF53:
- 1777 032b 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
- 1777      43313120 
- 1777      352E342E 
- 1777      31203230 
- 1777      31363036 
- 1778 035e 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m3 -mthumb -g -O"
- 1778      20726576 
- 1778      6973696F 
- 1778      6E203233 
- 1778      37373135 
- 1779 0391 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
- 1779      66756E63 
- 1779      74696F6E 
- 1779      2D736563 
-ARM GAS  C:\Users\growo\AppData\Local\Temp\ccpMiofE.s 			page 43
+ 1758 02cc 50617261 		.ascii	"ParamBuffer\000"
+ 1758      6D427566 
+ 1758      66657200 
+ 1759              	.LASF41:
+ 1760 02d8 6973725F 		.ascii	"isr_counter_SetPending\000"
+ 1760      636F756E 
+ 1760      7465725F 
+ 1760      53657450 
+ 1760      656E6469 
+ 1761              	.LASF20:
+ 1762 02ef 72656738 		.ascii	"reg8\000"
+ 1762      00
+ 1763              	.LASF8:
+ 1764 02f4 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1764      20756E73 
+ 1764      69676E65 
+ 1764      6420696E 
+ 1764      7400
+ 1765              	.LASF15:
+ 1766 0306 75696E74 		.ascii	"uint32\000"
+ 1766      333200
+ 1767              	.LASF12:
+ 1768 030d 5F5F696E 		.ascii	"__int32_t\000"
+ 1768      7433325F 
+ 1768      7400
+ 1769              	.LASF29:
+ 1770 0317 6973725F 		.ascii	"isr_counter_SetVector\000"
+ 1770      636F756E 
+ 1770      7465725F 
+ 1770      53657456 
+ 1770      6563746F 
+ 1771              	.LASF10:
+ 1772 032d 73697A65 		.ascii	"sizetype\000"
+ 1772      74797065 
+ 1772      00
+ 1773              	.LASF19:
+ 1774 0336 646F7562 		.ascii	"double\000"
+ 1774      6C6500
+ 1775              	.LASF43:
+ 1776 033d 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 1776      52784275 
+ 1776      66666572 
+ 1776      00
+ 1777              	.LASF53:
+ 1778 034a 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 1778      43313120 
+ 1778      352E342E 
+ 1778      31203230 
+ 1778      31363036 
+ 1779 037d 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m3 -mthumb -g -O"
+ 1779      20726576 
+ 1779      6973696F 
+ 1779      6E203233 
+ 1779      37373135 
+ 1780 03b0 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 1780      66756E63 
+ 1780      74696F6E 
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccAKYHzh.s 			page 43
 
 
- 1779      74696F6E 
- 1780              	.LASF26:
- 1781 03b9 6456616C 		.ascii	"dVal\000"
- 1781      00
- 1782              	.LASF60:
- 1783 03be 44697243 		.ascii	"DirCounter_GetCounter\000"
- 1783      6F756E74 
- 1783      65725F47 
- 1783      6574436F 
- 1783      756E7465 
- 1784              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran
+ 1780      2D736563 
+ 1780      74696F6E 
+ 1781              	.LASF26:
+ 1782 03d8 6456616C 		.ascii	"dVal\000"
+ 1782      00
+ 1783              	.LASF60:
+ 1784 03dd 44697243 		.ascii	"DirCounter_GetCounter\000"
+ 1784      6F756E74 
+ 1784      65725F47 
+ 1784      6574436F 
+ 1784      756E7465 
+ 1785              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

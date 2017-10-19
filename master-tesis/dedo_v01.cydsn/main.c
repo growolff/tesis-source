@@ -15,7 +15,7 @@
 void initHardware(void){
     
     ADC_Start();
-    ADC_tension_Start();
+    ADC_TS_Start();
     Timer_ha_Start();
     DirCounter_Start();
     VDAC8_Speed_Start();
@@ -53,13 +53,14 @@ int main(void)
     PID_setMinValue(&tens_pid_, -4096);
     
     int16 dir_count;
+    uint8 _braken_state = 0;
     
     char TransmitBuffer[TRANSMIT_BUFFER_SIZE];
    
     initHardware();
 
     ADC_StartConvert();
-    ADC_tension_StartConvert();
+    ADC_TS_StartConvert();
         
     /* Initialize Variables */
     ContinuouslySendData = FALSE;
@@ -89,6 +90,8 @@ int main(void)
         if(Ch == 'i'){
             sprintf(TransmitBuffer, "& INIT CTRL_TYPE = %d\r\n",CONTROL_TYPE);
             UART_PutString(TransmitBuffer);
+            sprintf(TransmitBuffer, "!%d\r\n",CONTROL_TYPE);
+            UART_PutString(TransmitBuffer);
             #if CONTROL_TYPE==1
                 sprintf(TransmitBuffer, "*%d*%d*%d\r\n",(int)(kp_pos*100.0),(int)(ki_pos*100.0),(int)(kd_pos*100.0));     
             #elif CONTROL_TYPE==2
@@ -102,7 +105,7 @@ int main(void)
         }
     }
     CyGlobalIntEnable; /* Enable global interrupts. */
-    BRAKEn_Write(1);
+    BRAKEn_Write(_braken_state);
     
     for(;;)
     {
@@ -114,11 +117,14 @@ int main(void)
                 ProcessCommandMsg();
             }
         }
+        if(ADC_TS_IsEndConversion(ADC_TS_RETURN_STATUS)!=0){
+            TS_array = StoreResults();
+        }
         
         dir_count = DirCounter_GetCounter();
         /* Place your application code here. */
         _pVal = ADC_GetResult8();
-        _tVal = ADC_tension_GetResult16();
+        _tVal = TS_array[0];
         
         #ifdef MANUAL_CONTROL
             VDAC8_Speed_SetValue((uint8)(_pVal));
@@ -142,54 +148,6 @@ int main(void)
         
         /* Check UART for any sent command */
         Ch = UART_GetChar();
-        
-        /* Set flags based on UART command */
-        switch(Ch)
-        {
-            case 0:
-                /* No new data was recieved */
-                break;
-            case 'C':
-            case 'c':
-                SendSingleByte = TRUE;
-                break;
-            case 'S':
-            case 's':
-                ContinuouslySendData = TRUE;
-                break;
-            case 'X':
-            case 'x':
-                ContinuouslySendData = FALSE;
-                break;
-            case 'E':
-            case 'e':
-                SendEmulatedData = TRUE;
-                break;
-            case 'q':
-                _uart_Reset = TRUE;
-                break;
-            case 'b':
-                BRAKEn_Write(FALSE);
-                break;
-            case '1':
-                pos_ref = -30;
-                break;
-            case '2':
-                pos_ref = -15;
-                break;
-            case '3':
-                pos_ref = 15;
-                break;
-            case '4':
-                pos_ref = 30;
-                break;
-            case '0':
-                pos_ref = 0;
-                break;
-            default:
-                /* Place error handling code here */
-                break;    
-        }
         
         /* Send data based on last UART command */
         if(SendSingleByte || ContinuouslySendData)

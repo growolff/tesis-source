@@ -1,4 +1,4 @@
-D:\Dropbox\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\TopDesign\TopDesign.cysch
+C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\TopDesign\TopDesign.cysch
 C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\cy_pins_v2_20\cy_pins_v2_20.cysym
 C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\cy_pins_v2_20\cy_pins_v2_20.pdf
 C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\cy_pins_v2_20\cy_pins_v2_20.cystate
@@ -38,6 +38,12 @@ C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyPrim
 C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\cy_pins_v2_20\PSoC5\API\aliases.h
 C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\cy_pins_v2_20\PSoC5\API\pins.c
 C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\cy_pins_v2_20\PSoC5\API\pins.h
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\Gnd_v1_0\Gnd_v1_0.cysym
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\Gnd_v1_0\Gnd_v1_0.pdf
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\Power_v1_0\Power_v1_0.cysym
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\Power_v1_0\Power_v1_0.pdf
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\Potentiometer_v1_0\Potentiometer_v1_0.cysym
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\Potentiometer_v1_0\Potentiometer_v1_0.pdf
 C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\ADC_SAR_v3_0\ADC_SAR_v3_0.cysym
 C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\ADC_SAR_v3_0\ADC_SAR_v3_0.pdf
 C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\ADC_SAR_v3_0\ADC_SAR_v3_0.cycdx
@@ -145,12 +151,6 @@ C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyPrim
 C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\cy_constant_v1_0\cy_constant_v1_0.pdf
 C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\cy_constant_v1_0
 C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\cy_constant_v1_0\Custom\custom.cs
-C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\Potentiometer_v1_0\Potentiometer_v1_0.cysym
-C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\Potentiometer_v1_0\Potentiometer_v1_0.pdf
-C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\Power_v1_0\Power_v1_0.cysym
-C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\Power_v1_0\Power_v1_0.pdf
-C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\Gnd_v1_0\Gnd_v1_0.cysym
-C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\Gnd_v1_0\Gnd_v1_0.pdf
 C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\UART_v2_50\UART_v2_50.cysch
 C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\UART_v2_50\UART_v2_50.cysym
 C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\UART_v2_50\UART_v2_50.pdf
@@ -255,30 +255,66 @@ C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyComp
 C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\VDAC8_v1_90\Custom\VDACControl.resx
 C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\cy_psoc3_vidac8_v1_0\cy_psoc3_vidac8_v1_0.cyprimitive
 C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\cy_psoc3_vidac8_v1_0\cy_psoc3_vidac8_v1_0.cysym
-C:\Users\growo\Documents\PSoC Creator\4.1\Downloads ( 4.1).cylib\Timer_v2_80\Timer_v2_80.cycdx
-C:\Users\growo\Documents\PSoC Creator\4.1\Downloads ( 4.1).cylib\Timer_v2_80\Timer_v2_80.cysym
-C:\Users\growo\Documents\PSoC Creator\4.1\Downloads ( 4.1).cylib\Timer_v2_80\Timer_v2_80.pdf
-C:\Users\growo\Documents\PSoC Creator\4.1\Downloads ( 4.1).cylib\Timer_v2_80\Timer_v2_80.cystate
-C:\Users\growo\Documents\PSoC Creator\4.1\Downloads ( 4.1).cylib\Timer_v2_80\API\Timer.c
-C:\Users\growo\Documents\PSoC Creator\4.1\Downloads ( 4.1).cylib\Timer_v2_80\API\Timer.h
-C:\Users\growo\Documents\PSoC Creator\4.1\Downloads ( 4.1).cylib\Timer_v2_80\API\Timer_PM.c
-C:\Users\growo\Documents\PSoC Creator\4.1\Downloads ( 4.1).cylib\Timer_v2_80\Custom\cycustomizer.cs
-C:\Users\growo\Documents\PSoC Creator\4.1\Downloads ( 4.1).cylib\Timer_v2_80\Custom\cyparameters.cs
-C:\Users\growo\Documents\PSoC Creator\4.1\Downloads ( 4.1).cylib\Timer_v2_80\Custom\Resources.Designer.cs
-C:\Users\growo\Documents\PSoC Creator\4.1\Downloads ( 4.1).cylib\Timer_v2_80\Custom\Utils\cyutils.cs
-C:\Users\growo\Documents\PSoC Creator\4.1\Downloads ( 4.1).cylib\Timer_v2_80\Custom\Utils\cyenums.cs
-C:\Users\growo\Documents\PSoC Creator\4.1\Downloads ( 4.1).cylib\Timer_v2_80\Custom\Utils\cyclock.cs
-C:\Users\growo\Documents\PSoC Creator\4.1\Downloads ( 4.1).cylib\Timer_v2_80\Custom\Utils\cyconstants.cs
-C:\Users\growo\Documents\PSoC Creator\4.1\Downloads ( 4.1).cylib\Timer_v2_80\Custom\Tabs\cytabbase.cs
-C:\Users\growo\Documents\PSoC Creator\4.1\Downloads ( 4.1).cylib\Timer_v2_80\Custom\Tabs\cytimercontrol.cs
-C:\Users\growo\Documents\PSoC Creator\4.1\Downloads ( 4.1).cylib\Timer_v2_80\Custom\Tabs\cytimercontrol.Designer.cs
-C:\Users\growo\Documents\PSoC Creator\4.1\Downloads ( 4.1).cylib\Timer_v2_80\Custom\Resources.resx
-C:\Users\growo\Documents\PSoC Creator\4.1\Downloads ( 4.1).cylib\Timer_v2_80\Custom\Tabs\cytimercontrol.resx
-C:\Users\growo\Documents\PSoC Creator\4.1\Downloads ( 4.1).cylib\Timer_v2_80\PSoC5\Timer_v2_80.cysch
-C:\Users\growo\Documents\PSoC Creator\4.1\Downloads ( 4.1).cylib\Timer_v2_80
-C:\Users\growo\Documents\PSoC Creator\4.1\Downloads ( 4.1).cylib\B_Timer_v2_80\B_Timer_v2_80.cysym
-C:\Users\growo\Documents\PSoC Creator\4.1\Downloads ( 4.1).cylib\B_Timer_v2_80\B_Timer_v2_80.v
-D:\Dropbox\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\dedo_v01.cydwr
+C:\Users\Gonzalo Olave\Documents\PSoC Creator\4.1\Downloads ( 4.1).cylib\Timer_v2_80\Timer_v2_80.cycdx
+C:\Users\Gonzalo Olave\Documents\PSoC Creator\4.1\Downloads ( 4.1).cylib\Timer_v2_80\Timer_v2_80.cysym
+C:\Users\Gonzalo Olave\Documents\PSoC Creator\4.1\Downloads ( 4.1).cylib\Timer_v2_80\Timer_v2_80.pdf
+C:\Users\Gonzalo Olave\Documents\PSoC Creator\4.1\Downloads ( 4.1).cylib\Timer_v2_80\Timer_v2_80.cystate
+C:\Users\Gonzalo Olave\Documents\PSoC Creator\4.1\Downloads ( 4.1).cylib\Timer_v2_80\API\Timer.c
+C:\Users\Gonzalo Olave\Documents\PSoC Creator\4.1\Downloads ( 4.1).cylib\Timer_v2_80\API\Timer.h
+C:\Users\Gonzalo Olave\Documents\PSoC Creator\4.1\Downloads ( 4.1).cylib\Timer_v2_80\API\Timer_PM.c
+C:\Users\Gonzalo Olave\Documents\PSoC Creator\4.1\Downloads ( 4.1).cylib\Timer_v2_80\Custom\cycustomizer.cs
+C:\Users\Gonzalo Olave\Documents\PSoC Creator\4.1\Downloads ( 4.1).cylib\Timer_v2_80\Custom\cyparameters.cs
+C:\Users\Gonzalo Olave\Documents\PSoC Creator\4.1\Downloads ( 4.1).cylib\Timer_v2_80\Custom\Resources.Designer.cs
+C:\Users\Gonzalo Olave\Documents\PSoC Creator\4.1\Downloads ( 4.1).cylib\Timer_v2_80\Custom\Utils\cyutils.cs
+C:\Users\Gonzalo Olave\Documents\PSoC Creator\4.1\Downloads ( 4.1).cylib\Timer_v2_80\Custom\Utils\cyenums.cs
+C:\Users\Gonzalo Olave\Documents\PSoC Creator\4.1\Downloads ( 4.1).cylib\Timer_v2_80\Custom\Utils\cyclock.cs
+C:\Users\Gonzalo Olave\Documents\PSoC Creator\4.1\Downloads ( 4.1).cylib\Timer_v2_80\Custom\Utils\cyconstants.cs
+C:\Users\Gonzalo Olave\Documents\PSoC Creator\4.1\Downloads ( 4.1).cylib\Timer_v2_80\Custom\Tabs\cytabbase.cs
+C:\Users\Gonzalo Olave\Documents\PSoC Creator\4.1\Downloads ( 4.1).cylib\Timer_v2_80\Custom\Tabs\cytimercontrol.cs
+C:\Users\Gonzalo Olave\Documents\PSoC Creator\4.1\Downloads ( 4.1).cylib\Timer_v2_80\Custom\Tabs\cytimercontrol.Designer.cs
+C:\Users\Gonzalo Olave\Documents\PSoC Creator\4.1\Downloads ( 4.1).cylib\Timer_v2_80\Custom\Resources.resx
+C:\Users\Gonzalo Olave\Documents\PSoC Creator\4.1\Downloads ( 4.1).cylib\Timer_v2_80\Custom\Tabs\cytimercontrol.resx
+C:\Users\Gonzalo Olave\Documents\PSoC Creator\4.1\Downloads ( 4.1).cylib\Timer_v2_80\PSoC5\Timer_v2_80.cysch
+C:\Users\Gonzalo Olave\Documents\PSoC Creator\4.1\Downloads ( 4.1).cylib\Timer_v2_80
+C:\Users\Gonzalo Olave\Documents\PSoC Creator\4.1\Downloads ( 4.1).cylib\B_Timer_v2_80\B_Timer_v2_80.cysym
+C:\Users\Gonzalo Olave\Documents\PSoC Creator\4.1\Downloads ( 4.1).cylib\B_Timer_v2_80\B_Timer_v2_80.v
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\ADC_SAR_SEQ_v2_0\ADC_SAR_SEQ_v2_0.cysym
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\ADC_SAR_SEQ_v2_0\ADC_SAR_SEQ_v2_0.pdf
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\ADC_SAR_SEQ_v2_0\ADC_SAR_SEQ_v2_0.cystate
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\ADC_SAR_SEQ_v2_0\Custom\cycustomizer.cs
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\ADC_SAR_SEQ_v2_0\Custom\cyconfigtab.Designer.cs
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\ADC_SAR_SEQ_v2_0\Custom\cyconfigtab.cs
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\ADC_SAR_SEQ_v2_0\Custom\cyparameters.cs
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\ADC_SAR_SEQ_v2_0\Custom\Resources.Designer.cs
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\ADC_SAR_SEQ_v2_0\Custom\cyshapebuilder.cs
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\ADC_SAR_SEQ_v2_0\Custom\cyconfigtab.resx
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\ADC_SAR_SEQ_v2_0\Custom\Resources.resx
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\ADC_SAR_SEQ_v2_0\PSoC5\ADC_SAR_SEQ_v2_0.cysch
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\ADC_SAR_SEQ_v2_0\PSoC5\API\ADC_SAR_SEQ.c
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\ADC_SAR_SEQ_v2_0\PSoC5\API\ADC_SAR_SEQ.h
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\ADC_SAR_SEQ_v2_0\PSoC5\API\ADC_SAR_SEQ_PM.c
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\ADC_SAR_SEQ_v2_0\PSoC5\API\ADC_SAR_SEQ_INT.c
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\ADC_AMUX_v2_0\ADC_AMUX_v2_0.cysym
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\ADC_AMUX_v2_0\ADC_AMUX_v2_0.v
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\ADC_AMUX_v2_0\Custom\cyverilogbuilder.cs
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\ADC_AMUX_v2_0\Custom\cyamuxcustomizer.cs
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\bADC_SAR_SEQ_v2_0\bADC_SAR_SEQ_v2_0.cysym
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\bADC_SAR_SEQ_v2_0\bADC_SAR_SEQ_v2_0.v
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\cy_dma_v1_70\cy_dma_v1_70.cyprimitive
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\cy_dma_v1_70\cy_dma_v1_70.cysym
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\cy_dma_v1_70\cy_dma_v1_70.pdf
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\cy_dma_v1_70\cy_dma_v1_70.cystate
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\cy_dma_v1_70\API\dma.c
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\cy_dma_v1_70\API\dma.h
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\cy_dma_v1_70\Custom\cycustomizer.cs
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\cy_dma_v1_70\Custom\cydmacontrol.cs
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\cy_dma_v1_70\Custom\cydmacontrol.designer.cs
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\cy_dma_v1_70\Custom\cydmacontrol.resx
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\cy_sync_v1_0\cy_sync_v1_0.cysym
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\cy_sync_v1_0\cy_sync_v1_0.pdf
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\cy_sync_v1_0\cy_sync_v1_0.v
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\cy_sync_v1_0\Custom\custom.cs
+C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\dedo_v01.cydwr
 C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\cy_boot_v5_60\PSoC5\API\cm3gcc.ld
 C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\cy_boot_v5_60\PSoC5\API\Cm3RealView.scat
 C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\cy_boot_v5_60\PSoC5\API\Cm3Start.c
