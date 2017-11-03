@@ -27,7 +27,10 @@ void MOTOR_init(MOTOR_t* motor)
     PID_setMaxValue(&motor->tns_controller, 4096);
     PID_setMinValue(&motor->tns_controller, -4096);
     
-    /* Initialize motor hardware */
+    motor->BRAKEn = 0;
+    motor->DIR = 1;
+    motor->ENABLE = 1;
+    
     
 }
 
@@ -54,16 +57,19 @@ void MOTOR_setSpdRef(MOTOR_t* motor, int32_t spdRef)
         motor->spd_controller.iTerm = 0;
     }
     motor->spdOutPID = PID_calculatePID(&motor->spd_controller,motor->curr_spd);
-    
-    // maps the pid_output to a 8bit number for pwm control of motor
-    //_pid_out = fn_mapper_8b(motor->spdOutPID,0,10000,0,255);
-    //debug = _pid_out;
-
-    #if defined(ANGLE_CONTROL) || defined(SPEED_CONTROL)
-            VDAC8_Speed_SetValue((uint8)(fn_mapper_8b(motor->spdOutPID,0,10000,0,255)));
-    #endif   
-    
+       
 }
 
+void MOTOR_ToggleHandBrake(MOTOR_t* motor)
+{
+    if (motor->BRAKEn == 0){
+        motor->BRAKEn = 1;                  // update motor status
+        PM1_BRAKEn_Write(motor->BRAKEn);    // write to BRAKEn pin
+    }
+    else{
+        motor->BRAKEn = 0;
+        PM1_BRAKEn_Write(motor->BRAKEn);
+    }    
+}
 
 /* [] END OF FILE */

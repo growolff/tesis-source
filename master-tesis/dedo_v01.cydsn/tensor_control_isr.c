@@ -190,7 +190,7 @@ CY_ISR(tensor_control_isr_Interrupt)
     
     tension_pid_output = PID_calculatePID(&tens_pid_,actual_tension);
     int aux = abs(tension_pid_output);
-    _pid_out = fn_mapper_8b(aux,0,4096,0,255);
+    //_pid_out = fn_mapper_8b(aux,0,4096,0,255);
     
     #ifdef TENDON_TENSION_CONTROL
         BRAKEn_Write(1);    

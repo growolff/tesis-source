@@ -1,5 +1,5 @@
 -- Project:   dedo_v01
--- Generated: 11/02/2017 18:03:15
+-- Generated: 11/03/2017 16:21:49
 -- PSoC Creator  4.1 Update 1
 
 ENTITY dedo_v01 IS
@@ -11,14 +11,11 @@ ENTITY dedo_v01 IS
         Tx_1(0)_PAD : OUT std_ulogic;
         PM1_input(0)_PAD : IN std_ulogic;
         PM1_input(1)_PAD : IN std_ulogic;
-        button_PIN(0)_PAD : IN std_ulogic;
-        led_PIN(0)_PAD : OUT std_ulogic;
-        PM2_output(0)_PAD : OUT std_ulogic;
-        PM2_output(1)_PAD : OUT std_ulogic;
-        PM2_output(2)_PAD : OUT std_ulogic;
-        PM2_output(3)_PAD : INOUT std_ulogic;
+        PM2_DIR(0)_PAD : IN std_ulogic;
+        PM2_BRAKEn(0)_PAD : IN std_ulogic;
         PM2_input(0)_PAD : IN std_ulogic;
-        PM2_input(1)_PAD : IN std_ulogic);
+        PM2_input(1)_PAD : IN std_ulogic;
+        PM2_ENABLE(0)_PAD : IN std_ulogic);
     ATTRIBUTE voltage_VDDABUF OF __DEFAULT__ : ENTITY IS 5e0;
     ATTRIBUTE voltage_VDDA OF __DEFAULT__ : ENTITY IS 5e0;
     ATTRIBUTE voltage_VUSB OF __DEFAULT__ : ENTITY IS 5e0;
@@ -65,7 +62,6 @@ ARCHITECTURE __DEFAULT__ OF dedo_v01 IS
     SIGNAL Net_750 : bit;
     ATTRIBUTE global_signal OF Net_750 : SIGNAL IS true;
     SIGNAL Net_750_local : bit;
-    SIGNAL Net_761 : bit;
     SIGNAL Net_787 : bit;
     SIGNAL Net_788 : bit;
     SIGNAL Net_804 : bit;
@@ -77,12 +73,12 @@ ARCHITECTURE __DEFAULT__ OF dedo_v01 IS
     SIGNAL PM1_SPEED(0)__PA : bit;
     SIGNAL PM1_input(0)__PA : bit;
     SIGNAL PM1_input(1)__PA : bit;
+    SIGNAL PM2_BRAKEn(0)__PA : bit;
+    SIGNAL PM2_DIR(0)__PA : bit;
+    SIGNAL PM2_ENABLE(0)__PA : bit;
+    SIGNAL PM2_SPEED(0)__PA : bit;
     SIGNAL PM2_input(0)__PA : bit;
     SIGNAL PM2_input(1)__PA : bit;
-    SIGNAL PM2_output(0)__PA : bit;
-    SIGNAL PM2_output(1)__PA : bit;
-    SIGNAL PM2_output(2)__PA : bit;
-    SIGNAL PM2_output(3)__PA : bit;
     SIGNAL Rx_1(0)__PA : bit;
     SIGNAL Tx_1(0)__PA : bit;
     SIGNAL \\\ADC:Bypass(0)\\__PA\ : bit;
@@ -386,8 +382,6 @@ ARCHITECTURE __DEFAULT__ OF dedo_v01 IS
     ATTRIBUTE POWER OF __ONE__ : SIGNAL IS true;
     SIGNAL __ZERO__ : bit;
     ATTRIBUTE GROUND OF __ZERO__ : SIGNAL IS true;
-    SIGNAL button_PIN(0)__PA : bit;
-    SIGNAL led_PIN(0)__PA : bit;
     SIGNAL pote_PIN(0)__PA : bit;
     SIGNAL tension_PIN(0)__PA : bit;
     SIGNAL tmpOE__PM1_DIR_net_0 : bit;
@@ -509,25 +503,15 @@ ARCHITECTURE __DEFAULT__ OF dedo_v01 IS
     ATTRIBUTE Location OF PM1_input(0) : LABEL IS "P2[4]";
     ATTRIBUTE lib_model OF PM1_input(1) : LABEL IS "iocell9";
     ATTRIBUTE Location OF PM1_input(1) : LABEL IS "P2[5]";
-    ATTRIBUTE lib_model OF button_PIN(0) : LABEL IS "iocell10";
-    ATTRIBUTE Location OF button_PIN(0) : LABEL IS "P2[2]";
-    ATTRIBUTE lib_model OF led_PIN(0) : LABEL IS "iocell11";
-    ATTRIBUTE Location OF led_PIN(0) : LABEL IS "P2[1]";
-    ATTRIBUTE lib_model OF tension_PIN(0) : LABEL IS "iocell12";
+    ATTRIBUTE lib_model OF tension_PIN(0) : LABEL IS "iocell10";
     ATTRIBUTE Location OF tension_PIN(0) : LABEL IS "P3[6]";
-    ATTRIBUTE lib_model OF PM2_output(0) : LABEL IS "iocell13";
-    ATTRIBUTE Location OF PM2_output(0) : LABEL IS "P1[5]";
-    ATTRIBUTE lib_model OF PM2_output(1) : LABEL IS "iocell14";
-    ATTRIBUTE Location OF PM2_output(1) : LABEL IS "P1[6]";
-    ATTRIBUTE lib_model OF PM2_output(2) : LABEL IS "iocell15";
-    ATTRIBUTE Location OF PM2_output(2) : LABEL IS "P1[7]";
-    ATTRIBUTE lib_model OF PM2_output(3) : LABEL IS "iocell16";
-    ATTRIBUTE Location OF PM2_output(3) : LABEL IS "P3[4]";
-    ATTRIBUTE lib_model OF PM1_SPEED(0) : LABEL IS "iocell17";
+    ATTRIBUTE lib_model OF PM2_SPEED(0) : LABEL IS "iocell11";
+    ATTRIBUTE Location OF PM2_SPEED(0) : LABEL IS "P1[5]";
+    ATTRIBUTE lib_model OF PM1_SPEED(0) : LABEL IS "iocell12";
     ATTRIBUTE Location OF PM1_SPEED(0) : LABEL IS "P3[5]";
-    ATTRIBUTE lib_model OF PM2_input(0) : LABEL IS "iocell18";
+    ATTRIBUTE lib_model OF PM2_input(0) : LABEL IS "iocell13";
     ATTRIBUTE Location OF PM2_input(0) : LABEL IS "P2[6]";
-    ATTRIBUTE lib_model OF PM2_input(1) : LABEL IS "iocell19";
+    ATTRIBUTE lib_model OF PM2_input(1) : LABEL IS "iocell14";
     ATTRIBUTE Location OF PM2_input(1) : LABEL IS "P2[7]";
     ATTRIBUTE lib_model OF Net_234 : LABEL IS "macrocell1";
     ATTRIBUTE lib_model OF \UART:BUART:counter_load_not\ : LABEL IS "macrocell2";
@@ -563,13 +547,14 @@ ARCHITECTURE __DEFAULT__ OF dedo_v01 IS
     ATTRIBUTE lib_model OF \UART:BUART:sTX:TxSts\ : LABEL IS "statusicell1";
     ATTRIBUTE lib_model OF \UART:BUART:sRX:RxShifter:u0\ : LABEL IS "datapathcell3";
     ATTRIBUTE lib_model OF \UART:BUART:sRX:RxSts\ : LABEL IS "statusicell2";
+    ATTRIBUTE Location OF \PM2_SPD_VDAC8:viDAC8\ : LABEL IS "F(VIDAC,1)";
     ATTRIBUTE lib_model OF \PM1_HA_TIMER:TimerUDB:sCTRLReg:SyncCtl:ctrlreg\ : LABEL IS "controlcell1";
     ATTRIBUTE lib_model OF \PM1_HA_TIMER:TimerUDB:rstSts:stsreg\ : LABEL IS "statusicell3";
     ATTRIBUTE lib_model OF \PM1_HA_TIMER:TimerUDB:sT32:timerdp:u0\ : LABEL IS "datapathcell4";
     ATTRIBUTE lib_model OF \PM1_HA_TIMER:TimerUDB:sT32:timerdp:u1\ : LABEL IS "datapathcell5";
     ATTRIBUTE lib_model OF \PM1_HA_TIMER:TimerUDB:sT32:timerdp:u2\ : LABEL IS "datapathcell6";
     ATTRIBUTE lib_model OF \PM1_HA_TIMER:TimerUDB:sT32:timerdp:u3\ : LABEL IS "datapathcell7";
-    ATTRIBUTE Location OF \VDAC8_Speed:viDAC8\ : LABEL IS "F(VIDAC,3)";
+    ATTRIBUTE Location OF \PM1_SPD_VDAC8:viDAC8\ : LABEL IS "F(VIDAC,3)";
     ATTRIBUTE lib_model OF \PM1_DirCounter:Cnt16:CounterUDB:sCTRLReg:ctrlreg\ : LABEL IS "controlcell2";
     ATTRIBUTE lib_model OF \PM1_DirCounter:Cnt16:CounterUDB:sSTSReg:stsreg\ : LABEL IS "statusicell4";
     ATTRIBUTE lib_model OF \PM1_DirCounter:Cnt16:CounterUDB:sC16:counterdp:u0\ : LABEL IS "datapathcell8";
@@ -1903,17 +1888,17 @@ BEGIN
             out_clock_en => '1',
             out_reset => '0');
 
-    button_PIN:logicalport
+    PM2_DIR:logicalport
         GENERIC MAP(
-            drive_mode => "010",
-            ibuf_enabled => "1",
-            id => "fa76ee6e-81d2-4a3a-a6ab-0835caa42ba1",
-            init_dr_st => "1",
+            drive_mode => "000",
+            ibuf_enabled => "0",
+            id => "01860db3-844c-4430-8a57-1d23e3eedf15",
+            init_dr_st => "0",
             input_buffer_sel => "00",
             input_clk_en => 0,
-            input_sync => "1",
+            input_sync => "0",
             input_sync_mode => "0",
-            intr_mode => "10",
+            intr_mode => "00",
             invert_in_clock => 0,
             invert_in_clock_en => 0,
             invert_in_reset => 0,
@@ -1921,7 +1906,7 @@ BEGIN
             invert_out_clock_en => 0,
             invert_out_reset => 0,
             io_voltage => "",
-            layout_mode => "CONTIGUOUS",
+            layout_mode => "NONCONTIGUOUS",
             oe_conn => "0",
             oe_reset => 0,
             oe_sync => "0",
@@ -1955,7 +1940,7 @@ BEGIN
             sio_vohsel => "00000000",
             sio_vtrip => "00000000",
             slew_rate => "0",
-            spanning => 0,
+            spanning => 1,
             sw_only => 0,
             use_annotation => "0",
             vtrip => "00",
@@ -1972,38 +1957,36 @@ BEGIN
             in_clock_en => open,
             in_reset => open,
             out_clock_en => open,
-            out_reset => open,
-            interrupt => Net_761,
-            in_clock => open);
+            out_reset => open);
 
-    button_PIN(0):iocell
+    PM2_DIR(0):iocell
         GENERIC MAP(
-            in_sync_mode => 2,
+            in_sync_mode => 0,
             out_sync_mode => 0,
             oe_sync_mode => 0,
-            logicalport => "button_PIN",
+            logicalport => "PM2_DIR",
             logicalport_pin_id => 0,
-            io_capabilities => "0000000000000000000000000001000000000000000000000000000000000101")
+            io_capabilities => "0000000000000000000000000000000000000000000000000000000000000001")
         PORT MAP(
-            pa_out => button_PIN(0)__PA,
+            pa_out => PM2_DIR(0)__PA,
             oe => open,
-            pad_in => button_PIN(0)_PAD,
-            in_clock => ClockBlock_BUS_CLK,
+            pad_in => PM2_DIR(0)_PAD,
+            in_clock => open,
             in_clock_en => '1',
             in_reset => '0',
             out_clock => open,
             out_clock_en => '1',
             out_reset => '0');
 
-    led_PIN:logicalport
+    PM2_BRAKEn:logicalport
         GENERIC MAP(
-            drive_mode => "110",
-            ibuf_enabled => "1",
-            id => "53c57316-a302-4530-b5fd-921b566a2261",
+            drive_mode => "000",
+            ibuf_enabled => "0",
+            id => "abac844f-b57b-478c-9fe3-9969873abd7a",
             init_dr_st => "0",
             input_buffer_sel => "00",
             input_clk_en => 0,
-            input_sync => "1",
+            input_sync => "0",
             input_sync_mode => "0",
             intr_mode => "00",
             invert_in_clock => 0,
@@ -2013,7 +1996,7 @@ BEGIN
             invert_out_clock_en => 0,
             invert_out_reset => 0,
             io_voltage => "",
-            layout_mode => "CONTIGUOUS",
+            layout_mode => "NONCONTIGUOUS",
             oe_conn => "0",
             oe_reset => 0,
             oe_sync => "0",
@@ -2033,7 +2016,7 @@ BEGIN
             pa_out_clock_en => -1,
             pa_out_reset => -1,
             pin_aliases => "",
-            pin_mode => "O",
+            pin_mode => "I",
             por_state => 4,
             port_alias_group => "",
             port_alias_required => 0,
@@ -2047,10 +2030,10 @@ BEGIN
             sio_vohsel => "00000000",
             sio_vtrip => "00000000",
             slew_rate => "0",
-            spanning => 0,
+            spanning => 1,
             sw_only => 0,
             use_annotation => "0",
-            vtrip => "10",
+            vtrip => "00",
             width => 1,
             in_clk_inv => 0,
             in_clken_inv => 0,
@@ -2066,18 +2049,18 @@ BEGIN
             out_clock_en => open,
             out_reset => open);
 
-    led_PIN(0):iocell
+    PM2_BRAKEn(0):iocell
         GENERIC MAP(
             in_sync_mode => 0,
             out_sync_mode => 0,
             oe_sync_mode => 0,
-            logicalport => "led_PIN",
+            logicalport => "PM2_BRAKEn",
             logicalport_pin_id => 0,
             io_capabilities => "0000000000000000000000000000000000000000000000000000000000000001")
         PORT MAP(
-            pa_out => led_PIN(0)__PA,
+            pa_out => PM2_BRAKEn(0)__PA,
             oe => open,
-            pad_in => led_PIN(0)_PAD,
+            pad_in => PM2_BRAKEn(0)_PAD,
             in_clock => open,
             in_clock_en => '1',
             in_reset => '0',
@@ -2175,63 +2158,63 @@ BEGIN
             out_clock_en => '1',
             out_reset => '0');
 
-    PM2_output:logicalport
+    PM2_SPEED:logicalport
         GENERIC MAP(
-            drive_mode => "110110110000",
-            ibuf_enabled => "1110",
+            drive_mode => "000",
+            ibuf_enabled => "0",
             id => "35cd8696-2b04-4b14-a921-251025d69b19",
-            init_dr_st => "0000",
-            input_buffer_sel => "00000000",
+            init_dr_st => "0",
+            input_buffer_sel => "00",
             input_clk_en => 0,
-            input_sync => "1111",
-            input_sync_mode => "0000",
-            intr_mode => "00000000",
+            input_sync => "1",
+            input_sync_mode => "0",
+            intr_mode => "00",
             invert_in_clock => 0,
             invert_in_clock_en => 0,
             invert_in_reset => 0,
             invert_out_clock => 0,
             invert_out_clock_en => 0,
             invert_out_reset => 0,
-            io_voltage => ",,,",
+            io_voltage => "",
             layout_mode => "NONCONTIGUOUS",
-            oe_conn => "0000",
+            oe_conn => "0",
             oe_reset => 0,
-            oe_sync => "0000",
+            oe_sync => "0",
             output_clk_en => 0,
-            output_clock_mode => "0000",
-            output_conn => "0000",
-            output_mode => "0000",
+            output_clock_mode => "0",
+            output_conn => "0",
+            output_mode => "0",
             output_reset => 0,
-            output_sync => "0000",
-            ovt_hyst_trim => "0000",
-            ovt_needed => "0000",
-            ovt_slew_control => "00000000",
+            output_sync => "0",
+            ovt_hyst_trim => "0",
+            ovt_needed => "0",
+            ovt_slew_control => "00",
             pa_in_clock => -1,
             pa_in_clock_en => -1,
             pa_in_reset => -1,
             pa_out_clock => -1,
             pa_out_clock_en => -1,
             pa_out_reset => -1,
-            pin_aliases => "PM2_BRAKEn,PM2_DIR,PM2_ENABLE,PM2_SPEED",
-            pin_mode => "OOOA",
+            pin_aliases => "",
+            pin_mode => "A",
             por_state => 4,
             port_alias_group => "",
             port_alias_required => 0,
             sio_group_cnt => 0,
             sio_hifreq => "00000000",
-            sio_hyst => "1111",
+            sio_hyst => "1",
             sio_ibuf => "00000000",
-            sio_info => "00000000",
+            sio_info => "00",
             sio_obuf => "00000000",
             sio_refsel => "00000000",
             sio_vohsel => "00000000",
             sio_vtrip => "00000000",
-            slew_rate => "0000",
+            slew_rate => "0",
             spanning => 1,
             sw_only => 0,
-            use_annotation => "0000",
-            vtrip => "10101010",
-            width => 4,
+            use_annotation => "0",
+            vtrip => "10",
+            width => 1,
             in_clk_inv => 0,
             in_clken_inv => 0,
             in_clken_mode => 1,
@@ -2246,75 +2229,17 @@ BEGIN
             out_clock_en => open,
             out_reset => open);
 
-    PM2_output(0):iocell
+    PM2_SPEED(0):iocell
         GENERIC MAP(
             in_sync_mode => 0,
             out_sync_mode => 0,
             oe_sync_mode => 0,
-            logicalport => "PM2_output",
+            logicalport => "PM2_SPEED",
             logicalport_pin_id => 0,
-            io_capabilities => "0000000000000000000000000000000000000000000000000000000000000001")
-        PORT MAP(
-            pa_out => PM2_output(0)__PA,
-            oe => open,
-            pad_in => PM2_output(0)_PAD,
-            in_clock => open,
-            in_clock_en => '1',
-            in_reset => '0',
-            out_clock => open,
-            out_clock_en => '1',
-            out_reset => '0');
-
-    PM2_output(1):iocell
-        GENERIC MAP(
-            in_sync_mode => 0,
-            out_sync_mode => 0,
-            oe_sync_mode => 0,
-            logicalport => "PM2_output",
-            logicalport_pin_id => 1,
-            io_capabilities => "0000000000000000000000000000000000000000000000000000000000000001")
-        PORT MAP(
-            pa_out => PM2_output(1)__PA,
-            oe => open,
-            pad_in => PM2_output(1)_PAD,
-            in_clock => open,
-            in_clock_en => '1',
-            in_reset => '0',
-            out_clock => open,
-            out_clock_en => '1',
-            out_reset => '0');
-
-    PM2_output(2):iocell
-        GENERIC MAP(
-            in_sync_mode => 0,
-            out_sync_mode => 0,
-            oe_sync_mode => 0,
-            logicalport => "PM2_output",
-            logicalport_pin_id => 2,
-            io_capabilities => "0000000000000000000000000000000000000000000000000000000000000001")
-        PORT MAP(
-            pa_out => PM2_output(2)__PA,
-            oe => open,
-            pad_in => PM2_output(2)_PAD,
-            in_clock => open,
-            in_clock_en => '1',
-            in_reset => '0',
-            out_clock => open,
-            out_clock_en => '1',
-            out_reset => '0');
-
-    PM2_output(3):iocell
-        GENERIC MAP(
-            in_sync_mode => 0,
-            out_sync_mode => 0,
-            oe_sync_mode => 0,
-            logicalport => "PM2_output",
-            logicalport_pin_id => 3,
             io_capabilities => "0000000000000000000000000000000000000000000000000000000000000010")
         PORT MAP(
-            pa_out => PM2_output(3)__PA,
+            pa_out => PM2_SPEED(0)__PA,
             oe => open,
-            pad_in => PM2_output(3)_PAD,
             in_clock => open,
             in_clock_en => '1',
             in_reset => '0',
@@ -2359,7 +2284,7 @@ BEGIN
             pa_out_clock => -1,
             pa_out_clock_en => -1,
             pa_out_reset => -1,
-            pin_aliases => "PM1_BRAKEn",
+            pin_aliases => "",
             pin_mode => "A",
             por_state => 4,
             port_alias_group => "",
@@ -2515,6 +2440,96 @@ BEGIN
             oe => open,
             fb => Net_323,
             pad_in => PM2_input(1)_PAD,
+            in_clock => open,
+            in_clock_en => '1',
+            in_reset => '0',
+            out_clock => open,
+            out_clock_en => '1',
+            out_reset => '0');
+
+    PM2_ENABLE:logicalport
+        GENERIC MAP(
+            drive_mode => "000",
+            ibuf_enabled => "0",
+            id => "e40f635c-dfd2-446e-9f4f-e4e41856c611",
+            init_dr_st => "0",
+            input_buffer_sel => "00",
+            input_clk_en => 0,
+            input_sync => "0",
+            input_sync_mode => "0",
+            intr_mode => "00",
+            invert_in_clock => 0,
+            invert_in_clock_en => 0,
+            invert_in_reset => 0,
+            invert_out_clock => 0,
+            invert_out_clock_en => 0,
+            invert_out_reset => 0,
+            io_voltage => "",
+            layout_mode => "NONCONTIGUOUS",
+            oe_conn => "0",
+            oe_reset => 0,
+            oe_sync => "0",
+            output_clk_en => 0,
+            output_clock_mode => "0",
+            output_conn => "0",
+            output_mode => "0",
+            output_reset => 0,
+            output_sync => "0",
+            ovt_hyst_trim => "0",
+            ovt_needed => "0",
+            ovt_slew_control => "00",
+            pa_in_clock => -1,
+            pa_in_clock_en => -1,
+            pa_in_reset => -1,
+            pa_out_clock => -1,
+            pa_out_clock_en => -1,
+            pa_out_reset => -1,
+            pin_aliases => "",
+            pin_mode => "I",
+            por_state => 4,
+            port_alias_group => "",
+            port_alias_required => 0,
+            sio_group_cnt => 0,
+            sio_hifreq => "00000000",
+            sio_hyst => "1",
+            sio_ibuf => "00000000",
+            sio_info => "00",
+            sio_obuf => "00000000",
+            sio_refsel => "00000000",
+            sio_vohsel => "00000000",
+            sio_vtrip => "00000000",
+            slew_rate => "0",
+            spanning => 1,
+            sw_only => 0,
+            use_annotation => "0",
+            vtrip => "00",
+            width => 1,
+            in_clk_inv => 0,
+            in_clken_inv => 0,
+            in_clken_mode => 1,
+            in_rst_inv => 0,
+            out_clk_inv => 0,
+            out_clken_inv => 0,
+            out_clken_mode => 1,
+            out_rst_inv => 0)
+        PORT MAP(
+            in_clock_en => open,
+            in_reset => open,
+            out_clock_en => open,
+            out_reset => open);
+
+    PM2_ENABLE(0):iocell
+        GENERIC MAP(
+            in_sync_mode => 0,
+            out_sync_mode => 0,
+            oe_sync_mode => 0,
+            logicalport => "PM2_ENABLE",
+            logicalport_pin_id => 0,
+            io_capabilities => "0000000000000000000000000000000000000000000000000000000000000001")
+        PORT MAP(
+            pa_out => PM2_ENABLE(0)__PA,
+            oe => open,
+            pad_in => PM2_ENABLE(0)_PAD,
             in_clock => open,
             in_clock_en => '1',
             in_reset => '0',
@@ -3050,7 +3065,7 @@ BEGIN
             interrupt => Net_431_local,
             clock => ClockBlock_BUS_CLK);
 
-    vel_control_isr:interrupt
+    SPD_COMMAND_ISR:interrupt
         GENERIC MAP(
             int_type => "00",
             is_nmi => 0)
@@ -3058,13 +3073,15 @@ BEGIN
             interrupt => Net_804_local,
             clock => ClockBlock_BUS_CLK);
 
-    isr_button:interrupt
+    \PM2_SPD_VDAC8:viDAC8\:vidaccell
         GENERIC MAP(
-            int_type => "00",
-            is_nmi => 0)
+            cy_registers => "",
+            is_all_if_any => 0,
+            reg_data => 0)
         PORT MAP(
-            interrupt => Net_761,
-            clock => ClockBlock_BUS_CLK);
+            reset => open,
+            idir => open,
+            ioff => open);
 
     tensor_control_isr:interrupt
         GENERIC MAP(
@@ -3358,7 +3375,7 @@ BEGIN
             sor => \PM1_HA_TIMER:TimerUDB:sT32:timerdp:u3.sor__sig\,
             cmsbo => \PM1_HA_TIMER:TimerUDB:sT32:timerdp:u3.cmsbo__sig\);
 
-    \VDAC8_Speed:viDAC8\:vidaccell
+    \PM1_SPD_VDAC8:viDAC8\:vidaccell
         GENERIC MAP(
             cy_registers => "",
             is_all_if_any => 0,
@@ -3740,7 +3757,7 @@ BEGIN
 
     PM2_HA_ISR:interrupt
         GENERIC MAP(
-            int_type => "10",
+            int_type => "00",
             is_nmi => 0)
         PORT MAP(
             interrupt => Net_339,

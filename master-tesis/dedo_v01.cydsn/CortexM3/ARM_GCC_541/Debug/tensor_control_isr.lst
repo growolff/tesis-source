@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 1
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cc9R2PO9.s 			page 1
 
 
    1              		.syntax unified
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 1
   28:tensor_control_isr.c **** ********************************************************************************/
   29:tensor_control_isr.c **** /* `#START tensor_control_isr_intc` */
   30:tensor_control_isr.c **** 
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 2
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cc9R2PO9.s 			page 2
 
 
   31:tensor_control_isr.c **** #include <global.h>
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 1
   85:tensor_control_isr.c ****     /* Enable it. */
   86:tensor_control_isr.c ****     tensor_control_isr_Enable();
   87:tensor_control_isr.c **** }
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 3
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cc9R2PO9.s 			page 3
 
 
   88:tensor_control_isr.c **** 
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 1
  142:tensor_control_isr.c **** *
  143:tensor_control_isr.c **** * Return:
  144:tensor_control_isr.c **** *   None
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 4
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cc9R2PO9.s 			page 4
 
 
  145:tensor_control_isr.c **** *
@@ -215,13 +215,12 @@ ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 1
   29              		.cfi_startproc
   30              		@ args = 0, pretend = 0, frame = 0
   31              		@ frame_needed = 0, uses_anonymous_args = 0
-  32 0000 30B5     		push	{r4, r5, lr}
-  33              		.cfi_def_cfa_offset 12
-  34              		.cfi_offset 4, -12
-  35              		.cfi_offset 5, -8
-  36              		.cfi_offset 14, -4
-  37 0002 83B0     		sub	sp, sp, #12
-  38              		.cfi_def_cfa_offset 24
+  32 0000 38B5     		push	{r3, r4, r5, lr}
+  33              		.cfi_def_cfa_offset 16
+  34              		.cfi_offset 3, -16
+  35              		.cfi_offset 4, -12
+  36              		.cfi_offset 5, -8
+  37              		.cfi_offset 14, -4
  175:tensor_control_isr.c ****     #ifdef tensor_control_isr_INTERRUPT_INTERRUPT_CALLBACK
  176:tensor_control_isr.c ****         tensor_control_isr_Interrupt_InterruptCallback();
  177:tensor_control_isr.c ****     #endif /* tensor_control_isr_INTERRUPT_INTERRUPT_CALLBACK */ 
@@ -235,50 +234,56 @@ ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 1
  185:tensor_control_isr.c ****     //float RT = P[0]+P[1]*current_pos+P[2]*(current_pos^2)+P[3]*(current_pos^3)+P[4]*(current_pos^
  186:tensor_control_isr.c ****     
  187:tensor_control_isr.c ****     actual_tension = _tVal;
-  39              		.loc 1 187 0
-  40 0004 0F4B     		ldr	r3, .L3
-  41 0006 1B88     		ldrh	r3, [r3]
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 5
+  38              		.loc 1 187 0
+  39 0002 094B     		ldr	r3, .L3
+  40 0004 1B88     		ldrh	r3, [r3]
+  41 0006 1BB2     		sxth	r3, r3
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cc9R2PO9.s 			page 5
 
 
-  42 0008 1BB2     		sxth	r3, r3
-  43 000a 0F4D     		ldr	r5, .L3+4
-  44 000c 2B60     		str	r3, [r5]
+  42 0008 084D     		ldr	r5, .L3+4
+  43 000a 2B60     		str	r3, [r5]
  188:tensor_control_isr.c ****     
  189:tensor_control_isr.c ****     PID_setRef(&tens_pid_,tension_ref);
-  45              		.loc 1 189 0
-  46 000e 0F4B     		ldr	r3, .L3+8
-  47 0010 1968     		ldr	r1, [r3]
-  48 0012 0F4C     		ldr	r4, .L3+12
-  49 0014 2046     		mov	r0, r4
-  50 0016 FFF7FEFF 		bl	PID_setRef
-  51              	.LVL0:
+  44              		.loc 1 189 0
+  45 000c 084B     		ldr	r3, .L3+8
+  46 000e 1968     		ldr	r1, [r3]
+  47 0010 084C     		ldr	r4, .L3+12
+  48 0012 2046     		mov	r0, r4
+  49 0014 FFF7FEFF 		bl	PID_setRef
+  50              	.LVL0:
  190:tensor_control_isr.c ****     
  191:tensor_control_isr.c ****     tension_pid_output = PID_calculatePID(&tens_pid_,actual_tension);
-  52              		.loc 1 191 0
-  53 001a 2968     		ldr	r1, [r5]
-  54 001c 2046     		mov	r0, r4
-  55 001e FFF7FEFF 		bl	PID_calculatePID
-  56              	.LVL1:
-  57 0022 0C4B     		ldr	r3, .L3+16
-  58 0024 1860     		str	r0, [r3]
-  59              	.LVL2:
+  51              		.loc 1 191 0
+  52 0018 2968     		ldr	r1, [r5]
+  53 001a 2046     		mov	r0, r4
+  54 001c FFF7FEFF 		bl	PID_calculatePID
+  55              	.LVL1:
+  56 0020 054B     		ldr	r3, .L3+16
+  57 0022 1860     		str	r0, [r3]
+  58              	.LVL2:
+  59 0024 38BD     		pop	{r3, r4, r5, pc}
+  60              	.L4:
+  61 0026 00BF     		.align	2
+  62              	.L3:
+  63 0028 00000000 		.word	_tVal
+  64 002c 00000000 		.word	actual_tension
+  65 0030 00000000 		.word	tension_ref
+  66 0034 00000000 		.word	tens_pid_
+  67 0038 00000000 		.word	tension_pid_output
+  68              		.cfi_endproc
+  69              	.LFE67:
+  70              		.size	tensor_control_isr_Interrupt, .-tensor_control_isr_Interrupt
+  71              		.section	.text.tensor_control_isr_SetVector,"ax",%progbits
+  72              		.align	2
+  73              		.global	tensor_control_isr_SetVector
+  74              		.thumb
+  75              		.thumb_func
+  76              		.type	tensor_control_isr_SetVector, %function
+  77              	tensor_control_isr_SetVector:
+  78              	.LFB68:
  192:tensor_control_isr.c ****     int aux = abs(tension_pid_output);
- 193:tensor_control_isr.c ****     _pid_out = fn_mapper_8b(aux,0,4096,0,255);
-  60              		.loc 1 193 0
-  61 0026 FF23     		movs	r3, #255
-  62 0028 0093     		str	r3, [sp]
-  63 002a 0023     		movs	r3, #0
-  64 002c 4FF48052 		mov	r2, #4096
-  65 0030 1946     		mov	r1, r3
-  66 0032 0028     		cmp	r0, #0
-  67 0034 B8BF     		it	lt
-  68 0036 4042     		rsblt	r0, r0, #0
-  69              	.LVL3:
-  70 0038 FFF7FEFF 		bl	fn_mapper_8b
-  71              	.LVL4:
-  72 003c 064B     		ldr	r3, .L3+20
-  73 003e 1870     		strb	r0, [r3]
+ 193:tensor_control_isr.c ****     //_pid_out = fn_mapper_8b(aux,0,4096,0,255);
  194:tensor_control_isr.c ****     
  195:tensor_control_isr.c ****     #ifdef TENDON_TENSION_CONTROL
  196:tensor_control_isr.c ****         BRAKEn_Write(1);    
@@ -293,40 +298,15 @@ ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 1
  205:tensor_control_isr.c ****         VDAC8_Speed_SetValue((uint8)(_pid_out));
  206:tensor_control_isr.c ****         
  207:tensor_control_isr.c ****     #endif
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cc9R2PO9.s 			page 6
+
+
  208:tensor_control_isr.c ****     
  209:tensor_control_isr.c ****     /* Con la tension medida se calcula el pwm que se le pasa al motor
  210:tensor_control_isr.c ****        para hacer el control de tension */
  211:tensor_control_isr.c ****     
  212:tensor_control_isr.c ****     /* `#END` */
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 6
-
-
  213:tensor_control_isr.c **** }
-  74              		.loc 1 213 0
-  75 0040 03B0     		add	sp, sp, #12
-  76              		.cfi_def_cfa_offset 12
-  77              		@ sp needed
-  78 0042 30BD     		pop	{r4, r5, pc}
-  79              	.L4:
-  80              		.align	2
-  81              	.L3:
-  82 0044 00000000 		.word	_tVal
-  83 0048 00000000 		.word	actual_tension
-  84 004c 00000000 		.word	tension_ref
-  85 0050 00000000 		.word	tens_pid_
-  86 0054 00000000 		.word	tension_pid_output
-  87 0058 00000000 		.word	_pid_out
-  88              		.cfi_endproc
-  89              	.LFE67:
-  90              		.size	tensor_control_isr_Interrupt, .-tensor_control_isr_Interrupt
-  91              		.section	.text.tensor_control_isr_SetVector,"ax",%progbits
-  92              		.align	2
-  93              		.global	tensor_control_isr_SetVector
-  94              		.thumb
-  95              		.thumb_func
-  96              		.type	tensor_control_isr_SetVector, %function
-  97              	tensor_control_isr_SetVector:
-  98              	.LFB68:
  214:tensor_control_isr.c **** 
  215:tensor_control_isr.c **** 
  216:tensor_control_isr.c **** /*******************************************************************************
@@ -358,42 +338,42 @@ ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 1
  242:tensor_control_isr.c **** *******************************************************************************/
  243:tensor_control_isr.c **** void tensor_control_isr_SetVector(cyisraddress address)
  244:tensor_control_isr.c **** {
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 7
-
-
-  99              		.loc 1 244 0
- 100              		.cfi_startproc
- 101              		@ args = 0, pretend = 0, frame = 0
- 102              		@ frame_needed = 0, uses_anonymous_args = 0
- 103              		@ link register save eliminated.
- 104              	.LVL5:
+  79              		.loc 1 244 0
+  80              		.cfi_startproc
+  81              		@ args = 0, pretend = 0, frame = 0
+  82              		@ frame_needed = 0, uses_anonymous_args = 0
+  83              		@ link register save eliminated.
+  84              	.LVL3:
  245:tensor_control_isr.c ****     cyisraddress * ramVectorTable;
  246:tensor_control_isr.c **** 
  247:tensor_control_isr.c ****     ramVectorTable = (cyisraddress *) *CYINT_VECT_TABLE;
- 105              		.loc 1 247 0
- 106 0000 014B     		ldr	r3, .L6
- 107 0002 1B68     		ldr	r3, [r3]
- 108              	.LVL6:
+  85              		.loc 1 247 0
+  86 0000 014B     		ldr	r3, .L6
+  87 0002 1B68     		ldr	r3, [r3]
+  88              	.LVL4:
  248:tensor_control_isr.c **** 
  249:tensor_control_isr.c ****     ramVectorTable[CYINT_IRQ_BASE + (uint32)tensor_control_isr__INTC_NUMBER] = address;
- 109              		.loc 1 249 0
- 110 0004 D866     		str	r0, [r3, #108]
- 111 0006 7047     		bx	lr
- 112              	.L7:
- 113              		.align	2
- 114              	.L6:
- 115 0008 08ED00E0 		.word	-536810232
- 116              		.cfi_endproc
- 117              	.LFE68:
- 118              		.size	tensor_control_isr_SetVector, .-tensor_control_isr_SetVector
- 119              		.section	.text.tensor_control_isr_GetVector,"ax",%progbits
- 120              		.align	2
- 121              		.global	tensor_control_isr_GetVector
- 122              		.thumb
- 123              		.thumb_func
- 124              		.type	tensor_control_isr_GetVector, %function
- 125              	tensor_control_isr_GetVector:
- 126              	.LFB69:
+  89              		.loc 1 249 0
+  90 0004 D866     		str	r0, [r3, #108]
+  91 0006 7047     		bx	lr
+  92              	.L7:
+  93              		.align	2
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cc9R2PO9.s 			page 7
+
+
+  94              	.L6:
+  95 0008 08ED00E0 		.word	-536810232
+  96              		.cfi_endproc
+  97              	.LFE68:
+  98              		.size	tensor_control_isr_SetVector, .-tensor_control_isr_SetVector
+  99              		.section	.text.tensor_control_isr_GetVector,"ax",%progbits
+ 100              		.align	2
+ 101              		.global	tensor_control_isr_GetVector
+ 102              		.thumb
+ 103              		.thumb_func
+ 104              		.type	tensor_control_isr_GetVector, %function
+ 105              	tensor_control_isr_GetVector:
+ 106              	.LFB69:
  250:tensor_control_isr.c **** }
  251:tensor_control_isr.c **** 
  252:tensor_control_isr.c **** 
@@ -413,42 +393,42 @@ ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 1
  266:tensor_control_isr.c **** *******************************************************************************/
  267:tensor_control_isr.c **** cyisraddress tensor_control_isr_GetVector(void)
  268:tensor_control_isr.c **** {
- 127              		.loc 1 268 0
- 128              		.cfi_startproc
- 129              		@ args = 0, pretend = 0, frame = 0
- 130              		@ frame_needed = 0, uses_anonymous_args = 0
- 131              		@ link register save eliminated.
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 8
-
-
+ 107              		.loc 1 268 0
+ 108              		.cfi_startproc
+ 109              		@ args = 0, pretend = 0, frame = 0
+ 110              		@ frame_needed = 0, uses_anonymous_args = 0
+ 111              		@ link register save eliminated.
  269:tensor_control_isr.c ****     cyisraddress * ramVectorTable;
  270:tensor_control_isr.c **** 
  271:tensor_control_isr.c ****     ramVectorTable = (cyisraddress *) *CYINT_VECT_TABLE;
- 132              		.loc 1 271 0
- 133 0000 014B     		ldr	r3, .L9
- 134 0002 1B68     		ldr	r3, [r3]
- 135              	.LVL7:
+ 112              		.loc 1 271 0
+ 113 0000 014B     		ldr	r3, .L9
+ 114 0002 1B68     		ldr	r3, [r3]
+ 115              	.LVL5:
  272:tensor_control_isr.c **** 
  273:tensor_control_isr.c ****     return ramVectorTable[CYINT_IRQ_BASE + (uint32)tensor_control_isr__INTC_NUMBER];
  274:tensor_control_isr.c **** }
- 136              		.loc 1 274 0
- 137 0004 D86E     		ldr	r0, [r3, #108]
- 138 0006 7047     		bx	lr
- 139              	.L10:
- 140              		.align	2
- 141              	.L9:
- 142 0008 08ED00E0 		.word	-536810232
- 143              		.cfi_endproc
- 144              	.LFE69:
- 145              		.size	tensor_control_isr_GetVector, .-tensor_control_isr_GetVector
- 146              		.section	.text.tensor_control_isr_SetPriority,"ax",%progbits
- 147              		.align	2
- 148              		.global	tensor_control_isr_SetPriority
- 149              		.thumb
- 150              		.thumb_func
- 151              		.type	tensor_control_isr_SetPriority, %function
- 152              	tensor_control_isr_SetPriority:
- 153              	.LFB70:
+ 116              		.loc 1 274 0
+ 117 0004 D86E     		ldr	r0, [r3, #108]
+ 118 0006 7047     		bx	lr
+ 119              	.L10:
+ 120              		.align	2
+ 121              	.L9:
+ 122 0008 08ED00E0 		.word	-536810232
+ 123              		.cfi_endproc
+ 124              	.LFE69:
+ 125              		.size	tensor_control_isr_GetVector, .-tensor_control_isr_GetVector
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cc9R2PO9.s 			page 8
+
+
+ 126              		.section	.text.tensor_control_isr_SetPriority,"ax",%progbits
+ 127              		.align	2
+ 128              		.global	tensor_control_isr_SetPriority
+ 129              		.thumb
+ 130              		.thumb_func
+ 131              		.type	tensor_control_isr_SetPriority, %function
+ 132              	tensor_control_isr_SetPriority:
+ 133              	.LFB70:
  275:tensor_control_isr.c **** 
  276:tensor_control_isr.c **** 
  277:tensor_control_isr.c **** /*******************************************************************************
@@ -477,38 +457,38 @@ ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 1
  300:tensor_control_isr.c **** *******************************************************************************/
  301:tensor_control_isr.c **** void tensor_control_isr_SetPriority(uint8 priority)
  302:tensor_control_isr.c **** {
- 154              		.loc 1 302 0
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 9
-
-
- 155              		.cfi_startproc
- 156              		@ args = 0, pretend = 0, frame = 0
- 157              		@ frame_needed = 0, uses_anonymous_args = 0
- 158              		@ link register save eliminated.
- 159              	.LVL8:
+ 134              		.loc 1 302 0
+ 135              		.cfi_startproc
+ 136              		@ args = 0, pretend = 0, frame = 0
+ 137              		@ frame_needed = 0, uses_anonymous_args = 0
+ 138              		@ link register save eliminated.
+ 139              	.LVL6:
  303:tensor_control_isr.c ****     *tensor_control_isr_INTC_PRIOR = priority << 5;
- 160              		.loc 1 303 0
- 161 0000 4001     		lsls	r0, r0, #5
- 162              	.LVL9:
- 163 0002 C0B2     		uxtb	r0, r0
- 164 0004 014B     		ldr	r3, .L12
- 165 0006 1870     		strb	r0, [r3]
- 166 0008 7047     		bx	lr
- 167              	.L13:
- 168 000a 00BF     		.align	2
- 169              	.L12:
- 170 000c 0BE400E0 		.word	-536812533
- 171              		.cfi_endproc
- 172              	.LFE70:
- 173              		.size	tensor_control_isr_SetPriority, .-tensor_control_isr_SetPriority
- 174              		.section	.text.tensor_control_isr_GetPriority,"ax",%progbits
- 175              		.align	2
- 176              		.global	tensor_control_isr_GetPriority
- 177              		.thumb
- 178              		.thumb_func
- 179              		.type	tensor_control_isr_GetPriority, %function
- 180              	tensor_control_isr_GetPriority:
- 181              	.LFB71:
+ 140              		.loc 1 303 0
+ 141 0000 4001     		lsls	r0, r0, #5
+ 142              	.LVL7:
+ 143 0002 C0B2     		uxtb	r0, r0
+ 144 0004 014B     		ldr	r3, .L12
+ 145 0006 1870     		strb	r0, [r3]
+ 146 0008 7047     		bx	lr
+ 147              	.L13:
+ 148 000a 00BF     		.align	2
+ 149              	.L12:
+ 150 000c 0BE400E0 		.word	-536812533
+ 151              		.cfi_endproc
+ 152              	.LFE70:
+ 153              		.size	tensor_control_isr_SetPriority, .-tensor_control_isr_SetPriority
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cc9R2PO9.s 			page 9
+
+
+ 154              		.section	.text.tensor_control_isr_GetPriority,"ax",%progbits
+ 155              		.align	2
+ 156              		.global	tensor_control_isr_GetPriority
+ 157              		.thumb
+ 158              		.thumb_func
+ 159              		.type	tensor_control_isr_GetPriority, %function
+ 160              	tensor_control_isr_GetPriority:
+ 161              	.LFB71:
  304:tensor_control_isr.c **** }
  305:tensor_control_isr.c **** 
  306:tensor_control_isr.c **** 
@@ -530,44 +510,44 @@ ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 1
  322:tensor_control_isr.c **** *******************************************************************************/
  323:tensor_control_isr.c **** uint8 tensor_control_isr_GetPriority(void)
  324:tensor_control_isr.c **** {
- 182              		.loc 1 324 0
- 183              		.cfi_startproc
- 184              		@ args = 0, pretend = 0, frame = 0
- 185              		@ frame_needed = 0, uses_anonymous_args = 0
- 186              		@ link register save eliminated.
+ 162              		.loc 1 324 0
+ 163              		.cfi_startproc
+ 164              		@ args = 0, pretend = 0, frame = 0
+ 165              		@ frame_needed = 0, uses_anonymous_args = 0
+ 166              		@ link register save eliminated.
  325:tensor_control_isr.c ****     uint8 priority;
  326:tensor_control_isr.c **** 
  327:tensor_control_isr.c **** 
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 10
-
-
  328:tensor_control_isr.c ****     priority = *tensor_control_isr_INTC_PRIOR >> 5;
- 187              		.loc 1 328 0
- 188 0000 014B     		ldr	r3, .L15
- 189 0002 1878     		ldrb	r0, [r3]	@ zero_extendqisi2
- 190              	.LVL10:
+ 167              		.loc 1 328 0
+ 168 0000 014B     		ldr	r3, .L15
+ 169 0002 1878     		ldrb	r0, [r3]	@ zero_extendqisi2
+ 170              	.LVL8:
  329:tensor_control_isr.c **** 
  330:tensor_control_isr.c ****     return priority;
  331:tensor_control_isr.c **** }
- 191              		.loc 1 331 0
- 192 0004 4009     		lsrs	r0, r0, #5
- 193              	.LVL11:
- 194 0006 7047     		bx	lr
- 195              	.L16:
- 196              		.align	2
- 197              	.L15:
- 198 0008 0BE400E0 		.word	-536812533
- 199              		.cfi_endproc
- 200              	.LFE71:
- 201              		.size	tensor_control_isr_GetPriority, .-tensor_control_isr_GetPriority
- 202              		.section	.text.tensor_control_isr_Enable,"ax",%progbits
- 203              		.align	2
- 204              		.global	tensor_control_isr_Enable
- 205              		.thumb
- 206              		.thumb_func
- 207              		.type	tensor_control_isr_Enable, %function
- 208              	tensor_control_isr_Enable:
- 209              	.LFB72:
+ 171              		.loc 1 331 0
+ 172 0004 4009     		lsrs	r0, r0, #5
+ 173              	.LVL9:
+ 174 0006 7047     		bx	lr
+ 175              	.L16:
+ 176              		.align	2
+ 177              	.L15:
+ 178 0008 0BE400E0 		.word	-536812533
+ 179              		.cfi_endproc
+ 180              	.LFE71:
+ 181              		.size	tensor_control_isr_GetPriority, .-tensor_control_isr_GetPriority
+ 182              		.section	.text.tensor_control_isr_Enable,"ax",%progbits
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cc9R2PO9.s 			page 10
+
+
+ 183              		.align	2
+ 184              		.global	tensor_control_isr_Enable
+ 185              		.thumb
+ 186              		.thumb_func
+ 187              		.type	tensor_control_isr_Enable, %function
+ 188              	tensor_control_isr_Enable:
+ 189              	.LFB72:
  332:tensor_control_isr.c **** 
  333:tensor_control_isr.c **** 
  334:tensor_control_isr.c **** /*******************************************************************************
@@ -588,39 +568,39 @@ ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 1
  349:tensor_control_isr.c **** *******************************************************************************/
  350:tensor_control_isr.c **** void tensor_control_isr_Enable(void)
  351:tensor_control_isr.c **** {
- 210              		.loc 1 351 0
- 211              		.cfi_startproc
- 212              		@ args = 0, pretend = 0, frame = 0
- 213              		@ frame_needed = 0, uses_anonymous_args = 0
- 214              		@ link register save eliminated.
+ 190              		.loc 1 351 0
+ 191              		.cfi_startproc
+ 192              		@ args = 0, pretend = 0, frame = 0
+ 193              		@ frame_needed = 0, uses_anonymous_args = 0
+ 194              		@ link register save eliminated.
  352:tensor_control_isr.c ****     /* Enable the general interrupt. */
  353:tensor_control_isr.c ****     *tensor_control_isr_INTC_SET_EN = tensor_control_isr__INTC_MASK;
- 215              		.loc 1 353 0
- 216 0000 4FF40062 		mov	r2, #2048
- 217 0004 014B     		ldr	r3, .L18
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 11
-
-
- 218 0006 1A60     		str	r2, [r3]
- 219 0008 7047     		bx	lr
- 220              	.L19:
- 221 000a 00BF     		.align	2
- 222              	.L18:
- 223 000c 00E100E0 		.word	-536813312
- 224              		.cfi_endproc
- 225              	.LFE72:
- 226              		.size	tensor_control_isr_Enable, .-tensor_control_isr_Enable
- 227              		.section	.text.tensor_control_isr_GetState,"ax",%progbits
- 228              		.align	2
- 229              		.global	tensor_control_isr_GetState
- 230              		.thumb
- 231              		.thumb_func
- 232              		.type	tensor_control_isr_GetState, %function
- 233              	tensor_control_isr_GetState:
- 234              	.LFB73:
+ 195              		.loc 1 353 0
+ 196 0000 4FF40062 		mov	r2, #2048
+ 197 0004 014B     		ldr	r3, .L18
+ 198 0006 1A60     		str	r2, [r3]
+ 199 0008 7047     		bx	lr
+ 200              	.L19:
+ 201 000a 00BF     		.align	2
+ 202              	.L18:
+ 203 000c 00E100E0 		.word	-536813312
+ 204              		.cfi_endproc
+ 205              	.LFE72:
+ 206              		.size	tensor_control_isr_Enable, .-tensor_control_isr_Enable
+ 207              		.section	.text.tensor_control_isr_GetState,"ax",%progbits
+ 208              		.align	2
+ 209              		.global	tensor_control_isr_GetState
+ 210              		.thumb
+ 211              		.thumb_func
+ 212              		.type	tensor_control_isr_GetState, %function
+ 213              	tensor_control_isr_GetState:
+ 214              	.LFB73:
  354:tensor_control_isr.c **** }
  355:tensor_control_isr.c **** 
  356:tensor_control_isr.c **** 
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cc9R2PO9.s 			page 11
+
+
  357:tensor_control_isr.c **** /*******************************************************************************
  358:tensor_control_isr.c **** * Function Name: tensor_control_isr_GetState
  359:tensor_control_isr.c **** ********************************************************************************
@@ -637,43 +617,40 @@ ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 1
  370:tensor_control_isr.c **** *******************************************************************************/
  371:tensor_control_isr.c **** uint8 tensor_control_isr_GetState(void)
  372:tensor_control_isr.c **** {
- 235              		.loc 1 372 0
- 236              		.cfi_startproc
- 237              		@ args = 0, pretend = 0, frame = 0
- 238              		@ frame_needed = 0, uses_anonymous_args = 0
- 239              		@ link register save eliminated.
+ 215              		.loc 1 372 0
+ 216              		.cfi_startproc
+ 217              		@ args = 0, pretend = 0, frame = 0
+ 218              		@ frame_needed = 0, uses_anonymous_args = 0
+ 219              		@ link register save eliminated.
  373:tensor_control_isr.c ****     /* Get the state of the general interrupt. */
  374:tensor_control_isr.c ****     return ((*tensor_control_isr_INTC_SET_EN & (uint32)tensor_control_isr__INTC_MASK) != 0u) ? 1u:0
- 240              		.loc 1 374 0
- 241 0000 044B     		ldr	r3, .L23
- 242 0002 1B68     		ldr	r3, [r3]
- 243 0004 13F4006F 		tst	r3, #2048
- 244 0008 01D0     		beq	.L22
- 245 000a 0120     		movs	r0, #1
- 246 000c 7047     		bx	lr
- 247              	.L22:
- 248 000e 0020     		movs	r0, #0
+ 220              		.loc 1 374 0
+ 221 0000 044B     		ldr	r3, .L23
+ 222 0002 1B68     		ldr	r3, [r3]
+ 223 0004 13F4006F 		tst	r3, #2048
+ 224 0008 01D0     		beq	.L22
+ 225 000a 0120     		movs	r0, #1
+ 226 000c 7047     		bx	lr
+ 227              	.L22:
+ 228 000e 0020     		movs	r0, #0
  375:tensor_control_isr.c **** }
- 249              		.loc 1 375 0
- 250 0010 7047     		bx	lr
- 251              	.L24:
- 252 0012 00BF     		.align	2
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 12
-
-
- 253              	.L23:
- 254 0014 00E100E0 		.word	-536813312
- 255              		.cfi_endproc
- 256              	.LFE73:
- 257              		.size	tensor_control_isr_GetState, .-tensor_control_isr_GetState
- 258              		.section	.text.tensor_control_isr_Disable,"ax",%progbits
- 259              		.align	2
- 260              		.global	tensor_control_isr_Disable
- 261              		.thumb
- 262              		.thumb_func
- 263              		.type	tensor_control_isr_Disable, %function
- 264              	tensor_control_isr_Disable:
- 265              	.LFB74:
+ 229              		.loc 1 375 0
+ 230 0010 7047     		bx	lr
+ 231              	.L24:
+ 232 0012 00BF     		.align	2
+ 233              	.L23:
+ 234 0014 00E100E0 		.word	-536813312
+ 235              		.cfi_endproc
+ 236              	.LFE73:
+ 237              		.size	tensor_control_isr_GetState, .-tensor_control_isr_GetState
+ 238              		.section	.text.tensor_control_isr_Disable,"ax",%progbits
+ 239              		.align	2
+ 240              		.global	tensor_control_isr_Disable
+ 241              		.thumb
+ 242              		.thumb_func
+ 243              		.type	tensor_control_isr_Disable, %function
+ 244              	tensor_control_isr_Disable:
+ 245              	.LFB74:
  376:tensor_control_isr.c **** 
  377:tensor_control_isr.c **** 
  378:tensor_control_isr.c **** /*******************************************************************************
@@ -681,6 +658,9 @@ ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 1
  380:tensor_control_isr.c **** ********************************************************************************
  381:tensor_control_isr.c **** *
  382:tensor_control_isr.c **** * Summary:
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cc9R2PO9.s 			page 12
+
+
  383:tensor_control_isr.c **** *   Disables the Interrupt in the interrupt controller.
  384:tensor_control_isr.c **** *
  385:tensor_control_isr.c **** * Parameters:
@@ -692,160 +672,157 @@ ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 1
  391:tensor_control_isr.c **** *******************************************************************************/
  392:tensor_control_isr.c **** void tensor_control_isr_Disable(void)
  393:tensor_control_isr.c **** {
- 266              		.loc 1 393 0
- 267              		.cfi_startproc
- 268              		@ args = 0, pretend = 0, frame = 0
- 269              		@ frame_needed = 0, uses_anonymous_args = 0
- 270              		@ link register save eliminated.
+ 246              		.loc 1 393 0
+ 247              		.cfi_startproc
+ 248              		@ args = 0, pretend = 0, frame = 0
+ 249              		@ frame_needed = 0, uses_anonymous_args = 0
+ 250              		@ link register save eliminated.
  394:tensor_control_isr.c ****     /* Disable the general interrupt. */
  395:tensor_control_isr.c ****     *tensor_control_isr_INTC_CLR_EN = tensor_control_isr__INTC_MASK;
- 271              		.loc 1 395 0
- 272 0000 4FF40062 		mov	r2, #2048
- 273 0004 014B     		ldr	r3, .L26
- 274 0006 1A60     		str	r2, [r3]
- 275 0008 7047     		bx	lr
- 276              	.L27:
- 277 000a 00BF     		.align	2
- 278              	.L26:
- 279 000c 80E100E0 		.word	-536813184
- 280              		.cfi_endproc
- 281              	.LFE74:
- 282              		.size	tensor_control_isr_Disable, .-tensor_control_isr_Disable
- 283              		.section	.text.tensor_control_isr_Start,"ax",%progbits
- 284              		.align	2
- 285              		.global	tensor_control_isr_Start
- 286              		.thumb
- 287              		.thumb_func
- 288              		.type	tensor_control_isr_Start, %function
- 289              	tensor_control_isr_Start:
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 13
-
-
- 290              	.LFB64:
+ 251              		.loc 1 395 0
+ 252 0000 4FF40062 		mov	r2, #2048
+ 253 0004 014B     		ldr	r3, .L26
+ 254 0006 1A60     		str	r2, [r3]
+ 255 0008 7047     		bx	lr
+ 256              	.L27:
+ 257 000a 00BF     		.align	2
+ 258              	.L26:
+ 259 000c 80E100E0 		.word	-536813184
+ 260              		.cfi_endproc
+ 261              	.LFE74:
+ 262              		.size	tensor_control_isr_Disable, .-tensor_control_isr_Disable
+ 263              		.section	.text.tensor_control_isr_Start,"ax",%progbits
+ 264              		.align	2
+ 265              		.global	tensor_control_isr_Start
+ 266              		.thumb
+ 267              		.thumb_func
+ 268              		.type	tensor_control_isr_Start, %function
+ 269              	tensor_control_isr_Start:
+ 270              	.LFB64:
   75:tensor_control_isr.c ****     /* For all we know the interrupt is active. */
- 291              		.loc 1 75 0
- 292              		.cfi_startproc
- 293              		@ args = 0, pretend = 0, frame = 0
- 294              		@ frame_needed = 0, uses_anonymous_args = 0
- 295 0000 08B5     		push	{r3, lr}
- 296              		.cfi_def_cfa_offset 8
- 297              		.cfi_offset 3, -8
- 298              		.cfi_offset 14, -4
+ 271              		.loc 1 75 0
+ 272              		.cfi_startproc
+ 273              		@ args = 0, pretend = 0, frame = 0
+ 274              		@ frame_needed = 0, uses_anonymous_args = 0
+ 275 0000 08B5     		push	{r3, lr}
+ 276              		.cfi_def_cfa_offset 8
+ 277              		.cfi_offset 3, -8
+ 278              		.cfi_offset 14, -4
   77:tensor_control_isr.c **** 
- 299              		.loc 1 77 0
- 300 0002 FFF7FEFF 		bl	tensor_control_isr_Disable
- 301              	.LVL12:
+ 279              		.loc 1 77 0
+ 280 0002 FFF7FEFF 		bl	tensor_control_isr_Disable
+ 281              	.LVL10:
   80:tensor_control_isr.c **** 
- 302              		.loc 1 80 0
- 303 0006 0448     		ldr	r0, .L30
- 304 0008 FFF7FEFF 		bl	tensor_control_isr_SetVector
- 305              	.LVL13:
+ 282              		.loc 1 80 0
+ 283 0006 0448     		ldr	r0, .L30
+ 284 0008 FFF7FEFF 		bl	tensor_control_isr_SetVector
+ 285              	.LVL11:
   83:tensor_control_isr.c **** 
- 306              		.loc 1 83 0
- 307 000c 0720     		movs	r0, #7
- 308 000e FFF7FEFF 		bl	tensor_control_isr_SetPriority
- 309              	.LVL14:
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cc9R2PO9.s 			page 13
+
+
+ 286              		.loc 1 83 0
+ 287 000c 0720     		movs	r0, #7
+ 288 000e FFF7FEFF 		bl	tensor_control_isr_SetPriority
+ 289              	.LVL12:
   86:tensor_control_isr.c **** }
- 310              		.loc 1 86 0
- 311 0012 FFF7FEFF 		bl	tensor_control_isr_Enable
- 312              	.LVL15:
- 313 0016 08BD     		pop	{r3, pc}
- 314              	.L31:
- 315              		.align	2
- 316              	.L30:
- 317 0018 00000000 		.word	tensor_control_isr_Interrupt
- 318              		.cfi_endproc
- 319              	.LFE64:
- 320              		.size	tensor_control_isr_Start, .-tensor_control_isr_Start
- 321              		.section	.text.tensor_control_isr_StartEx,"ax",%progbits
- 322              		.align	2
- 323              		.global	tensor_control_isr_StartEx
- 324              		.thumb
- 325              		.thumb_func
- 326              		.type	tensor_control_isr_StartEx, %function
- 327              	tensor_control_isr_StartEx:
- 328              	.LFB65:
+ 290              		.loc 1 86 0
+ 291 0012 FFF7FEFF 		bl	tensor_control_isr_Enable
+ 292              	.LVL13:
+ 293 0016 08BD     		pop	{r3, pc}
+ 294              	.L31:
+ 295              		.align	2
+ 296              	.L30:
+ 297 0018 00000000 		.word	tensor_control_isr_Interrupt
+ 298              		.cfi_endproc
+ 299              	.LFE64:
+ 300              		.size	tensor_control_isr_Start, .-tensor_control_isr_Start
+ 301              		.section	.text.tensor_control_isr_StartEx,"ax",%progbits
+ 302              		.align	2
+ 303              		.global	tensor_control_isr_StartEx
+ 304              		.thumb
+ 305              		.thumb_func
+ 306              		.type	tensor_control_isr_StartEx, %function
+ 307              	tensor_control_isr_StartEx:
+ 308              	.LFB65:
  118:tensor_control_isr.c ****     /* For all we know the interrupt is active. */
- 329              		.loc 1 118 0
- 330              		.cfi_startproc
- 331              		@ args = 0, pretend = 0, frame = 0
- 332              		@ frame_needed = 0, uses_anonymous_args = 0
- 333              	.LVL16:
- 334 0000 10B5     		push	{r4, lr}
- 335              		.cfi_def_cfa_offset 8
- 336              		.cfi_offset 4, -8
- 337              		.cfi_offset 14, -4
- 338 0002 0446     		mov	r4, r0
+ 309              		.loc 1 118 0
+ 310              		.cfi_startproc
+ 311              		@ args = 0, pretend = 0, frame = 0
+ 312              		@ frame_needed = 0, uses_anonymous_args = 0
+ 313              	.LVL14:
+ 314 0000 10B5     		push	{r4, lr}
+ 315              		.cfi_def_cfa_offset 8
+ 316              		.cfi_offset 4, -8
+ 317              		.cfi_offset 14, -4
+ 318 0002 0446     		mov	r4, r0
  120:tensor_control_isr.c **** 
- 339              		.loc 1 120 0
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 14
-
-
- 340 0004 FFF7FEFF 		bl	tensor_control_isr_Disable
- 341              	.LVL17:
+ 319              		.loc 1 120 0
+ 320 0004 FFF7FEFF 		bl	tensor_control_isr_Disable
+ 321              	.LVL15:
  123:tensor_control_isr.c **** 
- 342              		.loc 1 123 0
- 343 0008 2046     		mov	r0, r4
- 344 000a FFF7FEFF 		bl	tensor_control_isr_SetVector
- 345              	.LVL18:
+ 322              		.loc 1 123 0
+ 323 0008 2046     		mov	r0, r4
+ 324 000a FFF7FEFF 		bl	tensor_control_isr_SetVector
+ 325              	.LVL16:
  126:tensor_control_isr.c **** 
- 346              		.loc 1 126 0
- 347 000e 0720     		movs	r0, #7
- 348 0010 FFF7FEFF 		bl	tensor_control_isr_SetPriority
- 349              	.LVL19:
+ 326              		.loc 1 126 0
+ 327 000e 0720     		movs	r0, #7
+ 328 0010 FFF7FEFF 		bl	tensor_control_isr_SetPriority
+ 329              	.LVL17:
  129:tensor_control_isr.c **** }
- 350              		.loc 1 129 0
- 351 0014 FFF7FEFF 		bl	tensor_control_isr_Enable
- 352              	.LVL20:
- 353 0018 10BD     		pop	{r4, pc}
- 354              		.cfi_endproc
- 355              	.LFE65:
- 356              		.size	tensor_control_isr_StartEx, .-tensor_control_isr_StartEx
- 357 001a 00BF     		.section	.text.tensor_control_isr_Stop,"ax",%progbits
- 358              		.align	2
- 359              		.global	tensor_control_isr_Stop
- 360              		.thumb
- 361              		.thumb_func
- 362              		.type	tensor_control_isr_Stop, %function
- 363              	tensor_control_isr_Stop:
- 364              	.LFB66:
+ 330              		.loc 1 129 0
+ 331 0014 FFF7FEFF 		bl	tensor_control_isr_Enable
+ 332              	.LVL18:
+ 333 0018 10BD     		pop	{r4, pc}
+ 334              		.cfi_endproc
+ 335              	.LFE65:
+ 336              		.size	tensor_control_isr_StartEx, .-tensor_control_isr_StartEx
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cc9R2PO9.s 			page 14
+
+
+ 337 001a 00BF     		.section	.text.tensor_control_isr_Stop,"ax",%progbits
+ 338              		.align	2
+ 339              		.global	tensor_control_isr_Stop
+ 340              		.thumb
+ 341              		.thumb_func
+ 342              		.type	tensor_control_isr_Stop, %function
+ 343              	tensor_control_isr_Stop:
+ 344              	.LFB66:
  148:tensor_control_isr.c ****     /* Disable this interrupt. */
- 365              		.loc 1 148 0
- 366              		.cfi_startproc
- 367              		@ args = 0, pretend = 0, frame = 0
- 368              		@ frame_needed = 0, uses_anonymous_args = 0
- 369 0000 08B5     		push	{r3, lr}
- 370              		.cfi_def_cfa_offset 8
- 371              		.cfi_offset 3, -8
- 372              		.cfi_offset 14, -4
+ 345              		.loc 1 148 0
+ 346              		.cfi_startproc
+ 347              		@ args = 0, pretend = 0, frame = 0
+ 348              		@ frame_needed = 0, uses_anonymous_args = 0
+ 349 0000 08B5     		push	{r3, lr}
+ 350              		.cfi_def_cfa_offset 8
+ 351              		.cfi_offset 3, -8
+ 352              		.cfi_offset 14, -4
  150:tensor_control_isr.c **** 
- 373              		.loc 1 150 0
- 374 0002 FFF7FEFF 		bl	tensor_control_isr_Disable
- 375              	.LVL21:
+ 353              		.loc 1 150 0
+ 354 0002 FFF7FEFF 		bl	tensor_control_isr_Disable
+ 355              	.LVL19:
  153:tensor_control_isr.c **** }
- 376              		.loc 1 153 0
- 377 0006 0248     		ldr	r0, .L36
- 378 0008 FFF7FEFF 		bl	tensor_control_isr_SetVector
- 379              	.LVL22:
- 380 000c 08BD     		pop	{r3, pc}
- 381              	.L37:
- 382 000e 00BF     		.align	2
- 383              	.L36:
- 384 0010 00000000 		.word	IntDefaultHandler
- 385              		.cfi_endproc
- 386              	.LFE66:
- 387              		.size	tensor_control_isr_Stop, .-tensor_control_isr_Stop
- 388              		.section	.text.tensor_control_isr_SetPending,"ax",%progbits
- 389              		.align	2
- 390              		.global	tensor_control_isr_SetPending
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 15
-
-
- 391              		.thumb
- 392              		.thumb_func
- 393              		.type	tensor_control_isr_SetPending, %function
- 394              	tensor_control_isr_SetPending:
- 395              	.LFB75:
+ 356              		.loc 1 153 0
+ 357 0006 0248     		ldr	r0, .L36
+ 358 0008 FFF7FEFF 		bl	tensor_control_isr_SetVector
+ 359              	.LVL20:
+ 360 000c 08BD     		pop	{r3, pc}
+ 361              	.L37:
+ 362 000e 00BF     		.align	2
+ 363              	.L36:
+ 364 0010 00000000 		.word	IntDefaultHandler
+ 365              		.cfi_endproc
+ 366              	.LFE66:
+ 367              		.size	tensor_control_isr_Stop, .-tensor_control_isr_Stop
+ 368              		.section	.text.tensor_control_isr_SetPending,"ax",%progbits
+ 369              		.align	2
+ 370              		.global	tensor_control_isr_SetPending
+ 371              		.thumb
+ 372              		.thumb_func
+ 373              		.type	tensor_control_isr_SetPending, %function
+ 374              	tensor_control_isr_SetPending:
+ 375              	.LFB75:
  396:tensor_control_isr.c **** }
  397:tensor_control_isr.c **** 
  398:tensor_control_isr.c **** 
@@ -861,6 +838,9 @@ ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 1
  408:tensor_control_isr.c **** *   None
  409:tensor_control_isr.c **** *
  410:tensor_control_isr.c **** * Return:
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cc9R2PO9.s 			page 15
+
+
  411:tensor_control_isr.c **** *   None
  412:tensor_control_isr.c **** *
  413:tensor_control_isr.c **** * Side Effects:
@@ -871,36 +851,33 @@ ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 1
  418:tensor_control_isr.c **** *******************************************************************************/
  419:tensor_control_isr.c **** void tensor_control_isr_SetPending(void)
  420:tensor_control_isr.c **** {
- 396              		.loc 1 420 0
- 397              		.cfi_startproc
- 398              		@ args = 0, pretend = 0, frame = 0
- 399              		@ frame_needed = 0, uses_anonymous_args = 0
- 400              		@ link register save eliminated.
+ 376              		.loc 1 420 0
+ 377              		.cfi_startproc
+ 378              		@ args = 0, pretend = 0, frame = 0
+ 379              		@ frame_needed = 0, uses_anonymous_args = 0
+ 380              		@ link register save eliminated.
  421:tensor_control_isr.c ****     *tensor_control_isr_INTC_SET_PD = tensor_control_isr__INTC_MASK;
- 401              		.loc 1 421 0
- 402 0000 4FF40062 		mov	r2, #2048
- 403 0004 014B     		ldr	r3, .L39
- 404 0006 1A60     		str	r2, [r3]
- 405 0008 7047     		bx	lr
- 406              	.L40:
- 407 000a 00BF     		.align	2
- 408              	.L39:
- 409 000c 00E200E0 		.word	-536813056
- 410              		.cfi_endproc
- 411              	.LFE75:
- 412              		.size	tensor_control_isr_SetPending, .-tensor_control_isr_SetPending
- 413              		.section	.text.tensor_control_isr_ClearPending,"ax",%progbits
- 414              		.align	2
- 415              		.global	tensor_control_isr_ClearPending
- 416              		.thumb
- 417              		.thumb_func
- 418              		.type	tensor_control_isr_ClearPending, %function
- 419              	tensor_control_isr_ClearPending:
- 420              	.LFB76:
+ 381              		.loc 1 421 0
+ 382 0000 4FF40062 		mov	r2, #2048
+ 383 0004 014B     		ldr	r3, .L39
+ 384 0006 1A60     		str	r2, [r3]
+ 385 0008 7047     		bx	lr
+ 386              	.L40:
+ 387 000a 00BF     		.align	2
+ 388              	.L39:
+ 389 000c 00E200E0 		.word	-536813056
+ 390              		.cfi_endproc
+ 391              	.LFE75:
+ 392              		.size	tensor_control_isr_SetPending, .-tensor_control_isr_SetPending
+ 393              		.section	.text.tensor_control_isr_ClearPending,"ax",%progbits
+ 394              		.align	2
+ 395              		.global	tensor_control_isr_ClearPending
+ 396              		.thumb
+ 397              		.thumb_func
+ 398              		.type	tensor_control_isr_ClearPending, %function
+ 399              	tensor_control_isr_ClearPending:
+ 400              	.LFB76:
  422:tensor_control_isr.c **** }
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 16
-
-
  423:tensor_control_isr.c **** 
  424:tensor_control_isr.c **** 
  425:tensor_control_isr.c **** /*******************************************************************************
@@ -921,1939 +898,2231 @@ ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 1
  440:tensor_control_isr.c **** * Return:
  441:tensor_control_isr.c **** *   None
  442:tensor_control_isr.c **** *
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cc9R2PO9.s 			page 16
+
+
  443:tensor_control_isr.c **** *******************************************************************************/
  444:tensor_control_isr.c **** void tensor_control_isr_ClearPending(void)
  445:tensor_control_isr.c **** {
- 421              		.loc 1 445 0
- 422              		.cfi_startproc
- 423              		@ args = 0, pretend = 0, frame = 0
- 424              		@ frame_needed = 0, uses_anonymous_args = 0
- 425              		@ link register save eliminated.
+ 401              		.loc 1 445 0
+ 402              		.cfi_startproc
+ 403              		@ args = 0, pretend = 0, frame = 0
+ 404              		@ frame_needed = 0, uses_anonymous_args = 0
+ 405              		@ link register save eliminated.
  446:tensor_control_isr.c ****     *tensor_control_isr_INTC_CLR_PD = tensor_control_isr__INTC_MASK;
- 426              		.loc 1 446 0
- 427 0000 4FF40062 		mov	r2, #2048
- 428 0004 014B     		ldr	r3, .L42
- 429 0006 1A60     		str	r2, [r3]
- 430 0008 7047     		bx	lr
- 431              	.L43:
- 432 000a 00BF     		.align	2
- 433              	.L42:
- 434 000c 80E200E0 		.word	-536812928
- 435              		.cfi_endproc
- 436              	.LFE76:
- 437              		.size	tensor_control_isr_ClearPending, .-tensor_control_isr_ClearPending
- 438              		.comm	current_pos,4,4
- 439              		.comm	debug,4,4
- 440              		.comm	tens_pid_,44,4
- 441              		.comm	tension_pid_output,4,4
- 442              		.comm	tension_ref,4,4
- 443              		.comm	actual_tension,4,4
- 444              		.comm	_tVal,2,2
- 445              		.comm	_state_,4,4
- 446              		.comm	_uart_Reset,1,1
- 447              		.comm	SendEmulatedData,1,1
- 448              		.comm	SendSingleByte,1,1
- 449              		.comm	ContinuouslySendData,1,1
- 450              		.comm	Ch,1,1
- 451              		.comm	PB,16,4
- 452              		.comm	RB,20,4
- 453              		.text
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 17
-
-
- 454              	.Letext0:
- 455              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.1\\psoc creator\\import\\gnu\\arm\\5.4.
- 456              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.1\\psoc creator\\import\\gnu\\arm\\5.4.
- 457              		.file 4 "Generated_Source\\PSoC5/cytypes.h"
- 458              		.file 5 "./pid.h"
- 459              		.file 6 "./myUART.h"
- 460              		.file 7 "./global.h"
- 461              		.file 8 "Generated_Source\\PSoC5/core_cm3.h"
- 462              		.section	.debug_info,"",%progbits
- 463              	.Ldebug_info0:
- 464 0000 EF050000 		.4byte	0x5ef
- 465 0004 0400     		.2byte	0x4
- 466 0006 00000000 		.4byte	.Ldebug_abbrev0
- 467 000a 04       		.byte	0x4
- 468 000b 01       		.uleb128 0x1
- 469 000c BC030000 		.4byte	.LASF69
- 470 0010 0C       		.byte	0xc
- 471 0011 A3040000 		.4byte	.LASF70
- 472 0015 0C010000 		.4byte	.LASF71
- 473 0019 00000000 		.4byte	.Ldebug_ranges0+0
- 474 001d 00000000 		.4byte	0
- 475 0021 00000000 		.4byte	.Ldebug_line0
- 476 0025 02       		.uleb128 0x2
- 477 0026 04       		.byte	0x4
- 478 0027 05       		.byte	0x5
- 479 0028 696E7400 		.ascii	"int\000"
- 480 002c 03       		.uleb128 0x3
- 481 002d 04       		.byte	0x4
- 482 002e 07       		.byte	0x7
- 483 002f 69020000 		.4byte	.LASF0
- 484 0033 03       		.uleb128 0x3
- 485 0034 08       		.byte	0x8
- 486 0035 05       		.byte	0x5
- 487 0036 EB000000 		.4byte	.LASF1
- 488 003a 03       		.uleb128 0x3
- 489 003b 08       		.byte	0x8
- 490 003c 04       		.byte	0x4
- 491 003d 88000000 		.4byte	.LASF2
- 492 0041 03       		.uleb128 0x3
- 493 0042 01       		.byte	0x1
- 494 0043 06       		.byte	0x6
- 495 0044 17020000 		.4byte	.LASF3
- 496 0048 03       		.uleb128 0x3
- 497 0049 01       		.byte	0x1
- 498 004a 08       		.byte	0x8
- 499 004b A1010000 		.4byte	.LASF4
- 500 004f 04       		.uleb128 0x4
- 501 0050 83030000 		.4byte	.LASF7
- 502 0054 02       		.byte	0x2
- 503 0055 29       		.byte	0x29
- 504 0056 5A000000 		.4byte	0x5a
- 505 005a 03       		.uleb128 0x3
- 506 005b 02       		.byte	0x2
- 507 005c 05       		.byte	0x5
- 508 005d 2F000000 		.4byte	.LASF5
- 509 0061 03       		.uleb128 0x3
- 510 0062 02       		.byte	0x2
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 18
-
-
- 511 0063 07       		.byte	0x7
- 512 0064 E8020000 		.4byte	.LASF6
- 513 0068 04       		.uleb128 0x4
- 514 0069 79030000 		.4byte	.LASF8
- 515 006d 02       		.byte	0x2
- 516 006e 3F       		.byte	0x3f
- 517 006f 73000000 		.4byte	0x73
- 518 0073 03       		.uleb128 0x3
- 519 0074 04       		.byte	0x4
- 520 0075 05       		.byte	0x5
- 521 0076 F9000000 		.4byte	.LASF9
- 522 007a 03       		.uleb128 0x3
- 523 007b 04       		.byte	0x4
- 524 007c 07       		.byte	0x7
- 525 007d 35030000 		.4byte	.LASF10
- 526 0081 03       		.uleb128 0x3
- 527 0082 08       		.byte	0x8
- 528 0083 07       		.byte	0x7
- 529 0084 2B020000 		.4byte	.LASF11
- 530 0088 03       		.uleb128 0x3
- 531 0089 04       		.byte	0x4
- 532 008a 07       		.byte	0x7
- 533 008b 56000000 		.4byte	.LASF12
- 534 008f 05       		.uleb128 0x5
- 535 0090 04       		.byte	0x4
- 536 0091 95000000 		.4byte	0x95
- 537 0095 03       		.uleb128 0x3
- 538 0096 01       		.byte	0x1
- 539 0097 08       		.byte	0x8
- 540 0098 C8020000 		.4byte	.LASF13
- 541 009c 05       		.uleb128 0x5
- 542 009d 04       		.byte	0x4
- 543 009e A2000000 		.4byte	0xa2
- 544 00a2 06       		.uleb128 0x6
- 545 00a3 04       		.uleb128 0x4
- 546 00a4 FB020000 		.4byte	.LASF14
- 547 00a8 03       		.byte	0x3
- 548 00a9 20       		.byte	0x20
- 549 00aa 4F000000 		.4byte	0x4f
- 550 00ae 04       		.uleb128 0x4
- 551 00af 23020000 		.4byte	.LASF15
- 552 00b3 03       		.byte	0x3
- 553 00b4 2C       		.byte	0x2c
- 554 00b5 68000000 		.4byte	0x68
- 555 00b9 07       		.uleb128 0x7
- 556 00ba A1000000 		.4byte	.LASF16
- 557 00be 04       		.byte	0x4
- 558 00bf 9201     		.2byte	0x192
- 559 00c1 48000000 		.4byte	0x48
- 560 00c5 07       		.uleb128 0x7
- 561 00c6 29030000 		.4byte	.LASF17
- 562 00ca 04       		.byte	0x4
- 563 00cb 9401     		.2byte	0x194
- 564 00cd 7A000000 		.4byte	0x7a
- 565 00d1 03       		.uleb128 0x3
- 566 00d2 04       		.byte	0x4
- 567 00d3 04       		.byte	0x4
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 19
-
-
- 568 00d4 E5000000 		.4byte	.LASF18
- 569 00d8 03       		.uleb128 0x3
- 570 00d9 08       		.byte	0x8
- 571 00da 04       		.byte	0x4
- 572 00db 47030000 		.4byte	.LASF19
- 573 00df 07       		.uleb128 0x7
- 574 00e0 30030000 		.4byte	.LASF20
- 575 00e4 04       		.byte	0x4
- 576 00e5 3C02     		.2byte	0x23c
- 577 00e7 EB000000 		.4byte	0xeb
- 578 00eb 08       		.uleb128 0x8
- 579 00ec B9000000 		.4byte	0xb9
- 580 00f0 07       		.uleb128 0x7
- 581 00f1 AA020000 		.4byte	.LASF21
- 582 00f5 04       		.byte	0x4
- 583 00f6 3E02     		.2byte	0x23e
- 584 00f8 FC000000 		.4byte	0xfc
- 585 00fc 08       		.uleb128 0x8
- 586 00fd C5000000 		.4byte	0xc5
- 587 0101 07       		.uleb128 0x7
- 588 0102 FB010000 		.4byte	.LASF22
- 589 0106 04       		.byte	0x4
- 590 0107 4E02     		.2byte	0x24e
- 591 0109 9C000000 		.4byte	0x9c
- 592 010d 09       		.uleb128 0x9
- 593 010e 2C       		.byte	0x2c
- 594 010f 05       		.byte	0x5
- 595 0110 14       		.byte	0x14
- 596 0111 97010000 		.4byte	0x197
- 597 0115 0A       		.uleb128 0xa
- 598 0116 6B5000   		.ascii	"kP\000"
- 599 0119 05       		.byte	0x5
- 600 011a 16       		.byte	0x16
- 601 011b AE000000 		.4byte	0xae
- 602 011f 00       		.byte	0
- 603 0120 0A       		.uleb128 0xa
- 604 0121 6B4900   		.ascii	"kI\000"
- 605 0124 05       		.byte	0x5
- 606 0125 17       		.byte	0x17
- 607 0126 AE000000 		.4byte	0xae
- 608 012a 04       		.byte	0x4
- 609 012b 0A       		.uleb128 0xa
- 610 012c 6B4400   		.ascii	"kD\000"
- 611 012f 05       		.byte	0x5
- 612 0130 18       		.byte	0x18
- 613 0131 AE000000 		.4byte	0xae
- 614 0135 08       		.byte	0x8
- 615 0136 0B       		.uleb128 0xb
- 616 0137 A7000000 		.4byte	.LASF23
- 617 013b 05       		.byte	0x5
- 618 013c 19       		.byte	0x19
- 619 013d AE000000 		.4byte	0xae
- 620 0141 0C       		.byte	0xc
- 621 0142 0B       		.uleb128 0xb
- 622 0143 D4010000 		.4byte	.LASF24
- 623 0147 05       		.byte	0x5
- 624 0148 1A       		.byte	0x1a
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 20
-
-
- 625 0149 AE000000 		.4byte	0xae
- 626 014d 10       		.byte	0x10
- 627 014e 0B       		.uleb128 0xb
- 628 014f 02010000 		.4byte	.LASF25
- 629 0153 05       		.byte	0x5
- 630 0154 1B       		.byte	0x1b
- 631 0155 AE000000 		.4byte	0xae
- 632 0159 14       		.byte	0x14
- 633 015a 0B       		.uleb128 0xb
- 634 015b 67030000 		.4byte	.LASF26
- 635 015f 05       		.byte	0x5
- 636 0160 1C       		.byte	0x1c
- 637 0161 AE000000 		.4byte	0xae
- 638 0165 18       		.byte	0x18
- 639 0166 0B       		.uleb128 0xb
- 640 0167 CB000000 		.4byte	.LASF27
- 641 016b 05       		.byte	0x5
- 642 016c 1D       		.byte	0x1d
- 643 016d AE000000 		.4byte	0xae
- 644 0171 1C       		.byte	0x1c
- 645 0172 0B       		.uleb128 0xb
- 646 0173 6E010000 		.4byte	.LASF28
- 647 0177 05       		.byte	0x5
- 648 0178 1E       		.byte	0x1e
- 649 0179 AE000000 		.4byte	0xae
- 650 017d 20       		.byte	0x20
- 651 017e 0B       		.uleb128 0xb
- 652 017f 08000000 		.4byte	.LASF29
- 653 0183 05       		.byte	0x5
- 654 0184 1F       		.byte	0x1f
- 655 0185 AE000000 		.4byte	0xae
- 656 0189 24       		.byte	0x24
- 657 018a 0B       		.uleb128 0xb
- 658 018b 4A040000 		.4byte	.LASF30
- 659 018f 05       		.byte	0x5
- 660 0190 20       		.byte	0x20
- 661 0191 AE000000 		.4byte	0xae
- 662 0195 28       		.byte	0x28
- 663 0196 00       		.byte	0
- 664 0197 04       		.uleb128 0x4
- 665 0198 7E040000 		.4byte	.LASF31
- 666 019c 05       		.byte	0x5
- 667 019d 21       		.byte	0x21
- 668 019e 0D010000 		.4byte	0x10d
- 669 01a2 09       		.uleb128 0x9
- 670 01a3 14       		.byte	0x14
- 671 01a4 06       		.byte	0x6
- 672 01a5 1C       		.byte	0x1c
- 673 01a6 C3010000 		.4byte	0x1c3
- 674 01aa 0A       		.uleb128 0xa
- 675 01ab 636D6400 		.ascii	"cmd\000"
- 676 01af 06       		.byte	0x6
- 677 01b0 1D       		.byte	0x1d
- 678 01b1 95000000 		.4byte	0x95
- 679 01b5 00       		.byte	0
- 680 01b6 0B       		.uleb128 0xb
- 681 01b7 C1020000 		.4byte	.LASF32
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 21
-
-
- 682 01bb 06       		.byte	0x6
- 683 01bc 1E       		.byte	0x1e
- 684 01bd C3010000 		.4byte	0x1c3
- 685 01c1 01       		.byte	0x1
- 686 01c2 00       		.byte	0
- 687 01c3 0C       		.uleb128 0xc
- 688 01c4 95000000 		.4byte	0x95
- 689 01c8 D3010000 		.4byte	0x1d3
- 690 01cc 0D       		.uleb128 0xd
- 691 01cd 88000000 		.4byte	0x88
- 692 01d1 12       		.byte	0x12
- 693 01d2 00       		.byte	0
- 694 01d3 0E       		.uleb128 0xe
- 695 01d4 5F020000 		.4byte	.LASF72
- 696 01d8 14       		.byte	0x14
- 697 01d9 06       		.byte	0x6
- 698 01da 1A       		.byte	0x1a
- 699 01db F0010000 		.4byte	0x1f0
- 700 01df 0F       		.uleb128 0xf
- 701 01e0 23030000 		.4byte	.LASF73
- 702 01e4 06       		.byte	0x6
- 703 01e5 1B       		.byte	0x1b
- 704 01e6 F0010000 		.4byte	0x1f0
- 705 01ea 10       		.uleb128 0x10
- 706 01eb A2010000 		.4byte	0x1a2
- 707 01ef 00       		.byte	0
- 708 01f0 0C       		.uleb128 0xc
- 709 01f1 95000000 		.4byte	0x95
- 710 01f5 00020000 		.4byte	0x200
- 711 01f9 0D       		.uleb128 0xd
- 712 01fa 88000000 		.4byte	0x88
- 713 01fe 13       		.byte	0x13
- 714 01ff 00       		.byte	0
- 715 0200 11       		.uleb128 0x11
- 716 0201 9D020000 		.4byte	.LASF74
- 717 0205 10       		.byte	0x10
- 718 0206 07       		.byte	0x7
- 719 0207 1B       		.byte	0x1b
- 720 0208 3D020000 		.4byte	0x23d
- 721 020c 0A       		.uleb128 0xa
- 722 020d 636D6400 		.ascii	"cmd\000"
- 723 0211 07       		.byte	0x7
- 724 0212 1C       		.byte	0x1c
- 725 0213 8F000000 		.4byte	0x8f
- 726 0217 00       		.byte	0
- 727 0218 0B       		.uleb128 0xb
- 728 0219 12000000 		.4byte	.LASF33
- 729 021d 07       		.byte	0x7
- 730 021e 1D       		.byte	0x1d
- 731 021f 25000000 		.4byte	0x25
- 732 0223 04       		.byte	0x4
- 733 0224 0B       		.uleb128 0xb
- 734 0225 9C000000 		.4byte	.LASF34
- 735 0229 07       		.byte	0x7
- 736 022a 1D       		.byte	0x1d
- 737 022b 25000000 		.4byte	0x25
- 738 022f 08       		.byte	0x8
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 22
-
-
- 739 0230 0B       		.uleb128 0xb
- 740 0231 54040000 		.4byte	.LASF35
- 741 0235 07       		.byte	0x7
- 742 0236 1D       		.byte	0x1d
- 743 0237 25000000 		.4byte	0x25
- 744 023b 0C       		.byte	0xc
- 745 023c 00       		.byte	0
- 746 023d 04       		.uleb128 0x4
- 747 023e 9A030000 		.4byte	.LASF36
- 748 0242 07       		.byte	0x7
- 749 0243 1E       		.byte	0x1e
- 750 0244 00020000 		.4byte	0x200
- 751 0248 12       		.uleb128 0x12
- 752 0249 AE000000 		.4byte	.LASF37
- 753 024d 01       		.byte	0x1
- 754 024e AD       		.byte	0xad
- 755 024f 00000000 		.4byte	.LFB67
- 756 0253 5C000000 		.4byte	.LFE67-.LFB67
- 757 0257 01       		.uleb128 0x1
- 758 0258 9C       		.byte	0x9c
- 759 0259 C8020000 		.4byte	0x2c8
- 760 025d 13       		.uleb128 0x13
- 761 025e 61757800 		.ascii	"aux\000"
- 762 0262 01       		.byte	0x1
- 763 0263 C0       		.byte	0xc0
- 764 0264 25000000 		.4byte	0x25
- 765 0268 00000000 		.4byte	.LLST0
- 766 026c 14       		.uleb128 0x14
- 767 026d 8D030000 		.4byte	.LASF68
- 768 0271 01       		.byte	0x1
- 769 0272 C1       		.byte	0xc1
- 770 0273 25000000 		.4byte	0x25
- 771 0277 7D020000 		.4byte	0x27d
- 772 027b 15       		.uleb128 0x15
- 773 027c 00       		.byte	0
- 774 027d 16       		.uleb128 0x16
- 775 027e 1A000000 		.4byte	.LVL0
- 776 0282 D1050000 		.4byte	0x5d1
- 777 0286 91020000 		.4byte	0x291
- 778 028a 17       		.uleb128 0x17
- 779 028b 01       		.uleb128 0x1
- 780 028c 50       		.byte	0x50
- 781 028d 02       		.uleb128 0x2
- 782 028e 74       		.byte	0x74
- 783 028f 00       		.sleb128 0
- 784 0290 00       		.byte	0
- 785 0291 16       		.uleb128 0x16
- 786 0292 22000000 		.4byte	.LVL1
- 787 0296 DC050000 		.4byte	0x5dc
- 788 029a A5020000 		.4byte	0x2a5
- 789 029e 17       		.uleb128 0x17
- 790 029f 01       		.uleb128 0x1
- 791 02a0 50       		.byte	0x50
- 792 02a1 02       		.uleb128 0x2
- 793 02a2 74       		.byte	0x74
- 794 02a3 00       		.sleb128 0
- 795 02a4 00       		.byte	0
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 23
-
-
- 796 02a5 18       		.uleb128 0x18
- 797 02a6 3C000000 		.4byte	.LVL4
- 798 02aa E7050000 		.4byte	0x5e7
- 799 02ae 17       		.uleb128 0x17
- 800 02af 01       		.uleb128 0x1
- 801 02b0 51       		.byte	0x51
- 802 02b1 01       		.uleb128 0x1
- 803 02b2 30       		.byte	0x30
- 804 02b3 17       		.uleb128 0x17
- 805 02b4 01       		.uleb128 0x1
- 806 02b5 52       		.byte	0x52
- 807 02b6 03       		.uleb128 0x3
- 808 02b7 0A       		.byte	0xa
- 809 02b8 0010     		.2byte	0x1000
- 810 02ba 17       		.uleb128 0x17
- 811 02bb 01       		.uleb128 0x1
- 812 02bc 53       		.byte	0x53
- 813 02bd 01       		.uleb128 0x1
- 814 02be 30       		.byte	0x30
- 815 02bf 17       		.uleb128 0x17
- 816 02c0 02       		.uleb128 0x2
- 817 02c1 7D       		.byte	0x7d
- 818 02c2 00       		.sleb128 0
- 819 02c3 02       		.uleb128 0x2
- 820 02c4 08       		.byte	0x8
- 821 02c5 FF       		.byte	0xff
- 822 02c6 00       		.byte	0
- 823 02c7 00       		.byte	0
- 824 02c8 12       		.uleb128 0x12
- 825 02c9 42020000 		.4byte	.LASF38
- 826 02cd 01       		.byte	0x1
- 827 02ce F3       		.byte	0xf3
- 828 02cf 00000000 		.4byte	.LFB68
- 829 02d3 0C000000 		.4byte	.LFE68-.LFB68
- 830 02d7 01       		.uleb128 0x1
- 831 02d8 9C       		.byte	0x9c
- 832 02d9 F8020000 		.4byte	0x2f8
- 833 02dd 19       		.uleb128 0x19
- 834 02de 94000000 		.4byte	.LASF41
- 835 02e2 01       		.byte	0x1
- 836 02e3 F3       		.byte	0xf3
- 837 02e4 01010000 		.4byte	0x101
- 838 02e8 01       		.uleb128 0x1
- 839 02e9 50       		.byte	0x50
- 840 02ea 1A       		.uleb128 0x1a
- 841 02eb 77010000 		.4byte	.LASF39
- 842 02ef 01       		.byte	0x1
- 843 02f0 F5       		.byte	0xf5
- 844 02f1 F8020000 		.4byte	0x2f8
- 845 02f5 01       		.uleb128 0x1
- 846 02f6 53       		.byte	0x53
- 847 02f7 00       		.byte	0
- 848 02f8 05       		.uleb128 0x5
- 849 02f9 04       		.byte	0x4
- 850 02fa 01010000 		.4byte	0x101
- 851 02fe 1B       		.uleb128 0x1b
- 852 02ff 39000000 		.4byte	.LASF43
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 24
-
-
- 853 0303 01       		.byte	0x1
- 854 0304 0B01     		.2byte	0x10b
- 855 0306 01010000 		.4byte	0x101
- 856 030a 00000000 		.4byte	.LFB69
- 857 030e 0C000000 		.4byte	.LFE69-.LFB69
- 858 0312 01       		.uleb128 0x1
- 859 0313 9C       		.byte	0x9c
- 860 0314 27030000 		.4byte	0x327
- 861 0318 1C       		.uleb128 0x1c
- 862 0319 77010000 		.4byte	.LASF39
- 863 031d 01       		.byte	0x1
- 864 031e 0D01     		.2byte	0x10d
- 865 0320 F8020000 		.4byte	0x2f8
- 866 0324 01       		.uleb128 0x1
- 867 0325 53       		.byte	0x53
- 868 0326 00       		.byte	0
- 869 0327 1D       		.uleb128 0x1d
- 870 0328 84040000 		.4byte	.LASF40
- 871 032c 01       		.byte	0x1
- 872 032d 2D01     		.2byte	0x12d
- 873 032f 00000000 		.4byte	.LFB70
- 874 0333 10000000 		.4byte	.LFE70-.LFB70
- 875 0337 01       		.uleb128 0x1
- 876 0338 9C       		.byte	0x9c
- 877 0339 4E030000 		.4byte	0x34e
- 878 033d 1E       		.uleb128 0x1e
- 879 033e 17000000 		.4byte	.LASF42
- 880 0342 01       		.byte	0x1
- 881 0343 2D01     		.2byte	0x12d
- 882 0345 B9000000 		.4byte	0xb9
- 883 0349 28000000 		.4byte	.LLST1
- 884 034d 00       		.byte	0
- 885 034e 1B       		.uleb128 0x1b
- 886 034f 5F000000 		.4byte	.LASF44
- 887 0353 01       		.byte	0x1
- 888 0354 4301     		.2byte	0x143
- 889 0356 B9000000 		.4byte	0xb9
- 890 035a 00000000 		.4byte	.LFB71
- 891 035e 0C000000 		.4byte	.LFE71-.LFB71
- 892 0362 01       		.uleb128 0x1
- 893 0363 9C       		.byte	0x9c
- 894 0364 79030000 		.4byte	0x379
- 895 0368 1F       		.uleb128 0x1f
- 896 0369 17000000 		.4byte	.LASF42
- 897 036d 01       		.byte	0x1
- 898 036e 4501     		.2byte	0x145
- 899 0370 B9000000 		.4byte	0xb9
- 900 0374 49000000 		.4byte	.LLST2
- 901 0378 00       		.byte	0
- 902 0379 20       		.uleb128 0x20
- 903 037a 64040000 		.4byte	.LASF45
- 904 037e 01       		.byte	0x1
- 905 037f 5E01     		.2byte	0x15e
- 906 0381 00000000 		.4byte	.LFB72
- 907 0385 10000000 		.4byte	.LFE72-.LFB72
- 908 0389 01       		.uleb128 0x1
- 909 038a 9C       		.byte	0x9c
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 25
-
-
- 910 038b 21       		.uleb128 0x21
- 911 038c DF010000 		.4byte	.LASF75
- 912 0390 01       		.byte	0x1
- 913 0391 7301     		.2byte	0x173
- 914 0393 B9000000 		.4byte	0xb9
- 915 0397 00000000 		.4byte	.LFB73
- 916 039b 18000000 		.4byte	.LFE73-.LFB73
- 917 039f 01       		.uleb128 0x1
- 918 03a0 9C       		.byte	0x9c
- 919 03a1 20       		.uleb128 0x20
- 920 03a2 86010000 		.4byte	.LASF46
- 921 03a6 01       		.byte	0x1
- 922 03a7 8801     		.2byte	0x188
- 923 03a9 00000000 		.4byte	.LFB74
- 924 03ad 10000000 		.4byte	.LFE74-.LFB74
- 925 03b1 01       		.uleb128 0x1
- 926 03b2 9C       		.byte	0x9c
- 927 03b3 12       		.uleb128 0x12
- 928 03b4 AF010000 		.4byte	.LASF47
- 929 03b8 01       		.byte	0x1
- 930 03b9 4A       		.byte	0x4a
- 931 03ba 00000000 		.4byte	.LFB64
- 932 03be 1C000000 		.4byte	.LFE64-.LFB64
- 933 03c2 01       		.uleb128 0x1
- 934 03c3 9C       		.byte	0x9c
- 935 03c4 05040000 		.4byte	0x405
- 936 03c8 22       		.uleb128 0x22
- 937 03c9 06000000 		.4byte	.LVL12
- 938 03cd A1030000 		.4byte	0x3a1
- 939 03d1 16       		.uleb128 0x16
- 940 03d2 0C000000 		.4byte	.LVL13
- 941 03d6 C8020000 		.4byte	0x2c8
- 942 03da E8030000 		.4byte	0x3e8
- 943 03de 17       		.uleb128 0x17
- 944 03df 01       		.uleb128 0x1
- 945 03e0 50       		.byte	0x50
- 946 03e1 05       		.uleb128 0x5
- 947 03e2 03       		.byte	0x3
- 948 03e3 00000000 		.4byte	tensor_control_isr_Interrupt
- 949 03e7 00       		.byte	0
- 950 03e8 16       		.uleb128 0x16
- 951 03e9 12000000 		.4byte	.LVL14
- 952 03ed 27030000 		.4byte	0x327
- 953 03f1 FB030000 		.4byte	0x3fb
- 954 03f5 17       		.uleb128 0x17
- 955 03f6 01       		.uleb128 0x1
- 956 03f7 50       		.byte	0x50
- 957 03f8 01       		.uleb128 0x1
- 958 03f9 37       		.byte	0x37
- 959 03fa 00       		.byte	0
- 960 03fb 22       		.uleb128 0x22
- 961 03fc 16000000 		.4byte	.LVL15
- 962 0400 79030000 		.4byte	0x379
- 963 0404 00       		.byte	0
- 964 0405 12       		.uleb128 0x12
- 965 0406 CD020000 		.4byte	.LASF48
- 966 040a 01       		.byte	0x1
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 26
-
-
- 967 040b 75       		.byte	0x75
- 968 040c 00000000 		.4byte	.LFB65
- 969 0410 1A000000 		.4byte	.LFE65-.LFB65
- 970 0414 01       		.uleb128 0x1
- 971 0415 9C       		.byte	0x9c
- 972 0416 63040000 		.4byte	0x463
- 973 041a 23       		.uleb128 0x23
- 974 041b 94000000 		.4byte	.LASF41
- 975 041f 01       		.byte	0x1
- 976 0420 75       		.byte	0x75
- 977 0421 01010000 		.4byte	0x101
- 978 0425 60000000 		.4byte	.LLST3
- 979 0429 22       		.uleb128 0x22
- 980 042a 08000000 		.4byte	.LVL17
- 981 042e A1030000 		.4byte	0x3a1
- 982 0432 16       		.uleb128 0x16
- 983 0433 0E000000 		.4byte	.LVL18
- 984 0437 C8020000 		.4byte	0x2c8
- 985 043b 46040000 		.4byte	0x446
- 986 043f 17       		.uleb128 0x17
- 987 0440 01       		.uleb128 0x1
- 988 0441 50       		.byte	0x50
- 989 0442 02       		.uleb128 0x2
- 990 0443 74       		.byte	0x74
- 991 0444 00       		.sleb128 0
- 992 0445 00       		.byte	0
- 993 0446 16       		.uleb128 0x16
- 994 0447 14000000 		.4byte	.LVL19
- 995 044b 27030000 		.4byte	0x327
- 996 044f 59040000 		.4byte	0x459
- 997 0453 17       		.uleb128 0x17
- 998 0454 01       		.uleb128 0x1
- 999 0455 50       		.byte	0x50
- 1000 0456 01       		.uleb128 0x1
- 1001 0457 37       		.byte	0x37
- 1002 0458 00       		.byte	0
- 1003 0459 22       		.uleb128 0x22
- 1004 045a 18000000 		.4byte	.LVL20
- 1005 045e 79030000 		.4byte	0x379
- 1006 0462 00       		.byte	0
- 1007 0463 12       		.uleb128 0x12
- 1008 0464 B8040000 		.4byte	.LASF49
- 1009 0468 01       		.byte	0x1
- 1010 0469 93       		.byte	0x93
- 1011 046a 00000000 		.4byte	.LFB66
- 1012 046e 14000000 		.4byte	.LFE66-.LFB66
- 1013 0472 01       		.uleb128 0x1
- 1014 0473 9C       		.byte	0x9c
- 1015 0474 8B040000 		.4byte	0x48b
- 1016 0478 22       		.uleb128 0x22
- 1017 0479 06000000 		.4byte	.LVL21
- 1018 047d A1030000 		.4byte	0x3a1
- 1019 0481 22       		.uleb128 0x22
- 1020 0482 0C000000 		.4byte	.LVL22
- 1021 0486 C8020000 		.4byte	0x2c8
- 1022 048a 00       		.byte	0
- 1023 048b 20       		.uleb128 0x20
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 27
-
-
- 1024 048c D0040000 		.4byte	.LASF50
- 1025 0490 01       		.byte	0x1
- 1026 0491 A301     		.2byte	0x1a3
- 1027 0493 00000000 		.4byte	.LFB75
- 1028 0497 10000000 		.4byte	.LFE75-.LFB75
- 1029 049b 01       		.uleb128 0x1
- 1030 049c 9C       		.byte	0x9c
- 1031 049d 20       		.uleb128 0x20
- 1032 049e 03030000 		.4byte	.LASF51
- 1033 04a2 01       		.byte	0x1
- 1034 04a3 BC01     		.2byte	0x1bc
- 1035 04a5 00000000 		.4byte	.LFB76
- 1036 04a9 10000000 		.4byte	.LFE76-.LFB76
- 1037 04ad 01       		.uleb128 0x1
- 1038 04ae 9C       		.byte	0x9c
- 1039 04af 24       		.uleb128 0x24
- 1040 04b0 AF030000 		.4byte	.LASF52
- 1041 04b4 08       		.byte	0x8
- 1042 04b5 1207     		.2byte	0x712
- 1043 04b7 BB040000 		.4byte	0x4bb
- 1044 04bb 08       		.uleb128 0x8
- 1045 04bc AE000000 		.4byte	0xae
- 1046 04c0 25       		.uleb128 0x25
- 1047 04c1 524200   		.ascii	"RB\000"
- 1048 04c4 06       		.byte	0x6
- 1049 04c5 20       		.byte	0x20
- 1050 04c6 D3010000 		.4byte	0x1d3
- 1051 04ca 05       		.uleb128 0x5
- 1052 04cb 03       		.byte	0x3
- 1053 04cc 00000000 		.4byte	RB
- 1054 04d0 25       		.uleb128 0x25
- 1055 04d1 504200   		.ascii	"PB\000"
- 1056 04d4 07       		.byte	0x7
- 1057 04d5 1F       		.byte	0x1f
- 1058 04d6 E0040000 		.4byte	0x4e0
- 1059 04da 05       		.uleb128 0x5
- 1060 04db 03       		.byte	0x3
- 1061 04dc 00000000 		.4byte	PB
- 1062 04e0 08       		.uleb128 0x8
- 1063 04e1 3D020000 		.4byte	0x23d
- 1064 04e5 25       		.uleb128 0x25
- 1065 04e6 436800   		.ascii	"Ch\000"
- 1066 04e9 07       		.byte	0x7
- 1067 04ea 4F       		.byte	0x4f
- 1068 04eb EB000000 		.4byte	0xeb
- 1069 04ef 05       		.uleb128 0x5
- 1070 04f0 03       		.byte	0x3
- 1071 04f1 00000000 		.4byte	Ch
- 1072 04f5 26       		.uleb128 0x26
- 1073 04f6 76020000 		.4byte	.LASF53
- 1074 04fa 07       		.byte	0x7
- 1075 04fb 51       		.byte	0x51
- 1076 04fc EB000000 		.4byte	0xeb
- 1077 0500 05       		.uleb128 0x5
- 1078 0501 03       		.byte	0x3
- 1079 0502 00000000 		.4byte	ContinuouslySendData
- 1080 0506 26       		.uleb128 0x26
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 28
-
-
- 1081 0507 08020000 		.4byte	.LASF54
- 1082 050b 07       		.byte	0x7
- 1083 050c 52       		.byte	0x52
- 1084 050d EB000000 		.4byte	0xeb
- 1085 0511 05       		.uleb128 0x5
- 1086 0512 03       		.byte	0x3
- 1087 0513 00000000 		.4byte	SendSingleByte
- 1088 0517 26       		.uleb128 0x26
- 1089 0518 B0020000 		.4byte	.LASF55
- 1090 051c 07       		.byte	0x7
- 1091 051d 53       		.byte	0x53
- 1092 051e EB000000 		.4byte	0xeb
- 1093 0522 05       		.uleb128 0x5
- 1094 0523 03       		.byte	0x3
- 1095 0524 00000000 		.4byte	SendEmulatedData
- 1096 0528 26       		.uleb128 0x26
- 1097 0529 C8010000 		.4byte	.LASF56
- 1098 052d 07       		.byte	0x7
- 1099 052e 54       		.byte	0x54
- 1100 052f EB000000 		.4byte	0xeb
- 1101 0533 05       		.uleb128 0x5
- 1102 0534 03       		.byte	0x3
- 1103 0535 00000000 		.4byte	_uart_Reset
- 1104 0539 26       		.uleb128 0x26
- 1105 053a 00000000 		.4byte	.LASF57
- 1106 053e 07       		.byte	0x7
- 1107 053f 57       		.byte	0x57
- 1108 0540 25000000 		.4byte	0x25
- 1109 0544 05       		.uleb128 0x5
- 1110 0545 03       		.byte	0x3
- 1111 0546 00000000 		.4byte	_state_
- 1112 054a 26       		.uleb128 0x26
- 1113 054b 7E000000 		.4byte	.LASF58
- 1114 054f 01       		.byte	0x1
- 1115 0550 27       		.byte	0x27
- 1116 0551 97010000 		.4byte	0x197
- 1117 0555 05       		.uleb128 0x5
- 1118 0556 03       		.byte	0x3
- 1119 0557 00000000 		.4byte	tens_pid_
- 1120 055b 26       		.uleb128 0x26
- 1121 055c 20000000 		.4byte	.LASF59
- 1122 0560 01       		.byte	0x1
- 1123 0561 23       		.byte	0x23
- 1124 0562 BB040000 		.4byte	0x4bb
- 1125 0566 05       		.uleb128 0x5
- 1126 0567 03       		.byte	0x3
- 1127 0568 00000000 		.4byte	actual_tension
- 1128 056c 26       		.uleb128 0x26
- 1129 056d 8B020000 		.4byte	.LASF60
- 1130 0571 01       		.byte	0x1
- 1131 0572 24       		.byte	0x24
- 1132 0573 BB040000 		.4byte	0x4bb
- 1133 0577 05       		.uleb128 0x5
- 1134 0578 03       		.byte	0x3
- 1135 0579 00000000 		.4byte	tension_ref
- 1136 057d 26       		.uleb128 0x26
- 1137 057e 4E030000 		.4byte	.LASF61
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 29
-
-
- 1138 0582 01       		.byte	0x1
- 1139 0583 22       		.byte	0x22
- 1140 0584 8E050000 		.4byte	0x58e
- 1141 0588 05       		.uleb128 0x5
- 1142 0589 03       		.byte	0x3
- 1143 058a 00000000 		.4byte	_tVal
- 1144 058e 08       		.uleb128 0x8
- 1145 058f A3000000 		.4byte	0xa3
- 1146 0593 26       		.uleb128 0x26
- 1147 0594 97020000 		.4byte	.LASF62
- 1148 0598 01       		.byte	0x1
- 1149 0599 29       		.byte	0x29
- 1150 059a BB040000 		.4byte	0x4bb
- 1151 059e 05       		.uleb128 0x5
- 1152 059f 03       		.byte	0x3
- 1153 05a0 00000000 		.4byte	debug
- 1154 05a4 27       		.uleb128 0x27
- 1155 05a5 A6030000 		.4byte	.LASF63
- 1156 05a9 07       		.byte	0x7
- 1157 05aa 75       		.byte	0x75
- 1158 05ab B9000000 		.4byte	0xb9
- 1159 05af 26       		.uleb128 0x26
- 1160 05b0 54030000 		.4byte	.LASF64
- 1161 05b4 01       		.byte	0x1
- 1162 05b5 25       		.byte	0x25
- 1163 05b6 AE000000 		.4byte	0xae
- 1164 05ba 05       		.uleb128 0x5
- 1165 05bb 03       		.byte	0x3
- 1166 05bc 00000000 		.4byte	tension_pid_output
- 1167 05c0 26       		.uleb128 0x26
- 1168 05c1 6D030000 		.4byte	.LASF65
- 1169 05c5 01       		.byte	0x1
- 1170 05c6 2A       		.byte	0x2a
- 1171 05c7 BB040000 		.4byte	0x4bb
- 1172 05cb 05       		.uleb128 0x5
- 1173 05cc 03       		.byte	0x3
- 1174 05cd 00000000 		.4byte	current_pos
- 1175 05d1 28       		.uleb128 0x28
- 1176 05d2 59040000 		.4byte	.LASF66
- 1177 05d6 59040000 		.4byte	.LASF66
- 1178 05da 05       		.byte	0x5
- 1179 05db 26       		.byte	0x26
- 1180 05dc 28       		.uleb128 0x28
- 1181 05dd D4000000 		.4byte	.LASF67
- 1182 05e1 D4000000 		.4byte	.LASF67
- 1183 05e5 05       		.byte	0x5
- 1184 05e6 29       		.byte	0x29
- 1185 05e7 28       		.uleb128 0x28
- 1186 05e8 8D030000 		.4byte	.LASF68
- 1187 05ec 8D030000 		.4byte	.LASF68
- 1188 05f0 01       		.byte	0x1
- 1189 05f1 C1       		.byte	0xc1
- 1190 05f2 00       		.byte	0
- 1191              		.section	.debug_abbrev,"",%progbits
- 1192              	.Ldebug_abbrev0:
- 1193 0000 01       		.uleb128 0x1
- 1194 0001 11       		.uleb128 0x11
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 30
-
-
- 1195 0002 01       		.byte	0x1
- 1196 0003 25       		.uleb128 0x25
- 1197 0004 0E       		.uleb128 0xe
- 1198 0005 13       		.uleb128 0x13
- 1199 0006 0B       		.uleb128 0xb
- 1200 0007 03       		.uleb128 0x3
- 1201 0008 0E       		.uleb128 0xe
- 1202 0009 1B       		.uleb128 0x1b
- 1203 000a 0E       		.uleb128 0xe
- 1204 000b 55       		.uleb128 0x55
- 1205 000c 17       		.uleb128 0x17
- 1206 000d 11       		.uleb128 0x11
- 1207 000e 01       		.uleb128 0x1
- 1208 000f 10       		.uleb128 0x10
- 1209 0010 17       		.uleb128 0x17
- 1210 0011 00       		.byte	0
- 1211 0012 00       		.byte	0
- 1212 0013 02       		.uleb128 0x2
- 1213 0014 24       		.uleb128 0x24
- 1214 0015 00       		.byte	0
- 1215 0016 0B       		.uleb128 0xb
- 1216 0017 0B       		.uleb128 0xb
- 1217 0018 3E       		.uleb128 0x3e
- 1218 0019 0B       		.uleb128 0xb
- 1219 001a 03       		.uleb128 0x3
- 1220 001b 08       		.uleb128 0x8
- 1221 001c 00       		.byte	0
- 1222 001d 00       		.byte	0
- 1223 001e 03       		.uleb128 0x3
- 1224 001f 24       		.uleb128 0x24
- 1225 0020 00       		.byte	0
- 1226 0021 0B       		.uleb128 0xb
- 1227 0022 0B       		.uleb128 0xb
- 1228 0023 3E       		.uleb128 0x3e
- 1229 0024 0B       		.uleb128 0xb
- 1230 0025 03       		.uleb128 0x3
- 1231 0026 0E       		.uleb128 0xe
- 1232 0027 00       		.byte	0
- 1233 0028 00       		.byte	0
- 1234 0029 04       		.uleb128 0x4
- 1235 002a 16       		.uleb128 0x16
- 1236 002b 00       		.byte	0
- 1237 002c 03       		.uleb128 0x3
- 1238 002d 0E       		.uleb128 0xe
- 1239 002e 3A       		.uleb128 0x3a
- 1240 002f 0B       		.uleb128 0xb
- 1241 0030 3B       		.uleb128 0x3b
- 1242 0031 0B       		.uleb128 0xb
- 1243 0032 49       		.uleb128 0x49
- 1244 0033 13       		.uleb128 0x13
- 1245 0034 00       		.byte	0
- 1246 0035 00       		.byte	0
- 1247 0036 05       		.uleb128 0x5
- 1248 0037 0F       		.uleb128 0xf
- 1249 0038 00       		.byte	0
- 1250 0039 0B       		.uleb128 0xb
- 1251 003a 0B       		.uleb128 0xb
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 31
-
-
- 1252 003b 49       		.uleb128 0x49
- 1253 003c 13       		.uleb128 0x13
- 1254 003d 00       		.byte	0
- 1255 003e 00       		.byte	0
- 1256 003f 06       		.uleb128 0x6
- 1257 0040 15       		.uleb128 0x15
- 1258 0041 00       		.byte	0
- 1259 0042 27       		.uleb128 0x27
- 1260 0043 19       		.uleb128 0x19
- 1261 0044 00       		.byte	0
- 1262 0045 00       		.byte	0
- 1263 0046 07       		.uleb128 0x7
- 1264 0047 16       		.uleb128 0x16
- 1265 0048 00       		.byte	0
- 1266 0049 03       		.uleb128 0x3
- 1267 004a 0E       		.uleb128 0xe
- 1268 004b 3A       		.uleb128 0x3a
- 1269 004c 0B       		.uleb128 0xb
- 1270 004d 3B       		.uleb128 0x3b
- 1271 004e 05       		.uleb128 0x5
- 1272 004f 49       		.uleb128 0x49
- 1273 0050 13       		.uleb128 0x13
- 1274 0051 00       		.byte	0
- 1275 0052 00       		.byte	0
- 1276 0053 08       		.uleb128 0x8
- 1277 0054 35       		.uleb128 0x35
- 1278 0055 00       		.byte	0
- 1279 0056 49       		.uleb128 0x49
- 1280 0057 13       		.uleb128 0x13
- 1281 0058 00       		.byte	0
- 1282 0059 00       		.byte	0
- 1283 005a 09       		.uleb128 0x9
- 1284 005b 13       		.uleb128 0x13
- 1285 005c 01       		.byte	0x1
- 1286 005d 0B       		.uleb128 0xb
- 1287 005e 0B       		.uleb128 0xb
- 1288 005f 3A       		.uleb128 0x3a
- 1289 0060 0B       		.uleb128 0xb
- 1290 0061 3B       		.uleb128 0x3b
- 1291 0062 0B       		.uleb128 0xb
- 1292 0063 01       		.uleb128 0x1
- 1293 0064 13       		.uleb128 0x13
- 1294 0065 00       		.byte	0
- 1295 0066 00       		.byte	0
- 1296 0067 0A       		.uleb128 0xa
- 1297 0068 0D       		.uleb128 0xd
- 1298 0069 00       		.byte	0
- 1299 006a 03       		.uleb128 0x3
- 1300 006b 08       		.uleb128 0x8
- 1301 006c 3A       		.uleb128 0x3a
- 1302 006d 0B       		.uleb128 0xb
- 1303 006e 3B       		.uleb128 0x3b
- 1304 006f 0B       		.uleb128 0xb
- 1305 0070 49       		.uleb128 0x49
- 1306 0071 13       		.uleb128 0x13
- 1307 0072 38       		.uleb128 0x38
- 1308 0073 0B       		.uleb128 0xb
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 32
-
-
- 1309 0074 00       		.byte	0
- 1310 0075 00       		.byte	0
- 1311 0076 0B       		.uleb128 0xb
- 1312 0077 0D       		.uleb128 0xd
- 1313 0078 00       		.byte	0
- 1314 0079 03       		.uleb128 0x3
- 1315 007a 0E       		.uleb128 0xe
- 1316 007b 3A       		.uleb128 0x3a
- 1317 007c 0B       		.uleb128 0xb
- 1318 007d 3B       		.uleb128 0x3b
- 1319 007e 0B       		.uleb128 0xb
- 1320 007f 49       		.uleb128 0x49
- 1321 0080 13       		.uleb128 0x13
- 1322 0081 38       		.uleb128 0x38
- 1323 0082 0B       		.uleb128 0xb
- 1324 0083 00       		.byte	0
- 1325 0084 00       		.byte	0
- 1326 0085 0C       		.uleb128 0xc
- 1327 0086 01       		.uleb128 0x1
- 1328 0087 01       		.byte	0x1
- 1329 0088 49       		.uleb128 0x49
- 1330 0089 13       		.uleb128 0x13
- 1331 008a 01       		.uleb128 0x1
- 1332 008b 13       		.uleb128 0x13
- 1333 008c 00       		.byte	0
- 1334 008d 00       		.byte	0
- 1335 008e 0D       		.uleb128 0xd
- 1336 008f 21       		.uleb128 0x21
- 1337 0090 00       		.byte	0
- 1338 0091 49       		.uleb128 0x49
- 1339 0092 13       		.uleb128 0x13
- 1340 0093 2F       		.uleb128 0x2f
- 1341 0094 0B       		.uleb128 0xb
- 1342 0095 00       		.byte	0
- 1343 0096 00       		.byte	0
- 1344 0097 0E       		.uleb128 0xe
- 1345 0098 17       		.uleb128 0x17
- 1346 0099 01       		.byte	0x1
- 1347 009a 03       		.uleb128 0x3
- 1348 009b 0E       		.uleb128 0xe
- 1349 009c 0B       		.uleb128 0xb
- 1350 009d 0B       		.uleb128 0xb
- 1351 009e 3A       		.uleb128 0x3a
- 1352 009f 0B       		.uleb128 0xb
- 1353 00a0 3B       		.uleb128 0x3b
- 1354 00a1 0B       		.uleb128 0xb
- 1355 00a2 01       		.uleb128 0x1
- 1356 00a3 13       		.uleb128 0x13
- 1357 00a4 00       		.byte	0
- 1358 00a5 00       		.byte	0
- 1359 00a6 0F       		.uleb128 0xf
- 1360 00a7 0D       		.uleb128 0xd
- 1361 00a8 00       		.byte	0
- 1362 00a9 03       		.uleb128 0x3
- 1363 00aa 0E       		.uleb128 0xe
- 1364 00ab 3A       		.uleb128 0x3a
- 1365 00ac 0B       		.uleb128 0xb
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 33
-
-
- 1366 00ad 3B       		.uleb128 0x3b
- 1367 00ae 0B       		.uleb128 0xb
- 1368 00af 49       		.uleb128 0x49
- 1369 00b0 13       		.uleb128 0x13
- 1370 00b1 00       		.byte	0
- 1371 00b2 00       		.byte	0
- 1372 00b3 10       		.uleb128 0x10
- 1373 00b4 0D       		.uleb128 0xd
- 1374 00b5 00       		.byte	0
- 1375 00b6 49       		.uleb128 0x49
- 1376 00b7 13       		.uleb128 0x13
- 1377 00b8 00       		.byte	0
- 1378 00b9 00       		.byte	0
- 1379 00ba 11       		.uleb128 0x11
- 1380 00bb 13       		.uleb128 0x13
- 1381 00bc 01       		.byte	0x1
- 1382 00bd 03       		.uleb128 0x3
- 1383 00be 0E       		.uleb128 0xe
- 1384 00bf 0B       		.uleb128 0xb
- 1385 00c0 0B       		.uleb128 0xb
- 1386 00c1 3A       		.uleb128 0x3a
- 1387 00c2 0B       		.uleb128 0xb
- 1388 00c3 3B       		.uleb128 0x3b
- 1389 00c4 0B       		.uleb128 0xb
- 1390 00c5 01       		.uleb128 0x1
- 1391 00c6 13       		.uleb128 0x13
- 1392 00c7 00       		.byte	0
- 1393 00c8 00       		.byte	0
- 1394 00c9 12       		.uleb128 0x12
- 1395 00ca 2E       		.uleb128 0x2e
- 1396 00cb 01       		.byte	0x1
- 1397 00cc 3F       		.uleb128 0x3f
- 1398 00cd 19       		.uleb128 0x19
- 1399 00ce 03       		.uleb128 0x3
- 1400 00cf 0E       		.uleb128 0xe
- 1401 00d0 3A       		.uleb128 0x3a
- 1402 00d1 0B       		.uleb128 0xb
- 1403 00d2 3B       		.uleb128 0x3b
- 1404 00d3 0B       		.uleb128 0xb
- 1405 00d4 27       		.uleb128 0x27
- 1406 00d5 19       		.uleb128 0x19
- 1407 00d6 11       		.uleb128 0x11
- 1408 00d7 01       		.uleb128 0x1
- 1409 00d8 12       		.uleb128 0x12
- 1410 00d9 06       		.uleb128 0x6
- 1411 00da 40       		.uleb128 0x40
- 1412 00db 18       		.uleb128 0x18
- 1413 00dc 9742     		.uleb128 0x2117
- 1414 00de 19       		.uleb128 0x19
- 1415 00df 01       		.uleb128 0x1
- 1416 00e0 13       		.uleb128 0x13
- 1417 00e1 00       		.byte	0
- 1418 00e2 00       		.byte	0
- 1419 00e3 13       		.uleb128 0x13
- 1420 00e4 34       		.uleb128 0x34
- 1421 00e5 00       		.byte	0
- 1422 00e6 03       		.uleb128 0x3
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 34
-
-
- 1423 00e7 08       		.uleb128 0x8
- 1424 00e8 3A       		.uleb128 0x3a
- 1425 00e9 0B       		.uleb128 0xb
- 1426 00ea 3B       		.uleb128 0x3b
- 1427 00eb 0B       		.uleb128 0xb
- 1428 00ec 49       		.uleb128 0x49
- 1429 00ed 13       		.uleb128 0x13
- 1430 00ee 02       		.uleb128 0x2
- 1431 00ef 17       		.uleb128 0x17
- 1432 00f0 00       		.byte	0
- 1433 00f1 00       		.byte	0
- 1434 00f2 14       		.uleb128 0x14
- 1435 00f3 2E       		.uleb128 0x2e
- 1436 00f4 01       		.byte	0x1
- 1437 00f5 3F       		.uleb128 0x3f
- 1438 00f6 19       		.uleb128 0x19
- 1439 00f7 03       		.uleb128 0x3
- 1440 00f8 0E       		.uleb128 0xe
- 1441 00f9 3A       		.uleb128 0x3a
- 1442 00fa 0B       		.uleb128 0xb
- 1443 00fb 3B       		.uleb128 0x3b
- 1444 00fc 0B       		.uleb128 0xb
- 1445 00fd 49       		.uleb128 0x49
- 1446 00fe 13       		.uleb128 0x13
- 1447 00ff 3C       		.uleb128 0x3c
- 1448 0100 19       		.uleb128 0x19
- 1449 0101 01       		.uleb128 0x1
- 1450 0102 13       		.uleb128 0x13
- 1451 0103 00       		.byte	0
- 1452 0104 00       		.byte	0
- 1453 0105 15       		.uleb128 0x15
- 1454 0106 18       		.uleb128 0x18
- 1455 0107 00       		.byte	0
- 1456 0108 00       		.byte	0
- 1457 0109 00       		.byte	0
- 1458 010a 16       		.uleb128 0x16
- 1459 010b 898201   		.uleb128 0x4109
- 1460 010e 01       		.byte	0x1
- 1461 010f 11       		.uleb128 0x11
- 1462 0110 01       		.uleb128 0x1
- 1463 0111 31       		.uleb128 0x31
- 1464 0112 13       		.uleb128 0x13
- 1465 0113 01       		.uleb128 0x1
- 1466 0114 13       		.uleb128 0x13
- 1467 0115 00       		.byte	0
- 1468 0116 00       		.byte	0
- 1469 0117 17       		.uleb128 0x17
- 1470 0118 8A8201   		.uleb128 0x410a
- 1471 011b 00       		.byte	0
- 1472 011c 02       		.uleb128 0x2
- 1473 011d 18       		.uleb128 0x18
- 1474 011e 9142     		.uleb128 0x2111
- 1475 0120 18       		.uleb128 0x18
- 1476 0121 00       		.byte	0
- 1477 0122 00       		.byte	0
- 1478 0123 18       		.uleb128 0x18
- 1479 0124 898201   		.uleb128 0x4109
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 35
-
-
- 1480 0127 01       		.byte	0x1
- 1481 0128 11       		.uleb128 0x11
- 1482 0129 01       		.uleb128 0x1
- 1483 012a 31       		.uleb128 0x31
- 1484 012b 13       		.uleb128 0x13
- 1485 012c 00       		.byte	0
- 1486 012d 00       		.byte	0
- 1487 012e 19       		.uleb128 0x19
- 1488 012f 05       		.uleb128 0x5
- 1489 0130 00       		.byte	0
- 1490 0131 03       		.uleb128 0x3
- 1491 0132 0E       		.uleb128 0xe
- 1492 0133 3A       		.uleb128 0x3a
- 1493 0134 0B       		.uleb128 0xb
- 1494 0135 3B       		.uleb128 0x3b
- 1495 0136 0B       		.uleb128 0xb
- 1496 0137 49       		.uleb128 0x49
- 1497 0138 13       		.uleb128 0x13
- 1498 0139 02       		.uleb128 0x2
- 1499 013a 18       		.uleb128 0x18
- 1500 013b 00       		.byte	0
- 1501 013c 00       		.byte	0
- 1502 013d 1A       		.uleb128 0x1a
- 1503 013e 34       		.uleb128 0x34
- 1504 013f 00       		.byte	0
- 1505 0140 03       		.uleb128 0x3
- 1506 0141 0E       		.uleb128 0xe
- 1507 0142 3A       		.uleb128 0x3a
- 1508 0143 0B       		.uleb128 0xb
- 1509 0144 3B       		.uleb128 0x3b
- 1510 0145 0B       		.uleb128 0xb
- 1511 0146 49       		.uleb128 0x49
- 1512 0147 13       		.uleb128 0x13
- 1513 0148 02       		.uleb128 0x2
- 1514 0149 18       		.uleb128 0x18
- 1515 014a 00       		.byte	0
- 1516 014b 00       		.byte	0
- 1517 014c 1B       		.uleb128 0x1b
- 1518 014d 2E       		.uleb128 0x2e
- 1519 014e 01       		.byte	0x1
- 1520 014f 3F       		.uleb128 0x3f
- 1521 0150 19       		.uleb128 0x19
- 1522 0151 03       		.uleb128 0x3
- 1523 0152 0E       		.uleb128 0xe
- 1524 0153 3A       		.uleb128 0x3a
- 1525 0154 0B       		.uleb128 0xb
- 1526 0155 3B       		.uleb128 0x3b
- 1527 0156 05       		.uleb128 0x5
- 1528 0157 27       		.uleb128 0x27
- 1529 0158 19       		.uleb128 0x19
- 1530 0159 49       		.uleb128 0x49
- 1531 015a 13       		.uleb128 0x13
- 1532 015b 11       		.uleb128 0x11
- 1533 015c 01       		.uleb128 0x1
- 1534 015d 12       		.uleb128 0x12
- 1535 015e 06       		.uleb128 0x6
- 1536 015f 40       		.uleb128 0x40
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 36
-
-
- 1537 0160 18       		.uleb128 0x18
- 1538 0161 9742     		.uleb128 0x2117
- 1539 0163 19       		.uleb128 0x19
- 1540 0164 01       		.uleb128 0x1
- 1541 0165 13       		.uleb128 0x13
- 1542 0166 00       		.byte	0
- 1543 0167 00       		.byte	0
- 1544 0168 1C       		.uleb128 0x1c
- 1545 0169 34       		.uleb128 0x34
- 1546 016a 00       		.byte	0
- 1547 016b 03       		.uleb128 0x3
- 1548 016c 0E       		.uleb128 0xe
- 1549 016d 3A       		.uleb128 0x3a
- 1550 016e 0B       		.uleb128 0xb
- 1551 016f 3B       		.uleb128 0x3b
- 1552 0170 05       		.uleb128 0x5
- 1553 0171 49       		.uleb128 0x49
- 1554 0172 13       		.uleb128 0x13
- 1555 0173 02       		.uleb128 0x2
- 1556 0174 18       		.uleb128 0x18
- 1557 0175 00       		.byte	0
- 1558 0176 00       		.byte	0
- 1559 0177 1D       		.uleb128 0x1d
- 1560 0178 2E       		.uleb128 0x2e
- 1561 0179 01       		.byte	0x1
- 1562 017a 3F       		.uleb128 0x3f
- 1563 017b 19       		.uleb128 0x19
- 1564 017c 03       		.uleb128 0x3
- 1565 017d 0E       		.uleb128 0xe
- 1566 017e 3A       		.uleb128 0x3a
- 1567 017f 0B       		.uleb128 0xb
- 1568 0180 3B       		.uleb128 0x3b
- 1569 0181 05       		.uleb128 0x5
- 1570 0182 27       		.uleb128 0x27
- 1571 0183 19       		.uleb128 0x19
- 1572 0184 11       		.uleb128 0x11
- 1573 0185 01       		.uleb128 0x1
- 1574 0186 12       		.uleb128 0x12
- 1575 0187 06       		.uleb128 0x6
- 1576 0188 40       		.uleb128 0x40
- 1577 0189 18       		.uleb128 0x18
- 1578 018a 9742     		.uleb128 0x2117
- 1579 018c 19       		.uleb128 0x19
- 1580 018d 01       		.uleb128 0x1
- 1581 018e 13       		.uleb128 0x13
- 1582 018f 00       		.byte	0
- 1583 0190 00       		.byte	0
- 1584 0191 1E       		.uleb128 0x1e
- 1585 0192 05       		.uleb128 0x5
- 1586 0193 00       		.byte	0
- 1587 0194 03       		.uleb128 0x3
- 1588 0195 0E       		.uleb128 0xe
- 1589 0196 3A       		.uleb128 0x3a
- 1590 0197 0B       		.uleb128 0xb
- 1591 0198 3B       		.uleb128 0x3b
- 1592 0199 05       		.uleb128 0x5
- 1593 019a 49       		.uleb128 0x49
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 37
-
-
- 1594 019b 13       		.uleb128 0x13
- 1595 019c 02       		.uleb128 0x2
- 1596 019d 17       		.uleb128 0x17
- 1597 019e 00       		.byte	0
- 1598 019f 00       		.byte	0
- 1599 01a0 1F       		.uleb128 0x1f
- 1600 01a1 34       		.uleb128 0x34
- 1601 01a2 00       		.byte	0
- 1602 01a3 03       		.uleb128 0x3
- 1603 01a4 0E       		.uleb128 0xe
- 1604 01a5 3A       		.uleb128 0x3a
- 1605 01a6 0B       		.uleb128 0xb
- 1606 01a7 3B       		.uleb128 0x3b
- 1607 01a8 05       		.uleb128 0x5
- 1608 01a9 49       		.uleb128 0x49
- 1609 01aa 13       		.uleb128 0x13
- 1610 01ab 02       		.uleb128 0x2
- 1611 01ac 17       		.uleb128 0x17
- 1612 01ad 00       		.byte	0
- 1613 01ae 00       		.byte	0
- 1614 01af 20       		.uleb128 0x20
- 1615 01b0 2E       		.uleb128 0x2e
- 1616 01b1 00       		.byte	0
- 1617 01b2 3F       		.uleb128 0x3f
- 1618 01b3 19       		.uleb128 0x19
- 1619 01b4 03       		.uleb128 0x3
- 1620 01b5 0E       		.uleb128 0xe
- 1621 01b6 3A       		.uleb128 0x3a
- 1622 01b7 0B       		.uleb128 0xb
- 1623 01b8 3B       		.uleb128 0x3b
- 1624 01b9 05       		.uleb128 0x5
- 1625 01ba 27       		.uleb128 0x27
- 1626 01bb 19       		.uleb128 0x19
- 1627 01bc 11       		.uleb128 0x11
- 1628 01bd 01       		.uleb128 0x1
- 1629 01be 12       		.uleb128 0x12
- 1630 01bf 06       		.uleb128 0x6
- 1631 01c0 40       		.uleb128 0x40
- 1632 01c1 18       		.uleb128 0x18
- 1633 01c2 9742     		.uleb128 0x2117
- 1634 01c4 19       		.uleb128 0x19
- 1635 01c5 00       		.byte	0
- 1636 01c6 00       		.byte	0
- 1637 01c7 21       		.uleb128 0x21
- 1638 01c8 2E       		.uleb128 0x2e
- 1639 01c9 00       		.byte	0
- 1640 01ca 3F       		.uleb128 0x3f
- 1641 01cb 19       		.uleb128 0x19
- 1642 01cc 03       		.uleb128 0x3
- 1643 01cd 0E       		.uleb128 0xe
- 1644 01ce 3A       		.uleb128 0x3a
- 1645 01cf 0B       		.uleb128 0xb
- 1646 01d0 3B       		.uleb128 0x3b
- 1647 01d1 05       		.uleb128 0x5
- 1648 01d2 27       		.uleb128 0x27
- 1649 01d3 19       		.uleb128 0x19
- 1650 01d4 49       		.uleb128 0x49
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 38
-
-
- 1651 01d5 13       		.uleb128 0x13
- 1652 01d6 11       		.uleb128 0x11
- 1653 01d7 01       		.uleb128 0x1
- 1654 01d8 12       		.uleb128 0x12
- 1655 01d9 06       		.uleb128 0x6
- 1656 01da 40       		.uleb128 0x40
- 1657 01db 18       		.uleb128 0x18
- 1658 01dc 9742     		.uleb128 0x2117
- 1659 01de 19       		.uleb128 0x19
- 1660 01df 00       		.byte	0
- 1661 01e0 00       		.byte	0
- 1662 01e1 22       		.uleb128 0x22
- 1663 01e2 898201   		.uleb128 0x4109
- 1664 01e5 00       		.byte	0
- 1665 01e6 11       		.uleb128 0x11
- 1666 01e7 01       		.uleb128 0x1
- 1667 01e8 31       		.uleb128 0x31
- 1668 01e9 13       		.uleb128 0x13
- 1669 01ea 00       		.byte	0
- 1670 01eb 00       		.byte	0
- 1671 01ec 23       		.uleb128 0x23
- 1672 01ed 05       		.uleb128 0x5
- 1673 01ee 00       		.byte	0
- 1674 01ef 03       		.uleb128 0x3
- 1675 01f0 0E       		.uleb128 0xe
- 1676 01f1 3A       		.uleb128 0x3a
- 1677 01f2 0B       		.uleb128 0xb
- 1678 01f3 3B       		.uleb128 0x3b
- 1679 01f4 0B       		.uleb128 0xb
- 1680 01f5 49       		.uleb128 0x49
- 1681 01f6 13       		.uleb128 0x13
- 1682 01f7 02       		.uleb128 0x2
- 1683 01f8 17       		.uleb128 0x17
- 1684 01f9 00       		.byte	0
- 1685 01fa 00       		.byte	0
- 1686 01fb 24       		.uleb128 0x24
- 1687 01fc 34       		.uleb128 0x34
- 1688 01fd 00       		.byte	0
- 1689 01fe 03       		.uleb128 0x3
- 1690 01ff 0E       		.uleb128 0xe
- 1691 0200 3A       		.uleb128 0x3a
- 1692 0201 0B       		.uleb128 0xb
- 1693 0202 3B       		.uleb128 0x3b
- 1694 0203 05       		.uleb128 0x5
- 1695 0204 49       		.uleb128 0x49
- 1696 0205 13       		.uleb128 0x13
- 1697 0206 3F       		.uleb128 0x3f
- 1698 0207 19       		.uleb128 0x19
- 1699 0208 3C       		.uleb128 0x3c
- 1700 0209 19       		.uleb128 0x19
- 1701 020a 00       		.byte	0
- 1702 020b 00       		.byte	0
- 1703 020c 25       		.uleb128 0x25
- 1704 020d 34       		.uleb128 0x34
- 1705 020e 00       		.byte	0
- 1706 020f 03       		.uleb128 0x3
- 1707 0210 08       		.uleb128 0x8
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 39
-
-
- 1708 0211 3A       		.uleb128 0x3a
- 1709 0212 0B       		.uleb128 0xb
- 1710 0213 3B       		.uleb128 0x3b
- 1711 0214 0B       		.uleb128 0xb
- 1712 0215 49       		.uleb128 0x49
- 1713 0216 13       		.uleb128 0x13
- 1714 0217 3F       		.uleb128 0x3f
- 1715 0218 19       		.uleb128 0x19
- 1716 0219 02       		.uleb128 0x2
- 1717 021a 18       		.uleb128 0x18
- 1718 021b 00       		.byte	0
- 1719 021c 00       		.byte	0
- 1720 021d 26       		.uleb128 0x26
- 1721 021e 34       		.uleb128 0x34
- 1722 021f 00       		.byte	0
- 1723 0220 03       		.uleb128 0x3
- 1724 0221 0E       		.uleb128 0xe
- 1725 0222 3A       		.uleb128 0x3a
- 1726 0223 0B       		.uleb128 0xb
- 1727 0224 3B       		.uleb128 0x3b
- 1728 0225 0B       		.uleb128 0xb
- 1729 0226 49       		.uleb128 0x49
- 1730 0227 13       		.uleb128 0x13
- 1731 0228 3F       		.uleb128 0x3f
- 1732 0229 19       		.uleb128 0x19
- 1733 022a 02       		.uleb128 0x2
- 1734 022b 18       		.uleb128 0x18
- 1735 022c 00       		.byte	0
- 1736 022d 00       		.byte	0
- 1737 022e 27       		.uleb128 0x27
- 1738 022f 34       		.uleb128 0x34
- 1739 0230 00       		.byte	0
- 1740 0231 03       		.uleb128 0x3
- 1741 0232 0E       		.uleb128 0xe
- 1742 0233 3A       		.uleb128 0x3a
- 1743 0234 0B       		.uleb128 0xb
- 1744 0235 3B       		.uleb128 0x3b
- 1745 0236 0B       		.uleb128 0xb
- 1746 0237 49       		.uleb128 0x49
- 1747 0238 13       		.uleb128 0x13
- 1748 0239 3F       		.uleb128 0x3f
- 1749 023a 19       		.uleb128 0x19
- 1750 023b 3C       		.uleb128 0x3c
- 1751 023c 19       		.uleb128 0x19
- 1752 023d 00       		.byte	0
- 1753 023e 00       		.byte	0
- 1754 023f 28       		.uleb128 0x28
- 1755 0240 2E       		.uleb128 0x2e
- 1756 0241 00       		.byte	0
- 1757 0242 3F       		.uleb128 0x3f
- 1758 0243 19       		.uleb128 0x19
- 1759 0244 3C       		.uleb128 0x3c
- 1760 0245 19       		.uleb128 0x19
- 1761 0246 6E       		.uleb128 0x6e
- 1762 0247 0E       		.uleb128 0xe
- 1763 0248 03       		.uleb128 0x3
- 1764 0249 0E       		.uleb128 0xe
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 40
-
-
- 1765 024a 3A       		.uleb128 0x3a
- 1766 024b 0B       		.uleb128 0xb
- 1767 024c 3B       		.uleb128 0x3b
- 1768 024d 0B       		.uleb128 0xb
- 1769 024e 00       		.byte	0
- 1770 024f 00       		.byte	0
- 1771 0250 00       		.byte	0
- 1772              		.section	.debug_loc,"",%progbits
- 1773              	.Ldebug_loc0:
- 1774              	.LLST0:
- 1775 0000 26000000 		.4byte	.LVL2
- 1776 0004 38000000 		.4byte	.LVL3
- 1777 0008 0400     		.2byte	0x4
- 1778 000a 70       		.byte	0x70
- 1779 000b 00       		.sleb128 0
- 1780 000c 19       		.byte	0x19
- 1781 000d 9F       		.byte	0x9f
- 1782 000e 38000000 		.4byte	.LVL3
- 1783 0012 3B000000 		.4byte	.LVL4-1
- 1784 0016 0800     		.2byte	0x8
- 1785 0018 03       		.byte	0x3
- 1786 0019 00000000 		.4byte	tension_pid_output
- 1787 001d 06       		.byte	0x6
- 1788 001e 19       		.byte	0x19
- 1789 001f 9F       		.byte	0x9f
- 1790 0020 00000000 		.4byte	0
- 1791 0024 00000000 		.4byte	0
- 1792              	.LLST1:
- 1793 0028 00000000 		.4byte	.LVL8
- 1794 002c 02000000 		.4byte	.LVL9
- 1795 0030 0100     		.2byte	0x1
- 1796 0032 50       		.byte	0x50
- 1797 0033 02000000 		.4byte	.LVL9
- 1798 0037 10000000 		.4byte	.LFE70
- 1799 003b 0400     		.2byte	0x4
- 1800 003d F3       		.byte	0xf3
- 1801 003e 01       		.uleb128 0x1
- 1802 003f 50       		.byte	0x50
- 1803 0040 9F       		.byte	0x9f
- 1804 0041 00000000 		.4byte	0
- 1805 0045 00000000 		.4byte	0
- 1806              	.LLST2:
- 1807 0049 04000000 		.4byte	.LVL10
- 1808 004d 06000000 		.4byte	.LVL11
- 1809 0051 0500     		.2byte	0x5
- 1810 0053 70       		.byte	0x70
- 1811 0054 00       		.sleb128 0
- 1812 0055 35       		.byte	0x35
- 1813 0056 25       		.byte	0x25
- 1814 0057 9F       		.byte	0x9f
- 1815 0058 00000000 		.4byte	0
- 1816 005c 00000000 		.4byte	0
- 1817              	.LLST3:
- 1818 0060 00000000 		.4byte	.LVL16
- 1819 0064 07000000 		.4byte	.LVL17-1
- 1820 0068 0100     		.2byte	0x1
- 1821 006a 50       		.byte	0x50
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 41
-
-
- 1822 006b 07000000 		.4byte	.LVL17-1
- 1823 006f 1A000000 		.4byte	.LFE65
- 1824 0073 0100     		.2byte	0x1
- 1825 0075 54       		.byte	0x54
- 1826 0076 00000000 		.4byte	0
- 1827 007a 00000000 		.4byte	0
- 1828              		.section	.debug_aranges,"",%progbits
- 1829 0000 7C000000 		.4byte	0x7c
- 1830 0004 0200     		.2byte	0x2
- 1831 0006 00000000 		.4byte	.Ldebug_info0
- 1832 000a 04       		.byte	0x4
- 1833 000b 00       		.byte	0
- 1834 000c 0000     		.2byte	0
- 1835 000e 0000     		.2byte	0
- 1836 0010 00000000 		.4byte	.LFB67
- 1837 0014 5C000000 		.4byte	.LFE67-.LFB67
- 1838 0018 00000000 		.4byte	.LFB68
- 1839 001c 0C000000 		.4byte	.LFE68-.LFB68
- 1840 0020 00000000 		.4byte	.LFB69
- 1841 0024 0C000000 		.4byte	.LFE69-.LFB69
- 1842 0028 00000000 		.4byte	.LFB70
- 1843 002c 10000000 		.4byte	.LFE70-.LFB70
- 1844 0030 00000000 		.4byte	.LFB71
- 1845 0034 0C000000 		.4byte	.LFE71-.LFB71
- 1846 0038 00000000 		.4byte	.LFB72
- 1847 003c 10000000 		.4byte	.LFE72-.LFB72
- 1848 0040 00000000 		.4byte	.LFB73
- 1849 0044 18000000 		.4byte	.LFE73-.LFB73
- 1850 0048 00000000 		.4byte	.LFB74
- 1851 004c 10000000 		.4byte	.LFE74-.LFB74
- 1852 0050 00000000 		.4byte	.LFB64
- 1853 0054 1C000000 		.4byte	.LFE64-.LFB64
- 1854 0058 00000000 		.4byte	.LFB65
- 1855 005c 1A000000 		.4byte	.LFE65-.LFB65
- 1856 0060 00000000 		.4byte	.LFB66
- 1857 0064 14000000 		.4byte	.LFE66-.LFB66
- 1858 0068 00000000 		.4byte	.LFB75
- 1859 006c 10000000 		.4byte	.LFE75-.LFB75
- 1860 0070 00000000 		.4byte	.LFB76
- 1861 0074 10000000 		.4byte	.LFE76-.LFB76
- 1862 0078 00000000 		.4byte	0
- 1863 007c 00000000 		.4byte	0
- 1864              		.section	.debug_ranges,"",%progbits
- 1865              	.Ldebug_ranges0:
- 1866 0000 00000000 		.4byte	.LFB67
- 1867 0004 5C000000 		.4byte	.LFE67
- 1868 0008 00000000 		.4byte	.LFB68
- 1869 000c 0C000000 		.4byte	.LFE68
- 1870 0010 00000000 		.4byte	.LFB69
- 1871 0014 0C000000 		.4byte	.LFE69
- 1872 0018 00000000 		.4byte	.LFB70
- 1873 001c 10000000 		.4byte	.LFE70
- 1874 0020 00000000 		.4byte	.LFB71
- 1875 0024 0C000000 		.4byte	.LFE71
- 1876 0028 00000000 		.4byte	.LFB72
- 1877 002c 10000000 		.4byte	.LFE72
- 1878 0030 00000000 		.4byte	.LFB73
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 42
-
-
- 1879 0034 18000000 		.4byte	.LFE73
- 1880 0038 00000000 		.4byte	.LFB74
- 1881 003c 10000000 		.4byte	.LFE74
- 1882 0040 00000000 		.4byte	.LFB64
- 1883 0044 1C000000 		.4byte	.LFE64
- 1884 0048 00000000 		.4byte	.LFB65
- 1885 004c 1A000000 		.4byte	.LFE65
- 1886 0050 00000000 		.4byte	.LFB66
- 1887 0054 14000000 		.4byte	.LFE66
- 1888 0058 00000000 		.4byte	.LFB75
- 1889 005c 10000000 		.4byte	.LFE75
- 1890 0060 00000000 		.4byte	.LFB76
- 1891 0064 10000000 		.4byte	.LFE76
- 1892 0068 00000000 		.4byte	0
- 1893 006c 00000000 		.4byte	0
- 1894              		.section	.debug_line,"",%progbits
- 1895              	.Ldebug_line0:
- 1896 0000 77020000 		.section	.debug_str,"MS",%progbits,1
- 1896      02008101 
- 1896      00000201 
- 1896      FB0E0D00 
- 1896      01010101 
- 1897              	.LASF57:
- 1898 0000 5F737461 		.ascii	"_state_\000"
- 1898      74655F00 
- 1899              	.LASF29:
- 1900 0008 7363616C 		.ascii	"scaledMin\000"
- 1900      65644D69 
- 1900      6E00
- 1901              	.LASF33:
- 1902 0012 7056616C 		.ascii	"pVal\000"
- 1902      00
- 1903              	.LASF42:
- 1904 0017 7072696F 		.ascii	"priority\000"
- 1904      72697479 
- 1904      00
- 1905              	.LASF59:
- 1906 0020 61637475 		.ascii	"actual_tension\000"
- 1906      616C5F74 
- 1906      656E7369 
- 1906      6F6E00
- 1907              	.LASF5:
- 1908 002f 73686F72 		.ascii	"short int\000"
- 1908      7420696E 
- 1908      7400
- 1909              	.LASF43:
- 1910 0039 74656E73 		.ascii	"tensor_control_isr_GetVector\000"
- 1910      6F725F63 
- 1910      6F6E7472 
- 1910      6F6C5F69 
- 1910      73725F47 
- 1911              	.LASF12:
- 1912 0056 73697A65 		.ascii	"sizetype\000"
- 1912      74797065 
- 1912      00
- 1913              	.LASF44:
- 1914 005f 74656E73 		.ascii	"tensor_control_isr_GetPriority\000"
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 43
-
-
- 1914      6F725F63 
- 1914      6F6E7472 
- 1914      6F6C5F69 
- 1914      73725F47 
- 1915              	.LASF58:
- 1916 007e 74656E73 		.ascii	"tens_pid_\000"
- 1916      5F706964 
- 1916      5F00
- 1917              	.LASF2:
- 1918 0088 6C6F6E67 		.ascii	"long double\000"
- 1918      20646F75 
- 1918      626C6500 
- 1919              	.LASF41:
- 1920 0094 61646472 		.ascii	"address\000"
- 1920      65737300 
- 1921              	.LASF34:
- 1922 009c 6956616C 		.ascii	"iVal\000"
- 1922      00
- 1923              	.LASF16:
- 1924 00a1 75696E74 		.ascii	"uint8\000"
- 1924      3800
- 1925              	.LASF23:
- 1926 00a7 72656656 		.ascii	"refVal\000"
- 1926      616C00
- 1927              	.LASF37:
- 1928 00ae 74656E73 		.ascii	"tensor_control_isr_Interrupt\000"
- 1928      6F725F63 
- 1928      6F6E7472 
- 1928      6F6C5F69 
- 1928      73725F49 
- 1929              	.LASF27:
- 1930 00cb 6D696E56 		.ascii	"minValue\000"
- 1930      616C7565 
- 1930      00
- 1931              	.LASF67:
- 1932 00d4 5049445F 		.ascii	"PID_calculatePID\000"
- 1932      63616C63 
- 1932      756C6174 
- 1932      65504944 
- 1932      00
- 1933              	.LASF18:
- 1934 00e5 666C6F61 		.ascii	"float\000"
- 1934      7400
- 1935              	.LASF1:
- 1936 00eb 6C6F6E67 		.ascii	"long long int\000"
- 1936      206C6F6E 
- 1936      6720696E 
- 1936      7400
- 1937              	.LASF9:
- 1938 00f9 6C6F6E67 		.ascii	"long int\000"
- 1938      20696E74 
- 1938      00
- 1939              	.LASF25:
- 1940 0102 6C617374 		.ascii	"lastValue\000"
- 1940      56616C75 
- 1940      6500
- 1941              	.LASF71:
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 44
-
-
- 1942 010c 433A5C55 		.ascii	"C:\\Users\\Gonzalo Olave\\Dropbox (Personal)\\Magis"
- 1942      73657273 
- 1942      5C476F6E 
- 1942      7A616C6F 
- 1942      204F6C61 
- 1943 013b 7465725C 		.ascii	"ter\\Tesis\\tesis-source\\master-tesis\\dedo_v01.cy"
- 1943      54657369 
- 1943      735C7465 
- 1943      7369732D 
- 1943      736F7572 
- 1944 016a 64736E00 		.ascii	"dsn\000"
- 1945              	.LASF28:
- 1946 016e 6D617856 		.ascii	"maxValue\000"
- 1946      616C7565 
- 1946      00
- 1947              	.LASF39:
- 1948 0177 72616D56 		.ascii	"ramVectorTable\000"
- 1948      6563746F 
- 1948      72546162 
- 1948      6C6500
- 1949              	.LASF46:
- 1950 0186 74656E73 		.ascii	"tensor_control_isr_Disable\000"
- 1950      6F725F63 
- 1950      6F6E7472 
- 1950      6F6C5F69 
- 1950      73725F44 
- 1951              	.LASF4:
- 1952 01a1 756E7369 		.ascii	"unsigned char\000"
- 1952      676E6564 
- 1952      20636861 
- 1952      7200
- 1953              	.LASF47:
- 1954 01af 74656E73 		.ascii	"tensor_control_isr_Start\000"
- 1954      6F725F63 
- 1954      6F6E7472 
- 1954      6F6C5F69 
- 1954      73725F53 
- 1955              	.LASF56:
- 1956 01c8 5F756172 		.ascii	"_uart_Reset\000"
- 1956      745F5265 
- 1956      73657400 
- 1957              	.LASF24:
- 1958 01d4 696E7075 		.ascii	"inputValue\000"
- 1958      7456616C 
- 1958      756500
- 1959              	.LASF75:
- 1960 01df 74656E73 		.ascii	"tensor_control_isr_GetState\000"
- 1960      6F725F63 
- 1960      6F6E7472 
- 1960      6F6C5F69 
- 1960      73725F47 
- 1961              	.LASF22:
- 1962 01fb 63796973 		.ascii	"cyisraddress\000"
- 1962      72616464 
- 1962      72657373 
- 1962      00
- 1963              	.LASF54:
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 45
-
-
- 1964 0208 53656E64 		.ascii	"SendSingleByte\000"
- 1964      53696E67 
- 1964      6C654279 
- 1964      746500
- 1965              	.LASF3:
- 1966 0217 7369676E 		.ascii	"signed char\000"
- 1966      65642063 
- 1966      68617200 
- 1967              	.LASF15:
- 1968 0223 696E7433 		.ascii	"int32_t\000"
- 1968      325F7400 
- 1969              	.LASF11:
- 1970 022b 6C6F6E67 		.ascii	"long long unsigned int\000"
- 1970      206C6F6E 
- 1970      6720756E 
- 1970      7369676E 
- 1970      65642069 
- 1971              	.LASF38:
- 1972 0242 74656E73 		.ascii	"tensor_control_isr_SetVector\000"
- 1972      6F725F63 
- 1972      6F6E7472 
- 1972      6F6C5F69 
- 1972      73725F53 
- 1973              	.LASF72:
- 1974 025f 54527842 		.ascii	"TRxBuffer\000"
- 1974      75666665 
- 1974      7200
- 1975              	.LASF0:
- 1976 0269 756E7369 		.ascii	"unsigned int\000"
- 1976      676E6564 
- 1976      20696E74 
- 1976      00
- 1977              	.LASF53:
- 1978 0276 436F6E74 		.ascii	"ContinuouslySendData\000"
- 1978      696E756F 
- 1978      75736C79 
- 1978      53656E64 
- 1978      44617461 
- 1979              	.LASF60:
- 1980 028b 74656E73 		.ascii	"tension_ref\000"
- 1980      696F6E5F 
- 1980      72656600 
- 1981              	.LASF62:
- 1982 0297 64656275 		.ascii	"debug\000"
- 1982      6700
- 1983              	.LASF74:
- 1984 029d 54506172 		.ascii	"TParamBuffer\000"
- 1984      616D4275 
- 1984      66666572 
- 1984      00
- 1985              	.LASF21:
- 1986 02aa 72656733 		.ascii	"reg32\000"
- 1986      3200
- 1987              	.LASF55:
- 1988 02b0 53656E64 		.ascii	"SendEmulatedData\000"
- 1988      456D756C 
- 1988      61746564 
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 46
-
-
- 1988      44617461 
- 1988      00
- 1989              	.LASF32:
- 1990 02c1 76616C73 		.ascii	"valstr\000"
- 1990      747200
- 1991              	.LASF13:
- 1992 02c8 63686172 		.ascii	"char\000"
- 1992      00
- 1993              	.LASF48:
- 1994 02cd 74656E73 		.ascii	"tensor_control_isr_StartEx\000"
- 1994      6F725F63 
- 1994      6F6E7472 
- 1994      6F6C5F69 
- 1994      73725F53 
- 1995              	.LASF6:
- 1996 02e8 73686F72 		.ascii	"short unsigned int\000"
- 1996      7420756E 
- 1996      7369676E 
- 1996      65642069 
- 1996      6E7400
- 1997              	.LASF14:
- 1998 02fb 696E7431 		.ascii	"int16_t\000"
- 1998      365F7400 
- 1999              	.LASF51:
- 2000 0303 74656E73 		.ascii	"tensor_control_isr_ClearPending\000"
- 2000      6F725F63 
- 2000      6F6E7472 
- 2000      6F6C5F69 
- 2000      73725F43 
- 2001              	.LASF73:
- 2002 0323 52785374 		.ascii	"RxStr\000"
- 2002      7200
- 2003              	.LASF17:
- 2004 0329 75696E74 		.ascii	"uint32\000"
- 2004      333200
- 2005              	.LASF20:
- 2006 0330 72656738 		.ascii	"reg8\000"
- 2006      00
- 2007              	.LASF10:
- 2008 0335 6C6F6E67 		.ascii	"long unsigned int\000"
- 2008      20756E73 
- 2008      69676E65 
- 2008      6420696E 
- 2008      7400
- 2009              	.LASF19:
- 2010 0347 646F7562 		.ascii	"double\000"
- 2010      6C6500
- 2011              	.LASF61:
- 2012 034e 5F745661 		.ascii	"_tVal\000"
- 2012      6C00
- 2013              	.LASF64:
- 2014 0354 74656E73 		.ascii	"tension_pid_output\000"
- 2014      696F6E5F 
- 2014      7069645F 
- 2014      6F757470 
- 2014      757400
- 2015              	.LASF26:
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 47
-
-
- 2016 0367 69546572 		.ascii	"iTerm\000"
- 2016      6D00
- 2017              	.LASF65:
- 2018 036d 63757272 		.ascii	"current_pos\000"
- 2018      656E745F 
- 2018      706F7300 
- 2019              	.LASF8:
- 2020 0379 5F5F696E 		.ascii	"__int32_t\000"
- 2020      7433325F 
- 2020      7400
- 2021              	.LASF7:
- 2022 0383 5F5F696E 		.ascii	"__int16_t\000"
- 2022      7431365F 
- 2022      7400
- 2023              	.LASF68:
- 2024 038d 666E5F6D 		.ascii	"fn_mapper_8b\000"
- 2024      61707065 
- 2024      725F3862 
- 2024      00
- 2025              	.LASF36:
- 2026 039a 50617261 		.ascii	"ParamBuffer\000"
- 2026      6D427566 
- 2026      66657200 
- 2027              	.LASF63:
- 2028 03a6 5F706964 		.ascii	"_pid_out\000"
- 2028      5F6F7574 
- 2028      00
- 2029              	.LASF52:
- 2030 03af 49544D5F 		.ascii	"ITM_RxBuffer\000"
- 2030      52784275 
- 2030      66666572 
- 2030      00
- 2031              	.LASF69:
- 2032 03bc 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
- 2032      43313120 
- 2032      352E342E 
- 2032      31203230 
- 2032      31363036 
- 2033 03ef 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m3 -mthumb -g -O"
- 2033      20726576 
- 2033      6973696F 
- 2033      6E203233 
- 2033      37373135 
- 2034 0422 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
- 2034      66756E63 
- 2034      74696F6E 
- 2034      2D736563 
- 2034      74696F6E 
- 2035              	.LASF30:
- 2036 044a 7363616C 		.ascii	"scaledMax\000"
- 2036      65644D61 
- 2036      7800
- 2037              	.LASF35:
- 2038 0454 6456616C 		.ascii	"dVal\000"
- 2038      00
- 2039              	.LASF66:
- 2040 0459 5049445F 		.ascii	"PID_setRef\000"
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccLY2Efw.s 			page 48
-
-
- 2040      73657452 
- 2040      656600
- 2041              	.LASF45:
- 2042 0464 74656E73 		.ascii	"tensor_control_isr_Enable\000"
- 2042      6F725F63 
- 2042      6F6E7472 
- 2042      6F6C5F69 
- 2042      73725F45 
- 2043              	.LASF31:
- 2044 047e 5049445F 		.ascii	"PID_t\000"
- 2044      7400
- 2045              	.LASF40:
- 2046 0484 74656E73 		.ascii	"tensor_control_isr_SetPriority\000"
- 2046      6F725F63 
- 2046      6F6E7472 
- 2046      6F6C5F69 
- 2046      73725F53 
- 2047              	.LASF70:
- 2048 04a3 74656E73 		.ascii	"tensor_control_isr.c\000"
- 2048      6F725F63 
- 2048      6F6E7472 
- 2048      6F6C5F69 
- 2048      73722E63 
- 2049              	.LASF49:
- 2050 04b8 74656E73 		.ascii	"tensor_control_isr_Stop\000"
- 2050      6F725F63 
- 2050      6F6E7472 
- 2050      6F6C5F69 
- 2050      73725F53 
- 2051              	.LASF50:
- 2052 04d0 74656E73 		.ascii	"tensor_control_isr_SetPending\000"
- 2052      6F725F63 
- 2052      6F6E7472 
- 2052      6F6C5F69 
- 2052      73725F53 
- 2053              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran
+ 406              		.loc 1 446 0
+ 407 0000 4FF40062 		mov	r2, #2048
+ 408 0004 014B     		ldr	r3, .L42
+ 409 0006 1A60     		str	r2, [r3]
+ 410 0008 7047     		bx	lr
+ 411              	.L43:
+ 412 000a 00BF     		.align	2
+ 413              	.L42:
+ 414 000c 80E200E0 		.word	-536812928
+ 415              		.cfi_endproc
+ 416              	.LFE76:
+ 417              		.size	tensor_control_isr_ClearPending, .-tensor_control_isr_ClearPending
+ 418              		.comm	current_pos,4,4
+ 419              		.comm	debug,4,4
+ 420              		.comm	tens_pid_,44,4
+ 421              		.comm	tension_pid_output,4,4
+ 422              		.comm	tension_ref,4,4
+ 423              		.comm	actual_tension,4,4
+ 424              		.comm	_tVal,2,2
+ 425              		.comm	PM2,220,4
+ 426              		.comm	PM1,220,4
+ 427              		.comm	_state_,4,4
+ 428              		.comm	_uart_Reset,1,1
+ 429              		.comm	SendEmulatedData,1,1
+ 430              		.comm	SendSingleByte,1,1
+ 431              		.comm	ContinuouslySendData,1,1
+ 432              		.comm	Ch,1,1
+ 433              		.comm	PB,16,4
+ 434              		.comm	rotor_direction,1,1
+ 435              		.comm	PM1_HA_Period,4,4
+ 436              		.comm	last_count,4,4
+ 437              		.comm	PM1_HA_ma,4,4
+ 438              		.comm	PM1_HA_ca,4,4
+ 439              		.comm	TS_array,4,4
+ 440              		.comm	msg,20,4
+ 441              		.comm	RB,20,4
+ 442              		.text
+ 443              	.Letext0:
+ 444              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.1\\psoc creator\\import\\gnu\\arm\\5.4.
+ 445              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.1\\psoc creator\\import\\gnu\\arm\\5.4.
+ 446              		.file 4 "Generated_Source\\PSoC5/cytypes.h"
+ 447              		.file 5 "./pid.h"
+ 448              		.file 6 "./motor.h"
+ 449              		.file 7 "./myUART.h"
+ 450              		.file 8 "./global.h"
+ 451              		.file 9 "./functions.h"
+ 452              		.file 10 "Generated_Source\\PSoC5/core_cm3.h"
+ 453              		.file 11 "./isr_functions.h"
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cc9R2PO9.s 			page 17
+
+
+ 454              		.section	.debug_info,"",%progbits
+ 455              	.Ldebug_info0:
+ 456 0000 A3070000 		.4byte	0x7a3
+ 457 0004 0400     		.2byte	0x4
+ 458 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 459 000a 04       		.byte	0x4
+ 460 000b 01       		.uleb128 0x1
+ 461 000c DF040000 		.4byte	.LASF100
+ 462 0010 0C       		.byte	0xc
+ 463 0011 CF050000 		.4byte	.LASF101
+ 464 0015 95010000 		.4byte	.LASF102
+ 465 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 466 001d 00000000 		.4byte	0
+ 467 0021 00000000 		.4byte	.Ldebug_line0
+ 468 0025 02       		.uleb128 0x2
+ 469 0026 04       		.byte	0x4
+ 470 0027 05       		.byte	0x5
+ 471 0028 696E7400 		.ascii	"int\000"
+ 472 002c 03       		.uleb128 0x3
+ 473 002d 04       		.byte	0x4
+ 474 002e 07       		.byte	0x7
+ 475 002f 34030000 		.4byte	.LASF0
+ 476 0033 03       		.uleb128 0x3
+ 477 0034 08       		.byte	0x8
+ 478 0035 05       		.byte	0x5
+ 479 0036 6C010000 		.4byte	.LASF1
+ 480 003a 03       		.uleb128 0x3
+ 481 003b 08       		.byte	0x8
+ 482 003c 04       		.byte	0x4
+ 483 003d A6000000 		.4byte	.LASF2
+ 484 0041 04       		.uleb128 0x4
+ 485 0042 7F030000 		.4byte	.LASF4
+ 486 0046 02       		.byte	0x2
+ 487 0047 1B       		.byte	0x1b
+ 488 0048 4C000000 		.4byte	0x4c
+ 489 004c 03       		.uleb128 0x3
+ 490 004d 01       		.byte	0x1
+ 491 004e 06       		.byte	0x6
+ 492 004f E2020000 		.4byte	.LASF3
+ 493 0053 04       		.uleb128 0x4
+ 494 0054 2E020000 		.4byte	.LASF5
+ 495 0058 02       		.byte	0x2
+ 496 0059 1D       		.byte	0x1d
+ 497 005a 5E000000 		.4byte	0x5e
+ 498 005e 03       		.uleb128 0x3
+ 499 005f 01       		.byte	0x1
+ 500 0060 08       		.byte	0x8
+ 501 0061 38020000 		.4byte	.LASF6
+ 502 0065 04       		.uleb128 0x4
+ 503 0066 A7040000 		.4byte	.LASF7
+ 504 006a 02       		.byte	0x2
+ 505 006b 29       		.byte	0x29
+ 506 006c 70000000 		.4byte	0x70
+ 507 0070 03       		.uleb128 0x3
+ 508 0071 02       		.byte	0x2
+ 509 0072 05       		.byte	0x5
+ 510 0073 BB000000 		.4byte	.LASF8
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cc9R2PO9.s 			page 18
+
+
+ 511 0077 03       		.uleb128 0x3
+ 512 0078 02       		.byte	0x2
+ 513 0079 07       		.byte	0x7
+ 514 007a B6030000 		.4byte	.LASF9
+ 515 007e 04       		.uleb128 0x4
+ 516 007f 86040000 		.4byte	.LASF10
+ 517 0083 02       		.byte	0x2
+ 518 0084 3F       		.byte	0x3f
+ 519 0085 89000000 		.4byte	0x89
+ 520 0089 03       		.uleb128 0x3
+ 521 008a 04       		.byte	0x4
+ 522 008b 05       		.byte	0x5
+ 523 008c 82010000 		.4byte	.LASF11
+ 524 0090 03       		.uleb128 0x3
+ 525 0091 04       		.byte	0x4
+ 526 0092 07       		.byte	0x7
+ 527 0093 13040000 		.4byte	.LASF12
+ 528 0097 03       		.uleb128 0x3
+ 529 0098 08       		.byte	0x8
+ 530 0099 07       		.byte	0x7
+ 531 009a F6020000 		.4byte	.LASF13
+ 532 009e 03       		.uleb128 0x3
+ 533 009f 04       		.byte	0x4
+ 534 00a0 07       		.byte	0x7
+ 535 00a1 74000000 		.4byte	.LASF14
+ 536 00a5 05       		.uleb128 0x5
+ 537 00a6 04       		.byte	0x4
+ 538 00a7 AB000000 		.4byte	0xab
+ 539 00ab 03       		.uleb128 0x3
+ 540 00ac 01       		.byte	0x1
+ 541 00ad 08       		.byte	0x8
+ 542 00ae 8F030000 		.4byte	.LASF15
+ 543 00b2 05       		.uleb128 0x5
+ 544 00b3 04       		.byte	0x4
+ 545 00b4 B8000000 		.4byte	0xb8
+ 546 00b8 06       		.uleb128 0x6
+ 547 00b9 04       		.uleb128 0x4
+ 548 00ba 45000000 		.4byte	.LASF16
+ 549 00be 03       		.byte	0x3
+ 550 00bf 14       		.byte	0x14
+ 551 00c0 41000000 		.4byte	0x41
+ 552 00c4 04       		.uleb128 0x4
+ 553 00c5 F2000000 		.4byte	.LASF17
+ 554 00c9 03       		.byte	0x3
+ 555 00ca 18       		.byte	0x18
+ 556 00cb 53000000 		.4byte	0x53
+ 557 00cf 04       		.uleb128 0x4
+ 558 00d0 C9030000 		.4byte	.LASF18
+ 559 00d4 03       		.byte	0x3
+ 560 00d5 20       		.byte	0x20
+ 561 00d6 65000000 		.4byte	0x65
+ 562 00da 04       		.uleb128 0x4
+ 563 00db EE020000 		.4byte	.LASF19
+ 564 00df 03       		.byte	0x3
+ 565 00e0 2C       		.byte	0x2c
+ 566 00e1 7E000000 		.4byte	0x7e
+ 567 00e5 07       		.uleb128 0x7
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cc9R2PO9.s 			page 19
+
+
+ 568 00e6 D1030000 		.4byte	.LASF20
+ 569 00ea 04       		.byte	0x4
+ 570 00eb 9201     		.2byte	0x192
+ 571 00ed 5E000000 		.4byte	0x5e
+ 572 00f1 07       		.uleb128 0x7
+ 573 00f2 07040000 		.4byte	.LASF21
+ 574 00f6 04       		.byte	0x4
+ 575 00f7 9401     		.2byte	0x194
+ 576 00f9 90000000 		.4byte	0x90
+ 577 00fd 07       		.uleb128 0x7
+ 578 00fe FA000000 		.4byte	.LASF22
+ 579 0102 04       		.byte	0x4
+ 580 0103 9601     		.2byte	0x196
+ 581 0105 70000000 		.4byte	0x70
+ 582 0109 03       		.uleb128 0x3
+ 583 010a 04       		.byte	0x4
+ 584 010b 04       		.byte	0x4
+ 585 010c 58010000 		.4byte	.LASF23
+ 586 0110 03       		.uleb128 0x3
+ 587 0111 08       		.byte	0x8
+ 588 0112 04       		.byte	0x4
+ 589 0113 2E040000 		.4byte	.LASF24
+ 590 0117 07       		.uleb128 0x7
+ 591 0118 0E040000 		.4byte	.LASF25
+ 592 011c 04       		.byte	0x4
+ 593 011d 3C02     		.2byte	0x23c
+ 594 011f 23010000 		.4byte	0x123
+ 595 0123 08       		.uleb128 0x8
+ 596 0124 E5000000 		.4byte	0xe5
+ 597 0128 07       		.uleb128 0x7
+ 598 0129 68030000 		.4byte	.LASF26
+ 599 012d 04       		.byte	0x4
+ 600 012e 3E02     		.2byte	0x23e
+ 601 0130 34010000 		.4byte	0x134
+ 602 0134 08       		.uleb128 0x8
+ 603 0135 F1000000 		.4byte	0xf1
+ 604 0139 07       		.uleb128 0x7
+ 605 013a BD020000 		.4byte	.LASF27
+ 606 013e 04       		.byte	0x4
+ 607 013f 4E02     		.2byte	0x24e
+ 608 0141 B2000000 		.4byte	0xb2
+ 609 0145 09       		.uleb128 0x9
+ 610 0146 2C       		.byte	0x2c
+ 611 0147 05       		.byte	0x5
+ 612 0148 14       		.byte	0x14
+ 613 0149 CF010000 		.4byte	0x1cf
+ 614 014d 0A       		.uleb128 0xa
+ 615 014e 6B5000   		.ascii	"kP\000"
+ 616 0151 05       		.byte	0x5
+ 617 0152 16       		.byte	0x16
+ 618 0153 DA000000 		.4byte	0xda
+ 619 0157 00       		.byte	0
+ 620 0158 0A       		.uleb128 0xa
+ 621 0159 6B4900   		.ascii	"kI\000"
+ 622 015c 05       		.byte	0x5
+ 623 015d 17       		.byte	0x17
+ 624 015e DA000000 		.4byte	0xda
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cc9R2PO9.s 			page 20
+
+
+ 625 0162 04       		.byte	0x4
+ 626 0163 0A       		.uleb128 0xa
+ 627 0164 6B4400   		.ascii	"kD\000"
+ 628 0167 05       		.byte	0x5
+ 629 0168 18       		.byte	0x18
+ 630 0169 DA000000 		.4byte	0xda
+ 631 016d 08       		.byte	0x8
+ 632 016e 0B       		.uleb128 0xb
+ 633 016f 1A010000 		.4byte	.LASF28
+ 634 0173 05       		.byte	0x5
+ 635 0174 19       		.byte	0x19
+ 636 0175 DA000000 		.4byte	0xda
+ 637 0179 0C       		.byte	0xc
+ 638 017a 0B       		.uleb128 0xb
+ 639 017b 9D020000 		.4byte	.LASF29
+ 640 017f 05       		.byte	0x5
+ 641 0180 1A       		.byte	0x1a
+ 642 0181 DA000000 		.4byte	0xda
+ 643 0185 10       		.byte	0x10
+ 644 0186 0B       		.uleb128 0xb
+ 645 0187 8B010000 		.4byte	.LASF30
+ 646 018b 05       		.byte	0x5
+ 647 018c 1B       		.byte	0x1b
+ 648 018d DA000000 		.4byte	0xda
+ 649 0191 14       		.byte	0x14
+ 650 0192 0B       		.uleb128 0xb
+ 651 0193 74040000 		.4byte	.LASF31
+ 652 0197 05       		.byte	0x5
+ 653 0198 1C       		.byte	0x1c
+ 654 0199 DA000000 		.4byte	0xda
+ 655 019d 18       		.byte	0x18
+ 656 019e 0B       		.uleb128 0xb
+ 657 019f 3E010000 		.4byte	.LASF32
+ 658 01a3 05       		.byte	0x5
+ 659 01a4 1D       		.byte	0x1d
+ 660 01a5 DA000000 		.4byte	0xda
+ 661 01a9 1C       		.byte	0x1c
+ 662 01aa 0B       		.uleb128 0xb
+ 663 01ab F7010000 		.4byte	.LASF33
+ 664 01af 05       		.byte	0x5
+ 665 01b0 1E       		.byte	0x1e
+ 666 01b1 DA000000 		.4byte	0xda
+ 667 01b5 20       		.byte	0x20
+ 668 01b6 0B       		.uleb128 0xb
+ 669 01b7 21000000 		.4byte	.LASF34
+ 670 01bb 05       		.byte	0x5
+ 671 01bc 1F       		.byte	0x1f
+ 672 01bd DA000000 		.4byte	0xda
+ 673 01c1 24       		.byte	0x24
+ 674 01c2 0B       		.uleb128 0xb
+ 675 01c3 6D050000 		.4byte	.LASF35
+ 676 01c7 05       		.byte	0x5
+ 677 01c8 20       		.byte	0x20
+ 678 01c9 DA000000 		.4byte	0xda
+ 679 01cd 28       		.byte	0x28
+ 680 01ce 00       		.byte	0
+ 681 01cf 04       		.uleb128 0x4
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cc9R2PO9.s 			page 21
+
+
+ 682 01d0 00020000 		.4byte	.LASF36
+ 683 01d4 05       		.byte	0x5
+ 684 01d5 21       		.byte	0x21
+ 685 01d6 45010000 		.4byte	0x145
+ 686 01da 0C       		.uleb128 0xc
+ 687 01db A1050000 		.4byte	.LASF57
+ 688 01df DC       		.byte	0xdc
+ 689 01e0 06       		.byte	0x6
+ 690 01e1 13       		.byte	0x13
+ 691 01e2 E3020000 		.4byte	0x2e3
+ 692 01e6 0B       		.uleb128 0xb
+ 693 01e7 35040000 		.4byte	.LASF37
+ 694 01eb 06       		.byte	0x6
+ 695 01ec 14       		.byte	0x14
+ 696 01ed C4000000 		.4byte	0xc4
+ 697 01f1 00       		.byte	0
+ 698 01f2 0B       		.uleb128 0xb
+ 699 01f3 5B040000 		.4byte	.LASF38
+ 700 01f7 06       		.byte	0x6
+ 701 01f8 16       		.byte	0x16
+ 702 01f9 CF010000 		.4byte	0x1cf
+ 703 01fd 04       		.byte	0x4
+ 704 01fe 0B       		.uleb128 0xb
+ 705 01ff 08000000 		.4byte	.LASF39
+ 706 0203 06       		.byte	0x6
+ 707 0204 17       		.byte	0x17
+ 708 0205 CF010000 		.4byte	0x1cf
+ 709 0209 30       		.byte	0x30
+ 710 020a 0B       		.uleb128 0xb
+ 711 020b 98040000 		.4byte	.LASF40
+ 712 020f 06       		.byte	0x6
+ 713 0210 18       		.byte	0x18
+ 714 0211 CF010000 		.4byte	0x1cf
+ 715 0215 5C       		.byte	0x5c
+ 716 0216 0B       		.uleb128 0xb
+ 717 0217 A8020000 		.4byte	.LASF41
+ 718 021b 06       		.byte	0x6
+ 719 021c 1A       		.byte	0x1a
+ 720 021d E3020000 		.4byte	0x2e3
+ 721 0221 88       		.byte	0x88
+ 722 0222 0B       		.uleb128 0xb
+ 723 0223 DF000000 		.4byte	.LASF42
+ 724 0227 06       		.byte	0x6
+ 725 0228 1B       		.byte	0x1b
+ 726 0229 E3020000 		.4byte	0x2e3
+ 727 022d 94       		.byte	0x94
+ 728 022e 0B       		.uleb128 0xb
+ 729 022f 4C000000 		.4byte	.LASF43
+ 730 0233 06       		.byte	0x6
+ 731 0234 1C       		.byte	0x1c
+ 732 0235 E3020000 		.4byte	0x2e3
+ 733 0239 A0       		.byte	0xa0
+ 734 023a 0B       		.uleb128 0xb
+ 735 023b FD030000 		.4byte	.LASF44
+ 736 023f 06       		.byte	0x6
+ 737 0240 1E       		.byte	0x1e
+ 738 0241 DA000000 		.4byte	0xda
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cc9R2PO9.s 			page 22
+
+
+ 739 0245 AC       		.byte	0xac
+ 740 0246 0B       		.uleb128 0xb
+ 741 0247 C9040000 		.4byte	.LASF45
+ 742 024b 06       		.byte	0x6
+ 743 024c 1F       		.byte	0x1f
+ 744 024d B9000000 		.4byte	0xb9
+ 745 0251 B0       		.byte	0xb0
+ 746 0252 0B       		.uleb128 0xb
+ 747 0253 25040000 		.4byte	.LASF46
+ 748 0257 06       		.byte	0x6
+ 749 0258 21       		.byte	0x21
+ 750 0259 DA000000 		.4byte	0xda
+ 751 025d B4       		.byte	0xb4
+ 752 025e 0B       		.uleb128 0xb
+ 753 025f CA020000 		.4byte	.LASF47
+ 754 0263 06       		.byte	0x6
+ 755 0264 22       		.byte	0x22
+ 756 0265 DA000000 		.4byte	0xda
+ 757 0269 B8       		.byte	0xb8
+ 758 026a 0B       		.uleb128 0xb
+ 759 026b 06020000 		.4byte	.LASF48
+ 760 026f 06       		.byte	0x6
+ 761 0270 23       		.byte	0x23
+ 762 0271 DA000000 		.4byte	0xda
+ 763 0275 BC       		.byte	0xbc
+ 764 0276 0B       		.uleb128 0xb
+ 765 0277 7A010000 		.4byte	.LASF49
+ 766 027b 06       		.byte	0x6
+ 767 027c 25       		.byte	0x25
+ 768 027d DA000000 		.4byte	0xda
+ 769 0281 C0       		.byte	0xc0
+ 770 0282 0B       		.uleb128 0xb
+ 771 0283 41030000 		.4byte	.LASF50
+ 772 0287 06       		.byte	0x6
+ 773 0288 26       		.byte	0x26
+ 774 0289 DA000000 		.4byte	0xda
+ 775 028d C4       		.byte	0xc4
+ 776 028e 0B       		.uleb128 0xb
+ 777 028f 46020000 		.4byte	.LASF51
+ 778 0293 06       		.byte	0x6
+ 779 0294 27       		.byte	0x27
+ 780 0295 DA000000 		.4byte	0xda
+ 781 0299 C8       		.byte	0xc8
+ 782 029a 0B       		.uleb128 0xb
+ 783 029b 17000000 		.4byte	.LASF52
+ 784 029f 06       		.byte	0x6
+ 785 02a0 29       		.byte	0x29
+ 786 02a1 DA000000 		.4byte	0xda
+ 787 02a5 CC       		.byte	0xcc
+ 788 02a6 0B       		.uleb128 0xb
+ 789 02a7 90040000 		.4byte	.LASF53
+ 790 02ab 06       		.byte	0x6
+ 791 02ac 2B       		.byte	0x2b
+ 792 02ad DA000000 		.4byte	0xda
+ 793 02b1 D0       		.byte	0xd0
+ 794 02b2 0B       		.uleb128 0xb
+ 795 02b3 C5000000 		.4byte	.LASF54
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cc9R2PO9.s 			page 23
+
+
+ 796 02b7 06       		.byte	0x6
+ 797 02b8 2B       		.byte	0x2b
+ 798 02b9 DA000000 		.4byte	0xda
+ 799 02bd D4       		.byte	0xd4
+ 800 02be 0B       		.uleb128 0xb
+ 801 02bf C8050000 		.4byte	.LASF55
+ 802 02c3 06       		.byte	0x6
+ 803 02c4 2D       		.byte	0x2d
+ 804 02c5 C4000000 		.4byte	0xc4
+ 805 02c9 D8       		.byte	0xd8
+ 806 02ca 0B       		.uleb128 0xb
+ 807 02cb 94030000 		.4byte	.LASF56
+ 808 02cf 06       		.byte	0x6
+ 809 02d0 2E       		.byte	0x2e
+ 810 02d1 C4000000 		.4byte	0xc4
+ 811 02d5 D9       		.byte	0xd9
+ 812 02d6 0A       		.uleb128 0xa
+ 813 02d7 44495200 		.ascii	"DIR\000"
+ 814 02db 06       		.byte	0x6
+ 815 02dc 2F       		.byte	0x2f
+ 816 02dd C4000000 		.4byte	0xc4
+ 817 02e1 DA       		.byte	0xda
+ 818 02e2 00       		.byte	0
+ 819 02e3 0D       		.uleb128 0xd
+ 820 02e4 09010000 		.4byte	0x109
+ 821 02e8 F3020000 		.4byte	0x2f3
+ 822 02ec 0E       		.uleb128 0xe
+ 823 02ed 9E000000 		.4byte	0x9e
+ 824 02f1 02       		.byte	0x2
+ 825 02f2 00       		.byte	0
+ 826 02f3 04       		.uleb128 0x4
+ 827 02f4 A1050000 		.4byte	.LASF57
+ 828 02f8 06       		.byte	0x6
+ 829 02f9 31       		.byte	0x31
+ 830 02fa DA010000 		.4byte	0x1da
+ 831 02fe 09       		.uleb128 0x9
+ 832 02ff 14       		.byte	0x14
+ 833 0300 07       		.byte	0x7
+ 834 0301 1C       		.byte	0x1c
+ 835 0302 1F030000 		.4byte	0x31f
+ 836 0306 0A       		.uleb128 0xa
+ 837 0307 636D6400 		.ascii	"cmd\000"
+ 838 030b 07       		.byte	0x7
+ 839 030c 1D       		.byte	0x1d
+ 840 030d AB000000 		.4byte	0xab
+ 841 0311 00       		.byte	0
+ 842 0312 0B       		.uleb128 0xb
+ 843 0313 88030000 		.4byte	.LASF58
+ 844 0317 07       		.byte	0x7
+ 845 0318 1E       		.byte	0x1e
+ 846 0319 1F030000 		.4byte	0x31f
+ 847 031d 01       		.byte	0x1
+ 848 031e 00       		.byte	0
+ 849 031f 0D       		.uleb128 0xd
+ 850 0320 AB000000 		.4byte	0xab
+ 851 0324 2F030000 		.4byte	0x32f
+ 852 0328 0E       		.uleb128 0xe
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cc9R2PO9.s 			page 24
+
+
+ 853 0329 9E000000 		.4byte	0x9e
+ 854 032d 12       		.byte	0x12
+ 855 032e 00       		.byte	0
+ 856 032f 0F       		.uleb128 0xf
+ 857 0330 2A030000 		.4byte	.LASF103
+ 858 0334 14       		.byte	0x14
+ 859 0335 07       		.byte	0x7
+ 860 0336 1A       		.byte	0x1a
+ 861 0337 4C030000 		.4byte	0x34c
+ 862 033b 10       		.uleb128 0x10
+ 863 033c F7030000 		.4byte	.LASF104
+ 864 0340 07       		.byte	0x7
+ 865 0341 1B       		.byte	0x1b
+ 866 0342 4C030000 		.4byte	0x34c
+ 867 0346 11       		.uleb128 0x11
+ 868 0347 FE020000 		.4byte	0x2fe
+ 869 034b 00       		.byte	0
+ 870 034c 0D       		.uleb128 0xd
+ 871 034d AB000000 		.4byte	0xab
+ 872 0351 5C030000 		.4byte	0x35c
+ 873 0355 0E       		.uleb128 0xe
+ 874 0356 9E000000 		.4byte	0x9e
+ 875 035a 13       		.byte	0x13
+ 876 035b 00       		.byte	0
+ 877 035c 0C       		.uleb128 0xc
+ 878 035d 5B030000 		.4byte	.LASF59
+ 879 0361 10       		.byte	0x10
+ 880 0362 08       		.byte	0x8
+ 881 0363 1C       		.byte	0x1c
+ 882 0364 99030000 		.4byte	0x399
+ 883 0368 0A       		.uleb128 0xa
+ 884 0369 636D6400 		.ascii	"cmd\000"
+ 885 036d 08       		.byte	0x8
+ 886 036e 1D       		.byte	0x1d
+ 887 036f A5000000 		.4byte	0xa5
+ 888 0373 00       		.byte	0
+ 889 0374 0B       		.uleb128 0xb
+ 890 0375 37000000 		.4byte	.LASF60
+ 891 0379 08       		.byte	0x8
+ 892 037a 1E       		.byte	0x1e
+ 893 037b 25000000 		.4byte	0x25
+ 894 037f 04       		.byte	0x4
+ 895 0380 0B       		.uleb128 0xb
+ 896 0381 00010000 		.4byte	.LASF61
+ 897 0385 08       		.byte	0x8
+ 898 0386 1E       		.byte	0x1e
+ 899 0387 25000000 		.4byte	0x25
+ 900 038b 08       		.byte	0x8
+ 901 038c 0B       		.uleb128 0xb
+ 902 038d 77050000 		.4byte	.LASF62
+ 903 0391 08       		.byte	0x8
+ 904 0392 1E       		.byte	0x1e
+ 905 0393 25000000 		.4byte	0x25
+ 906 0397 0C       		.byte	0xc
+ 907 0398 00       		.byte	0
+ 908 0399 04       		.uleb128 0x4
+ 909 039a 2B000000 		.4byte	.LASF63
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cc9R2PO9.s 			page 25
+
+
+ 910 039e 08       		.byte	0x8
+ 911 039f 1F       		.byte	0x1f
+ 912 03a0 5C030000 		.4byte	0x35c
+ 913 03a4 12       		.uleb128 0x12
+ 914 03a5 21010000 		.4byte	.LASF64
+ 915 03a9 01       		.byte	0x1
+ 916 03aa AD       		.byte	0xad
+ 917 03ab 00000000 		.4byte	.LFB67
+ 918 03af 3C000000 		.4byte	.LFE67-.LFB67
+ 919 03b3 01       		.uleb128 0x1
+ 920 03b4 9C       		.byte	0x9c
+ 921 03b5 EE030000 		.4byte	0x3ee
+ 922 03b9 13       		.uleb128 0x13
+ 923 03ba 61757800 		.ascii	"aux\000"
+ 924 03be 01       		.byte	0x1
+ 925 03bf C0       		.byte	0xc0
+ 926 03c0 25000000 		.4byte	0x25
+ 927 03c4 04       		.uleb128 0x4
+ 928 03c5 70       		.byte	0x70
+ 929 03c6 00       		.sleb128 0
+ 930 03c7 19       		.byte	0x19
+ 931 03c8 9F       		.byte	0x9f
+ 932 03c9 14       		.uleb128 0x14
+ 933 03ca 18000000 		.4byte	.LVL0
+ 934 03ce 90070000 		.4byte	0x790
+ 935 03d2 DD030000 		.4byte	0x3dd
+ 936 03d6 15       		.uleb128 0x15
+ 937 03d7 01       		.uleb128 0x1
+ 938 03d8 50       		.byte	0x50
+ 939 03d9 02       		.uleb128 0x2
+ 940 03da 74       		.byte	0x74
+ 941 03db 00       		.sleb128 0
+ 942 03dc 00       		.byte	0
+ 943 03dd 16       		.uleb128 0x16
+ 944 03de 20000000 		.4byte	.LVL1
+ 945 03e2 9B070000 		.4byte	0x79b
+ 946 03e6 15       		.uleb128 0x15
+ 947 03e7 01       		.uleb128 0x1
+ 948 03e8 50       		.byte	0x50
+ 949 03e9 02       		.uleb128 0x2
+ 950 03ea 74       		.byte	0x74
+ 951 03eb 00       		.sleb128 0
+ 952 03ec 00       		.byte	0
+ 953 03ed 00       		.byte	0
+ 954 03ee 12       		.uleb128 0x12
+ 955 03ef 0D030000 		.4byte	.LASF65
+ 956 03f3 01       		.byte	0x1
+ 957 03f4 F3       		.byte	0xf3
+ 958 03f5 00000000 		.4byte	.LFB68
+ 959 03f9 0C000000 		.4byte	.LFE68-.LFB68
+ 960 03fd 01       		.uleb128 0x1
+ 961 03fe 9C       		.byte	0x9c
+ 962 03ff 1E040000 		.4byte	0x41e
+ 963 0403 17       		.uleb128 0x17
+ 964 0404 EA000000 		.4byte	.LASF68
+ 965 0408 01       		.byte	0x1
+ 966 0409 F3       		.byte	0xf3
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cc9R2PO9.s 			page 26
+
+
+ 967 040a 39010000 		.4byte	0x139
+ 968 040e 01       		.uleb128 0x1
+ 969 040f 50       		.byte	0x50
+ 970 0410 18       		.uleb128 0x18
+ 971 0411 1F020000 		.4byte	.LASF66
+ 972 0415 01       		.byte	0x1
+ 973 0416 F5       		.byte	0xf5
+ 974 0417 1E040000 		.4byte	0x41e
+ 975 041b 01       		.uleb128 0x1
+ 976 041c 53       		.byte	0x53
+ 977 041d 00       		.byte	0
+ 978 041e 05       		.uleb128 0x5
+ 979 041f 04       		.byte	0x4
+ 980 0420 39010000 		.4byte	0x139
+ 981 0424 19       		.uleb128 0x19
+ 982 0425 57000000 		.4byte	.LASF70
+ 983 0429 01       		.byte	0x1
+ 984 042a 0B01     		.2byte	0x10b
+ 985 042c 39010000 		.4byte	0x139
+ 986 0430 00000000 		.4byte	.LFB69
+ 987 0434 0C000000 		.4byte	.LFE69-.LFB69
+ 988 0438 01       		.uleb128 0x1
+ 989 0439 9C       		.byte	0x9c
+ 990 043a 4D040000 		.4byte	0x44d
+ 991 043e 1A       		.uleb128 0x1a
+ 992 043f 1F020000 		.4byte	.LASF66
+ 993 0443 01       		.byte	0x1
+ 994 0444 0D01     		.2byte	0x10d
+ 995 0446 1E040000 		.4byte	0x41e
+ 996 044a 01       		.uleb128 0x1
+ 997 044b 53       		.byte	0x53
+ 998 044c 00       		.byte	0
+ 999 044d 1B       		.uleb128 0x1b
+ 1000 044e A9050000 		.4byte	.LASF67
+ 1001 0452 01       		.byte	0x1
+ 1002 0453 2D01     		.2byte	0x12d
+ 1003 0455 00000000 		.4byte	.LFB70
+ 1004 0459 10000000 		.4byte	.LFE70-.LFB70
+ 1005 045d 01       		.uleb128 0x1
+ 1006 045e 9C       		.byte	0x9c
+ 1007 045f 74040000 		.4byte	0x474
+ 1008 0463 1C       		.uleb128 0x1c
+ 1009 0464 3C000000 		.4byte	.LASF69
+ 1010 0468 01       		.byte	0x1
+ 1011 0469 2D01     		.2byte	0x12d
+ 1012 046b E5000000 		.4byte	0xe5
+ 1013 046f 00000000 		.4byte	.LLST0
+ 1014 0473 00       		.byte	0
+ 1015 0474 19       		.uleb128 0x19
+ 1016 0475 7D000000 		.4byte	.LASF71
+ 1017 0479 01       		.byte	0x1
+ 1018 047a 4301     		.2byte	0x143
+ 1019 047c E5000000 		.4byte	0xe5
+ 1020 0480 00000000 		.4byte	.LFB71
+ 1021 0484 0C000000 		.4byte	.LFE71-.LFB71
+ 1022 0488 01       		.uleb128 0x1
+ 1023 0489 9C       		.byte	0x9c
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cc9R2PO9.s 			page 27
+
+
+ 1024 048a 9F040000 		.4byte	0x49f
+ 1025 048e 1D       		.uleb128 0x1d
+ 1026 048f 3C000000 		.4byte	.LASF69
+ 1027 0493 01       		.byte	0x1
+ 1028 0494 4501     		.2byte	0x145
+ 1029 0496 E5000000 		.4byte	0xe5
+ 1030 049a 21000000 		.4byte	.LLST1
+ 1031 049e 00       		.byte	0
+ 1032 049f 1E       		.uleb128 0x1e
+ 1033 04a0 87050000 		.4byte	.LASF72
+ 1034 04a4 01       		.byte	0x1
+ 1035 04a5 5E01     		.2byte	0x15e
+ 1036 04a7 00000000 		.4byte	.LFB72
+ 1037 04ab 10000000 		.4byte	.LFE72-.LFB72
+ 1038 04af 01       		.uleb128 0x1
+ 1039 04b0 9C       		.byte	0x9c
+ 1040 04b1 1F       		.uleb128 0x1f
+ 1041 04b2 E4050000 		.4byte	.LASF105
+ 1042 04b6 01       		.byte	0x1
+ 1043 04b7 7301     		.2byte	0x173
+ 1044 04b9 E5000000 		.4byte	0xe5
+ 1045 04bd 00000000 		.4byte	.LFB73
+ 1046 04c1 18000000 		.4byte	.LFE73-.LFB73
+ 1047 04c5 01       		.uleb128 0x1
+ 1048 04c6 9C       		.byte	0x9c
+ 1049 04c7 1E       		.uleb128 0x1e
+ 1050 04c8 4E020000 		.4byte	.LASF73
+ 1051 04cc 01       		.byte	0x1
+ 1052 04cd 8801     		.2byte	0x188
+ 1053 04cf 00000000 		.4byte	.LFB74
+ 1054 04d3 10000000 		.4byte	.LFE74-.LFB74
+ 1055 04d7 01       		.uleb128 0x1
+ 1056 04d8 9C       		.byte	0x9c
+ 1057 04d9 12       		.uleb128 0x12
+ 1058 04da 78020000 		.4byte	.LASF74
+ 1059 04de 01       		.byte	0x1
+ 1060 04df 4A       		.byte	0x4a
+ 1061 04e0 00000000 		.4byte	.LFB64
+ 1062 04e4 1C000000 		.4byte	.LFE64-.LFB64
+ 1063 04e8 01       		.uleb128 0x1
+ 1064 04e9 9C       		.byte	0x9c
+ 1065 04ea 2B050000 		.4byte	0x52b
+ 1066 04ee 20       		.uleb128 0x20
+ 1067 04ef 06000000 		.4byte	.LVL10
+ 1068 04f3 C7040000 		.4byte	0x4c7
+ 1069 04f7 14       		.uleb128 0x14
+ 1070 04f8 0C000000 		.4byte	.LVL11
+ 1071 04fc EE030000 		.4byte	0x3ee
+ 1072 0500 0E050000 		.4byte	0x50e
+ 1073 0504 15       		.uleb128 0x15
+ 1074 0505 01       		.uleb128 0x1
+ 1075 0506 50       		.byte	0x50
+ 1076 0507 05       		.uleb128 0x5
+ 1077 0508 03       		.byte	0x3
+ 1078 0509 00000000 		.4byte	tensor_control_isr_Interrupt
+ 1079 050d 00       		.byte	0
+ 1080 050e 14       		.uleb128 0x14
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cc9R2PO9.s 			page 28
+
+
+ 1081 050f 12000000 		.4byte	.LVL12
+ 1082 0513 4D040000 		.4byte	0x44d
+ 1083 0517 21050000 		.4byte	0x521
+ 1084 051b 15       		.uleb128 0x15
+ 1085 051c 01       		.uleb128 0x1
+ 1086 051d 50       		.byte	0x50
+ 1087 051e 01       		.uleb128 0x1
+ 1088 051f 37       		.byte	0x37
+ 1089 0520 00       		.byte	0
+ 1090 0521 20       		.uleb128 0x20
+ 1091 0522 16000000 		.4byte	.LVL13
+ 1092 0526 9F040000 		.4byte	0x49f
+ 1093 052a 00       		.byte	0
+ 1094 052b 12       		.uleb128 0x12
+ 1095 052c 9B030000 		.4byte	.LASF75
+ 1096 0530 01       		.byte	0x1
+ 1097 0531 75       		.byte	0x75
+ 1098 0532 00000000 		.4byte	.LFB65
+ 1099 0536 1A000000 		.4byte	.LFE65-.LFB65
+ 1100 053a 01       		.uleb128 0x1
+ 1101 053b 9C       		.byte	0x9c
+ 1102 053c 89050000 		.4byte	0x589
+ 1103 0540 21       		.uleb128 0x21
+ 1104 0541 EA000000 		.4byte	.LASF68
+ 1105 0545 01       		.byte	0x1
+ 1106 0546 75       		.byte	0x75
+ 1107 0547 39010000 		.4byte	0x139
+ 1108 054b 38000000 		.4byte	.LLST2
+ 1109 054f 20       		.uleb128 0x20
+ 1110 0550 08000000 		.4byte	.LVL15
+ 1111 0554 C7040000 		.4byte	0x4c7
+ 1112 0558 14       		.uleb128 0x14
+ 1113 0559 0E000000 		.4byte	.LVL16
+ 1114 055d EE030000 		.4byte	0x3ee
+ 1115 0561 6C050000 		.4byte	0x56c
+ 1116 0565 15       		.uleb128 0x15
+ 1117 0566 01       		.uleb128 0x1
+ 1118 0567 50       		.byte	0x50
+ 1119 0568 02       		.uleb128 0x2
+ 1120 0569 74       		.byte	0x74
+ 1121 056a 00       		.sleb128 0
+ 1122 056b 00       		.byte	0
+ 1123 056c 14       		.uleb128 0x14
+ 1124 056d 14000000 		.4byte	.LVL17
+ 1125 0571 4D040000 		.4byte	0x44d
+ 1126 0575 7F050000 		.4byte	0x57f
+ 1127 0579 15       		.uleb128 0x15
+ 1128 057a 01       		.uleb128 0x1
+ 1129 057b 50       		.byte	0x50
+ 1130 057c 01       		.uleb128 0x1
+ 1131 057d 37       		.byte	0x37
+ 1132 057e 00       		.byte	0
+ 1133 057f 20       		.uleb128 0x20
+ 1134 0580 18000000 		.4byte	.LVL18
+ 1135 0584 9F040000 		.4byte	0x49f
+ 1136 0588 00       		.byte	0
+ 1137 0589 12       		.uleb128 0x12
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cc9R2PO9.s 			page 29
+
+
+ 1138 058a B1040000 		.4byte	.LASF76
+ 1139 058e 01       		.byte	0x1
+ 1140 058f 93       		.byte	0x93
+ 1141 0590 00000000 		.4byte	.LFB66
+ 1142 0594 14000000 		.4byte	.LFE66-.LFB66
+ 1143 0598 01       		.uleb128 0x1
+ 1144 0599 9C       		.byte	0x9c
+ 1145 059a B1050000 		.4byte	0x5b1
+ 1146 059e 20       		.uleb128 0x20
+ 1147 059f 06000000 		.4byte	.LVL19
+ 1148 05a3 C7040000 		.4byte	0x4c7
+ 1149 05a7 20       		.uleb128 0x20
+ 1150 05a8 0C000000 		.4byte	.LVL20
+ 1151 05ac EE030000 		.4byte	0x3ee
+ 1152 05b0 00       		.byte	0
+ 1153 05b1 1E       		.uleb128 0x1e
+ 1154 05b2 00060000 		.4byte	.LASF77
+ 1155 05b6 01       		.byte	0x1
+ 1156 05b7 A301     		.2byte	0x1a3
+ 1157 05b9 00000000 		.4byte	.LFB75
+ 1158 05bd 10000000 		.4byte	.LFE75-.LFB75
+ 1159 05c1 01       		.uleb128 0x1
+ 1160 05c2 9C       		.byte	0x9c
+ 1161 05c3 1E       		.uleb128 0x1e
+ 1162 05c4 D7030000 		.4byte	.LASF78
+ 1163 05c8 01       		.byte	0x1
+ 1164 05c9 BC01     		.2byte	0x1bc
+ 1165 05cb 00000000 		.4byte	.LFB76
+ 1166 05cf 10000000 		.4byte	.LFE76-.LFB76
+ 1167 05d3 01       		.uleb128 0x1
+ 1168 05d4 9C       		.byte	0x9c
+ 1169 05d5 22       		.uleb128 0x22
+ 1170 05d6 D2040000 		.4byte	.LASF79
+ 1171 05da 0A       		.byte	0xa
+ 1172 05db 1207     		.2byte	0x712
+ 1173 05dd E1050000 		.4byte	0x5e1
+ 1174 05e1 08       		.uleb128 0x8
+ 1175 05e2 DA000000 		.4byte	0xda
+ 1176 05e6 23       		.uleb128 0x23
+ 1177 05e7 524200   		.ascii	"RB\000"
+ 1178 05ea 07       		.byte	0x7
+ 1179 05eb 20       		.byte	0x20
+ 1180 05ec 2F030000 		.4byte	0x32f
+ 1181 05f0 05       		.uleb128 0x5
+ 1182 05f1 03       		.byte	0x3
+ 1183 05f2 00000000 		.4byte	RB
+ 1184 05f6 23       		.uleb128 0x23
+ 1185 05f7 504D3100 		.ascii	"PM1\000"
+ 1186 05fb 08       		.byte	0x8
+ 1187 05fc 78       		.byte	0x78
+ 1188 05fd F3020000 		.4byte	0x2f3
+ 1189 0601 05       		.uleb128 0x5
+ 1190 0602 03       		.byte	0x3
+ 1191 0603 00000000 		.4byte	PM1
+ 1192 0607 23       		.uleb128 0x23
+ 1193 0608 504D3200 		.ascii	"PM2\000"
+ 1194 060c 08       		.byte	0x8
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cc9R2PO9.s 			page 30
+
+
+ 1195 060d 79       		.byte	0x79
+ 1196 060e F3020000 		.4byte	0x2f3
+ 1197 0612 05       		.uleb128 0x5
+ 1198 0613 03       		.byte	0x3
+ 1199 0614 00000000 		.4byte	PM2
+ 1200 0618 23       		.uleb128 0x23
+ 1201 0619 6D736700 		.ascii	"msg\000"
+ 1202 061d 09       		.byte	0x9
+ 1203 061e 18       		.byte	0x18
+ 1204 061f 4C030000 		.4byte	0x34c
+ 1205 0623 05       		.uleb128 0x5
+ 1206 0624 03       		.byte	0x3
+ 1207 0625 00000000 		.4byte	msg
+ 1208 0629 24       		.uleb128 0x24
+ 1209 062a B2000000 		.4byte	.LASF80
+ 1210 062e 09       		.byte	0x9
+ 1211 062f 19       		.byte	0x19
+ 1212 0630 3A060000 		.4byte	0x63a
+ 1213 0634 05       		.uleb128 0x5
+ 1214 0635 03       		.byte	0x3
+ 1215 0636 00000000 		.4byte	TS_array
+ 1216 063a 05       		.uleb128 0x5
+ 1217 063b 04       		.byte	0x4
+ 1218 063c FD000000 		.4byte	0xfd
+ 1219 0640 24       		.uleb128 0x24
+ 1220 0641 6A040000 		.4byte	.LASF81
+ 1221 0645 0B       		.byte	0xb
+ 1222 0646 13       		.byte	0x13
+ 1223 0647 DA000000 		.4byte	0xda
+ 1224 064b 05       		.uleb128 0x5
+ 1225 064c 03       		.byte	0x3
+ 1226 064d 00000000 		.4byte	PM1_HA_ca
+ 1227 0651 24       		.uleb128 0x24
+ 1228 0652 B3020000 		.4byte	.LASF82
+ 1229 0656 0B       		.byte	0xb
+ 1230 0657 13       		.byte	0x13
+ 1231 0658 DA000000 		.4byte	0xda
+ 1232 065c 05       		.uleb128 0x5
+ 1233 065d 03       		.byte	0x3
+ 1234 065e 00000000 		.4byte	PM1_HA_ma
+ 1235 0662 24       		.uleb128 0x24
+ 1236 0663 D4000000 		.4byte	.LASF83
+ 1237 0667 0B       		.byte	0xb
+ 1238 0668 14       		.byte	0x14
+ 1239 0669 DA000000 		.4byte	0xda
+ 1240 066d 05       		.uleb128 0x5
+ 1241 066e 03       		.byte	0x3
+ 1242 066f 00000000 		.4byte	last_count
+ 1243 0673 24       		.uleb128 0x24
+ 1244 0674 5E010000 		.4byte	.LASF84
+ 1245 0678 08       		.byte	0x8
+ 1246 0679 60       		.byte	0x60
+ 1247 067a E1050000 		.4byte	0x5e1
+ 1248 067e 05       		.uleb128 0x5
+ 1249 067f 03       		.byte	0x3
+ 1250 0680 00000000 		.4byte	PM1_HA_Period
+ 1251 0684 24       		.uleb128 0x24
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cc9R2PO9.s 			page 31
+
+
+ 1252 0685 0F020000 		.4byte	.LASF85
+ 1253 0689 08       		.byte	0x8
+ 1254 068a 5C       		.byte	0x5c
+ 1255 068b 95060000 		.4byte	0x695
+ 1256 068f 05       		.uleb128 0x5
+ 1257 0690 03       		.byte	0x3
+ 1258 0691 00000000 		.4byte	rotor_direction
+ 1259 0695 08       		.uleb128 0x8
+ 1260 0696 B9000000 		.4byte	0xb9
+ 1261 069a 23       		.uleb128 0x23
+ 1262 069b 504200   		.ascii	"PB\000"
+ 1263 069e 08       		.byte	0x8
+ 1264 069f 20       		.byte	0x20
+ 1265 06a0 AA060000 		.4byte	0x6aa
+ 1266 06a4 05       		.uleb128 0x5
+ 1267 06a5 03       		.byte	0x3
+ 1268 06a6 00000000 		.4byte	PB
+ 1269 06aa 08       		.uleb128 0x8
+ 1270 06ab 99030000 		.4byte	0x399
+ 1271 06af 23       		.uleb128 0x23
+ 1272 06b0 436800   		.ascii	"Ch\000"
+ 1273 06b3 08       		.byte	0x8
+ 1274 06b4 50       		.byte	0x50
+ 1275 06b5 23010000 		.4byte	0x123
+ 1276 06b9 05       		.uleb128 0x5
+ 1277 06ba 03       		.byte	0x3
+ 1278 06bb 00000000 		.4byte	Ch
+ 1279 06bf 24       		.uleb128 0x24
+ 1280 06c0 05010000 		.4byte	.LASF86
+ 1281 06c4 08       		.byte	0x8
+ 1282 06c5 52       		.byte	0x52
+ 1283 06c6 23010000 		.4byte	0x123
+ 1284 06ca 05       		.uleb128 0x5
+ 1285 06cb 03       		.byte	0x3
+ 1286 06cc 00000000 		.4byte	ContinuouslySendData
+ 1287 06d0 24       		.uleb128 0x24
+ 1288 06d1 D3020000 		.4byte	.LASF87
+ 1289 06d5 08       		.byte	0x8
+ 1290 06d6 53       		.byte	0x53
+ 1291 06d7 23010000 		.4byte	0x123
+ 1292 06db 05       		.uleb128 0x5
+ 1293 06dc 03       		.byte	0x3
+ 1294 06dd 00000000 		.4byte	SendSingleByte
+ 1295 06e1 24       		.uleb128 0x24
+ 1296 06e2 6E030000 		.4byte	.LASF88
+ 1297 06e6 08       		.byte	0x8
+ 1298 06e7 54       		.byte	0x54
+ 1299 06e8 23010000 		.4byte	0x123
+ 1300 06ec 05       		.uleb128 0x5
+ 1301 06ed 03       		.byte	0x3
+ 1302 06ee 00000000 		.4byte	SendEmulatedData
+ 1303 06f2 24       		.uleb128 0x24
+ 1304 06f3 91020000 		.4byte	.LASF89
+ 1305 06f7 08       		.byte	0x8
+ 1306 06f8 55       		.byte	0x55
+ 1307 06f9 23010000 		.4byte	0x123
+ 1308 06fd 05       		.uleb128 0x5
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cc9R2PO9.s 			page 32
+
+
+ 1309 06fe 03       		.byte	0x3
+ 1310 06ff 00000000 		.4byte	_uart_Reset
+ 1311 0703 24       		.uleb128 0x24
+ 1312 0704 00000000 		.4byte	.LASF90
+ 1313 0708 08       		.byte	0x8
+ 1314 0709 58       		.byte	0x58
+ 1315 070a 25000000 		.4byte	0x25
+ 1316 070e 05       		.uleb128 0x5
+ 1317 070f 03       		.byte	0x3
+ 1318 0710 00000000 		.4byte	_state_
+ 1319 0714 24       		.uleb128 0x24
+ 1320 0715 9C000000 		.4byte	.LASF91
+ 1321 0719 01       		.byte	0x1
+ 1322 071a 27       		.byte	0x27
+ 1323 071b CF010000 		.4byte	0x1cf
+ 1324 071f 05       		.uleb128 0x5
+ 1325 0720 03       		.byte	0x3
+ 1326 0721 00000000 		.4byte	tens_pid_
+ 1327 0725 24       		.uleb128 0x24
+ 1328 0726 69020000 		.4byte	.LASF92
+ 1329 072a 01       		.byte	0x1
+ 1330 072b 23       		.byte	0x23
+ 1331 072c E1050000 		.4byte	0x5e1
+ 1332 0730 05       		.uleb128 0x5
+ 1333 0731 03       		.byte	0x3
+ 1334 0732 00000000 		.4byte	actual_tension
+ 1335 0736 24       		.uleb128 0x24
+ 1336 0737 49030000 		.4byte	.LASF93
+ 1337 073b 01       		.byte	0x1
+ 1338 073c 24       		.byte	0x24
+ 1339 073d E1050000 		.4byte	0x5e1
+ 1340 0741 05       		.uleb128 0x5
+ 1341 0742 03       		.byte	0x3
+ 1342 0743 00000000 		.4byte	tension_ref
+ 1343 0747 24       		.uleb128 0x24
+ 1344 0748 42040000 		.4byte	.LASF94
+ 1345 074c 01       		.byte	0x1
+ 1346 074d 22       		.byte	0x22
+ 1347 074e 58070000 		.4byte	0x758
+ 1348 0752 05       		.uleb128 0x5
+ 1349 0753 03       		.byte	0x3
+ 1350 0754 00000000 		.4byte	_tVal
+ 1351 0758 08       		.uleb128 0x8
+ 1352 0759 CF000000 		.4byte	0xcf
+ 1353 075d 24       		.uleb128 0x24
+ 1354 075e 55030000 		.4byte	.LASF95
+ 1355 0762 01       		.byte	0x1
+ 1356 0763 29       		.byte	0x29
+ 1357 0764 E1050000 		.4byte	0x5e1
+ 1358 0768 05       		.uleb128 0x5
+ 1359 0769 03       		.byte	0x3
+ 1360 076a 00000000 		.4byte	debug
+ 1361 076e 24       		.uleb128 0x24
+ 1362 076f 48040000 		.4byte	.LASF96
+ 1363 0773 01       		.byte	0x1
+ 1364 0774 25       		.byte	0x25
+ 1365 0775 DA000000 		.4byte	0xda
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cc9R2PO9.s 			page 33
+
+
+ 1366 0779 05       		.uleb128 0x5
+ 1367 077a 03       		.byte	0x3
+ 1368 077b 00000000 		.4byte	tension_pid_output
+ 1369 077f 24       		.uleb128 0x24
+ 1370 0780 7A040000 		.4byte	.LASF97
+ 1371 0784 01       		.byte	0x1
+ 1372 0785 2A       		.byte	0x2a
+ 1373 0786 E1050000 		.4byte	0x5e1
+ 1374 078a 05       		.uleb128 0x5
+ 1375 078b 03       		.byte	0x3
+ 1376 078c 00000000 		.4byte	current_pos
+ 1377 0790 25       		.uleb128 0x25
+ 1378 0791 7C050000 		.4byte	.LASF98
+ 1379 0795 7C050000 		.4byte	.LASF98
+ 1380 0799 05       		.byte	0x5
+ 1381 079a 26       		.byte	0x26
+ 1382 079b 25       		.uleb128 0x25
+ 1383 079c 47010000 		.4byte	.LASF99
+ 1384 07a0 47010000 		.4byte	.LASF99
+ 1385 07a4 05       		.byte	0x5
+ 1386 07a5 29       		.byte	0x29
+ 1387 07a6 00       		.byte	0
+ 1388              		.section	.debug_abbrev,"",%progbits
+ 1389              	.Ldebug_abbrev0:
+ 1390 0000 01       		.uleb128 0x1
+ 1391 0001 11       		.uleb128 0x11
+ 1392 0002 01       		.byte	0x1
+ 1393 0003 25       		.uleb128 0x25
+ 1394 0004 0E       		.uleb128 0xe
+ 1395 0005 13       		.uleb128 0x13
+ 1396 0006 0B       		.uleb128 0xb
+ 1397 0007 03       		.uleb128 0x3
+ 1398 0008 0E       		.uleb128 0xe
+ 1399 0009 1B       		.uleb128 0x1b
+ 1400 000a 0E       		.uleb128 0xe
+ 1401 000b 55       		.uleb128 0x55
+ 1402 000c 17       		.uleb128 0x17
+ 1403 000d 11       		.uleb128 0x11
+ 1404 000e 01       		.uleb128 0x1
+ 1405 000f 10       		.uleb128 0x10
+ 1406 0010 17       		.uleb128 0x17
+ 1407 0011 00       		.byte	0
+ 1408 0012 00       		.byte	0
+ 1409 0013 02       		.uleb128 0x2
+ 1410 0014 24       		.uleb128 0x24
+ 1411 0015 00       		.byte	0
+ 1412 0016 0B       		.uleb128 0xb
+ 1413 0017 0B       		.uleb128 0xb
+ 1414 0018 3E       		.uleb128 0x3e
+ 1415 0019 0B       		.uleb128 0xb
+ 1416 001a 03       		.uleb128 0x3
+ 1417 001b 08       		.uleb128 0x8
+ 1418 001c 00       		.byte	0
+ 1419 001d 00       		.byte	0
+ 1420 001e 03       		.uleb128 0x3
+ 1421 001f 24       		.uleb128 0x24
+ 1422 0020 00       		.byte	0
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cc9R2PO9.s 			page 34
+
+
+ 1423 0021 0B       		.uleb128 0xb
+ 1424 0022 0B       		.uleb128 0xb
+ 1425 0023 3E       		.uleb128 0x3e
+ 1426 0024 0B       		.uleb128 0xb
+ 1427 0025 03       		.uleb128 0x3
+ 1428 0026 0E       		.uleb128 0xe
+ 1429 0027 00       		.byte	0
+ 1430 0028 00       		.byte	0
+ 1431 0029 04       		.uleb128 0x4
+ 1432 002a 16       		.uleb128 0x16
+ 1433 002b 00       		.byte	0
+ 1434 002c 03       		.uleb128 0x3
+ 1435 002d 0E       		.uleb128 0xe
+ 1436 002e 3A       		.uleb128 0x3a
+ 1437 002f 0B       		.uleb128 0xb
+ 1438 0030 3B       		.uleb128 0x3b
+ 1439 0031 0B       		.uleb128 0xb
+ 1440 0032 49       		.uleb128 0x49
+ 1441 0033 13       		.uleb128 0x13
+ 1442 0034 00       		.byte	0
+ 1443 0035 00       		.byte	0
+ 1444 0036 05       		.uleb128 0x5
+ 1445 0037 0F       		.uleb128 0xf
+ 1446 0038 00       		.byte	0
+ 1447 0039 0B       		.uleb128 0xb
+ 1448 003a 0B       		.uleb128 0xb
+ 1449 003b 49       		.uleb128 0x49
+ 1450 003c 13       		.uleb128 0x13
+ 1451 003d 00       		.byte	0
+ 1452 003e 00       		.byte	0
+ 1453 003f 06       		.uleb128 0x6
+ 1454 0040 15       		.uleb128 0x15
+ 1455 0041 00       		.byte	0
+ 1456 0042 27       		.uleb128 0x27
+ 1457 0043 19       		.uleb128 0x19
+ 1458 0044 00       		.byte	0
+ 1459 0045 00       		.byte	0
+ 1460 0046 07       		.uleb128 0x7
+ 1461 0047 16       		.uleb128 0x16
+ 1462 0048 00       		.byte	0
+ 1463 0049 03       		.uleb128 0x3
+ 1464 004a 0E       		.uleb128 0xe
+ 1465 004b 3A       		.uleb128 0x3a
+ 1466 004c 0B       		.uleb128 0xb
+ 1467 004d 3B       		.uleb128 0x3b
+ 1468 004e 05       		.uleb128 0x5
+ 1469 004f 49       		.uleb128 0x49
+ 1470 0050 13       		.uleb128 0x13
+ 1471 0051 00       		.byte	0
+ 1472 0052 00       		.byte	0
+ 1473 0053 08       		.uleb128 0x8
+ 1474 0054 35       		.uleb128 0x35
+ 1475 0055 00       		.byte	0
+ 1476 0056 49       		.uleb128 0x49
+ 1477 0057 13       		.uleb128 0x13
+ 1478 0058 00       		.byte	0
+ 1479 0059 00       		.byte	0
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cc9R2PO9.s 			page 35
+
+
+ 1480 005a 09       		.uleb128 0x9
+ 1481 005b 13       		.uleb128 0x13
+ 1482 005c 01       		.byte	0x1
+ 1483 005d 0B       		.uleb128 0xb
+ 1484 005e 0B       		.uleb128 0xb
+ 1485 005f 3A       		.uleb128 0x3a
+ 1486 0060 0B       		.uleb128 0xb
+ 1487 0061 3B       		.uleb128 0x3b
+ 1488 0062 0B       		.uleb128 0xb
+ 1489 0063 01       		.uleb128 0x1
+ 1490 0064 13       		.uleb128 0x13
+ 1491 0065 00       		.byte	0
+ 1492 0066 00       		.byte	0
+ 1493 0067 0A       		.uleb128 0xa
+ 1494 0068 0D       		.uleb128 0xd
+ 1495 0069 00       		.byte	0
+ 1496 006a 03       		.uleb128 0x3
+ 1497 006b 08       		.uleb128 0x8
+ 1498 006c 3A       		.uleb128 0x3a
+ 1499 006d 0B       		.uleb128 0xb
+ 1500 006e 3B       		.uleb128 0x3b
+ 1501 006f 0B       		.uleb128 0xb
+ 1502 0070 49       		.uleb128 0x49
+ 1503 0071 13       		.uleb128 0x13
+ 1504 0072 38       		.uleb128 0x38
+ 1505 0073 0B       		.uleb128 0xb
+ 1506 0074 00       		.byte	0
+ 1507 0075 00       		.byte	0
+ 1508 0076 0B       		.uleb128 0xb
+ 1509 0077 0D       		.uleb128 0xd
+ 1510 0078 00       		.byte	0
+ 1511 0079 03       		.uleb128 0x3
+ 1512 007a 0E       		.uleb128 0xe
+ 1513 007b 3A       		.uleb128 0x3a
+ 1514 007c 0B       		.uleb128 0xb
+ 1515 007d 3B       		.uleb128 0x3b
+ 1516 007e 0B       		.uleb128 0xb
+ 1517 007f 49       		.uleb128 0x49
+ 1518 0080 13       		.uleb128 0x13
+ 1519 0081 38       		.uleb128 0x38
+ 1520 0082 0B       		.uleb128 0xb
+ 1521 0083 00       		.byte	0
+ 1522 0084 00       		.byte	0
+ 1523 0085 0C       		.uleb128 0xc
+ 1524 0086 13       		.uleb128 0x13
+ 1525 0087 01       		.byte	0x1
+ 1526 0088 03       		.uleb128 0x3
+ 1527 0089 0E       		.uleb128 0xe
+ 1528 008a 0B       		.uleb128 0xb
+ 1529 008b 0B       		.uleb128 0xb
+ 1530 008c 3A       		.uleb128 0x3a
+ 1531 008d 0B       		.uleb128 0xb
+ 1532 008e 3B       		.uleb128 0x3b
+ 1533 008f 0B       		.uleb128 0xb
+ 1534 0090 01       		.uleb128 0x1
+ 1535 0091 13       		.uleb128 0x13
+ 1536 0092 00       		.byte	0
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cc9R2PO9.s 			page 36
+
+
+ 1537 0093 00       		.byte	0
+ 1538 0094 0D       		.uleb128 0xd
+ 1539 0095 01       		.uleb128 0x1
+ 1540 0096 01       		.byte	0x1
+ 1541 0097 49       		.uleb128 0x49
+ 1542 0098 13       		.uleb128 0x13
+ 1543 0099 01       		.uleb128 0x1
+ 1544 009a 13       		.uleb128 0x13
+ 1545 009b 00       		.byte	0
+ 1546 009c 00       		.byte	0
+ 1547 009d 0E       		.uleb128 0xe
+ 1548 009e 21       		.uleb128 0x21
+ 1549 009f 00       		.byte	0
+ 1550 00a0 49       		.uleb128 0x49
+ 1551 00a1 13       		.uleb128 0x13
+ 1552 00a2 2F       		.uleb128 0x2f
+ 1553 00a3 0B       		.uleb128 0xb
+ 1554 00a4 00       		.byte	0
+ 1555 00a5 00       		.byte	0
+ 1556 00a6 0F       		.uleb128 0xf
+ 1557 00a7 17       		.uleb128 0x17
+ 1558 00a8 01       		.byte	0x1
+ 1559 00a9 03       		.uleb128 0x3
+ 1560 00aa 0E       		.uleb128 0xe
+ 1561 00ab 0B       		.uleb128 0xb
+ 1562 00ac 0B       		.uleb128 0xb
+ 1563 00ad 3A       		.uleb128 0x3a
+ 1564 00ae 0B       		.uleb128 0xb
+ 1565 00af 3B       		.uleb128 0x3b
+ 1566 00b0 0B       		.uleb128 0xb
+ 1567 00b1 01       		.uleb128 0x1
+ 1568 00b2 13       		.uleb128 0x13
+ 1569 00b3 00       		.byte	0
+ 1570 00b4 00       		.byte	0
+ 1571 00b5 10       		.uleb128 0x10
+ 1572 00b6 0D       		.uleb128 0xd
+ 1573 00b7 00       		.byte	0
+ 1574 00b8 03       		.uleb128 0x3
+ 1575 00b9 0E       		.uleb128 0xe
+ 1576 00ba 3A       		.uleb128 0x3a
+ 1577 00bb 0B       		.uleb128 0xb
+ 1578 00bc 3B       		.uleb128 0x3b
+ 1579 00bd 0B       		.uleb128 0xb
+ 1580 00be 49       		.uleb128 0x49
+ 1581 00bf 13       		.uleb128 0x13
+ 1582 00c0 00       		.byte	0
+ 1583 00c1 00       		.byte	0
+ 1584 00c2 11       		.uleb128 0x11
+ 1585 00c3 0D       		.uleb128 0xd
+ 1586 00c4 00       		.byte	0
+ 1587 00c5 49       		.uleb128 0x49
+ 1588 00c6 13       		.uleb128 0x13
+ 1589 00c7 00       		.byte	0
+ 1590 00c8 00       		.byte	0
+ 1591 00c9 12       		.uleb128 0x12
+ 1592 00ca 2E       		.uleb128 0x2e
+ 1593 00cb 01       		.byte	0x1
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cc9R2PO9.s 			page 37
+
+
+ 1594 00cc 3F       		.uleb128 0x3f
+ 1595 00cd 19       		.uleb128 0x19
+ 1596 00ce 03       		.uleb128 0x3
+ 1597 00cf 0E       		.uleb128 0xe
+ 1598 00d0 3A       		.uleb128 0x3a
+ 1599 00d1 0B       		.uleb128 0xb
+ 1600 00d2 3B       		.uleb128 0x3b
+ 1601 00d3 0B       		.uleb128 0xb
+ 1602 00d4 27       		.uleb128 0x27
+ 1603 00d5 19       		.uleb128 0x19
+ 1604 00d6 11       		.uleb128 0x11
+ 1605 00d7 01       		.uleb128 0x1
+ 1606 00d8 12       		.uleb128 0x12
+ 1607 00d9 06       		.uleb128 0x6
+ 1608 00da 40       		.uleb128 0x40
+ 1609 00db 18       		.uleb128 0x18
+ 1610 00dc 9742     		.uleb128 0x2117
+ 1611 00de 19       		.uleb128 0x19
+ 1612 00df 01       		.uleb128 0x1
+ 1613 00e0 13       		.uleb128 0x13
+ 1614 00e1 00       		.byte	0
+ 1615 00e2 00       		.byte	0
+ 1616 00e3 13       		.uleb128 0x13
+ 1617 00e4 34       		.uleb128 0x34
+ 1618 00e5 00       		.byte	0
+ 1619 00e6 03       		.uleb128 0x3
+ 1620 00e7 08       		.uleb128 0x8
+ 1621 00e8 3A       		.uleb128 0x3a
+ 1622 00e9 0B       		.uleb128 0xb
+ 1623 00ea 3B       		.uleb128 0x3b
+ 1624 00eb 0B       		.uleb128 0xb
+ 1625 00ec 49       		.uleb128 0x49
+ 1626 00ed 13       		.uleb128 0x13
+ 1627 00ee 02       		.uleb128 0x2
+ 1628 00ef 18       		.uleb128 0x18
+ 1629 00f0 00       		.byte	0
+ 1630 00f1 00       		.byte	0
+ 1631 00f2 14       		.uleb128 0x14
+ 1632 00f3 898201   		.uleb128 0x4109
+ 1633 00f6 01       		.byte	0x1
+ 1634 00f7 11       		.uleb128 0x11
+ 1635 00f8 01       		.uleb128 0x1
+ 1636 00f9 31       		.uleb128 0x31
+ 1637 00fa 13       		.uleb128 0x13
+ 1638 00fb 01       		.uleb128 0x1
+ 1639 00fc 13       		.uleb128 0x13
+ 1640 00fd 00       		.byte	0
+ 1641 00fe 00       		.byte	0
+ 1642 00ff 15       		.uleb128 0x15
+ 1643 0100 8A8201   		.uleb128 0x410a
+ 1644 0103 00       		.byte	0
+ 1645 0104 02       		.uleb128 0x2
+ 1646 0105 18       		.uleb128 0x18
+ 1647 0106 9142     		.uleb128 0x2111
+ 1648 0108 18       		.uleb128 0x18
+ 1649 0109 00       		.byte	0
+ 1650 010a 00       		.byte	0
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cc9R2PO9.s 			page 38
+
+
+ 1651 010b 16       		.uleb128 0x16
+ 1652 010c 898201   		.uleb128 0x4109
+ 1653 010f 01       		.byte	0x1
+ 1654 0110 11       		.uleb128 0x11
+ 1655 0111 01       		.uleb128 0x1
+ 1656 0112 31       		.uleb128 0x31
+ 1657 0113 13       		.uleb128 0x13
+ 1658 0114 00       		.byte	0
+ 1659 0115 00       		.byte	0
+ 1660 0116 17       		.uleb128 0x17
+ 1661 0117 05       		.uleb128 0x5
+ 1662 0118 00       		.byte	0
+ 1663 0119 03       		.uleb128 0x3
+ 1664 011a 0E       		.uleb128 0xe
+ 1665 011b 3A       		.uleb128 0x3a
+ 1666 011c 0B       		.uleb128 0xb
+ 1667 011d 3B       		.uleb128 0x3b
+ 1668 011e 0B       		.uleb128 0xb
+ 1669 011f 49       		.uleb128 0x49
+ 1670 0120 13       		.uleb128 0x13
+ 1671 0121 02       		.uleb128 0x2
+ 1672 0122 18       		.uleb128 0x18
+ 1673 0123 00       		.byte	0
+ 1674 0124 00       		.byte	0
+ 1675 0125 18       		.uleb128 0x18
+ 1676 0126 34       		.uleb128 0x34
+ 1677 0127 00       		.byte	0
+ 1678 0128 03       		.uleb128 0x3
+ 1679 0129 0E       		.uleb128 0xe
+ 1680 012a 3A       		.uleb128 0x3a
+ 1681 012b 0B       		.uleb128 0xb
+ 1682 012c 3B       		.uleb128 0x3b
+ 1683 012d 0B       		.uleb128 0xb
+ 1684 012e 49       		.uleb128 0x49
+ 1685 012f 13       		.uleb128 0x13
+ 1686 0130 02       		.uleb128 0x2
+ 1687 0131 18       		.uleb128 0x18
+ 1688 0132 00       		.byte	0
+ 1689 0133 00       		.byte	0
+ 1690 0134 19       		.uleb128 0x19
+ 1691 0135 2E       		.uleb128 0x2e
+ 1692 0136 01       		.byte	0x1
+ 1693 0137 3F       		.uleb128 0x3f
+ 1694 0138 19       		.uleb128 0x19
+ 1695 0139 03       		.uleb128 0x3
+ 1696 013a 0E       		.uleb128 0xe
+ 1697 013b 3A       		.uleb128 0x3a
+ 1698 013c 0B       		.uleb128 0xb
+ 1699 013d 3B       		.uleb128 0x3b
+ 1700 013e 05       		.uleb128 0x5
+ 1701 013f 27       		.uleb128 0x27
+ 1702 0140 19       		.uleb128 0x19
+ 1703 0141 49       		.uleb128 0x49
+ 1704 0142 13       		.uleb128 0x13
+ 1705 0143 11       		.uleb128 0x11
+ 1706 0144 01       		.uleb128 0x1
+ 1707 0145 12       		.uleb128 0x12
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cc9R2PO9.s 			page 39
+
+
+ 1708 0146 06       		.uleb128 0x6
+ 1709 0147 40       		.uleb128 0x40
+ 1710 0148 18       		.uleb128 0x18
+ 1711 0149 9742     		.uleb128 0x2117
+ 1712 014b 19       		.uleb128 0x19
+ 1713 014c 01       		.uleb128 0x1
+ 1714 014d 13       		.uleb128 0x13
+ 1715 014e 00       		.byte	0
+ 1716 014f 00       		.byte	0
+ 1717 0150 1A       		.uleb128 0x1a
+ 1718 0151 34       		.uleb128 0x34
+ 1719 0152 00       		.byte	0
+ 1720 0153 03       		.uleb128 0x3
+ 1721 0154 0E       		.uleb128 0xe
+ 1722 0155 3A       		.uleb128 0x3a
+ 1723 0156 0B       		.uleb128 0xb
+ 1724 0157 3B       		.uleb128 0x3b
+ 1725 0158 05       		.uleb128 0x5
+ 1726 0159 49       		.uleb128 0x49
+ 1727 015a 13       		.uleb128 0x13
+ 1728 015b 02       		.uleb128 0x2
+ 1729 015c 18       		.uleb128 0x18
+ 1730 015d 00       		.byte	0
+ 1731 015e 00       		.byte	0
+ 1732 015f 1B       		.uleb128 0x1b
+ 1733 0160 2E       		.uleb128 0x2e
+ 1734 0161 01       		.byte	0x1
+ 1735 0162 3F       		.uleb128 0x3f
+ 1736 0163 19       		.uleb128 0x19
+ 1737 0164 03       		.uleb128 0x3
+ 1738 0165 0E       		.uleb128 0xe
+ 1739 0166 3A       		.uleb128 0x3a
+ 1740 0167 0B       		.uleb128 0xb
+ 1741 0168 3B       		.uleb128 0x3b
+ 1742 0169 05       		.uleb128 0x5
+ 1743 016a 27       		.uleb128 0x27
+ 1744 016b 19       		.uleb128 0x19
+ 1745 016c 11       		.uleb128 0x11
+ 1746 016d 01       		.uleb128 0x1
+ 1747 016e 12       		.uleb128 0x12
+ 1748 016f 06       		.uleb128 0x6
+ 1749 0170 40       		.uleb128 0x40
+ 1750 0171 18       		.uleb128 0x18
+ 1751 0172 9742     		.uleb128 0x2117
+ 1752 0174 19       		.uleb128 0x19
+ 1753 0175 01       		.uleb128 0x1
+ 1754 0176 13       		.uleb128 0x13
+ 1755 0177 00       		.byte	0
+ 1756 0178 00       		.byte	0
+ 1757 0179 1C       		.uleb128 0x1c
+ 1758 017a 05       		.uleb128 0x5
+ 1759 017b 00       		.byte	0
+ 1760 017c 03       		.uleb128 0x3
+ 1761 017d 0E       		.uleb128 0xe
+ 1762 017e 3A       		.uleb128 0x3a
+ 1763 017f 0B       		.uleb128 0xb
+ 1764 0180 3B       		.uleb128 0x3b
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cc9R2PO9.s 			page 40
+
+
+ 1765 0181 05       		.uleb128 0x5
+ 1766 0182 49       		.uleb128 0x49
+ 1767 0183 13       		.uleb128 0x13
+ 1768 0184 02       		.uleb128 0x2
+ 1769 0185 17       		.uleb128 0x17
+ 1770 0186 00       		.byte	0
+ 1771 0187 00       		.byte	0
+ 1772 0188 1D       		.uleb128 0x1d
+ 1773 0189 34       		.uleb128 0x34
+ 1774 018a 00       		.byte	0
+ 1775 018b 03       		.uleb128 0x3
+ 1776 018c 0E       		.uleb128 0xe
+ 1777 018d 3A       		.uleb128 0x3a
+ 1778 018e 0B       		.uleb128 0xb
+ 1779 018f 3B       		.uleb128 0x3b
+ 1780 0190 05       		.uleb128 0x5
+ 1781 0191 49       		.uleb128 0x49
+ 1782 0192 13       		.uleb128 0x13
+ 1783 0193 02       		.uleb128 0x2
+ 1784 0194 17       		.uleb128 0x17
+ 1785 0195 00       		.byte	0
+ 1786 0196 00       		.byte	0
+ 1787 0197 1E       		.uleb128 0x1e
+ 1788 0198 2E       		.uleb128 0x2e
+ 1789 0199 00       		.byte	0
+ 1790 019a 3F       		.uleb128 0x3f
+ 1791 019b 19       		.uleb128 0x19
+ 1792 019c 03       		.uleb128 0x3
+ 1793 019d 0E       		.uleb128 0xe
+ 1794 019e 3A       		.uleb128 0x3a
+ 1795 019f 0B       		.uleb128 0xb
+ 1796 01a0 3B       		.uleb128 0x3b
+ 1797 01a1 05       		.uleb128 0x5
+ 1798 01a2 27       		.uleb128 0x27
+ 1799 01a3 19       		.uleb128 0x19
+ 1800 01a4 11       		.uleb128 0x11
+ 1801 01a5 01       		.uleb128 0x1
+ 1802 01a6 12       		.uleb128 0x12
+ 1803 01a7 06       		.uleb128 0x6
+ 1804 01a8 40       		.uleb128 0x40
+ 1805 01a9 18       		.uleb128 0x18
+ 1806 01aa 9742     		.uleb128 0x2117
+ 1807 01ac 19       		.uleb128 0x19
+ 1808 01ad 00       		.byte	0
+ 1809 01ae 00       		.byte	0
+ 1810 01af 1F       		.uleb128 0x1f
+ 1811 01b0 2E       		.uleb128 0x2e
+ 1812 01b1 00       		.byte	0
+ 1813 01b2 3F       		.uleb128 0x3f
+ 1814 01b3 19       		.uleb128 0x19
+ 1815 01b4 03       		.uleb128 0x3
+ 1816 01b5 0E       		.uleb128 0xe
+ 1817 01b6 3A       		.uleb128 0x3a
+ 1818 01b7 0B       		.uleb128 0xb
+ 1819 01b8 3B       		.uleb128 0x3b
+ 1820 01b9 05       		.uleb128 0x5
+ 1821 01ba 27       		.uleb128 0x27
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cc9R2PO9.s 			page 41
+
+
+ 1822 01bb 19       		.uleb128 0x19
+ 1823 01bc 49       		.uleb128 0x49
+ 1824 01bd 13       		.uleb128 0x13
+ 1825 01be 11       		.uleb128 0x11
+ 1826 01bf 01       		.uleb128 0x1
+ 1827 01c0 12       		.uleb128 0x12
+ 1828 01c1 06       		.uleb128 0x6
+ 1829 01c2 40       		.uleb128 0x40
+ 1830 01c3 18       		.uleb128 0x18
+ 1831 01c4 9742     		.uleb128 0x2117
+ 1832 01c6 19       		.uleb128 0x19
+ 1833 01c7 00       		.byte	0
+ 1834 01c8 00       		.byte	0
+ 1835 01c9 20       		.uleb128 0x20
+ 1836 01ca 898201   		.uleb128 0x4109
+ 1837 01cd 00       		.byte	0
+ 1838 01ce 11       		.uleb128 0x11
+ 1839 01cf 01       		.uleb128 0x1
+ 1840 01d0 31       		.uleb128 0x31
+ 1841 01d1 13       		.uleb128 0x13
+ 1842 01d2 00       		.byte	0
+ 1843 01d3 00       		.byte	0
+ 1844 01d4 21       		.uleb128 0x21
+ 1845 01d5 05       		.uleb128 0x5
+ 1846 01d6 00       		.byte	0
+ 1847 01d7 03       		.uleb128 0x3
+ 1848 01d8 0E       		.uleb128 0xe
+ 1849 01d9 3A       		.uleb128 0x3a
+ 1850 01da 0B       		.uleb128 0xb
+ 1851 01db 3B       		.uleb128 0x3b
+ 1852 01dc 0B       		.uleb128 0xb
+ 1853 01dd 49       		.uleb128 0x49
+ 1854 01de 13       		.uleb128 0x13
+ 1855 01df 02       		.uleb128 0x2
+ 1856 01e0 17       		.uleb128 0x17
+ 1857 01e1 00       		.byte	0
+ 1858 01e2 00       		.byte	0
+ 1859 01e3 22       		.uleb128 0x22
+ 1860 01e4 34       		.uleb128 0x34
+ 1861 01e5 00       		.byte	0
+ 1862 01e6 03       		.uleb128 0x3
+ 1863 01e7 0E       		.uleb128 0xe
+ 1864 01e8 3A       		.uleb128 0x3a
+ 1865 01e9 0B       		.uleb128 0xb
+ 1866 01ea 3B       		.uleb128 0x3b
+ 1867 01eb 05       		.uleb128 0x5
+ 1868 01ec 49       		.uleb128 0x49
+ 1869 01ed 13       		.uleb128 0x13
+ 1870 01ee 3F       		.uleb128 0x3f
+ 1871 01ef 19       		.uleb128 0x19
+ 1872 01f0 3C       		.uleb128 0x3c
+ 1873 01f1 19       		.uleb128 0x19
+ 1874 01f2 00       		.byte	0
+ 1875 01f3 00       		.byte	0
+ 1876 01f4 23       		.uleb128 0x23
+ 1877 01f5 34       		.uleb128 0x34
+ 1878 01f6 00       		.byte	0
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cc9R2PO9.s 			page 42
+
+
+ 1879 01f7 03       		.uleb128 0x3
+ 1880 01f8 08       		.uleb128 0x8
+ 1881 01f9 3A       		.uleb128 0x3a
+ 1882 01fa 0B       		.uleb128 0xb
+ 1883 01fb 3B       		.uleb128 0x3b
+ 1884 01fc 0B       		.uleb128 0xb
+ 1885 01fd 49       		.uleb128 0x49
+ 1886 01fe 13       		.uleb128 0x13
+ 1887 01ff 3F       		.uleb128 0x3f
+ 1888 0200 19       		.uleb128 0x19
+ 1889 0201 02       		.uleb128 0x2
+ 1890 0202 18       		.uleb128 0x18
+ 1891 0203 00       		.byte	0
+ 1892 0204 00       		.byte	0
+ 1893 0205 24       		.uleb128 0x24
+ 1894 0206 34       		.uleb128 0x34
+ 1895 0207 00       		.byte	0
+ 1896 0208 03       		.uleb128 0x3
+ 1897 0209 0E       		.uleb128 0xe
+ 1898 020a 3A       		.uleb128 0x3a
+ 1899 020b 0B       		.uleb128 0xb
+ 1900 020c 3B       		.uleb128 0x3b
+ 1901 020d 0B       		.uleb128 0xb
+ 1902 020e 49       		.uleb128 0x49
+ 1903 020f 13       		.uleb128 0x13
+ 1904 0210 3F       		.uleb128 0x3f
+ 1905 0211 19       		.uleb128 0x19
+ 1906 0212 02       		.uleb128 0x2
+ 1907 0213 18       		.uleb128 0x18
+ 1908 0214 00       		.byte	0
+ 1909 0215 00       		.byte	0
+ 1910 0216 25       		.uleb128 0x25
+ 1911 0217 2E       		.uleb128 0x2e
+ 1912 0218 00       		.byte	0
+ 1913 0219 3F       		.uleb128 0x3f
+ 1914 021a 19       		.uleb128 0x19
+ 1915 021b 3C       		.uleb128 0x3c
+ 1916 021c 19       		.uleb128 0x19
+ 1917 021d 6E       		.uleb128 0x6e
+ 1918 021e 0E       		.uleb128 0xe
+ 1919 021f 03       		.uleb128 0x3
+ 1920 0220 0E       		.uleb128 0xe
+ 1921 0221 3A       		.uleb128 0x3a
+ 1922 0222 0B       		.uleb128 0xb
+ 1923 0223 3B       		.uleb128 0x3b
+ 1924 0224 0B       		.uleb128 0xb
+ 1925 0225 00       		.byte	0
+ 1926 0226 00       		.byte	0
+ 1927 0227 00       		.byte	0
+ 1928              		.section	.debug_loc,"",%progbits
+ 1929              	.Ldebug_loc0:
+ 1930              	.LLST0:
+ 1931 0000 00000000 		.4byte	.LVL6
+ 1932 0004 02000000 		.4byte	.LVL7
+ 1933 0008 0100     		.2byte	0x1
+ 1934 000a 50       		.byte	0x50
+ 1935 000b 02000000 		.4byte	.LVL7
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cc9R2PO9.s 			page 43
+
+
+ 1936 000f 10000000 		.4byte	.LFE70
+ 1937 0013 0400     		.2byte	0x4
+ 1938 0015 F3       		.byte	0xf3
+ 1939 0016 01       		.uleb128 0x1
+ 1940 0017 50       		.byte	0x50
+ 1941 0018 9F       		.byte	0x9f
+ 1942 0019 00000000 		.4byte	0
+ 1943 001d 00000000 		.4byte	0
+ 1944              	.LLST1:
+ 1945 0021 04000000 		.4byte	.LVL8
+ 1946 0025 06000000 		.4byte	.LVL9
+ 1947 0029 0500     		.2byte	0x5
+ 1948 002b 70       		.byte	0x70
+ 1949 002c 00       		.sleb128 0
+ 1950 002d 35       		.byte	0x35
+ 1951 002e 25       		.byte	0x25
+ 1952 002f 9F       		.byte	0x9f
+ 1953 0030 00000000 		.4byte	0
+ 1954 0034 00000000 		.4byte	0
+ 1955              	.LLST2:
+ 1956 0038 00000000 		.4byte	.LVL14
+ 1957 003c 07000000 		.4byte	.LVL15-1
+ 1958 0040 0100     		.2byte	0x1
+ 1959 0042 50       		.byte	0x50
+ 1960 0043 07000000 		.4byte	.LVL15-1
+ 1961 0047 1A000000 		.4byte	.LFE65
+ 1962 004b 0100     		.2byte	0x1
+ 1963 004d 54       		.byte	0x54
+ 1964 004e 00000000 		.4byte	0
+ 1965 0052 00000000 		.4byte	0
+ 1966              		.section	.debug_aranges,"",%progbits
+ 1967 0000 7C000000 		.4byte	0x7c
+ 1968 0004 0200     		.2byte	0x2
+ 1969 0006 00000000 		.4byte	.Ldebug_info0
+ 1970 000a 04       		.byte	0x4
+ 1971 000b 00       		.byte	0
+ 1972 000c 0000     		.2byte	0
+ 1973 000e 0000     		.2byte	0
+ 1974 0010 00000000 		.4byte	.LFB67
+ 1975 0014 3C000000 		.4byte	.LFE67-.LFB67
+ 1976 0018 00000000 		.4byte	.LFB68
+ 1977 001c 0C000000 		.4byte	.LFE68-.LFB68
+ 1978 0020 00000000 		.4byte	.LFB69
+ 1979 0024 0C000000 		.4byte	.LFE69-.LFB69
+ 1980 0028 00000000 		.4byte	.LFB70
+ 1981 002c 10000000 		.4byte	.LFE70-.LFB70
+ 1982 0030 00000000 		.4byte	.LFB71
+ 1983 0034 0C000000 		.4byte	.LFE71-.LFB71
+ 1984 0038 00000000 		.4byte	.LFB72
+ 1985 003c 10000000 		.4byte	.LFE72-.LFB72
+ 1986 0040 00000000 		.4byte	.LFB73
+ 1987 0044 18000000 		.4byte	.LFE73-.LFB73
+ 1988 0048 00000000 		.4byte	.LFB74
+ 1989 004c 10000000 		.4byte	.LFE74-.LFB74
+ 1990 0050 00000000 		.4byte	.LFB64
+ 1991 0054 1C000000 		.4byte	.LFE64-.LFB64
+ 1992 0058 00000000 		.4byte	.LFB65
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cc9R2PO9.s 			page 44
+
+
+ 1993 005c 1A000000 		.4byte	.LFE65-.LFB65
+ 1994 0060 00000000 		.4byte	.LFB66
+ 1995 0064 14000000 		.4byte	.LFE66-.LFB66
+ 1996 0068 00000000 		.4byte	.LFB75
+ 1997 006c 10000000 		.4byte	.LFE75-.LFB75
+ 1998 0070 00000000 		.4byte	.LFB76
+ 1999 0074 10000000 		.4byte	.LFE76-.LFB76
+ 2000 0078 00000000 		.4byte	0
+ 2001 007c 00000000 		.4byte	0
+ 2002              		.section	.debug_ranges,"",%progbits
+ 2003              	.Ldebug_ranges0:
+ 2004 0000 00000000 		.4byte	.LFB67
+ 2005 0004 3C000000 		.4byte	.LFE67
+ 2006 0008 00000000 		.4byte	.LFB68
+ 2007 000c 0C000000 		.4byte	.LFE68
+ 2008 0010 00000000 		.4byte	.LFB69
+ 2009 0014 0C000000 		.4byte	.LFE69
+ 2010 0018 00000000 		.4byte	.LFB70
+ 2011 001c 10000000 		.4byte	.LFE70
+ 2012 0020 00000000 		.4byte	.LFB71
+ 2013 0024 0C000000 		.4byte	.LFE71
+ 2014 0028 00000000 		.4byte	.LFB72
+ 2015 002c 10000000 		.4byte	.LFE72
+ 2016 0030 00000000 		.4byte	.LFB73
+ 2017 0034 18000000 		.4byte	.LFE73
+ 2018 0038 00000000 		.4byte	.LFB74
+ 2019 003c 10000000 		.4byte	.LFE74
+ 2020 0040 00000000 		.4byte	.LFB64
+ 2021 0044 1C000000 		.4byte	.LFE64
+ 2022 0048 00000000 		.4byte	.LFB65
+ 2023 004c 1A000000 		.4byte	.LFE65
+ 2024 0050 00000000 		.4byte	.LFB66
+ 2025 0054 14000000 		.4byte	.LFE66
+ 2026 0058 00000000 		.4byte	.LFB75
+ 2027 005c 10000000 		.4byte	.LFE75
+ 2028 0060 00000000 		.4byte	.LFB76
+ 2029 0064 10000000 		.4byte	.LFE76
+ 2030 0068 00000000 		.4byte	0
+ 2031 006c 00000000 		.4byte	0
+ 2032              		.section	.debug_line,"",%progbits
+ 2033              	.Ldebug_line0:
+ 2034 0000 A6020000 		.section	.debug_str,"MS",%progbits,1
+ 2034      0200B401 
+ 2034      00000201 
+ 2034      FB0E0D00 
+ 2034      01010101 
+ 2035              	.LASF90:
+ 2036 0000 5F737461 		.ascii	"_state_\000"
+ 2036      74655F00 
+ 2037              	.LASF39:
+ 2038 0008 7370645F 		.ascii	"spd_controller\000"
+ 2038      636F6E74 
+ 2038      726F6C6C 
+ 2038      657200
+ 2039              	.LASF52:
+ 2040 0017 7370644F 		.ascii	"spdOutPID\000"
+ 2040      75745049 
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cc9R2PO9.s 			page 45
+
+
+ 2040      4400
+ 2041              	.LASF34:
+ 2042 0021 7363616C 		.ascii	"scaledMin\000"
+ 2042      65644D69 
+ 2042      6E00
+ 2043              	.LASF63:
+ 2044 002b 50617261 		.ascii	"ParamBuffer\000"
+ 2044      6D427566 
+ 2044      66657200 
+ 2045              	.LASF60:
+ 2046 0037 7056616C 		.ascii	"pVal\000"
+ 2046      00
+ 2047              	.LASF69:
+ 2048 003c 7072696F 		.ascii	"priority\000"
+ 2048      72697479 
+ 2048      00
+ 2049              	.LASF16:
+ 2050 0045 696E7438 		.ascii	"int8_t\000"
+ 2050      5F7400
+ 2051              	.LASF43:
+ 2052 004c 746E735F 		.ascii	"tns_params\000"
+ 2052      70617261 
+ 2052      6D7300
+ 2053              	.LASF70:
+ 2054 0057 74656E73 		.ascii	"tensor_control_isr_GetVector\000"
+ 2054      6F725F63 
+ 2054      6F6E7472 
+ 2054      6F6C5F69 
+ 2054      73725F47 
+ 2055              	.LASF14:
+ 2056 0074 73697A65 		.ascii	"sizetype\000"
+ 2056      74797065 
+ 2056      00
+ 2057              	.LASF71:
+ 2058 007d 74656E73 		.ascii	"tensor_control_isr_GetPriority\000"
+ 2058      6F725F63 
+ 2058      6F6E7472 
+ 2058      6F6C5F69 
+ 2058      73725F47 
+ 2059              	.LASF91:
+ 2060 009c 74656E73 		.ascii	"tens_pid_\000"
+ 2060      5F706964 
+ 2060      5F00
+ 2061              	.LASF2:
+ 2062 00a6 6C6F6E67 		.ascii	"long double\000"
+ 2062      20646F75 
+ 2062      626C6500 
+ 2063              	.LASF80:
+ 2064 00b2 54535F61 		.ascii	"TS_array\000"
+ 2064      72726179 
+ 2064      00
+ 2065              	.LASF8:
+ 2066 00bb 73686F72 		.ascii	"short int\000"
+ 2066      7420696E 
+ 2066      7400
+ 2067              	.LASF54:
+ 2068 00c5 7276745F 		.ascii	"rvt_last_count\000"
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cc9R2PO9.s 			page 46
+
+
+ 2068      6C617374 
+ 2068      5F636F75 
+ 2068      6E7400
+ 2069              	.LASF83:
+ 2070 00d4 6C617374 		.ascii	"last_count\000"
+ 2070      5F636F75 
+ 2070      6E7400
+ 2071              	.LASF42:
+ 2072 00df 7276745F 		.ascii	"rvt_params\000"
+ 2072      70617261 
+ 2072      6D7300
+ 2073              	.LASF68:
+ 2074 00ea 61646472 		.ascii	"address\000"
+ 2074      65737300 
+ 2075              	.LASF17:
+ 2076 00f2 75696E74 		.ascii	"uint8_t\000"
+ 2076      385F7400 
+ 2077              	.LASF22:
+ 2078 00fa 696E7431 		.ascii	"int16\000"
+ 2078      3600
+ 2079              	.LASF61:
+ 2080 0100 6956616C 		.ascii	"iVal\000"
+ 2080      00
+ 2081              	.LASF86:
+ 2082 0105 436F6E74 		.ascii	"ContinuouslySendData\000"
+ 2082      696E756F 
+ 2082      75736C79 
+ 2082      53656E64 
+ 2082      44617461 
+ 2083              	.LASF28:
+ 2084 011a 72656656 		.ascii	"refVal\000"
+ 2084      616C00
+ 2085              	.LASF64:
+ 2086 0121 74656E73 		.ascii	"tensor_control_isr_Interrupt\000"
+ 2086      6F725F63 
+ 2086      6F6E7472 
+ 2086      6F6C5F69 
+ 2086      73725F49 
+ 2087              	.LASF32:
+ 2088 013e 6D696E56 		.ascii	"minValue\000"
+ 2088      616C7565 
+ 2088      00
+ 2089              	.LASF99:
+ 2090 0147 5049445F 		.ascii	"PID_calculatePID\000"
+ 2090      63616C63 
+ 2090      756C6174 
+ 2090      65504944 
+ 2090      00
+ 2091              	.LASF23:
+ 2092 0158 666C6F61 		.ascii	"float\000"
+ 2092      7400
+ 2093              	.LASF84:
+ 2094 015e 504D315F 		.ascii	"PM1_HA_Period\000"
+ 2094      48415F50 
+ 2094      6572696F 
+ 2094      6400
+ 2095              	.LASF1:
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cc9R2PO9.s 			page 47
+
+
+ 2096 016c 6C6F6E67 		.ascii	"long long int\000"
+ 2096      206C6F6E 
+ 2096      6720696E 
+ 2096      7400
+ 2097              	.LASF49:
+ 2098 017a 7265665F 		.ascii	"ref_rvt\000"
+ 2098      72767400 
+ 2099              	.LASF11:
+ 2100 0182 6C6F6E67 		.ascii	"long int\000"
+ 2100      20696E74 
+ 2100      00
+ 2101              	.LASF30:
+ 2102 018b 6C617374 		.ascii	"lastValue\000"
+ 2102      56616C75 
+ 2102      6500
+ 2103              	.LASF102:
+ 2104 0195 433A5C55 		.ascii	"C:\\Users\\Gonzalo Olave\\Dropbox (Personal)\\Magis"
+ 2104      73657273 
+ 2104      5C476F6E 
+ 2104      7A616C6F 
+ 2104      204F6C61 
+ 2105 01c4 7465725C 		.ascii	"ter\\Tesis\\tesis-source\\master-tesis\\dedo_v01.cy"
+ 2105      54657369 
+ 2105      735C7465 
+ 2105      7369732D 
+ 2105      736F7572 
+ 2106 01f3 64736E00 		.ascii	"dsn\000"
+ 2107              	.LASF33:
+ 2108 01f7 6D617856 		.ascii	"maxValue\000"
+ 2108      616C7565 
+ 2108      00
+ 2109              	.LASF36:
+ 2110 0200 5049445F 		.ascii	"PID_t\000"
+ 2110      7400
+ 2111              	.LASF48:
+ 2112 0206 63757272 		.ascii	"curr_tns\000"
+ 2112      5F746E73 
+ 2112      00
+ 2113              	.LASF85:
+ 2114 020f 726F746F 		.ascii	"rotor_direction\000"
+ 2114      725F6469 
+ 2114      72656374 
+ 2114      696F6E00 
+ 2115              	.LASF66:
+ 2116 021f 72616D56 		.ascii	"ramVectorTable\000"
+ 2116      6563746F 
+ 2116      72546162 
+ 2116      6C6500
+ 2117              	.LASF5:
+ 2118 022e 5F5F7569 		.ascii	"__uint8_t\000"
+ 2118      6E74385F 
+ 2118      7400
+ 2119              	.LASF6:
+ 2120 0238 756E7369 		.ascii	"unsigned char\000"
+ 2120      676E6564 
+ 2120      20636861 
+ 2120      7200
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cc9R2PO9.s 			page 48
+
+
+ 2121              	.LASF51:
+ 2122 0246 7265665F 		.ascii	"ref_tns\000"
+ 2122      746E7300 
+ 2123              	.LASF73:
+ 2124 024e 74656E73 		.ascii	"tensor_control_isr_Disable\000"
+ 2124      6F725F63 
+ 2124      6F6E7472 
+ 2124      6F6C5F69 
+ 2124      73725F44 
+ 2125              	.LASF92:
+ 2126 0269 61637475 		.ascii	"actual_tension\000"
+ 2126      616C5F74 
+ 2126      656E7369 
+ 2126      6F6E00
+ 2127              	.LASF74:
+ 2128 0278 74656E73 		.ascii	"tensor_control_isr_Start\000"
+ 2128      6F725F63 
+ 2128      6F6E7472 
+ 2128      6F6C5F69 
+ 2128      73725F53 
+ 2129              	.LASF89:
+ 2130 0291 5F756172 		.ascii	"_uart_Reset\000"
+ 2130      745F5265 
+ 2130      73657400 
+ 2131              	.LASF29:
+ 2132 029d 696E7075 		.ascii	"inputValue\000"
+ 2132      7456616C 
+ 2132      756500
+ 2133              	.LASF41:
+ 2134 02a8 7370645F 		.ascii	"spd_params\000"
+ 2134      70617261 
+ 2134      6D7300
+ 2135              	.LASF82:
+ 2136 02b3 504D315F 		.ascii	"PM1_HA_ma\000"
+ 2136      48415F6D 
+ 2136      6100
+ 2137              	.LASF27:
+ 2138 02bd 63796973 		.ascii	"cyisraddress\000"
+ 2138      72616464 
+ 2138      72657373 
+ 2138      00
+ 2139              	.LASF47:
+ 2140 02ca 63757272 		.ascii	"curr_spd\000"
+ 2140      5F737064 
+ 2140      00
+ 2141              	.LASF87:
+ 2142 02d3 53656E64 		.ascii	"SendSingleByte\000"
+ 2142      53696E67 
+ 2142      6C654279 
+ 2142      746500
+ 2143              	.LASF3:
+ 2144 02e2 7369676E 		.ascii	"signed char\000"
+ 2144      65642063 
+ 2144      68617200 
+ 2145              	.LASF19:
+ 2146 02ee 696E7433 		.ascii	"int32_t\000"
+ 2146      325F7400 
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cc9R2PO9.s 			page 49
+
+
+ 2147              	.LASF13:
+ 2148 02f6 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 2148      206C6F6E 
+ 2148      6720756E 
+ 2148      7369676E 
+ 2148      65642069 
+ 2149              	.LASF65:
+ 2150 030d 74656E73 		.ascii	"tensor_control_isr_SetVector\000"
+ 2150      6F725F63 
+ 2150      6F6E7472 
+ 2150      6F6C5F69 
+ 2150      73725F53 
+ 2151              	.LASF103:
+ 2152 032a 54527842 		.ascii	"TRxBuffer\000"
+ 2152      75666665 
+ 2152      7200
+ 2153              	.LASF0:
+ 2154 0334 756E7369 		.ascii	"unsigned int\000"
+ 2154      676E6564 
+ 2154      20696E74 
+ 2154      00
+ 2155              	.LASF50:
+ 2156 0341 7265665F 		.ascii	"ref_spd\000"
+ 2156      73706400 
+ 2157              	.LASF93:
+ 2158 0349 74656E73 		.ascii	"tension_ref\000"
+ 2158      696F6E5F 
+ 2158      72656600 
+ 2159              	.LASF95:
+ 2160 0355 64656275 		.ascii	"debug\000"
+ 2160      6700
+ 2161              	.LASF59:
+ 2162 035b 54506172 		.ascii	"TParamBuffer\000"
+ 2162      616D4275 
+ 2162      66666572 
+ 2162      00
+ 2163              	.LASF26:
+ 2164 0368 72656733 		.ascii	"reg32\000"
+ 2164      3200
+ 2165              	.LASF88:
+ 2166 036e 53656E64 		.ascii	"SendEmulatedData\000"
+ 2166      456D756C 
+ 2166      61746564 
+ 2166      44617461 
+ 2166      00
+ 2167              	.LASF4:
+ 2168 037f 5F5F696E 		.ascii	"__int8_t\000"
+ 2168      74385F74 
+ 2168      00
+ 2169              	.LASF58:
+ 2170 0388 76616C73 		.ascii	"valstr\000"
+ 2170      747200
+ 2171              	.LASF15:
+ 2172 038f 63686172 		.ascii	"char\000"
+ 2172      00
+ 2173              	.LASF56:
+ 2174 0394 4252414B 		.ascii	"BRAKEn\000"
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cc9R2PO9.s 			page 50
+
+
+ 2174      456E00
+ 2175              	.LASF75:
+ 2176 039b 74656E73 		.ascii	"tensor_control_isr_StartEx\000"
+ 2176      6F725F63 
+ 2176      6F6E7472 
+ 2176      6F6C5F69 
+ 2176      73725F53 
+ 2177              	.LASF9:
+ 2178 03b6 73686F72 		.ascii	"short unsigned int\000"
+ 2178      7420756E 
+ 2178      7369676E 
+ 2178      65642069 
+ 2178      6E7400
+ 2179              	.LASF18:
+ 2180 03c9 696E7431 		.ascii	"int16_t\000"
+ 2180      365F7400 
+ 2181              	.LASF20:
+ 2182 03d1 75696E74 		.ascii	"uint8\000"
+ 2182      3800
+ 2183              	.LASF78:
+ 2184 03d7 74656E73 		.ascii	"tensor_control_isr_ClearPending\000"
+ 2184      6F725F63 
+ 2184      6F6E7472 
+ 2184      6F6C5F69 
+ 2184      73725F43 
+ 2185              	.LASF104:
+ 2186 03f7 52785374 		.ascii	"RxStr\000"
+ 2186      7200
+ 2187              	.LASF44:
+ 2188 03fd 70657269 		.ascii	"period_ha\000"
+ 2188      6F645F68 
+ 2188      6100
+ 2189              	.LASF21:
+ 2190 0407 75696E74 		.ascii	"uint32\000"
+ 2190      333200
+ 2191              	.LASF25:
+ 2192 040e 72656738 		.ascii	"reg8\000"
+ 2192      00
+ 2193              	.LASF12:
+ 2194 0413 6C6F6E67 		.ascii	"long unsigned int\000"
+ 2194      20756E73 
+ 2194      69676E65 
+ 2194      6420696E 
+ 2194      7400
+ 2195              	.LASF46:
+ 2196 0425 63757272 		.ascii	"curr_rvt\000"
+ 2196      5F727674 
+ 2196      00
+ 2197              	.LASF24:
+ 2198 042e 646F7562 		.ascii	"double\000"
+ 2198      6C6500
+ 2199              	.LASF37:
+ 2200 0435 636F6E74 		.ascii	"control_mode\000"
+ 2200      726F6C5F 
+ 2200      6D6F6465 
+ 2200      00
+ 2201              	.LASF94:
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cc9R2PO9.s 			page 51
+
+
+ 2202 0442 5F745661 		.ascii	"_tVal\000"
+ 2202      6C00
+ 2203              	.LASF96:
+ 2204 0448 74656E73 		.ascii	"tension_pid_output\000"
+ 2204      696F6E5F 
+ 2204      7069645F 
+ 2204      6F757470 
+ 2204      757400
+ 2205              	.LASF38:
+ 2206 045b 7276745F 		.ascii	"rvt_controller\000"
+ 2206      636F6E74 
+ 2206      726F6C6C 
+ 2206      657200
+ 2207              	.LASF81:
+ 2208 046a 504D315F 		.ascii	"PM1_HA_ca\000"
+ 2208      48415F63 
+ 2208      6100
+ 2209              	.LASF31:
+ 2210 0474 69546572 		.ascii	"iTerm\000"
+ 2210      6D00
+ 2211              	.LASF97:
+ 2212 047a 63757272 		.ascii	"current_pos\000"
+ 2212      656E745F 
+ 2212      706F7300 
+ 2213              	.LASF10:
+ 2214 0486 5F5F696E 		.ascii	"__int32_t\000"
+ 2214      7433325F 
+ 2214      7400
+ 2215              	.LASF53:
+ 2216 0490 7276745F 		.ascii	"rvt_aux\000"
+ 2216      61757800 
+ 2217              	.LASF40:
+ 2218 0498 746E735F 		.ascii	"tns_controller\000"
+ 2218      636F6E74 
+ 2218      726F6C6C 
+ 2218      657200
+ 2219              	.LASF7:
+ 2220 04a7 5F5F696E 		.ascii	"__int16_t\000"
+ 2220      7431365F 
+ 2220      7400
+ 2221              	.LASF76:
+ 2222 04b1 74656E73 		.ascii	"tensor_control_isr_Stop\000"
+ 2222      6F725F63 
+ 2222      6F6E7472 
+ 2222      6F6C5F69 
+ 2222      73725F53 
+ 2223              	.LASF45:
+ 2224 04c9 63757272 		.ascii	"curr_dir\000"
+ 2224      5F646972 
+ 2224      00
+ 2225              	.LASF79:
+ 2226 04d2 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 2226      52784275 
+ 2226      66666572 
+ 2226      00
+ 2227              	.LASF100:
+ 2228 04df 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cc9R2PO9.s 			page 52
+
+
+ 2228      43313120 
+ 2228      352E342E 
+ 2228      31203230 
+ 2228      31363036 
+ 2229 0512 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m3 -mthumb -g -O"
+ 2229      20726576 
+ 2229      6973696F 
+ 2229      6E203233 
+ 2229      37373135 
+ 2230 0545 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 2230      66756E63 
+ 2230      74696F6E 
+ 2230      2D736563 
+ 2230      74696F6E 
+ 2231              	.LASF35:
+ 2232 056d 7363616C 		.ascii	"scaledMax\000"
+ 2232      65644D61 
+ 2232      7800
+ 2233              	.LASF62:
+ 2234 0577 6456616C 		.ascii	"dVal\000"
+ 2234      00
+ 2235              	.LASF98:
+ 2236 057c 5049445F 		.ascii	"PID_setRef\000"
+ 2236      73657452 
+ 2236      656600
+ 2237              	.LASF72:
+ 2238 0587 74656E73 		.ascii	"tensor_control_isr_Enable\000"
+ 2238      6F725F63 
+ 2238      6F6E7472 
+ 2238      6F6C5F69 
+ 2238      73725F45 
+ 2239              	.LASF57:
+ 2240 05a1 4D4F544F 		.ascii	"MOTOR_t\000"
+ 2240      525F7400 
+ 2241              	.LASF67:
+ 2242 05a9 74656E73 		.ascii	"tensor_control_isr_SetPriority\000"
+ 2242      6F725F63 
+ 2242      6F6E7472 
+ 2242      6F6C5F69 
+ 2242      73725F53 
+ 2243              	.LASF55:
+ 2244 05c8 454E4142 		.ascii	"ENABLE\000"
+ 2244      4C4500
+ 2245              	.LASF101:
+ 2246 05cf 74656E73 		.ascii	"tensor_control_isr.c\000"
+ 2246      6F725F63 
+ 2246      6F6E7472 
+ 2246      6F6C5F69 
+ 2246      73722E63 
+ 2247              	.LASF105:
+ 2248 05e4 74656E73 		.ascii	"tensor_control_isr_GetState\000"
+ 2248      6F725F63 
+ 2248      6F6E7472 
+ 2248      6F6C5F69 
+ 2248      73725F47 
+ 2249              	.LASF77:
+ 2250 0600 74656E73 		.ascii	"tensor_control_isr_SetPending\000"
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cc9R2PO9.s 			page 53
+
+
+ 2250      6F725F63 
+ 2250      6F6E7472 
+ 2250      6F6C5F69 
+ 2250      73725F53 
+ 2251              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

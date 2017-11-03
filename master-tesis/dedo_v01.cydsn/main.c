@@ -10,8 +10,7 @@
  * ========================================
 */
 #include "global.h"
-#include "functions.h"
-#include "isr_functions.h"
+#include "math.h"
 
 void initHardware(void){
     
@@ -19,15 +18,14 @@ void initHardware(void){
     ADC_TS_Start();
     PM1_HA_TIMER_Start();
     PM1_DirCounter_Start();
-    VDAC8_Speed_Start();
+    PM1_SPD_VDAC8_Start();
     UART_Start();
     
     /* Initialize interrupt blocks */
     RxInt_StartEx(MyRxInt);
     
+    SPD_COMMAND_ISR_StartEx(SPD_COMMAND_INT);
     COUNT_ISR_StartEx(COUNT_INT);
-    isr_button_Start();
-    vel_control_isr_Start();
     angle_control_isr_Start();
     tensor_control_isr_Start();
 
@@ -44,30 +42,30 @@ void initMotors()
     MOTOR_setControlParams(&PM2,rvt,spd,tns);
     MOTOR_init(&PM1);
     MOTOR_init(&PM2);
+
 }
 
 int main(void)
 {
-    /* set speed PID parameters */
+    /*
+    // set speed PID parameters 
     float kp_vel = KP_VEL, ki_vel = KI_VEL, kd_vel = KD_VEL;  
     PID_init(&speed_pid_,kp_vel,ki_vel,kd_vel);
     PID_setMaxValue(&speed_pid_, 10000);
     PID_setMinValue(&speed_pid_, 0);
     
-    /* set position PID parameters */
+    // set position PID parameters 
     float kp_pos = KP_POS, ki_pos = KI_POS, kd_pos = KD_POS;  
     PID_init(&pos_pid_,kp_pos,ki_pos,kd_pos);
     PID_setMaxValue(&pos_pid_, 500);
     PID_setMinValue(&pos_pid_, -500);
     
-    /* set tension PID parameters */
+    // set tension PID parameters
     float kp_tens = KP_TENS, ki_tens = KI_TENS, kd_tens = KD_TENS;  
     PID_init(&tens_pid_,kp_tens,ki_tens,kd_tens);
     PID_setMaxValue(&tens_pid_, 4096);
     PID_setMinValue(&tens_pid_, -4096);
-    
-    int16 dir_count;
-    uint8 _braken_state = 0;
+    */
     
     char TransmitBuffer[TRANSMIT_BUFFER_SIZE];
    
@@ -82,9 +80,9 @@ int main(void)
     SendSingleByte = FALSE;
     SendEmulatedData = FALSE;
 
-    PM1_ENABLE_Write(TRUE); // true: speed control, else: external pwm control
+    PM1_ENABLE_Write(PM1.ENABLE); // true: speed control, else: external pwm control
     //SPEED_Write(TRUE); // true: external pwm control, else: analog voltage control
-    PM1_DIR_Write(TRUE);     // true: left(ccw), false: right(cw)
+    PM1_DIR_Write(PM1.DIR);     // true: left(ccw), false: right(cw)
     PM1_BRAKEn_Write(FALSE);  // true: turning, false: braken
     
     CyDelay(250);
@@ -110,7 +108,7 @@ int main(void)
             #if CONTROL_TYPE==1
                 sprintf(TransmitBuffer, "*%d*%d*%d\r\n",(int)(kp_pos*100.0),(int)(ki_pos*100.0),(int)(kd_pos*100.0));     
             #elif CONTROL_TYPE==2
-                sprintf(TransmitBuffer, "*%d*%d*%d\r\n",(int)(kp_vel*100.0),(int)(ki_vel*100.0),(int)(kd_vel*100.0));    
+                sprintf(TransmitBuffer, "*%d*%d*%d\r\n",(int)(PM1.spd_params[0]*100.0),(int)(PM1.spd_params[1]*100.0),(int)(PM1.spd_params[2]*100.0));    
             #elif CONTROL_TYPE==3
                 sprintf(TransmitBuffer, "*%d*%d*%d\r\n",(int)(kp_tens*100.0),(int)(ki_tens*100.0),(int)(kd_tens*100.0));
             #endif
@@ -120,7 +118,7 @@ int main(void)
         }
     }
     CyGlobalIntEnable; /* Enable global interrupts. */
-    PM1_BRAKEn_Write(_braken_state);
+    PM1_BRAKEn_Write(PM1.BRAKEn);
     
     for(;;)
     {
@@ -136,7 +134,7 @@ int main(void)
             TS_array = StoreResults();
         }
         
-        _pVal = ADC_GetResult8();
+        //_pVal = ADC_GetResult8();
         _tVal = TS_array[0];
         
         #ifdef MANUAL_CONTROL
@@ -147,7 +145,7 @@ int main(void)
         #endif
                 
         /* change motor direction */
-        PM1_DIR_Write(dir_state);
+        PM1_DIR_Write(PM1.DIR);
         
         #ifdef TENDON_TENSION_CONTROL
             /* rotor zero crossing checks */
@@ -159,8 +157,8 @@ int main(void)
             }
         #endif
         
-        if( abs(speed_ref - actual_speed) > 0 ){
-            MOTOR_setSpdRef(&PM1,PM1.curr_spd);
+        if( abs(PM1.ref_spd - PM1.curr_spd) > 0 ){
+            MOTOR_setSpdRef(&PM1,PM1.ref_spd);
         }
         
         /* Check UART for any sent command */
@@ -176,7 +174,7 @@ int main(void)
                 sprintf(TransmitBuffer, "Ref: %d\tActual: %d\tpid_out: %d\r\n",(int)pos_ref*4,(int)actual_pos,(int)_pid_out);
             #elif defined(SPEED_CONTROL)
                 //sprintf(TransmitBuffer, "sRef: %d\tsActual: %d\tdirection: %d\tcounter: %d\r\n",(int)speed_ref,(int)actual_speed,(int)dir_state,(int)dir_count);
-                sprintf(TransmitBuffer, "Ref: %d\tActual: %d\r\n",(int)speed_ref,(int)actual_speed);
+                sprintf(TransmitBuffer, "Ref: %d\tActual: %d\r\n",(int)PM1.ref_spd,(int)PM1.curr_spd);
             #elif defined(TENDON_TENSION_CONTROL)
                 sprintf(TransmitBuffer, "Ref: %d\tActual: %d\r\n",(int)tension_ref,(int)actual_tension);
             #endif

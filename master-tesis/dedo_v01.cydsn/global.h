@@ -19,8 +19,9 @@
 #include "pid.h"
 #include "string.h"
 #include "myUART.h"
-#include <math.h>
-
+#include "functions.h"
+#include "isr_functions.h"    
+    
 /* Project structures */
 
 //buffer to hold application settings
@@ -41,7 +42,7 @@ volatile ParamBuffer PB;     //volatile struct TParamBuffer PB;
 #define PWM_MAX 255 // max value for force control
 #define K_PWM 0.02 // constan for sigmoidal function in force control
 
-#define HF_CLK 10000 // rate of high frequency clock for speed measurement
+#define HF_CLK 100000 // rate of high frequency clock for speed measurement
 #define MAX_COUNTER 6500 // max counter for checking zero speed
 
 #define MAX_POSITION_LIMIT 72
@@ -66,7 +67,7 @@ volatile ParamBuffer PB;     //volatile struct TParamBuffer PB;
 
 /* speed control parameters */
 #define KP_VEL 1.0
-#define KI_VEL 0.2
+#define KI_VEL 0.32
 #define KD_VEL 0.0
 
 /* tensor control parameters */
@@ -115,10 +116,9 @@ extern volatile uint8 _pVal;
 extern volatile int32_t debug;
 
 extern uint8 _pid_out;
-extern uint8 _braken_state;
 
-extern MOTOR_t PM1;
-extern MOTOR_t PM2;
+MOTOR_t PM1;
+MOTOR_t PM2;
 
 #endif // GLOBAL_VARIABLES_FILE_H
 

@@ -14,6 +14,7 @@
 #define MOTOR_H_    
 
 #include "pid.h"
+#include "project.h"
     
 typedef struct MOTOR_t {
     uint8_t control_mode;
@@ -47,14 +48,14 @@ typedef struct MOTOR_t {
 
 } MOTOR_t;
 
-#define HF_CLK 10000    
-    
 void MOTOR_init(MOTOR_t* motor);
 void MOTOR_setMode(MOTOR_t* motor, uint8_t mode);
 void MOTOR_setControlParams(MOTOR_t* motor, float* rvt, float* spd, float* tns);
 void MOTOR_setRvtRef(MOTOR_t* motor, int32_t rvtRef);
 void MOTOR_setSpdRef(MOTOR_t* motor, int32_t spdRef);
 void MOTOR_setTnsRef(MOTOR_t* motor, int32_t tnsRef);
+
+void MOTOR_ToggleHandBrake(MOTOR_t* motor);
 
 int32_t MOTOR_getSpd(MOTOR_t* motor);
 int8_t MOTOR_getDir(MOTOR_t* motor);

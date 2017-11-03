@@ -14,6 +14,8 @@
 
 #include "global.h"
 
+extern MOTOR_t PM1,PM2;
+
 int32_t PM1_HA_ca,PM1_HA_ma;
 int32_t last_count;
 volatile int32_t PM1_HA_Period;
@@ -21,6 +23,8 @@ volatile int8_t rotor_direction;
 
 CY_ISR_PROTO(PM1_HA_INT);          // process PM1_HA_ISR interrupt
 CY_ISR_PROTO(COUNT_INT);          // process PM1_COUNT_ISR interrupt
+
+CY_ISR_PROTO(SPD_COMMAND_INT);
 
 #endif // ISR_FUNCTIONS_H
 

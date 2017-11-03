@@ -77,21 +77,21 @@ void ProcessCommandMsg(void)
         ContinuouslySendData = FALSE;
     }
     else if (RB.cmd == 'b'){
-        HandBrake();
+        MOTOR_ToggleHandBrake(&PM1);
     }
     else if (RB.cmd == '!'){
         if(strlen(RB.valstr) > 0){
-            pos_ref = atoi(RB.valstr);
+            PM1.ref_rvt = atoi(RB.valstr);
         }
     }
     else if (RB.cmd == '#'){
         if(strlen(RB.valstr) > 0){
-            speed_ref = atoi(RB.valstr);
+            PM1.ref_spd = atoi(RB.valstr);
         }
     }
     else if (RB.cmd == '$'){
         if(strlen(RB.valstr) > 0){
-            tension_ref = atoi(RB.valstr);
+            PM1.ref_tns = atoi(RB.valstr);
         }
     }
     else if (RB.cmd == '1'){
@@ -102,20 +102,21 @@ void ProcessCommandMsg(void)
     }
     
     if ( updatePID == TRUE ){
-        PID_setCoeffs(&speed_pid_,(float)PB.pVal/100.0,(float)PB.iVal/100.0,(float)PB.dVal/100.0);
+        PID_setCoeffs(&PM1.spd_controller,(float)PB.pVal/100.0,(float)PB.iVal/100.0,(float)PB.dVal/100.0);
         updatePID = FALSE;
     }
 }
 
-void HandBrake()
+void ToggleHandBrake()
 {
-    if (_braken_state == 0){
-        PM1_BRAKEn_Write(1);
-        _braken_state = 1;
+    if (PM1.BRAKEn == 0){
+        PM1.BRAKEn = 1;      // update motor status
+        PM1_BRAKEn_Write(PM1.BRAKEn); // write to pin
+                
     }
     else{
-        PM1_BRAKEn_Write(0);
-        _braken_state = 0;
+        PM1.BRAKEn = 0;
+        PM1_BRAKEn_Write(PM1.BRAKEn);
     }
 }
 

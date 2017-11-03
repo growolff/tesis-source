@@ -258,6 +258,21 @@
   </Group>
   <Data key="DataVersionKey" value="2" />
   <Group key="DWRInstGuidMapping">
+    <Group key="Interrupt">
+      <Data key="1e98e0dd-961b-426d-9bc4-cb6f5c096d40/e979b35e-c089-429a-96bb-6d4d69c94283" value="PM2_DirCounter_isr" />
+      <Data key="4aefd3c4-f2f3-4193-9d93-408033c88e47" value="SPD_COMMAND_ISR" />
+      <Data key="5ae22eca-916d-48d3-bcef-f720111d1e37/1f5e8554-d687-4ad9-ad53-a7ad63e97e33" value="ADC_TS_IRQ" />
+      <Data key="6fb45147-4010-4cff-af79-5323864a2014" value="tensor_control_isr" />
+      <Data key="7f639380-d75e-49f3-857b-9587bf3aad16" value="PM2_HA_ISR" />
+      <Data key="016c539e-925a-4e81-9948-919a49b11a9c" value="RxInt" />
+      <Data key="44da7949-c368-4cec-9e9f-4c796f20e8c0" value="isr_button" />
+      <Data key="66e7d4f1-e256-4275-a960-56b5dd10539a" value="COUNT_ISR" />
+      <Data key="72fa8269-8f13-4052-b935-fbe9658fb647" value="PM1_HA_ISR" />
+      <Data key="12875d6f-3240-4384-91da-3962b633930f/e979b35e-c089-429a-96bb-6d4d69c94283" value="PM1_DirCounter_isr" />
+      <Data key="b0162966-0060-4af5-82d1-fcb491ad7619/10dce1ed-dd83-44c0-9cff-cc3ee25204cd" value="UART_RXInternalInterrupt" />
+      <Data key="c8133068-0d2a-4d20-84a4-90f1871c17c6" value="angle_control_isr" />
+      <Data key="eceff5ca-ff1a-45ba-9bb9-b032fbbf895f/b73dcd38-4bce-4cd7-acec-33f53e91ccd6" value="ADC_IRQ" />
+    </Group>
     <Group key="Pin">
       <Data key="1fd6b51c-62e1-42f5-a73d-369422469ca4" value="PM1_input" />
       <Data key="3cf2d97c-f3a2-437f-acdb-3ce4247c2164" value="DIR" />
@@ -3361,6 +3376,22 @@
       </Group>
       <Group key="1024">
         <Data key="LevelKey" value="00" />
+      </Group>
+    </Group>
+  </Group>
+  <Group key="Interrupt">
+    <Group key="66e7d4f1-e256-4275-a960-56b5dd10539a">
+      <Group key="CortexM3">
+        <Data key="Assigned" value="True" />
+        <Data key="Priority" value="1" />
+        <Data key="Vector" value="-1" />
+      </Group>
+    </Group>
+    <Group key="72fa8269-8f13-4052-b935-fbe9658fb647">
+      <Group key="CortexM3">
+        <Data key="Assigned" value="True" />
+        <Data key="Priority" value="0" />
+        <Data key="Vector" value="-1" />
       </Group>
     </Group>
   </Group>
