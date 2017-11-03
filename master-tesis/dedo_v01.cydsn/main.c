@@ -11,25 +11,39 @@
 */
 #include "global.h"
 #include "functions.h"
+#include "isr_functions.h"
 
 void initHardware(void){
     
     ADC_Start();
     ADC_TS_Start();
-    Timer_ha_Start();
-    DirCounter_Start();
+    PM1_HA_TIMER_Start();
+    PM1_DirCounter_Start();
     VDAC8_Speed_Start();
     UART_Start();
     
     /* Initialize interrupt blocks */
     RxInt_StartEx(MyRxInt);
-    isr_HA_Start();
-    isr_counter_Start();
+    
+    COUNT_ISR_StartEx(COUNT_INT);
     isr_button_Start();
     vel_control_isr_Start();
     angle_control_isr_Start();
     tensor_control_isr_Start();
 
+}
+
+void initMotors()
+{
+    float rvt[3] = {KP_POS, KI_POS, KD_POS}; 
+    float spd[3] = {KP_VEL, KI_VEL, KD_VEL}; 
+    float tns[3] = {KP_TENS, KI_TENS, KD_TENS};
+        
+    PM1_HA_ISR_StartEx(PM1_HA_INT);
+    MOTOR_setControlParams(&PM1,rvt,spd,tns);
+    MOTOR_setControlParams(&PM2,rvt,spd,tns);
+    MOTOR_init(&PM1);
+    MOTOR_init(&PM2);
 }
 
 int main(void)
@@ -58,6 +72,7 @@ int main(void)
     char TransmitBuffer[TRANSMIT_BUFFER_SIZE];
    
     initHardware();
+    initMotors();
 
     ADC_StartConvert();
     ADC_TS_StartConvert();
@@ -66,11 +81,11 @@ int main(void)
     ContinuouslySendData = FALSE;
     SendSingleByte = FALSE;
     SendEmulatedData = FALSE;
-        
-    ENABLE_Write(TRUE); // true: speed control, else: external pwm control
+
+    PM1_ENABLE_Write(TRUE); // true: speed control, else: external pwm control
     //SPEED_Write(TRUE); // true: external pwm control, else: analog voltage control
-    DIR_Write(1);     // true: left(ccw), false: right(cw)
-    BRAKEn_Write(FALSE);  // true: turning, false: braken
+    PM1_DIR_Write(TRUE);     // true: left(ccw), false: right(cw)
+    PM1_BRAKEn_Write(FALSE);  // true: turning, false: braken
     
     CyDelay(250);
     
@@ -105,7 +120,7 @@ int main(void)
         }
     }
     CyGlobalIntEnable; /* Enable global interrupts. */
-    BRAKEn_Write(_braken_state);
+    PM1_BRAKEn_Write(_braken_state);
     
     for(;;)
     {
@@ -121,8 +136,6 @@ int main(void)
             TS_array = StoreResults();
         }
         
-        dir_count = DirCounter_GetCounter();
-        /* Place your application code here. */
         _pVal = ADC_GetResult8();
         _tVal = TS_array[0];
         
@@ -134,7 +147,7 @@ int main(void)
         #endif
                 
         /* change motor direction */
-        DIR_Write(dir_state);
+        PM1_DIR_Write(dir_state);
         
         #ifdef TENDON_TENSION_CONTROL
             /* rotor zero crossing checks */
@@ -145,6 +158,10 @@ int main(void)
                 BRAKEn_Write(1);
             }
         #endif
+        
+        if( abs(speed_ref - actual_speed) > 0 ){
+            MOTOR_setSpdRef(&PM1,PM1.curr_spd);
+        }
         
         /* Check UART for any sent command */
         Ch = UART_GetChar();

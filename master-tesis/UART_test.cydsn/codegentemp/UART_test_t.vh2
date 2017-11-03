@@ -1,5 +1,5 @@
--- Project:   D:\Dropbox\Magister\Tesis\tesis-source\master-tesis\UART_test.cydsn\UART_test.cyprj
--- Generated: 09/15/2017 12:54:49
+-- Project:   C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\UART_test.cydsn\UART_test.cyprj
+-- Generated: 11/02/2017 11:45:14
 -- PSoC Creator  4.1 Update 1
 
 ENTITY UART_test IS

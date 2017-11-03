@@ -52,6 +52,7 @@ Mkfile.old
 dkms.conf
 
 # Generated files folders and etc
-
+master-tesis/UART_test.cydsn/
+master-tesis/dedo_v01.cydsn/CortexM3/
 master-tesis/Archive/
 master-tesis/Backup/

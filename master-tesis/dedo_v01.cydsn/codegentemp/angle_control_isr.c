@@ -184,7 +184,7 @@ CY_ISR(angle_control_isr_Interrupt)
     /* `#START angle_control_isr_Interrupt` */
     
     /* in hall sensor count for better resolution */
-    actual_pos = DirCounter_GetCounter() - init_pos;
+    actual_pos = PM1_DirCounter_GetCounter() - init_pos;
     
     PID_setRef(&pos_pid_,(pos_ref-init_pos)*4);
     

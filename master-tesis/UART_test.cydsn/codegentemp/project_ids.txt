@@ -1,7 +1,7 @@
-D:\Dropbox\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\dedo_v01.cyprj|7123aa87-a930-4159-b262-fed71e9c7a3d
-C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\CyAnnotationLibrary.cyprj|97df4cdd-21e8-47fb-939f-1f2fd2dd1ada
-C:\Users\growo\Documents\PSoC Creator\4.1\Downloads ( 4.1).cylib\Downloads ( 4.1).cyprj|e5380331-37c4-45a3-b906-e59acbd2371e
-C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\cycomponentlibraryupdates\CyComponentLibraryUpdates.cylib\CyComponentLibraryUpdates.cyprj|d901c668-3daf-4a68-9acd-dde820fd2a15
-C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CyComponentLibrary.cyprj|7ebf8419-a4e1-4cdf-88c6-9ad6fb0a0a1c
-C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\CyPrimitives.cyprj|ee8c44fd-378b-484c-9324-568efc8b22d1
-D:\Dropbox\Magister\Tesis\tesis-source\master-tesis\UART_test.cydsn\UART_test.cyprj|f648bb14-39d3-4eb2-b65f-71df5b231bf2
+C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\dedo_v01.cyprj|4e4ba15e-28df-4099-a8a1-3de4850e1da3
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\CyAnnotationLibrary.cyprj|9b6fe7f9-5935-431b-9b04-68f1151edd5c
+C:\Users\Gonzalo Olave\Documents\PSoC Creator\4.1\Downloads ( 4.1).cylib\Downloads ( 4.1).cyprj|2699c5c0-84b2-43d5-8fd4-ff5cacdf779b
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\cycomponentlibraryupdates\CyComponentLibraryUpdates.cylib\CyComponentLibraryUpdates.cyprj|c9dfa535-13a4-44ac-b7c7-a598f210949a
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CyComponentLibrary.cyprj|0a9e3719-f070-4133-bbee-d81f53b99841
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\CyPrimitives.cyprj|7c45e3f1-b15b-452b-92cf-669549787dc0
+C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\UART_test.cydsn\UART_test.cyprj|d424410c-1bf1-4f39-be1b-aa56435c51e0

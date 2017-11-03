@@ -12,7 +12,6 @@
 
 #include <functions.h>
 #include <stdlib.h>
-#include <math.h>
 
 int32_t fn_mapper(int32_t x, int32_t in_min, int32_t in_max, int32_t out_min, int32_t out_max)
 {    
@@ -111,11 +110,11 @@ void ProcessCommandMsg(void)
 void HandBrake()
 {
     if (_braken_state == 0){
-        BRAKEn_Write(1);
+        PM1_BRAKEn_Write(1);
         _braken_state = 1;
     }
     else{
-        BRAKEn_Write(0);
+        PM1_BRAKEn_Write(0);
         _braken_state = 0;
     }
 }
@@ -130,5 +129,6 @@ int16 * StoreResults() // store ADC conversion result in a sensor data array
 	}
     return dest;
 }
+
 
 /* [] END OF FILE */

@@ -199,9 +199,9 @@ void DirCounter_Stop(void)
 *  of the 32-bit counter, when Counter size equal 32-bit.
 *
 *******************************************************************************/
-int16 DirCounter_GetCounter(void) 
+int32 DirCounter_GetCounter(void) 
 {
-    int16 count;
+    int32 count;
     uint16 tmpCnt;
 
     #if (DirCounter_COUNTER_SIZE == DirCounter_COUNTER_SIZE_32_BIT)
@@ -224,7 +224,7 @@ int16 DirCounter_GetCounter(void)
             tmpCnt = DirCounter_Cnt16_ReadCounter();
         #endif  /* DirCounter_COUNTER_SIZE == DirCounter_COUNTER_SIZE_8_BIT */
 
-        count = (int16) ((int32) tmpCnt -
+        count = (int32) ((int32) tmpCnt -
                 (int32) DirCounter_COUNTER_INIT_VALUE);
 
     #endif /* DirCounter_COUNTER_SIZE == DirCounter_COUNTER_SIZE_32_BIT */ 
@@ -255,7 +255,7 @@ int16 DirCounter_GetCounter(void)
 *  No.
 *
 *******************************************************************************/
-void DirCounter_SetCounter(int16 value) 
+void DirCounter_SetCounter(int32 value) 
 {
     #if ((DirCounter_COUNTER_SIZE == DirCounter_COUNTER_SIZE_8_BIT) || \
          (DirCounter_COUNTER_SIZE == DirCounter_COUNTER_SIZE_16_BIT))

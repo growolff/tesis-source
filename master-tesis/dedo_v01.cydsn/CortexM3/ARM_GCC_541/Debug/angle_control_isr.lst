@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 1
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cch10daQ.s 			page 1
 
 
    1              		.syntax unified
@@ -19,17 +19,15 @@ ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 1
   16              		.text
   17              	.Ltext0:
   18              		.cfi_sections	.debug_frame
-  19              		.global	__aeabi_i2d
-  20              		.global	__aeabi_d2iz
-  21              		.section	.text.angle_control_isr_Interrupt,"ax",%progbits
-  22              		.align	2
-  23              		.global	angle_control_isr_Interrupt
-  24              		.thumb
-  25              		.thumb_func
-  26              		.type	angle_control_isr_Interrupt, %function
-  27              	angle_control_isr_Interrupt:
-  28              	.LFB67:
-  29              		.file 1 "Generated_Source\\PSoC5\\angle_control_isr.c"
+  19              		.section	.text.angle_control_isr_Interrupt,"ax",%progbits
+  20              		.align	2
+  21              		.global	angle_control_isr_Interrupt
+  22              		.thumb
+  23              		.thumb_func
+  24              		.type	angle_control_isr_Interrupt, %function
+  25              	angle_control_isr_Interrupt:
+  26              	.LFB67:
+  27              		.file 1 "Generated_Source\\PSoC5\\angle_control_isr.c"
    1:Generated_Source\PSoC5/angle_control_isr.c **** /*******************************************************************************
    2:Generated_Source\PSoC5/angle_control_isr.c **** * File Name: angle_control_isr.c  
    3:Generated_Source\PSoC5/angle_control_isr.c **** * Version 1.70
@@ -58,11 +56,11 @@ ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 1
   26:Generated_Source\PSoC5/angle_control_isr.c **** /*******************************************************************************
   27:Generated_Source\PSoC5/angle_control_isr.c **** *  Place your includes, defines and code here 
   28:Generated_Source\PSoC5/angle_control_isr.c **** ********************************************************************************/
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 2
-
-
   29:Generated_Source\PSoC5/angle_control_isr.c **** /* `#START angle_control_isr_intc` */
   30:Generated_Source\PSoC5/angle_control_isr.c **** #include "global.h"
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cch10daQ.s 			page 2
+
+
   31:Generated_Source\PSoC5/angle_control_isr.c **** #include <functions.h>    
   32:Generated_Source\PSoC5/angle_control_isr.c **** #include <DirCounter.h>
   33:Generated_Source\PSoC5/angle_control_isr.c ****     
@@ -118,11 +116,11 @@ ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 1
   83:Generated_Source\PSoC5/angle_control_isr.c ****     /* Set the ISR to point to the angle_control_isr Interrupt. */
   84:Generated_Source\PSoC5/angle_control_isr.c ****     angle_control_isr_SetVector(&angle_control_isr_Interrupt);
   85:Generated_Source\PSoC5/angle_control_isr.c **** 
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 3
-
-
   86:Generated_Source\PSoC5/angle_control_isr.c ****     /* Set the priority. */
   87:Generated_Source\PSoC5/angle_control_isr.c ****     angle_control_isr_SetPriority((uint8)angle_control_isr_INTC_PRIOR_NUMBER);
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cch10daQ.s 			page 3
+
+
   88:Generated_Source\PSoC5/angle_control_isr.c **** 
   89:Generated_Source\PSoC5/angle_control_isr.c ****     /* Enable it. */
   90:Generated_Source\PSoC5/angle_control_isr.c ****     angle_control_isr_Enable();
@@ -178,11 +176,11 @@ ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 1
  140:Generated_Source\PSoC5/angle_control_isr.c **** *
  141:Generated_Source\PSoC5/angle_control_isr.c **** * Summary:
  142:Generated_Source\PSoC5/angle_control_isr.c **** *   Disables and removes the interrupt.
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 4
-
-
  143:Generated_Source\PSoC5/angle_control_isr.c **** *
  144:Generated_Source\PSoC5/angle_control_isr.c **** * Parameters:  
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cch10daQ.s 			page 4
+
+
  145:Generated_Source\PSoC5/angle_control_isr.c **** *   None
  146:Generated_Source\PSoC5/angle_control_isr.c **** *
  147:Generated_Source\PSoC5/angle_control_isr.c **** * Return:
@@ -217,17 +215,16 @@ ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 1
  176:Generated_Source\PSoC5/angle_control_isr.c **** *******************************************************************************/
  177:Generated_Source\PSoC5/angle_control_isr.c **** CY_ISR(angle_control_isr_Interrupt)
  178:Generated_Source\PSoC5/angle_control_isr.c **** {
-  30              		.loc 1 178 0
-  31              		.cfi_startproc
-  32              		@ args = 0, pretend = 0, frame = 0
-  33              		@ frame_needed = 0, uses_anonymous_args = 0
-  34 0000 30B5     		push	{r4, r5, lr}
-  35              		.cfi_def_cfa_offset 12
-  36              		.cfi_offset 4, -12
-  37              		.cfi_offset 5, -8
-  38              		.cfi_offset 14, -4
-  39 0002 83B0     		sub	sp, sp, #12
-  40              		.cfi_def_cfa_offset 24
+  28              		.loc 1 178 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32 0000 38B5     		push	{r3, r4, r5, lr}
+  33              		.cfi_def_cfa_offset 16
+  34              		.cfi_offset 3, -16
+  35              		.cfi_offset 4, -12
+  36              		.cfi_offset 5, -8
+  37              		.cfi_offset 14, -4
  179:Generated_Source\PSoC5/angle_control_isr.c ****     #ifdef angle_control_isr_INTERRUPT_INTERRUPT_CALLBACK
  180:Generated_Source\PSoC5/angle_control_isr.c ****         angle_control_isr_Interrupt_InterruptCallback();
  181:Generated_Source\PSoC5/angle_control_isr.c ****     #endif /* angle_control_isr_INTERRUPT_INTERRUPT_CALLBACK */ 
@@ -236,114 +233,76 @@ ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 1
  184:Generated_Source\PSoC5/angle_control_isr.c ****     /* `#START angle_control_isr_Interrupt` */
  185:Generated_Source\PSoC5/angle_control_isr.c ****     
  186:Generated_Source\PSoC5/angle_control_isr.c ****     /* in hall sensor count for better resolution */
- 187:Generated_Source\PSoC5/angle_control_isr.c ****     actual_pos = DirCounter_GetCounter() - init_pos;
-  41              		.loc 1 187 0
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 5
+ 187:Generated_Source\PSoC5/angle_control_isr.c ****     actual_pos = PM1_DirCounter_GetCounter() - init_pos;
+  38              		.loc 1 187 0
+  39 0002 FFF7FEFF 		bl	PM1_DirCounter_GetCounter
+  40              	.LVL0:
+  41 0006 0A4A     		ldr	r2, .L3
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cch10daQ.s 			page 5
 
 
-  42 0004 FFF7FEFF 		bl	DirCounter_GetCounter
-  43              	.LVL0:
-  44 0008 174A     		ldr	r2, .L5
-  45 000a 1368     		ldr	r3, [r2]
-  46 000c C01A     		subs	r0, r0, r3
-  47 000e 174D     		ldr	r5, .L5+4
-  48 0010 2860     		str	r0, [r5]
+  42 0008 1368     		ldr	r3, [r2]
+  43 000a C01A     		subs	r0, r0, r3
+  44 000c 094D     		ldr	r5, .L3+4
+  45 000e 2860     		str	r0, [r5]
  188:Generated_Source\PSoC5/angle_control_isr.c ****     
  189:Generated_Source\PSoC5/angle_control_isr.c ****     PID_setRef(&pos_pid_,(pos_ref-init_pos)*4);
-  49              		.loc 1 189 0
-  50 0012 174B     		ldr	r3, .L5+8
-  51 0014 1B68     		ldr	r3, [r3]
-  52 0016 1168     		ldr	r1, [r2]
-  53 0018 591A     		subs	r1, r3, r1
-  54 001a 164C     		ldr	r4, .L5+12
-  55 001c 8900     		lsls	r1, r1, #2
-  56 001e 2046     		mov	r0, r4
-  57 0020 FFF7FEFF 		bl	PID_setRef
-  58              	.LVL1:
+  46              		.loc 1 189 0
+  47 0010 094B     		ldr	r3, .L3+8
+  48 0012 1B68     		ldr	r3, [r3]
+  49 0014 1168     		ldr	r1, [r2]
+  50 0016 591A     		subs	r1, r3, r1
+  51 0018 084C     		ldr	r4, .L3+12
+  52 001a 8900     		lsls	r1, r1, #2
+  53 001c 2046     		mov	r0, r4
+  54 001e FFF7FEFF 		bl	PID_setRef
+  55              	.LVL1:
  190:Generated_Source\PSoC5/angle_control_isr.c ****     
  191:Generated_Source\PSoC5/angle_control_isr.c ****     pos_pid_output = PID_calculatePID(&pos_pid_,actual_pos);
-  59              		.loc 1 191 0
-  60 0024 2968     		ldr	r1, [r5]
-  61 0026 2046     		mov	r0, r4
-  62 0028 FFF7FEFF 		bl	PID_calculatePID
-  63              	.LVL2:
-  64 002c 124B     		ldr	r3, .L5+16
-  65 002e 1860     		str	r0, [r3]
+  56              		.loc 1 191 0
+  57 0022 2968     		ldr	r1, [r5]
+  58 0024 2046     		mov	r0, r4
+  59 0026 FFF7FEFF 		bl	PID_calculatePID
+  60              	.LVL2:
+  61 002a 054B     		ldr	r3, .L3+16
+  62 002c 1860     		str	r0, [r3]
+  63 002e 38BD     		pop	{r3, r4, r5, pc}
+  64              	.L4:
+  65              		.align	2
+  66              	.L3:
+  67 0030 00000000 		.word	init_pos
+  68 0034 00000000 		.word	actual_pos
+  69 0038 00000000 		.word	pos_ref
+  70 003c 00000000 		.word	pos_pid_
+  71 0040 00000000 		.word	pos_pid_output
+  72              		.cfi_endproc
+  73              	.LFE67:
+  74              		.size	angle_control_isr_Interrupt, .-angle_control_isr_Interrupt
+  75              		.section	.text.angle_control_isr_SetVector,"ax",%progbits
+  76              		.align	2
+  77              		.global	angle_control_isr_SetVector
+  78              		.thumb
+  79              		.thumb_func
+  80              		.type	angle_control_isr_SetVector, %function
+  81              	angle_control_isr_SetVector:
+  82              	.LFB68:
  192:Generated_Source\PSoC5/angle_control_isr.c **** 
  193:Generated_Source\PSoC5/angle_control_isr.c ****     #ifdef ANGLE_CONTROL
  194:Generated_Source\PSoC5/angle_control_isr.c ****             
  195:Generated_Source\PSoC5/angle_control_isr.c ****         if(pos_pid_output < 0)
-  66              		.loc 1 195 0
-  67 0030 0028     		cmp	r0, #0
-  68 0032 03DA     		bge	.L2
  196:Generated_Source\PSoC5/angle_control_isr.c ****             dir_state=1;
-  69              		.loc 1 196 0
-  70 0034 0122     		movs	r2, #1
-  71 0036 114B     		ldr	r3, .L5+20
-  72 0038 1A70     		strb	r2, [r3]
-  73 003a 02E0     		b	.L3
-  74              	.L2:
  197:Generated_Source\PSoC5/angle_control_isr.c ****         else
  198:Generated_Source\PSoC5/angle_control_isr.c ****             dir_state=0;
-  75              		.loc 1 198 0
-  76 003c 0022     		movs	r2, #0
-  77 003e 0F4B     		ldr	r3, .L5+20
-  78 0040 1A70     		strb	r2, [r3]
-  79              	.L3:
  199:Generated_Source\PSoC5/angle_control_isr.c ****         
  200:Generated_Source\PSoC5/angle_control_isr.c ****         speed_ref = (int)fabs(Sigmoid(pos_pid_output,VEL_MAX,K_VEL));
-  80              		.loc 1 200 0
-  81 0042 FFF7FEFF 		bl	__aeabi_i2d
-  82              	.LVL3:
-  83 0046 0022     		movs	r2, #0
-  84 0048 0D4B     		ldr	r3, .L5+24
-  85 004a CDE90023 		strd	r2, [sp]
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 6
-
-
-  86 004e 0022     		movs	r2, #0
-  87 0050 0C4B     		ldr	r3, .L5+28
-  88 0052 FFF7FEFF 		bl	Sigmoid
-  89              	.LVL4:
-  90 0056 21F00043 		bic	r3, r1, #-2147483648
-  91 005a 1946     		mov	r1, r3
-  92 005c FFF7FEFF 		bl	__aeabi_d2iz
-  93              	.LVL5:
-  94 0060 094B     		ldr	r3, .L5+32
-  95 0062 1860     		str	r0, [r3]
  201:Generated_Source\PSoC5/angle_control_isr.c ****         
  202:Generated_Source\PSoC5/angle_control_isr.c ****     #endif
  203:Generated_Source\PSoC5/angle_control_isr.c **** 
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cch10daQ.s 			page 6
+
+
  204:Generated_Source\PSoC5/angle_control_isr.c ****     /* `#END` */
  205:Generated_Source\PSoC5/angle_control_isr.c **** }
-  96              		.loc 1 205 0
-  97 0064 03B0     		add	sp, sp, #12
-  98              		.cfi_def_cfa_offset 12
-  99              		@ sp needed
- 100 0066 30BD     		pop	{r4, r5, pc}
- 101              	.L6:
- 102              		.align	2
- 103              	.L5:
- 104 0068 00000000 		.word	init_pos
- 105 006c 00000000 		.word	actual_pos
- 106 0070 00000000 		.word	pos_ref
- 107 0074 00000000 		.word	pos_pid_
- 108 0078 00000000 		.word	pos_pid_output
- 109 007c 00000000 		.word	dir_state
- 110 0080 0000E03F 		.word	1071644672
- 111 0084 0040AF40 		.word	1085227008
- 112 0088 00000000 		.word	speed_ref
- 113              		.cfi_endproc
- 114              	.LFE67:
- 115              		.size	angle_control_isr_Interrupt, .-angle_control_isr_Interrupt
- 116              		.section	.text.angle_control_isr_SetVector,"ax",%progbits
- 117              		.align	2
- 118              		.global	angle_control_isr_SetVector
- 119              		.thumb
- 120              		.thumb_func
- 121              		.type	angle_control_isr_SetVector, %function
- 122              	angle_control_isr_SetVector:
- 123              	.LFB68:
  206:Generated_Source\PSoC5/angle_control_isr.c **** 
  207:Generated_Source\PSoC5/angle_control_isr.c **** 
  208:Generated_Source\PSoC5/angle_control_isr.c **** /*******************************************************************************
@@ -358,9 +317,6 @@ ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 1
  217:Generated_Source\PSoC5/angle_control_isr.c **** *   When defining ISR functions, the CY_ISR and CY_ISR_PROTO macros should be 
  218:Generated_Source\PSoC5/angle_control_isr.c **** *   used to provide consistent definition across compilers:
  219:Generated_Source\PSoC5/angle_control_isr.c **** *
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 7
-
-
  220:Generated_Source\PSoC5/angle_control_isr.c **** *   Function definition example:
  221:Generated_Source\PSoC5/angle_control_isr.c **** *   CY_ISR(MyISR)
  222:Generated_Source\PSoC5/angle_control_isr.c **** *   {
@@ -378,39 +334,42 @@ ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 1
  234:Generated_Source\PSoC5/angle_control_isr.c **** *******************************************************************************/
  235:Generated_Source\PSoC5/angle_control_isr.c **** void angle_control_isr_SetVector(cyisraddress address)
  236:Generated_Source\PSoC5/angle_control_isr.c **** {
- 124              		.loc 1 236 0
- 125              		.cfi_startproc
- 126              		@ args = 0, pretend = 0, frame = 0
- 127              		@ frame_needed = 0, uses_anonymous_args = 0
- 128              		@ link register save eliminated.
- 129              	.LVL6:
+  83              		.loc 1 236 0
+  84              		.cfi_startproc
+  85              		@ args = 0, pretend = 0, frame = 0
+  86              		@ frame_needed = 0, uses_anonymous_args = 0
+  87              		@ link register save eliminated.
+  88              	.LVL3:
  237:Generated_Source\PSoC5/angle_control_isr.c ****     cyisraddress * ramVectorTable;
  238:Generated_Source\PSoC5/angle_control_isr.c **** 
  239:Generated_Source\PSoC5/angle_control_isr.c ****     ramVectorTable = (cyisraddress *) *CYINT_VECT_TABLE;
- 130              		.loc 1 239 0
- 131 0000 014B     		ldr	r3, .L8
- 132 0002 1B68     		ldr	r3, [r3]
- 133              	.LVL7:
+  89              		.loc 1 239 0
+  90 0000 014B     		ldr	r3, .L6
+  91 0002 1B68     		ldr	r3, [r3]
+  92              	.LVL4:
  240:Generated_Source\PSoC5/angle_control_isr.c **** 
  241:Generated_Source\PSoC5/angle_control_isr.c ****     ramVectorTable[CYINT_IRQ_BASE + (uint32)angle_control_isr__INTC_NUMBER] = address;
- 134              		.loc 1 241 0
- 135 0004 1865     		str	r0, [r3, #80]
- 136 0006 7047     		bx	lr
- 137              	.L9:
- 138              		.align	2
- 139              	.L8:
- 140 0008 08ED00E0 		.word	-536810232
- 141              		.cfi_endproc
- 142              	.LFE68:
- 143              		.size	angle_control_isr_SetVector, .-angle_control_isr_SetVector
- 144              		.section	.text.angle_control_isr_GetVector,"ax",%progbits
- 145              		.align	2
- 146              		.global	angle_control_isr_GetVector
- 147              		.thumb
- 148              		.thumb_func
- 149              		.type	angle_control_isr_GetVector, %function
- 150              	angle_control_isr_GetVector:
- 151              	.LFB69:
+  93              		.loc 1 241 0
+  94 0004 5866     		str	r0, [r3, #100]
+  95 0006 7047     		bx	lr
+  96              	.L7:
+  97              		.align	2
+  98              	.L6:
+  99 0008 08ED00E0 		.word	-536810232
+ 100              		.cfi_endproc
+ 101              	.LFE68:
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cch10daQ.s 			page 7
+
+
+ 102              		.size	angle_control_isr_SetVector, .-angle_control_isr_SetVector
+ 103              		.section	.text.angle_control_isr_GetVector,"ax",%progbits
+ 104              		.align	2
+ 105              		.global	angle_control_isr_GetVector
+ 106              		.thumb
+ 107              		.thumb_func
+ 108              		.type	angle_control_isr_GetVector, %function
+ 109              	angle_control_isr_GetVector:
+ 110              	.LFB69:
  242:Generated_Source\PSoC5/angle_control_isr.c **** }
  243:Generated_Source\PSoC5/angle_control_isr.c **** 
  244:Generated_Source\PSoC5/angle_control_isr.c **** 
@@ -418,9 +377,6 @@ ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 1
  246:Generated_Source\PSoC5/angle_control_isr.c **** * Function Name: angle_control_isr_GetVector
  247:Generated_Source\PSoC5/angle_control_isr.c **** ********************************************************************************
  248:Generated_Source\PSoC5/angle_control_isr.c **** *
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 8
-
-
  249:Generated_Source\PSoC5/angle_control_isr.c **** * Summary:
  250:Generated_Source\PSoC5/angle_control_isr.c **** *   Gets the "address" of the current ISR vector for the Interrupt.
  251:Generated_Source\PSoC5/angle_control_isr.c **** *
@@ -433,39 +389,42 @@ ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 1
  258:Generated_Source\PSoC5/angle_control_isr.c **** *******************************************************************************/
  259:Generated_Source\PSoC5/angle_control_isr.c **** cyisraddress angle_control_isr_GetVector(void)
  260:Generated_Source\PSoC5/angle_control_isr.c **** {
- 152              		.loc 1 260 0
- 153              		.cfi_startproc
- 154              		@ args = 0, pretend = 0, frame = 0
- 155              		@ frame_needed = 0, uses_anonymous_args = 0
- 156              		@ link register save eliminated.
+ 111              		.loc 1 260 0
+ 112              		.cfi_startproc
+ 113              		@ args = 0, pretend = 0, frame = 0
+ 114              		@ frame_needed = 0, uses_anonymous_args = 0
+ 115              		@ link register save eliminated.
  261:Generated_Source\PSoC5/angle_control_isr.c ****     cyisraddress * ramVectorTable;
  262:Generated_Source\PSoC5/angle_control_isr.c **** 
  263:Generated_Source\PSoC5/angle_control_isr.c ****     ramVectorTable = (cyisraddress *) *CYINT_VECT_TABLE;
- 157              		.loc 1 263 0
- 158 0000 014B     		ldr	r3, .L11
- 159 0002 1B68     		ldr	r3, [r3]
- 160              	.LVL8:
+ 116              		.loc 1 263 0
+ 117 0000 014B     		ldr	r3, .L9
+ 118 0002 1B68     		ldr	r3, [r3]
+ 119              	.LVL5:
  264:Generated_Source\PSoC5/angle_control_isr.c **** 
  265:Generated_Source\PSoC5/angle_control_isr.c ****     return ramVectorTable[CYINT_IRQ_BASE + (uint32)angle_control_isr__INTC_NUMBER];
  266:Generated_Source\PSoC5/angle_control_isr.c **** }
- 161              		.loc 1 266 0
- 162 0004 186D     		ldr	r0, [r3, #80]
- 163 0006 7047     		bx	lr
- 164              	.L12:
- 165              		.align	2
- 166              	.L11:
- 167 0008 08ED00E0 		.word	-536810232
- 168              		.cfi_endproc
- 169              	.LFE69:
- 170              		.size	angle_control_isr_GetVector, .-angle_control_isr_GetVector
- 171              		.section	.text.angle_control_isr_SetPriority,"ax",%progbits
- 172              		.align	2
- 173              		.global	angle_control_isr_SetPriority
- 174              		.thumb
- 175              		.thumb_func
- 176              		.type	angle_control_isr_SetPriority, %function
- 177              	angle_control_isr_SetPriority:
- 178              	.LFB70:
+ 120              		.loc 1 266 0
+ 121 0004 586E     		ldr	r0, [r3, #100]
+ 122 0006 7047     		bx	lr
+ 123              	.L10:
+ 124              		.align	2
+ 125              	.L9:
+ 126 0008 08ED00E0 		.word	-536810232
+ 127              		.cfi_endproc
+ 128              	.LFE69:
+ 129              		.size	angle_control_isr_GetVector, .-angle_control_isr_GetVector
+ 130              		.section	.text.angle_control_isr_SetPriority,"ax",%progbits
+ 131              		.align	2
+ 132              		.global	angle_control_isr_SetPriority
+ 133              		.thumb
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cch10daQ.s 			page 8
+
+
+ 134              		.thumb_func
+ 135              		.type	angle_control_isr_SetPriority, %function
+ 136              	angle_control_isr_SetPriority:
+ 137              	.LFB70:
  267:Generated_Source\PSoC5/angle_control_isr.c **** 
  268:Generated_Source\PSoC5/angle_control_isr.c **** 
  269:Generated_Source\PSoC5/angle_control_isr.c **** /*******************************************************************************
@@ -478,9 +437,6 @@ ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 1
  276:Generated_Source\PSoC5/angle_control_isr.c **** *   Note calling angle_control_isr_Start or angle_control_isr_StartEx will 
  277:Generated_Source\PSoC5/angle_control_isr.c **** *   override any effect this API would have had. This API should only be called
  278:Generated_Source\PSoC5/angle_control_isr.c **** *   after angle_control_isr_Start or angle_control_isr_StartEx has been called. 
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 9
-
-
  279:Generated_Source\PSoC5/angle_control_isr.c **** *   To set the initial priority for the component, use the Design-Wide Resources
  280:Generated_Source\PSoC5/angle_control_isr.c **** *   Interrupt Editor.
  281:Generated_Source\PSoC5/angle_control_isr.c **** *
@@ -497,35 +453,38 @@ ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 1
  292:Generated_Source\PSoC5/angle_control_isr.c **** *******************************************************************************/
  293:Generated_Source\PSoC5/angle_control_isr.c **** void angle_control_isr_SetPriority(uint8 priority)
  294:Generated_Source\PSoC5/angle_control_isr.c **** {
- 179              		.loc 1 294 0
- 180              		.cfi_startproc
- 181              		@ args = 0, pretend = 0, frame = 0
- 182              		@ frame_needed = 0, uses_anonymous_args = 0
- 183              		@ link register save eliminated.
- 184              	.LVL9:
+ 138              		.loc 1 294 0
+ 139              		.cfi_startproc
+ 140              		@ args = 0, pretend = 0, frame = 0
+ 141              		@ frame_needed = 0, uses_anonymous_args = 0
+ 142              		@ link register save eliminated.
+ 143              	.LVL6:
  295:Generated_Source\PSoC5/angle_control_isr.c ****     *angle_control_isr_INTC_PRIOR = priority << 5;
- 185              		.loc 1 295 0
- 186 0000 4001     		lsls	r0, r0, #5
- 187              	.LVL10:
- 188 0002 C0B2     		uxtb	r0, r0
- 189 0004 014B     		ldr	r3, .L14
- 190 0006 1870     		strb	r0, [r3]
- 191 0008 7047     		bx	lr
- 192              	.L15:
- 193 000a 00BF     		.align	2
- 194              	.L14:
- 195 000c 04E400E0 		.word	-536812540
- 196              		.cfi_endproc
- 197              	.LFE70:
- 198              		.size	angle_control_isr_SetPriority, .-angle_control_isr_SetPriority
- 199              		.section	.text.angle_control_isr_GetPriority,"ax",%progbits
- 200              		.align	2
- 201              		.global	angle_control_isr_GetPriority
- 202              		.thumb
- 203              		.thumb_func
- 204              		.type	angle_control_isr_GetPriority, %function
- 205              	angle_control_isr_GetPriority:
- 206              	.LFB71:
+ 144              		.loc 1 295 0
+ 145 0000 4001     		lsls	r0, r0, #5
+ 146              	.LVL7:
+ 147 0002 C0B2     		uxtb	r0, r0
+ 148 0004 014B     		ldr	r3, .L12
+ 149 0006 1870     		strb	r0, [r3]
+ 150 0008 7047     		bx	lr
+ 151              	.L13:
+ 152 000a 00BF     		.align	2
+ 153              	.L12:
+ 154 000c 09E400E0 		.word	-536812535
+ 155              		.cfi_endproc
+ 156              	.LFE70:
+ 157              		.size	angle_control_isr_SetPriority, .-angle_control_isr_SetPriority
+ 158              		.section	.text.angle_control_isr_GetPriority,"ax",%progbits
+ 159              		.align	2
+ 160              		.global	angle_control_isr_GetPriority
+ 161              		.thumb
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cch10daQ.s 			page 9
+
+
+ 162              		.thumb_func
+ 163              		.type	angle_control_isr_GetPriority, %function
+ 164              	angle_control_isr_GetPriority:
+ 165              	.LFB71:
  296:Generated_Source\PSoC5/angle_control_isr.c **** }
  297:Generated_Source\PSoC5/angle_control_isr.c **** 
  298:Generated_Source\PSoC5/angle_control_isr.c **** 
@@ -538,9 +497,6 @@ ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 1
  305:Generated_Source\PSoC5/angle_control_isr.c **** *
  306:Generated_Source\PSoC5/angle_control_isr.c **** * Parameters:
  307:Generated_Source\PSoC5/angle_control_isr.c **** *   None
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 10
-
-
  308:Generated_Source\PSoC5/angle_control_isr.c **** *
  309:Generated_Source\PSoC5/angle_control_isr.c **** * Return:
  310:Generated_Source\PSoC5/angle_control_isr.c **** *   Priority of the interrupt, 0 being the highest priority
@@ -550,41 +506,44 @@ ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 1
  314:Generated_Source\PSoC5/angle_control_isr.c **** *******************************************************************************/
  315:Generated_Source\PSoC5/angle_control_isr.c **** uint8 angle_control_isr_GetPriority(void)
  316:Generated_Source\PSoC5/angle_control_isr.c **** {
- 207              		.loc 1 316 0
- 208              		.cfi_startproc
- 209              		@ args = 0, pretend = 0, frame = 0
- 210              		@ frame_needed = 0, uses_anonymous_args = 0
- 211              		@ link register save eliminated.
+ 166              		.loc 1 316 0
+ 167              		.cfi_startproc
+ 168              		@ args = 0, pretend = 0, frame = 0
+ 169              		@ frame_needed = 0, uses_anonymous_args = 0
+ 170              		@ link register save eliminated.
  317:Generated_Source\PSoC5/angle_control_isr.c ****     uint8 priority;
  318:Generated_Source\PSoC5/angle_control_isr.c **** 
  319:Generated_Source\PSoC5/angle_control_isr.c **** 
  320:Generated_Source\PSoC5/angle_control_isr.c ****     priority = *angle_control_isr_INTC_PRIOR >> 5;
- 212              		.loc 1 320 0
- 213 0000 014B     		ldr	r3, .L17
- 214 0002 1878     		ldrb	r0, [r3]	@ zero_extendqisi2
- 215              	.LVL11:
+ 171              		.loc 1 320 0
+ 172 0000 014B     		ldr	r3, .L15
+ 173 0002 1878     		ldrb	r0, [r3]	@ zero_extendqisi2
+ 174              	.LVL8:
  321:Generated_Source\PSoC5/angle_control_isr.c **** 
  322:Generated_Source\PSoC5/angle_control_isr.c ****     return priority;
  323:Generated_Source\PSoC5/angle_control_isr.c **** }
- 216              		.loc 1 323 0
- 217 0004 4009     		lsrs	r0, r0, #5
- 218              	.LVL12:
- 219 0006 7047     		bx	lr
- 220              	.L18:
- 221              		.align	2
- 222              	.L17:
- 223 0008 04E400E0 		.word	-536812540
- 224              		.cfi_endproc
- 225              	.LFE71:
- 226              		.size	angle_control_isr_GetPriority, .-angle_control_isr_GetPriority
- 227              		.section	.text.angle_control_isr_Enable,"ax",%progbits
- 228              		.align	2
- 229              		.global	angle_control_isr_Enable
- 230              		.thumb
- 231              		.thumb_func
- 232              		.type	angle_control_isr_Enable, %function
- 233              	angle_control_isr_Enable:
- 234              	.LFB72:
+ 175              		.loc 1 323 0
+ 176 0004 4009     		lsrs	r0, r0, #5
+ 177              	.LVL9:
+ 178 0006 7047     		bx	lr
+ 179              	.L16:
+ 180              		.align	2
+ 181              	.L15:
+ 182 0008 09E400E0 		.word	-536812535
+ 183              		.cfi_endproc
+ 184              	.LFE71:
+ 185              		.size	angle_control_isr_GetPriority, .-angle_control_isr_GetPriority
+ 186              		.section	.text.angle_control_isr_Enable,"ax",%progbits
+ 187              		.align	2
+ 188              		.global	angle_control_isr_Enable
+ 189              		.thumb
+ 190              		.thumb_func
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cch10daQ.s 			page 10
+
+
+ 191              		.type	angle_control_isr_Enable, %function
+ 192              	angle_control_isr_Enable:
+ 193              	.LFB72:
  324:Generated_Source\PSoC5/angle_control_isr.c **** 
  325:Generated_Source\PSoC5/angle_control_isr.c **** 
  326:Generated_Source\PSoC5/angle_control_isr.c **** /*******************************************************************************
@@ -598,9 +557,6 @@ ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 1
  334:Generated_Source\PSoC5/angle_control_isr.c **** *
  335:Generated_Source\PSoC5/angle_control_isr.c **** * Parameters:
  336:Generated_Source\PSoC5/angle_control_isr.c **** *   None
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 11
-
-
  337:Generated_Source\PSoC5/angle_control_isr.c **** *
  338:Generated_Source\PSoC5/angle_control_isr.c **** * Return:
  339:Generated_Source\PSoC5/angle_control_isr.c **** *   None
@@ -608,33 +564,33 @@ ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 1
  341:Generated_Source\PSoC5/angle_control_isr.c **** *******************************************************************************/
  342:Generated_Source\PSoC5/angle_control_isr.c **** void angle_control_isr_Enable(void)
  343:Generated_Source\PSoC5/angle_control_isr.c **** {
- 235              		.loc 1 343 0
- 236              		.cfi_startproc
- 237              		@ args = 0, pretend = 0, frame = 0
- 238              		@ frame_needed = 0, uses_anonymous_args = 0
- 239              		@ link register save eliminated.
+ 194              		.loc 1 343 0
+ 195              		.cfi_startproc
+ 196              		@ args = 0, pretend = 0, frame = 0
+ 197              		@ frame_needed = 0, uses_anonymous_args = 0
+ 198              		@ link register save eliminated.
  344:Generated_Source\PSoC5/angle_control_isr.c ****     /* Enable the general interrupt. */
  345:Generated_Source\PSoC5/angle_control_isr.c ****     *angle_control_isr_INTC_SET_EN = angle_control_isr__INTC_MASK;
- 240              		.loc 1 345 0
- 241 0000 1022     		movs	r2, #16
- 242 0002 014B     		ldr	r3, .L20
- 243 0004 1A60     		str	r2, [r3]
- 244 0006 7047     		bx	lr
- 245              	.L21:
- 246              		.align	2
- 247              	.L20:
- 248 0008 00E100E0 		.word	-536813312
- 249              		.cfi_endproc
- 250              	.LFE72:
- 251              		.size	angle_control_isr_Enable, .-angle_control_isr_Enable
- 252              		.section	.text.angle_control_isr_GetState,"ax",%progbits
- 253              		.align	2
- 254              		.global	angle_control_isr_GetState
- 255              		.thumb
- 256              		.thumb_func
- 257              		.type	angle_control_isr_GetState, %function
- 258              	angle_control_isr_GetState:
- 259              	.LFB73:
+ 199              		.loc 1 345 0
+ 200 0000 4FF40072 		mov	r2, #512
+ 201 0004 014B     		ldr	r3, .L18
+ 202 0006 1A60     		str	r2, [r3]
+ 203 0008 7047     		bx	lr
+ 204              	.L19:
+ 205 000a 00BF     		.align	2
+ 206              	.L18:
+ 207 000c 00E100E0 		.word	-536813312
+ 208              		.cfi_endproc
+ 209              	.LFE72:
+ 210              		.size	angle_control_isr_Enable, .-angle_control_isr_Enable
+ 211              		.section	.text.angle_control_isr_GetState,"ax",%progbits
+ 212              		.align	2
+ 213              		.global	angle_control_isr_GetState
+ 214              		.thumb
+ 215              		.thumb_func
+ 216              		.type	angle_control_isr_GetState, %function
+ 217              	angle_control_isr_GetState:
+ 218              	.LFB73:
  346:Generated_Source\PSoC5/angle_control_isr.c **** }
  347:Generated_Source\PSoC5/angle_control_isr.c **** 
  348:Generated_Source\PSoC5/angle_control_isr.c **** 
@@ -642,6 +598,9 @@ ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 1
  350:Generated_Source\PSoC5/angle_control_isr.c **** * Function Name: angle_control_isr_GetState
  351:Generated_Source\PSoC5/angle_control_isr.c **** ********************************************************************************
  352:Generated_Source\PSoC5/angle_control_isr.c **** *
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cch10daQ.s 			page 11
+
+
  353:Generated_Source\PSoC5/angle_control_isr.c **** * Summary:
  354:Generated_Source\PSoC5/angle_control_isr.c **** *   Gets the state (enabled, disabled) of the Interrupt.
  355:Generated_Source\PSoC5/angle_control_isr.c **** *
@@ -654,43 +613,40 @@ ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 1
  362:Generated_Source\PSoC5/angle_control_isr.c **** *******************************************************************************/
  363:Generated_Source\PSoC5/angle_control_isr.c **** uint8 angle_control_isr_GetState(void)
  364:Generated_Source\PSoC5/angle_control_isr.c **** {
- 260              		.loc 1 364 0
- 261              		.cfi_startproc
- 262              		@ args = 0, pretend = 0, frame = 0
- 263              		@ frame_needed = 0, uses_anonymous_args = 0
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 12
-
-
- 264              		@ link register save eliminated.
+ 219              		.loc 1 364 0
+ 220              		.cfi_startproc
+ 221              		@ args = 0, pretend = 0, frame = 0
+ 222              		@ frame_needed = 0, uses_anonymous_args = 0
+ 223              		@ link register save eliminated.
  365:Generated_Source\PSoC5/angle_control_isr.c ****     /* Get the state of the general interrupt. */
  366:Generated_Source\PSoC5/angle_control_isr.c ****     return ((*angle_control_isr_INTC_SET_EN & (uint32)angle_control_isr__INTC_MASK) != 0u) ? 1u:0u;
- 265              		.loc 1 366 0
- 266 0000 044B     		ldr	r3, .L25
- 267 0002 1B68     		ldr	r3, [r3]
- 268 0004 13F0100F 		tst	r3, #16
- 269 0008 01D0     		beq	.L24
- 270 000a 0120     		movs	r0, #1
- 271 000c 7047     		bx	lr
- 272              	.L24:
- 273 000e 0020     		movs	r0, #0
+ 224              		.loc 1 366 0
+ 225 0000 044B     		ldr	r3, .L23
+ 226 0002 1B68     		ldr	r3, [r3]
+ 227 0004 13F4007F 		tst	r3, #512
+ 228 0008 01D0     		beq	.L22
+ 229 000a 0120     		movs	r0, #1
+ 230 000c 7047     		bx	lr
+ 231              	.L22:
+ 232 000e 0020     		movs	r0, #0
  367:Generated_Source\PSoC5/angle_control_isr.c **** }
- 274              		.loc 1 367 0
- 275 0010 7047     		bx	lr
- 276              	.L26:
- 277 0012 00BF     		.align	2
- 278              	.L25:
- 279 0014 00E100E0 		.word	-536813312
- 280              		.cfi_endproc
- 281              	.LFE73:
- 282              		.size	angle_control_isr_GetState, .-angle_control_isr_GetState
- 283              		.section	.text.angle_control_isr_Disable,"ax",%progbits
- 284              		.align	2
- 285              		.global	angle_control_isr_Disable
- 286              		.thumb
- 287              		.thumb_func
- 288              		.type	angle_control_isr_Disable, %function
- 289              	angle_control_isr_Disable:
- 290              	.LFB74:
+ 233              		.loc 1 367 0
+ 234 0010 7047     		bx	lr
+ 235              	.L24:
+ 236 0012 00BF     		.align	2
+ 237              	.L23:
+ 238 0014 00E100E0 		.word	-536813312
+ 239              		.cfi_endproc
+ 240              	.LFE73:
+ 241              		.size	angle_control_isr_GetState, .-angle_control_isr_GetState
+ 242              		.section	.text.angle_control_isr_Disable,"ax",%progbits
+ 243              		.align	2
+ 244              		.global	angle_control_isr_Disable
+ 245              		.thumb
+ 246              		.thumb_func
+ 247              		.type	angle_control_isr_Disable, %function
+ 248              	angle_control_isr_Disable:
+ 249              	.LFB74:
  368:Generated_Source\PSoC5/angle_control_isr.c **** 
  369:Generated_Source\PSoC5/angle_control_isr.c **** 
  370:Generated_Source\PSoC5/angle_control_isr.c **** /*******************************************************************************
@@ -702,6 +658,9 @@ ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 1
  376:Generated_Source\PSoC5/angle_control_isr.c **** *
  377:Generated_Source\PSoC5/angle_control_isr.c **** * Parameters:
  378:Generated_Source\PSoC5/angle_control_isr.c **** *   None
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cch10daQ.s 			page 12
+
+
  379:Generated_Source\PSoC5/angle_control_isr.c **** *
  380:Generated_Source\PSoC5/angle_control_isr.c **** * Return:
  381:Generated_Source\PSoC5/angle_control_isr.c **** *   None
@@ -709,160 +668,157 @@ ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 1
  383:Generated_Source\PSoC5/angle_control_isr.c **** *******************************************************************************/
  384:Generated_Source\PSoC5/angle_control_isr.c **** void angle_control_isr_Disable(void)
  385:Generated_Source\PSoC5/angle_control_isr.c **** {
- 291              		.loc 1 385 0
- 292              		.cfi_startproc
- 293              		@ args = 0, pretend = 0, frame = 0
- 294              		@ frame_needed = 0, uses_anonymous_args = 0
- 295              		@ link register save eliminated.
+ 250              		.loc 1 385 0
+ 251              		.cfi_startproc
+ 252              		@ args = 0, pretend = 0, frame = 0
+ 253              		@ frame_needed = 0, uses_anonymous_args = 0
+ 254              		@ link register save eliminated.
  386:Generated_Source\PSoC5/angle_control_isr.c ****     /* Disable the general interrupt. */
  387:Generated_Source\PSoC5/angle_control_isr.c ****     *angle_control_isr_INTC_CLR_EN = angle_control_isr__INTC_MASK;
- 296              		.loc 1 387 0
- 297 0000 1022     		movs	r2, #16
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 13
-
-
- 298 0002 014B     		ldr	r3, .L28
- 299 0004 1A60     		str	r2, [r3]
- 300 0006 7047     		bx	lr
- 301              	.L29:
- 302              		.align	2
- 303              	.L28:
- 304 0008 80E100E0 		.word	-536813184
- 305              		.cfi_endproc
- 306              	.LFE74:
- 307              		.size	angle_control_isr_Disable, .-angle_control_isr_Disable
- 308              		.section	.text.angle_control_isr_Start,"ax",%progbits
- 309              		.align	2
- 310              		.global	angle_control_isr_Start
- 311              		.thumb
- 312              		.thumb_func
- 313              		.type	angle_control_isr_Start, %function
- 314              	angle_control_isr_Start:
- 315              	.LFB64:
+ 255              		.loc 1 387 0
+ 256 0000 4FF40072 		mov	r2, #512
+ 257 0004 014B     		ldr	r3, .L26
+ 258 0006 1A60     		str	r2, [r3]
+ 259 0008 7047     		bx	lr
+ 260              	.L27:
+ 261 000a 00BF     		.align	2
+ 262              	.L26:
+ 263 000c 80E100E0 		.word	-536813184
+ 264              		.cfi_endproc
+ 265              	.LFE74:
+ 266              		.size	angle_control_isr_Disable, .-angle_control_isr_Disable
+ 267              		.section	.text.angle_control_isr_Start,"ax",%progbits
+ 268              		.align	2
+ 269              		.global	angle_control_isr_Start
+ 270              		.thumb
+ 271              		.thumb_func
+ 272              		.type	angle_control_isr_Start, %function
+ 273              	angle_control_isr_Start:
+ 274              	.LFB64:
   79:Generated_Source\PSoC5/angle_control_isr.c ****     /* For all we know the interrupt is active. */
- 316              		.loc 1 79 0
- 317              		.cfi_startproc
- 318              		@ args = 0, pretend = 0, frame = 0
- 319              		@ frame_needed = 0, uses_anonymous_args = 0
- 320 0000 08B5     		push	{r3, lr}
- 321              		.cfi_def_cfa_offset 8
- 322              		.cfi_offset 3, -8
- 323              		.cfi_offset 14, -4
+ 275              		.loc 1 79 0
+ 276              		.cfi_startproc
+ 277              		@ args = 0, pretend = 0, frame = 0
+ 278              		@ frame_needed = 0, uses_anonymous_args = 0
+ 279 0000 08B5     		push	{r3, lr}
+ 280              		.cfi_def_cfa_offset 8
+ 281              		.cfi_offset 3, -8
+ 282              		.cfi_offset 14, -4
   81:Generated_Source\PSoC5/angle_control_isr.c **** 
- 324              		.loc 1 81 0
- 325 0002 FFF7FEFF 		bl	angle_control_isr_Disable
- 326              	.LVL13:
+ 283              		.loc 1 81 0
+ 284 0002 FFF7FEFF 		bl	angle_control_isr_Disable
+ 285              	.LVL10:
   84:Generated_Source\PSoC5/angle_control_isr.c **** 
- 327              		.loc 1 84 0
- 328 0006 0448     		ldr	r0, .L32
- 329 0008 FFF7FEFF 		bl	angle_control_isr_SetVector
- 330              	.LVL14:
+ 286              		.loc 1 84 0
+ 287 0006 0448     		ldr	r0, .L30
+ 288 0008 FFF7FEFF 		bl	angle_control_isr_SetVector
+ 289              	.LVL11:
   87:Generated_Source\PSoC5/angle_control_isr.c **** 
- 331              		.loc 1 87 0
- 332 000c 0720     		movs	r0, #7
- 333 000e FFF7FEFF 		bl	angle_control_isr_SetPriority
- 334              	.LVL15:
+ 290              		.loc 1 87 0
+ 291 000c 0720     		movs	r0, #7
+ 292 000e FFF7FEFF 		bl	angle_control_isr_SetPriority
+ 293              	.LVL12:
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cch10daQ.s 			page 13
+
+
   90:Generated_Source\PSoC5/angle_control_isr.c **** }
- 335              		.loc 1 90 0
- 336 0012 FFF7FEFF 		bl	angle_control_isr_Enable
- 337              	.LVL16:
- 338 0016 08BD     		pop	{r3, pc}
- 339              	.L33:
- 340              		.align	2
- 341              	.L32:
- 342 0018 00000000 		.word	angle_control_isr_Interrupt
- 343              		.cfi_endproc
- 344              	.LFE64:
- 345              		.size	angle_control_isr_Start, .-angle_control_isr_Start
- 346              		.section	.text.angle_control_isr_StartEx,"ax",%progbits
- 347              		.align	2
- 348              		.global	angle_control_isr_StartEx
- 349              		.thumb
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 14
-
-
- 350              		.thumb_func
- 351              		.type	angle_control_isr_StartEx, %function
- 352              	angle_control_isr_StartEx:
- 353              	.LFB65:
+ 294              		.loc 1 90 0
+ 295 0012 FFF7FEFF 		bl	angle_control_isr_Enable
+ 296              	.LVL13:
+ 297 0016 08BD     		pop	{r3, pc}
+ 298              	.L31:
+ 299              		.align	2
+ 300              	.L30:
+ 301 0018 00000000 		.word	angle_control_isr_Interrupt
+ 302              		.cfi_endproc
+ 303              	.LFE64:
+ 304              		.size	angle_control_isr_Start, .-angle_control_isr_Start
+ 305              		.section	.text.angle_control_isr_StartEx,"ax",%progbits
+ 306              		.align	2
+ 307              		.global	angle_control_isr_StartEx
+ 308              		.thumb
+ 309              		.thumb_func
+ 310              		.type	angle_control_isr_StartEx, %function
+ 311              	angle_control_isr_StartEx:
+ 312              	.LFB65:
  122:Generated_Source\PSoC5/angle_control_isr.c ****     /* For all we know the interrupt is active. */
- 354              		.loc 1 122 0
- 355              		.cfi_startproc
- 356              		@ args = 0, pretend = 0, frame = 0
- 357              		@ frame_needed = 0, uses_anonymous_args = 0
- 358              	.LVL17:
- 359 0000 10B5     		push	{r4, lr}
- 360              		.cfi_def_cfa_offset 8
- 361              		.cfi_offset 4, -8
- 362              		.cfi_offset 14, -4
- 363 0002 0446     		mov	r4, r0
+ 313              		.loc 1 122 0
+ 314              		.cfi_startproc
+ 315              		@ args = 0, pretend = 0, frame = 0
+ 316              		@ frame_needed = 0, uses_anonymous_args = 0
+ 317              	.LVL14:
+ 318 0000 10B5     		push	{r4, lr}
+ 319              		.cfi_def_cfa_offset 8
+ 320              		.cfi_offset 4, -8
+ 321              		.cfi_offset 14, -4
+ 322 0002 0446     		mov	r4, r0
  124:Generated_Source\PSoC5/angle_control_isr.c **** 
- 364              		.loc 1 124 0
- 365 0004 FFF7FEFF 		bl	angle_control_isr_Disable
- 366              	.LVL18:
+ 323              		.loc 1 124 0
+ 324 0004 FFF7FEFF 		bl	angle_control_isr_Disable
+ 325              	.LVL15:
  127:Generated_Source\PSoC5/angle_control_isr.c **** 
- 367              		.loc 1 127 0
- 368 0008 2046     		mov	r0, r4
- 369 000a FFF7FEFF 		bl	angle_control_isr_SetVector
- 370              	.LVL19:
+ 326              		.loc 1 127 0
+ 327 0008 2046     		mov	r0, r4
+ 328 000a FFF7FEFF 		bl	angle_control_isr_SetVector
+ 329              	.LVL16:
  130:Generated_Source\PSoC5/angle_control_isr.c **** 
- 371              		.loc 1 130 0
- 372 000e 0720     		movs	r0, #7
- 373 0010 FFF7FEFF 		bl	angle_control_isr_SetPriority
- 374              	.LVL20:
+ 330              		.loc 1 130 0
+ 331 000e 0720     		movs	r0, #7
+ 332 0010 FFF7FEFF 		bl	angle_control_isr_SetPriority
+ 333              	.LVL17:
  133:Generated_Source\PSoC5/angle_control_isr.c **** }
- 375              		.loc 1 133 0
- 376 0014 FFF7FEFF 		bl	angle_control_isr_Enable
- 377              	.LVL21:
- 378 0018 10BD     		pop	{r4, pc}
- 379              		.cfi_endproc
- 380              	.LFE65:
- 381              		.size	angle_control_isr_StartEx, .-angle_control_isr_StartEx
- 382 001a 00BF     		.section	.text.angle_control_isr_Stop,"ax",%progbits
- 383              		.align	2
- 384              		.global	angle_control_isr_Stop
- 385              		.thumb
- 386              		.thumb_func
- 387              		.type	angle_control_isr_Stop, %function
- 388              	angle_control_isr_Stop:
- 389              	.LFB66:
+ 334              		.loc 1 133 0
+ 335 0014 FFF7FEFF 		bl	angle_control_isr_Enable
+ 336              	.LVL18:
+ 337 0018 10BD     		pop	{r4, pc}
+ 338              		.cfi_endproc
+ 339              	.LFE65:
+ 340              		.size	angle_control_isr_StartEx, .-angle_control_isr_StartEx
+ 341 001a 00BF     		.section	.text.angle_control_isr_Stop,"ax",%progbits
+ 342              		.align	2
+ 343              		.global	angle_control_isr_Stop
+ 344              		.thumb
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cch10daQ.s 			page 14
+
+
+ 345              		.thumb_func
+ 346              		.type	angle_control_isr_Stop, %function
+ 347              	angle_control_isr_Stop:
+ 348              	.LFB66:
  152:Generated_Source\PSoC5/angle_control_isr.c ****     /* Disable this interrupt. */
- 390              		.loc 1 152 0
- 391              		.cfi_startproc
- 392              		@ args = 0, pretend = 0, frame = 0
- 393              		@ frame_needed = 0, uses_anonymous_args = 0
- 394 0000 08B5     		push	{r3, lr}
- 395              		.cfi_def_cfa_offset 8
- 396              		.cfi_offset 3, -8
- 397              		.cfi_offset 14, -4
+ 349              		.loc 1 152 0
+ 350              		.cfi_startproc
+ 351              		@ args = 0, pretend = 0, frame = 0
+ 352              		@ frame_needed = 0, uses_anonymous_args = 0
+ 353 0000 08B5     		push	{r3, lr}
+ 354              		.cfi_def_cfa_offset 8
+ 355              		.cfi_offset 3, -8
+ 356              		.cfi_offset 14, -4
  154:Generated_Source\PSoC5/angle_control_isr.c **** 
- 398              		.loc 1 154 0
- 399 0002 FFF7FEFF 		bl	angle_control_isr_Disable
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 15
-
-
- 400              	.LVL22:
+ 357              		.loc 1 154 0
+ 358 0002 FFF7FEFF 		bl	angle_control_isr_Disable
+ 359              	.LVL19:
  157:Generated_Source\PSoC5/angle_control_isr.c **** }
- 401              		.loc 1 157 0
- 402 0006 0248     		ldr	r0, .L38
- 403 0008 FFF7FEFF 		bl	angle_control_isr_SetVector
- 404              	.LVL23:
- 405 000c 08BD     		pop	{r3, pc}
- 406              	.L39:
- 407 000e 00BF     		.align	2
- 408              	.L38:
- 409 0010 00000000 		.word	IntDefaultHandler
- 410              		.cfi_endproc
- 411              	.LFE66:
- 412              		.size	angle_control_isr_Stop, .-angle_control_isr_Stop
- 413              		.section	.text.angle_control_isr_SetPending,"ax",%progbits
- 414              		.align	2
- 415              		.global	angle_control_isr_SetPending
- 416              		.thumb
- 417              		.thumb_func
- 418              		.type	angle_control_isr_SetPending, %function
- 419              	angle_control_isr_SetPending:
- 420              	.LFB75:
+ 360              		.loc 1 157 0
+ 361 0006 0248     		ldr	r0, .L36
+ 362 0008 FFF7FEFF 		bl	angle_control_isr_SetVector
+ 363              	.LVL20:
+ 364 000c 08BD     		pop	{r3, pc}
+ 365              	.L37:
+ 366 000e 00BF     		.align	2
+ 367              	.L36:
+ 368 0010 00000000 		.word	IntDefaultHandler
+ 369              		.cfi_endproc
+ 370              	.LFE66:
+ 371              		.size	angle_control_isr_Stop, .-angle_control_isr_Stop
+ 372              		.section	.text.angle_control_isr_SetPending,"ax",%progbits
+ 373              		.align	2
+ 374              		.global	angle_control_isr_SetPending
+ 375              		.thumb
+ 376              		.thumb_func
+ 377              		.type	angle_control_isr_SetPending, %function
+ 378              	angle_control_isr_SetPending:
+ 379              	.LFB75:
  388:Generated_Source\PSoC5/angle_control_isr.c **** }
  389:Generated_Source\PSoC5/angle_control_isr.c **** 
  390:Generated_Source\PSoC5/angle_control_isr.c **** 
@@ -882,41 +838,41 @@ ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 1
  404:Generated_Source\PSoC5/angle_control_isr.c **** *
  405:Generated_Source\PSoC5/angle_control_isr.c **** * Side Effects:
  406:Generated_Source\PSoC5/angle_control_isr.c **** *   If interrupts are enabled and the interrupt is set up properly, the ISR is
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cch10daQ.s 			page 15
+
+
  407:Generated_Source\PSoC5/angle_control_isr.c **** *   entered (depending on the priority of this interrupt and other pending 
  408:Generated_Source\PSoC5/angle_control_isr.c **** *   interrupts).
  409:Generated_Source\PSoC5/angle_control_isr.c **** *
  410:Generated_Source\PSoC5/angle_control_isr.c **** *******************************************************************************/
  411:Generated_Source\PSoC5/angle_control_isr.c **** void angle_control_isr_SetPending(void)
  412:Generated_Source\PSoC5/angle_control_isr.c **** {
- 421              		.loc 1 412 0
- 422              		.cfi_startproc
- 423              		@ args = 0, pretend = 0, frame = 0
- 424              		@ frame_needed = 0, uses_anonymous_args = 0
- 425              		@ link register save eliminated.
+ 380              		.loc 1 412 0
+ 381              		.cfi_startproc
+ 382              		@ args = 0, pretend = 0, frame = 0
+ 383              		@ frame_needed = 0, uses_anonymous_args = 0
+ 384              		@ link register save eliminated.
  413:Generated_Source\PSoC5/angle_control_isr.c ****     *angle_control_isr_INTC_SET_PD = angle_control_isr__INTC_MASK;
- 426              		.loc 1 413 0
- 427 0000 1022     		movs	r2, #16
- 428 0002 014B     		ldr	r3, .L41
- 429 0004 1A60     		str	r2, [r3]
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 16
-
-
- 430 0006 7047     		bx	lr
- 431              	.L42:
- 432              		.align	2
- 433              	.L41:
- 434 0008 00E200E0 		.word	-536813056
- 435              		.cfi_endproc
- 436              	.LFE75:
- 437              		.size	angle_control_isr_SetPending, .-angle_control_isr_SetPending
- 438              		.section	.text.angle_control_isr_ClearPending,"ax",%progbits
- 439              		.align	2
- 440              		.global	angle_control_isr_ClearPending
- 441              		.thumb
- 442              		.thumb_func
- 443              		.type	angle_control_isr_ClearPending, %function
- 444              	angle_control_isr_ClearPending:
- 445              	.LFB76:
+ 385              		.loc 1 413 0
+ 386 0000 4FF40072 		mov	r2, #512
+ 387 0004 014B     		ldr	r3, .L39
+ 388 0006 1A60     		str	r2, [r3]
+ 389 0008 7047     		bx	lr
+ 390              	.L40:
+ 391 000a 00BF     		.align	2
+ 392              	.L39:
+ 393 000c 00E200E0 		.word	-536813056
+ 394              		.cfi_endproc
+ 395              	.LFE75:
+ 396              		.size	angle_control_isr_SetPending, .-angle_control_isr_SetPending
+ 397              		.section	.text.angle_control_isr_ClearPending,"ax",%progbits
+ 398              		.align	2
+ 399              		.global	angle_control_isr_ClearPending
+ 400              		.thumb
+ 401              		.thumb_func
+ 402              		.type	angle_control_isr_ClearPending, %function
+ 403              	angle_control_isr_ClearPending:
+ 404              	.LFB76:
  414:Generated_Source\PSoC5/angle_control_isr.c **** }
  415:Generated_Source\PSoC5/angle_control_isr.c **** 
  416:Generated_Source\PSoC5/angle_control_isr.c **** 
@@ -941,1906 +897,1878 @@ ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 1
  435:Generated_Source\PSoC5/angle_control_isr.c **** *******************************************************************************/
  436:Generated_Source\PSoC5/angle_control_isr.c **** void angle_control_isr_ClearPending(void)
  437:Generated_Source\PSoC5/angle_control_isr.c **** {
- 446              		.loc 1 437 0
- 447              		.cfi_startproc
- 448              		@ args = 0, pretend = 0, frame = 0
- 449              		@ frame_needed = 0, uses_anonymous_args = 0
- 450              		@ link register save eliminated.
+ 405              		.loc 1 437 0
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cch10daQ.s 			page 16
+
+
+ 406              		.cfi_startproc
+ 407              		@ args = 0, pretend = 0, frame = 0
+ 408              		@ frame_needed = 0, uses_anonymous_args = 0
+ 409              		@ link register save eliminated.
  438:Generated_Source\PSoC5/angle_control_isr.c ****     *angle_control_isr_INTC_CLR_PD = angle_control_isr__INTC_MASK;
- 451              		.loc 1 438 0
- 452 0000 1022     		movs	r2, #16
- 453 0002 014B     		ldr	r3, .L44
- 454 0004 1A60     		str	r2, [r3]
- 455 0006 7047     		bx	lr
- 456              	.L45:
- 457              		.align	2
- 458              	.L44:
- 459 0008 80E200E0 		.word	-536812928
- 460              		.cfi_endproc
- 461              	.LFE76:
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 17
+ 410              		.loc 1 438 0
+ 411 0000 4FF40072 		mov	r2, #512
+ 412 0004 014B     		ldr	r3, .L42
+ 413 0006 1A60     		str	r2, [r3]
+ 414 0008 7047     		bx	lr
+ 415              	.L43:
+ 416 000a 00BF     		.align	2
+ 417              	.L42:
+ 418 000c 80E200E0 		.word	-536812928
+ 419              		.cfi_endproc
+ 420              	.LFE76:
+ 421              		.size	angle_control_isr_ClearPending, .-angle_control_isr_ClearPending
+ 422              		.comm	pos_pid_output,4,4
+ 423              		.comm	pos_pid_,44,4
+ 424              		.comm	debug,4,4
+ 425              		.comm	dir_state,1,1
+ 426              		.comm	t,4,4
+ 427              		.comm	actual_pos,4,4
+ 428              		.comm	init_pos,4,4
+ 429              		.comm	pos_ref,4,4
+ 430              		.comm	speed_ref,4,4
+ 431              		.comm	HA_counter,4,4
+ 432              		.comm	_braken_state,1,1
+ 433              		.comm	TS_array,4,4
+ 434              		.comm	msg,20,4
+ 435              		.comm	_state_,4,4
+ 436              		.comm	_uart_Reset,1,1
+ 437              		.comm	SendEmulatedData,1,1
+ 438              		.comm	SendSingleByte,1,1
+ 439              		.comm	ContinuouslySendData,1,1
+ 440              		.comm	Ch,1,1
+ 441              		.comm	PB,16,4
+ 442              		.comm	RB,20,4
+ 443              		.text
+ 444              	.Letext0:
+ 445              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.1\\psoc creator\\import\\gnu\\arm\\5.4.
+ 446              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.1\\psoc creator\\import\\gnu\\arm\\5.4.
+ 447              		.file 4 "Generated_Source\\PSoC5/cytypes.h"
+ 448              		.file 5 "./pid.h"
+ 449              		.file 6 "./myUART.h"
+ 450              		.file 7 "./global.h"
+ 451              		.file 8 "Generated_Source\\PSoC5/core_cm3.h"
+ 452              		.file 9 "./functions.h"
+ 453              		.file 10 "Generated_Source\\PSoC5/PM1_DirCounter.h"
+ 454              		.section	.debug_info,"",%progbits
+ 455              	.Ldebug_info0:
+ 456 0000 02060000 		.4byte	0x602
+ 457 0004 0400     		.2byte	0x4
+ 458 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 459 000a 04       		.byte	0x4
+ 460 000b 01       		.uleb128 0x1
+ 461 000c 5B040000 		.4byte	.LASF71
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cch10daQ.s 			page 17
 
 
- 462              		.size	angle_control_isr_ClearPending, .-angle_control_isr_ClearPending
- 463              		.comm	pos_pid_output,4,4
- 464              		.comm	pos_pid_,44,4
- 465              		.comm	debug,4,4
- 466              		.comm	dir_state,1,1
- 467              		.comm	t,4,4
- 468              		.comm	actual_pos,4,4
- 469              		.comm	init_pos,4,4
- 470              		.comm	pos_ref,4,4
- 471              		.comm	speed_ref,4,4
- 472              		.comm	HA_counter,4,4
- 473              		.comm	_braken_state,1,1
- 474              		.comm	TS_array,4,4
- 475              		.comm	msg,20,4
- 476              		.comm	_state_,4,4
- 477              		.comm	_uart_Reset,1,1
- 478              		.comm	SendEmulatedData,1,1
- 479              		.comm	SendSingleByte,1,1
- 480              		.comm	ContinuouslySendData,1,1
- 481              		.comm	Ch,1,1
- 482              		.comm	PB,16,4
- 483              		.comm	RB,20,4
- 484              		.text
- 485              	.Letext0:
- 486              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.1\\psoc creator\\import\\gnu\\arm\\5.4.
- 487              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.1\\psoc creator\\import\\gnu\\arm\\5.4.
- 488              		.file 4 "Generated_Source\\PSoC5/cytypes.h"
- 489              		.file 5 "./pid.h"
- 490              		.file 6 "./myUART.h"
- 491              		.file 7 "./global.h"
- 492              		.file 8 "Generated_Source\\PSoC5/core_cm3.h"
- 493              		.file 9 "./functions.h"
- 494              		.file 10 "Generated_Source\\PSoC5/DirCounter.h"
- 495              		.section	.debug_info,"",%progbits
- 496              	.Ldebug_info0:
- 497 0000 1A060000 		.4byte	0x61a
- 498 0004 0400     		.2byte	0x4
- 499 0006 00000000 		.4byte	.Ldebug_abbrev0
- 500 000a 04       		.byte	0x4
- 501 000b 01       		.uleb128 0x1
- 502 000c 49040000 		.4byte	.LASF72
- 503 0010 0C       		.byte	0xc
- 504 0011 2A000000 		.4byte	.LASF73
- 505 0015 79010000 		.4byte	.LASF74
- 506 0019 00000000 		.4byte	.Ldebug_ranges0+0
- 507 001d 00000000 		.4byte	0
- 508 0021 00000000 		.4byte	.Ldebug_line0
- 509 0025 02       		.uleb128 0x2
- 510 0026 04       		.byte	0x4
- 511 0027 05       		.byte	0x5
- 512 0028 696E7400 		.ascii	"int\000"
- 513 002c 03       		.uleb128 0x3
- 514 002d 04       		.byte	0x4
- 515 002e 07       		.byte	0x7
- 516 002f 89020000 		.4byte	.LASF0
- 517 0033 03       		.uleb128 0x3
- 518 0034 08       		.byte	0x8
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 18
+ 462 0010 0C       		.byte	0xc
+ 463 0011 2A000000 		.4byte	.LASF72
+ 464 0015 93010000 		.4byte	.LASF73
+ 465 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 466 001d 00000000 		.4byte	0
+ 467 0021 00000000 		.4byte	.Ldebug_line0
+ 468 0025 02       		.uleb128 0x2
+ 469 0026 04       		.byte	0x4
+ 470 0027 05       		.byte	0x5
+ 471 0028 696E7400 		.ascii	"int\000"
+ 472 002c 03       		.uleb128 0x3
+ 473 002d 04       		.byte	0x4
+ 474 002e 07       		.byte	0x7
+ 475 002f A3020000 		.4byte	.LASF0
+ 476 0033 03       		.uleb128 0x3
+ 477 0034 08       		.byte	0x8
+ 478 0035 05       		.byte	0x5
+ 479 0036 65010000 		.4byte	.LASF1
+ 480 003a 03       		.uleb128 0x3
+ 481 003b 08       		.byte	0x8
+ 482 003c 04       		.byte	0x4
+ 483 003d 8B000000 		.4byte	.LASF2
+ 484 0041 03       		.uleb128 0x3
+ 485 0042 01       		.byte	0x1
+ 486 0043 06       		.byte	0x6
+ 487 0044 76020000 		.4byte	.LASF3
+ 488 0048 03       		.uleb128 0x3
+ 489 0049 01       		.byte	0x1
+ 490 004a 08       		.byte	0x8
+ 491 004b 0D020000 		.4byte	.LASF4
+ 492 004f 03       		.uleb128 0x3
+ 493 0050 02       		.byte	0x2
+ 494 0051 05       		.byte	0x5
+ 495 0052 73000000 		.4byte	.LASF5
+ 496 0056 03       		.uleb128 0x3
+ 497 0057 02       		.byte	0x2
+ 498 0058 07       		.byte	0x7
+ 499 0059 3F030000 		.4byte	.LASF6
+ 500 005d 04       		.uleb128 0x4
+ 501 005e D2030000 		.4byte	.LASF12
+ 502 0062 02       		.byte	0x2
+ 503 0063 3F       		.byte	0x3f
+ 504 0064 68000000 		.4byte	0x68
+ 505 0068 03       		.uleb128 0x3
+ 506 0069 04       		.byte	0x4
+ 507 006a 05       		.byte	0x5
+ 508 006b 12030000 		.4byte	.LASF7
+ 509 006f 03       		.uleb128 0x3
+ 510 0070 04       		.byte	0x4
+ 511 0071 07       		.byte	0x7
+ 512 0072 96030000 		.4byte	.LASF8
+ 513 0076 03       		.uleb128 0x3
+ 514 0077 08       		.byte	0x8
+ 515 0078 07       		.byte	0x7
+ 516 0079 82020000 		.4byte	.LASF9
+ 517 007d 03       		.uleb128 0x3
+ 518 007e 04       		.byte	0x4
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cch10daQ.s 			page 18
 
 
- 519 0035 05       		.byte	0x5
- 520 0036 4B010000 		.4byte	.LASF1
- 521 003a 03       		.uleb128 0x3
- 522 003b 08       		.byte	0x8
- 523 003c 04       		.byte	0x4
- 524 003d 8B000000 		.4byte	.LASF2
- 525 0041 03       		.uleb128 0x3
- 526 0042 01       		.byte	0x1
- 527 0043 06       		.byte	0x6
- 528 0044 5C020000 		.4byte	.LASF3
- 529 0048 03       		.uleb128 0x3
- 530 0049 01       		.byte	0x1
- 531 004a 08       		.byte	0x8
- 532 004b F3010000 		.4byte	.LASF4
- 533 004f 03       		.uleb128 0x3
- 534 0050 02       		.byte	0x2
- 535 0051 05       		.byte	0x5
- 536 0052 73000000 		.4byte	.LASF5
- 537 0056 03       		.uleb128 0x3
- 538 0057 02       		.byte	0x2
- 539 0058 07       		.byte	0x7
- 540 0059 25030000 		.4byte	.LASF6
- 541 005d 04       		.uleb128 0x4
- 542 005e C0030000 		.4byte	.LASF12
- 543 0062 02       		.byte	0x2
- 544 0063 3F       		.byte	0x3f
- 545 0064 68000000 		.4byte	0x68
- 546 0068 03       		.uleb128 0x3
- 547 0069 04       		.byte	0x4
- 548 006a 05       		.byte	0x5
- 549 006b F8020000 		.4byte	.LASF7
- 550 006f 03       		.uleb128 0x3
- 551 0070 04       		.byte	0x4
- 552 0071 07       		.byte	0x7
- 553 0072 7C030000 		.4byte	.LASF8
- 554 0076 03       		.uleb128 0x3
- 555 0077 08       		.byte	0x8
- 556 0078 07       		.byte	0x7
- 557 0079 68020000 		.4byte	.LASF9
- 558 007d 03       		.uleb128 0x3
- 559 007e 04       		.byte	0x4
- 560 007f 07       		.byte	0x7
- 561 0080 82000000 		.4byte	.LASF10
- 562 0084 05       		.uleb128 0x5
- 563 0085 04       		.byte	0x4
- 564 0086 8A000000 		.4byte	0x8a
- 565 008a 03       		.uleb128 0x3
- 566 008b 01       		.byte	0x1
- 567 008c 08       		.byte	0x8
- 568 008d F3020000 		.4byte	.LASF11
- 569 0091 05       		.uleb128 0x5
- 570 0092 04       		.byte	0x4
- 571 0093 97000000 		.4byte	0x97
- 572 0097 06       		.uleb128 0x6
- 573 0098 04       		.uleb128 0x4
- 574 0099 1D030000 		.4byte	.LASF13
- 575 009d 03       		.byte	0x3
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 19
+ 519 007f 07       		.byte	0x7
+ 520 0080 82000000 		.4byte	.LASF10
+ 521 0084 05       		.uleb128 0x5
+ 522 0085 04       		.byte	0x4
+ 523 0086 8A000000 		.4byte	0x8a
+ 524 008a 03       		.uleb128 0x3
+ 525 008b 01       		.byte	0x1
+ 526 008c 08       		.byte	0x8
+ 527 008d 0D030000 		.4byte	.LASF11
+ 528 0091 05       		.uleb128 0x5
+ 529 0092 04       		.byte	0x4
+ 530 0093 97000000 		.4byte	0x97
+ 531 0097 06       		.uleb128 0x6
+ 532 0098 04       		.uleb128 0x4
+ 533 0099 37030000 		.4byte	.LASF13
+ 534 009d 03       		.byte	0x3
+ 535 009e 2C       		.byte	0x2c
+ 536 009f 5D000000 		.4byte	0x5d
+ 537 00a3 07       		.uleb128 0x7
+ 538 00a4 FE000000 		.4byte	.LASF14
+ 539 00a8 04       		.byte	0x4
+ 540 00a9 9201     		.2byte	0x192
+ 541 00ab 48000000 		.4byte	0x48
+ 542 00af 07       		.uleb128 0x7
+ 543 00b0 8A030000 		.4byte	.LASF15
+ 544 00b4 04       		.byte	0x4
+ 545 00b5 9401     		.2byte	0x194
+ 546 00b7 6F000000 		.4byte	0x6f
+ 547 00bb 07       		.uleb128 0x7
+ 548 00bc F3000000 		.4byte	.LASF16
+ 549 00c0 04       		.byte	0x4
+ 550 00c1 9601     		.2byte	0x196
+ 551 00c3 4F000000 		.4byte	0x4f
+ 552 00c7 03       		.uleb128 0x3
+ 553 00c8 04       		.byte	0x4
+ 554 00c9 04       		.byte	0x4
+ 555 00ca 44010000 		.4byte	.LASF17
+ 556 00ce 03       		.uleb128 0x3
+ 557 00cf 08       		.byte	0x8
+ 558 00d0 04       		.byte	0x4
+ 559 00d1 A8030000 		.4byte	.LASF18
+ 560 00d5 07       		.uleb128 0x7
+ 561 00d6 91030000 		.4byte	.LASF19
+ 562 00da 04       		.byte	0x4
+ 563 00db 3C02     		.2byte	0x23c
+ 564 00dd E1000000 		.4byte	0xe1
+ 565 00e1 08       		.uleb128 0x8
+ 566 00e2 A3000000 		.4byte	0xa3
+ 567 00e6 07       		.uleb128 0x7
+ 568 00e7 E4020000 		.4byte	.LASF20
+ 569 00eb 04       		.byte	0x4
+ 570 00ec 3E02     		.2byte	0x23e
+ 571 00ee F2000000 		.4byte	0xf2
+ 572 00f2 08       		.uleb128 0x8
+ 573 00f3 AF000000 		.4byte	0xaf
+ 574 00f7 07       		.uleb128 0x7
+ 575 00f8 73010000 		.4byte	.LASF21
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cch10daQ.s 			page 19
 
 
- 576 009e 2C       		.byte	0x2c
- 577 009f 5D000000 		.4byte	0x5d
- 578 00a3 07       		.uleb128 0x7
- 579 00a4 E4000000 		.4byte	.LASF14
- 580 00a8 04       		.byte	0x4
- 581 00a9 9201     		.2byte	0x192
- 582 00ab 48000000 		.4byte	0x48
- 583 00af 07       		.uleb128 0x7
- 584 00b0 70030000 		.4byte	.LASF15
- 585 00b4 04       		.byte	0x4
- 586 00b5 9401     		.2byte	0x194
- 587 00b7 6F000000 		.4byte	0x6f
- 588 00bb 07       		.uleb128 0x7
- 589 00bc D9000000 		.4byte	.LASF16
- 590 00c0 04       		.byte	0x4
- 591 00c1 9601     		.2byte	0x196
- 592 00c3 4F000000 		.4byte	0x4f
- 593 00c7 03       		.uleb128 0x3
- 594 00c8 04       		.byte	0x4
- 595 00c9 04       		.byte	0x4
- 596 00ca 2A010000 		.4byte	.LASF17
- 597 00ce 03       		.uleb128 0x3
- 598 00cf 08       		.byte	0x8
- 599 00d0 04       		.byte	0x4
- 600 00d1 8E030000 		.4byte	.LASF18
- 601 00d5 07       		.uleb128 0x7
- 602 00d6 77030000 		.4byte	.LASF19
- 603 00da 04       		.byte	0x4
- 604 00db 3C02     		.2byte	0x23c
- 605 00dd E1000000 		.4byte	0xe1
- 606 00e1 08       		.uleb128 0x8
- 607 00e2 A3000000 		.4byte	0xa3
- 608 00e6 07       		.uleb128 0x7
- 609 00e7 CA020000 		.4byte	.LASF20
- 610 00eb 04       		.byte	0x4
- 611 00ec 3E02     		.2byte	0x23e
- 612 00ee F2000000 		.4byte	0xf2
- 613 00f2 08       		.uleb128 0x8
- 614 00f3 AF000000 		.4byte	0xaf
- 615 00f7 07       		.uleb128 0x7
- 616 00f8 59010000 		.4byte	.LASF21
- 617 00fc 04       		.byte	0x4
- 618 00fd 4E02     		.2byte	0x24e
- 619 00ff 91000000 		.4byte	0x91
- 620 0103 09       		.uleb128 0x9
- 621 0104 2C       		.byte	0x2c
- 622 0105 05       		.byte	0x5
- 623 0106 14       		.byte	0x14
- 624 0107 8D010000 		.4byte	0x18d
- 625 010b 0A       		.uleb128 0xa
- 626 010c 6B5000   		.ascii	"kP\000"
- 627 010f 05       		.byte	0x5
- 628 0110 16       		.byte	0x16
- 629 0111 98000000 		.4byte	0x98
- 630 0115 00       		.byte	0
- 631 0116 0A       		.uleb128 0xa
- 632 0117 6B4900   		.ascii	"kI\000"
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 20
+ 576 00fc 04       		.byte	0x4
+ 577 00fd 4E02     		.2byte	0x24e
+ 578 00ff 91000000 		.4byte	0x91
+ 579 0103 09       		.uleb128 0x9
+ 580 0104 2C       		.byte	0x2c
+ 581 0105 05       		.byte	0x5
+ 582 0106 14       		.byte	0x14
+ 583 0107 8D010000 		.4byte	0x18d
+ 584 010b 0A       		.uleb128 0xa
+ 585 010c 6B5000   		.ascii	"kP\000"
+ 586 010f 05       		.byte	0x5
+ 587 0110 16       		.byte	0x16
+ 588 0111 98000000 		.4byte	0x98
+ 589 0115 00       		.byte	0
+ 590 0116 0A       		.uleb128 0xa
+ 591 0117 6B4900   		.ascii	"kI\000"
+ 592 011a 05       		.byte	0x5
+ 593 011b 17       		.byte	0x17
+ 594 011c 98000000 		.4byte	0x98
+ 595 0120 04       		.byte	0x4
+ 596 0121 0A       		.uleb128 0xa
+ 597 0122 6B4400   		.ascii	"kD\000"
+ 598 0125 05       		.byte	0x5
+ 599 0126 18       		.byte	0x18
+ 600 0127 98000000 		.4byte	0x98
+ 601 012b 08       		.byte	0x8
+ 602 012c 0B       		.uleb128 0xb
+ 603 012d 04010000 		.4byte	.LASF22
+ 604 0131 05       		.byte	0x5
+ 605 0132 19       		.byte	0x19
+ 606 0133 98000000 		.4byte	0x98
+ 607 0137 0C       		.byte	0xc
+ 608 0138 0B       		.uleb128 0xb
+ 609 0139 40020000 		.4byte	.LASF23
+ 610 013d 05       		.byte	0x5
+ 611 013e 1A       		.byte	0x1a
+ 612 013f 98000000 		.4byte	0x98
+ 613 0143 10       		.byte	0x10
+ 614 0144 0B       		.uleb128 0xb
+ 615 0145 89010000 		.4byte	.LASF24
+ 616 0149 05       		.byte	0x5
+ 617 014a 1B       		.byte	0x1b
+ 618 014b 98000000 		.4byte	0x98
+ 619 014f 14       		.byte	0x14
+ 620 0150 0B       		.uleb128 0xb
+ 621 0151 CC030000 		.4byte	.LASF25
+ 622 0155 05       		.byte	0x5
+ 623 0156 1C       		.byte	0x1c
+ 624 0157 98000000 		.4byte	0x98
+ 625 015b 18       		.byte	0x18
+ 626 015c 0B       		.uleb128 0xb
+ 627 015d 2A010000 		.4byte	.LASF26
+ 628 0161 05       		.byte	0x5
+ 629 0162 1D       		.byte	0x1d
+ 630 0163 98000000 		.4byte	0x98
+ 631 0167 1C       		.byte	0x1c
+ 632 0168 0B       		.uleb128 0xb
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cch10daQ.s 			page 20
 
 
- 633 011a 05       		.byte	0x5
- 634 011b 17       		.byte	0x17
- 635 011c 98000000 		.4byte	0x98
- 636 0120 04       		.byte	0x4
- 637 0121 0A       		.uleb128 0xa
- 638 0122 6B4400   		.ascii	"kD\000"
- 639 0125 05       		.byte	0x5
- 640 0126 18       		.byte	0x18
- 641 0127 98000000 		.4byte	0x98
- 642 012b 08       		.byte	0x8
- 643 012c 0B       		.uleb128 0xb
- 644 012d EA000000 		.4byte	.LASF22
- 645 0131 05       		.byte	0x5
- 646 0132 19       		.byte	0x19
- 647 0133 98000000 		.4byte	0x98
- 648 0137 0C       		.byte	0xc
- 649 0138 0B       		.uleb128 0xb
- 650 0139 26020000 		.4byte	.LASF23
- 651 013d 05       		.byte	0x5
- 652 013e 1A       		.byte	0x1a
- 653 013f 98000000 		.4byte	0x98
- 654 0143 10       		.byte	0x10
- 655 0144 0B       		.uleb128 0xb
- 656 0145 6F010000 		.4byte	.LASF24
- 657 0149 05       		.byte	0x5
- 658 014a 1B       		.byte	0x1b
- 659 014b 98000000 		.4byte	0x98
- 660 014f 14       		.byte	0x14
- 661 0150 0B       		.uleb128 0xb
- 662 0151 BA030000 		.4byte	.LASF25
- 663 0155 05       		.byte	0x5
- 664 0156 1C       		.byte	0x1c
- 665 0157 98000000 		.4byte	0x98
- 666 015b 18       		.byte	0x18
- 667 015c 0B       		.uleb128 0xb
- 668 015d 10010000 		.4byte	.LASF26
- 669 0161 05       		.byte	0x5
- 670 0162 1D       		.byte	0x1d
- 671 0163 98000000 		.4byte	0x98
- 672 0167 1C       		.byte	0x1c
- 673 0168 0B       		.uleb128 0xb
- 674 0169 DB010000 		.4byte	.LASF27
- 675 016d 05       		.byte	0x5
- 676 016e 1E       		.byte	0x1e
- 677 016f 98000000 		.4byte	0x98
- 678 0173 20       		.byte	0x20
- 679 0174 0B       		.uleb128 0xb
- 680 0175 12000000 		.4byte	.LASF28
- 681 0179 05       		.byte	0x5
- 682 017a 1F       		.byte	0x1f
- 683 017b 98000000 		.4byte	0x98
- 684 017f 24       		.byte	0x24
- 685 0180 0B       		.uleb128 0xb
- 686 0181 D7040000 		.4byte	.LASF29
- 687 0185 05       		.byte	0x5
- 688 0186 20       		.byte	0x20
- 689 0187 98000000 		.4byte	0x98
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 21
+ 633 0169 F5010000 		.4byte	.LASF27
+ 634 016d 05       		.byte	0x5
+ 635 016e 1E       		.byte	0x1e
+ 636 016f 98000000 		.4byte	0x98
+ 637 0173 20       		.byte	0x20
+ 638 0174 0B       		.uleb128 0xb
+ 639 0175 12000000 		.4byte	.LASF28
+ 640 0179 05       		.byte	0x5
+ 641 017a 1F       		.byte	0x1f
+ 642 017b 98000000 		.4byte	0x98
+ 643 017f 24       		.byte	0x24
+ 644 0180 0B       		.uleb128 0xb
+ 645 0181 E9040000 		.4byte	.LASF29
+ 646 0185 05       		.byte	0x5
+ 647 0186 20       		.byte	0x20
+ 648 0187 98000000 		.4byte	0x98
+ 649 018b 28       		.byte	0x28
+ 650 018c 00       		.byte	0
+ 651 018d 04       		.uleb128 0x4
+ 652 018e 09050000 		.4byte	.LASF30
+ 653 0192 05       		.byte	0x5
+ 654 0193 21       		.byte	0x21
+ 655 0194 03010000 		.4byte	0x103
+ 656 0198 09       		.uleb128 0x9
+ 657 0199 14       		.byte	0x14
+ 658 019a 06       		.byte	0x6
+ 659 019b 1C       		.byte	0x1c
+ 660 019c B9010000 		.4byte	0x1b9
+ 661 01a0 0A       		.uleb128 0xa
+ 662 01a1 636D6400 		.ascii	"cmd\000"
+ 663 01a5 06       		.byte	0x6
+ 664 01a6 1D       		.byte	0x1d
+ 665 01a7 8A000000 		.4byte	0x8a
+ 666 01ab 00       		.byte	0
+ 667 01ac 0B       		.uleb128 0xb
+ 668 01ad 06030000 		.4byte	.LASF31
+ 669 01b1 06       		.byte	0x6
+ 670 01b2 1E       		.byte	0x1e
+ 671 01b3 B9010000 		.4byte	0x1b9
+ 672 01b7 01       		.byte	0x1
+ 673 01b8 00       		.byte	0
+ 674 01b9 0C       		.uleb128 0xc
+ 675 01ba 8A000000 		.4byte	0x8a
+ 676 01be C9010000 		.4byte	0x1c9
+ 677 01c2 0D       		.uleb128 0xd
+ 678 01c3 7D000000 		.4byte	0x7d
+ 679 01c7 12       		.byte	0x12
+ 680 01c8 00       		.byte	0
+ 681 01c9 0E       		.uleb128 0xe
+ 682 01ca 99020000 		.4byte	.LASF74
+ 683 01ce 14       		.byte	0x14
+ 684 01cf 06       		.byte	0x6
+ 685 01d0 1A       		.byte	0x1a
+ 686 01d1 E6010000 		.4byte	0x1e6
+ 687 01d5 0F       		.uleb128 0xf
+ 688 01d6 84030000 		.4byte	.LASF75
+ 689 01da 06       		.byte	0x6
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cch10daQ.s 			page 21
 
 
- 690 018b 28       		.byte	0x28
- 691 018c 00       		.byte	0
- 692 018d 04       		.uleb128 0x4
- 693 018e F7040000 		.4byte	.LASF30
- 694 0192 05       		.byte	0x5
- 695 0193 21       		.byte	0x21
- 696 0194 03010000 		.4byte	0x103
- 697 0198 09       		.uleb128 0x9
- 698 0199 14       		.byte	0x14
- 699 019a 06       		.byte	0x6
- 700 019b 1C       		.byte	0x1c
- 701 019c B9010000 		.4byte	0x1b9
- 702 01a0 0A       		.uleb128 0xa
- 703 01a1 636D6400 		.ascii	"cmd\000"
- 704 01a5 06       		.byte	0x6
- 705 01a6 1D       		.byte	0x1d
- 706 01a7 8A000000 		.4byte	0x8a
- 707 01ab 00       		.byte	0
- 708 01ac 0B       		.uleb128 0xb
- 709 01ad EC020000 		.4byte	.LASF31
- 710 01b1 06       		.byte	0x6
- 711 01b2 1E       		.byte	0x1e
- 712 01b3 B9010000 		.4byte	0x1b9
- 713 01b7 01       		.byte	0x1
- 714 01b8 00       		.byte	0
- 715 01b9 0C       		.uleb128 0xc
- 716 01ba 8A000000 		.4byte	0x8a
- 717 01be C9010000 		.4byte	0x1c9
- 718 01c2 0D       		.uleb128 0xd
- 719 01c3 7D000000 		.4byte	0x7d
- 720 01c7 12       		.byte	0x12
- 721 01c8 00       		.byte	0
- 722 01c9 0E       		.uleb128 0xe
- 723 01ca 7F020000 		.4byte	.LASF75
- 724 01ce 14       		.byte	0x14
- 725 01cf 06       		.byte	0x6
- 726 01d0 1A       		.byte	0x1a
- 727 01d1 E6010000 		.4byte	0x1e6
- 728 01d5 0F       		.uleb128 0xf
- 729 01d6 6A030000 		.4byte	.LASF76
- 730 01da 06       		.byte	0x6
- 731 01db 1B       		.byte	0x1b
- 732 01dc E6010000 		.4byte	0x1e6
- 733 01e0 10       		.uleb128 0x10
- 734 01e1 98010000 		.4byte	0x198
- 735 01e5 00       		.byte	0
- 736 01e6 0C       		.uleb128 0xc
- 737 01e7 8A000000 		.4byte	0x8a
- 738 01eb F6010000 		.4byte	0x1f6
- 739 01ef 0D       		.uleb128 0xd
- 740 01f0 7D000000 		.4byte	0x7d
- 741 01f4 13       		.byte	0x13
- 742 01f5 00       		.byte	0
- 743 01f6 11       		.uleb128 0x11
- 744 01f7 BD020000 		.4byte	.LASF77
- 745 01fb 10       		.byte	0x10
- 746 01fc 07       		.byte	0x7
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 22
+ 690 01db 1B       		.byte	0x1b
+ 691 01dc E6010000 		.4byte	0x1e6
+ 692 01e0 10       		.uleb128 0x10
+ 693 01e1 98010000 		.4byte	0x198
+ 694 01e5 00       		.byte	0
+ 695 01e6 0C       		.uleb128 0xc
+ 696 01e7 8A000000 		.4byte	0x8a
+ 697 01eb F6010000 		.4byte	0x1f6
+ 698 01ef 0D       		.uleb128 0xd
+ 699 01f0 7D000000 		.4byte	0x7d
+ 700 01f4 13       		.byte	0x13
+ 701 01f5 00       		.byte	0
+ 702 01f6 11       		.uleb128 0x11
+ 703 01f7 D7020000 		.4byte	.LASF76
+ 704 01fb 10       		.byte	0x10
+ 705 01fc 07       		.byte	0x7
+ 706 01fd 1B       		.byte	0x1b
+ 707 01fe 33020000 		.4byte	0x233
+ 708 0202 0A       		.uleb128 0xa
+ 709 0203 636D6400 		.ascii	"cmd\000"
+ 710 0207 07       		.byte	0x7
+ 711 0208 1C       		.byte	0x1c
+ 712 0209 84000000 		.4byte	0x84
+ 713 020d 00       		.byte	0
+ 714 020e 0B       		.uleb128 0xb
+ 715 020f 1C000000 		.4byte	.LASF32
+ 716 0213 07       		.byte	0x7
+ 717 0214 1D       		.byte	0x1d
+ 718 0215 25000000 		.4byte	0x25
+ 719 0219 04       		.byte	0x4
+ 720 021a 0B       		.uleb128 0xb
+ 721 021b F9000000 		.4byte	.LASF33
+ 722 021f 07       		.byte	0x7
+ 723 0220 1D       		.byte	0x1d
+ 724 0221 25000000 		.4byte	0x25
+ 725 0225 08       		.byte	0x8
+ 726 0226 0B       		.uleb128 0xb
+ 727 0227 7D000000 		.4byte	.LASF34
+ 728 022b 07       		.byte	0x7
+ 729 022c 1D       		.byte	0x1d
+ 730 022d 25000000 		.4byte	0x25
+ 731 0231 0C       		.byte	0xc
+ 732 0232 00       		.byte	0
+ 733 0233 04       		.uleb128 0x4
+ 734 0234 C5020000 		.4byte	.LASF35
+ 735 0238 07       		.byte	0x7
+ 736 0239 1E       		.byte	0x1e
+ 737 023a F6010000 		.4byte	0x1f6
+ 738 023e 12       		.uleb128 0x12
+ 739 023f 1B030000 		.4byte	.LASF36
+ 740 0243 01       		.byte	0x1
+ 741 0244 B1       		.byte	0xb1
+ 742 0245 00000000 		.4byte	.LFB67
+ 743 0249 44000000 		.4byte	.LFE67-.LFB67
+ 744 024d 01       		.uleb128 0x1
+ 745 024e 9C       		.byte	0x9c
+ 746 024f 81020000 		.4byte	0x281
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cch10daQ.s 			page 22
 
 
- 747 01fd 1A       		.byte	0x1a
- 748 01fe 33020000 		.4byte	0x233
- 749 0202 0A       		.uleb128 0xa
- 750 0203 636D6400 		.ascii	"cmd\000"
- 751 0207 07       		.byte	0x7
- 752 0208 1B       		.byte	0x1b
- 753 0209 84000000 		.4byte	0x84
- 754 020d 00       		.byte	0
- 755 020e 0B       		.uleb128 0xb
- 756 020f 1C000000 		.4byte	.LASF32
- 757 0213 07       		.byte	0x7
- 758 0214 1C       		.byte	0x1c
- 759 0215 25000000 		.4byte	0x25
- 760 0219 04       		.byte	0x4
- 761 021a 0B       		.uleb128 0xb
- 762 021b DF000000 		.4byte	.LASF33
- 763 021f 07       		.byte	0x7
- 764 0220 1C       		.byte	0x1c
- 765 0221 25000000 		.4byte	0x25
- 766 0225 08       		.byte	0x8
- 767 0226 0B       		.uleb128 0xb
- 768 0227 7D000000 		.4byte	.LASF34
- 769 022b 07       		.byte	0x7
- 770 022c 1C       		.byte	0x1c
- 771 022d 25000000 		.4byte	0x25
- 772 0231 0C       		.byte	0xc
- 773 0232 00       		.byte	0
- 774 0233 04       		.uleb128 0x4
- 775 0234 AB020000 		.4byte	.LASF35
- 776 0238 07       		.byte	0x7
- 777 0239 1D       		.byte	0x1d
- 778 023a F6010000 		.4byte	0x1f6
- 779 023e 12       		.uleb128 0x12
- 780 023f 01030000 		.4byte	.LASF36
- 781 0243 01       		.byte	0x1
- 782 0244 B1       		.byte	0xb1
- 783 0245 00000000 		.4byte	.LFB67
- 784 0249 8C000000 		.4byte	.LFE67-.LFB67
- 785 024d 01       		.uleb128 0x1
- 786 024e 9C       		.byte	0x9c
- 787 024f 8E020000 		.4byte	0x28e
- 788 0253 13       		.uleb128 0x13
- 789 0254 08000000 		.4byte	.LVL0
- 790 0258 F1050000 		.4byte	0x5f1
- 791 025c 14       		.uleb128 0x14
- 792 025d 24000000 		.4byte	.LVL1
- 793 0261 FC050000 		.4byte	0x5fc
- 794 0265 70020000 		.4byte	0x270
- 795 0269 15       		.uleb128 0x15
- 796 026a 01       		.uleb128 0x1
- 797 026b 50       		.byte	0x50
- 798 026c 02       		.uleb128 0x2
- 799 026d 74       		.byte	0x74
- 800 026e 00       		.sleb128 0
- 801 026f 00       		.byte	0
- 802 0270 14       		.uleb128 0x14
- 803 0271 2C000000 		.4byte	.LVL2
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 23
+ 747 0253 13       		.uleb128 0x13
+ 748 0254 06000000 		.4byte	.LVL0
+ 749 0258 E4050000 		.4byte	0x5e4
+ 750 025c 14       		.uleb128 0x14
+ 751 025d 22000000 		.4byte	.LVL1
+ 752 0261 EF050000 		.4byte	0x5ef
+ 753 0265 70020000 		.4byte	0x270
+ 754 0269 15       		.uleb128 0x15
+ 755 026a 01       		.uleb128 0x1
+ 756 026b 50       		.byte	0x50
+ 757 026c 02       		.uleb128 0x2
+ 758 026d 74       		.byte	0x74
+ 759 026e 00       		.sleb128 0
+ 760 026f 00       		.byte	0
+ 761 0270 16       		.uleb128 0x16
+ 762 0271 2A000000 		.4byte	.LVL2
+ 763 0275 FA050000 		.4byte	0x5fa
+ 764 0279 15       		.uleb128 0x15
+ 765 027a 01       		.uleb128 0x1
+ 766 027b 50       		.byte	0x50
+ 767 027c 02       		.uleb128 0x2
+ 768 027d 74       		.byte	0x74
+ 769 027e 00       		.sleb128 0
+ 770 027f 00       		.byte	0
+ 771 0280 00       		.byte	0
+ 772 0281 12       		.uleb128 0x12
+ 773 0282 18040000 		.4byte	.LASF37
+ 774 0286 01       		.byte	0x1
+ 775 0287 EB       		.byte	0xeb
+ 776 0288 00000000 		.4byte	.LFB68
+ 777 028c 0C000000 		.4byte	.LFE68-.LFB68
+ 778 0290 01       		.uleb128 0x1
+ 779 0291 9C       		.byte	0x9c
+ 780 0292 B1020000 		.4byte	0x2b1
+ 781 0296 17       		.uleb128 0x17
+ 782 0297 B3000000 		.4byte	.LASF40
+ 783 029b 01       		.byte	0x1
+ 784 029c EB       		.byte	0xeb
+ 785 029d F7000000 		.4byte	0xf7
+ 786 02a1 01       		.uleb128 0x1
+ 787 02a2 50       		.byte	0x50
+ 788 02a3 18       		.uleb128 0x18
+ 789 02a4 FE010000 		.4byte	.LASF38
+ 790 02a8 01       		.byte	0x1
+ 791 02a9 ED       		.byte	0xed
+ 792 02aa B1020000 		.4byte	0x2b1
+ 793 02ae 01       		.uleb128 0x1
+ 794 02af 53       		.byte	0x53
+ 795 02b0 00       		.byte	0
+ 796 02b1 05       		.uleb128 0x5
+ 797 02b2 04       		.byte	0x4
+ 798 02b3 F7000000 		.4byte	0xf7
+ 799 02b7 19       		.uleb128 0x19
+ 800 02b8 4B020000 		.4byte	.LASF42
+ 801 02bc 01       		.byte	0x1
+ 802 02bd 0301     		.2byte	0x103
+ 803 02bf F7000000 		.4byte	0xf7
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cch10daQ.s 			page 23
 
 
- 804 0275 07060000 		.4byte	0x607
- 805 0279 84020000 		.4byte	0x284
- 806 027d 15       		.uleb128 0x15
- 807 027e 01       		.uleb128 0x1
- 808 027f 50       		.byte	0x50
- 809 0280 02       		.uleb128 0x2
- 810 0281 74       		.byte	0x74
- 811 0282 00       		.sleb128 0
- 812 0283 00       		.byte	0
- 813 0284 13       		.uleb128 0x13
- 814 0285 56000000 		.4byte	.LVL4
- 815 0289 12060000 		.4byte	0x612
- 816 028d 00       		.byte	0
- 817 028e 16       		.uleb128 0x16
- 818 028f 06040000 		.4byte	.LASF37
- 819 0293 01       		.byte	0x1
- 820 0294 EB       		.byte	0xeb
- 821 0295 00000000 		.4byte	.LFB68
- 822 0299 0C000000 		.4byte	.LFE68-.LFB68
- 823 029d 01       		.uleb128 0x1
- 824 029e 9C       		.byte	0x9c
- 825 029f BE020000 		.4byte	0x2be
- 826 02a3 17       		.uleb128 0x17
- 827 02a4 B3000000 		.4byte	.LASF40
- 828 02a8 01       		.byte	0x1
- 829 02a9 EB       		.byte	0xeb
- 830 02aa F7000000 		.4byte	0xf7
- 831 02ae 01       		.uleb128 0x1
- 832 02af 50       		.byte	0x50
- 833 02b0 18       		.uleb128 0x18
- 834 02b1 E4010000 		.4byte	.LASF38
- 835 02b5 01       		.byte	0x1
- 836 02b6 ED       		.byte	0xed
- 837 02b7 BE020000 		.4byte	0x2be
- 838 02bb 01       		.uleb128 0x1
- 839 02bc 53       		.byte	0x53
- 840 02bd 00       		.byte	0
- 841 02be 05       		.uleb128 0x5
- 842 02bf 04       		.byte	0x4
- 843 02c0 F7000000 		.4byte	0xf7
- 844 02c4 19       		.uleb128 0x19
- 845 02c5 31020000 		.4byte	.LASF42
- 846 02c9 01       		.byte	0x1
- 847 02ca 0301     		.2byte	0x103
- 848 02cc F7000000 		.4byte	0xf7
- 849 02d0 00000000 		.4byte	.LFB69
- 850 02d4 0C000000 		.4byte	.LFE69-.LFB69
- 851 02d8 01       		.uleb128 0x1
- 852 02d9 9C       		.byte	0x9c
- 853 02da ED020000 		.4byte	0x2ed
- 854 02de 1A       		.uleb128 0x1a
- 855 02df E4010000 		.4byte	.LASF38
- 856 02e3 01       		.byte	0x1
- 857 02e4 0501     		.2byte	0x105
- 858 02e6 BE020000 		.4byte	0x2be
- 859 02ea 01       		.uleb128 0x1
- 860 02eb 53       		.byte	0x53
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 24
+ 804 02c3 00000000 		.4byte	.LFB69
+ 805 02c7 0C000000 		.4byte	.LFE69-.LFB69
+ 806 02cb 01       		.uleb128 0x1
+ 807 02cc 9C       		.byte	0x9c
+ 808 02cd E0020000 		.4byte	0x2e0
+ 809 02d1 1A       		.uleb128 0x1a
+ 810 02d2 FE010000 		.4byte	.LASF38
+ 811 02d6 01       		.byte	0x1
+ 812 02d7 0501     		.2byte	0x105
+ 813 02d9 B1020000 		.4byte	0x2b1
+ 814 02dd 01       		.uleb128 0x1
+ 815 02de 53       		.byte	0x53
+ 816 02df 00       		.byte	0
+ 817 02e0 1B       		.uleb128 0x1b
+ 818 02e1 55000000 		.4byte	.LASF39
+ 819 02e5 01       		.byte	0x1
+ 820 02e6 2501     		.2byte	0x125
+ 821 02e8 00000000 		.4byte	.LFB70
+ 822 02ec 10000000 		.4byte	.LFE70-.LFB70
+ 823 02f0 01       		.uleb128 0x1
+ 824 02f1 9C       		.byte	0x9c
+ 825 02f2 07030000 		.4byte	0x307
+ 826 02f6 1C       		.uleb128 0x1c
+ 827 02f7 21000000 		.4byte	.LASF41
+ 828 02fb 01       		.byte	0x1
+ 829 02fc 2501     		.2byte	0x125
+ 830 02fe A3000000 		.4byte	0xa3
+ 831 0302 00000000 		.4byte	.LLST0
+ 832 0306 00       		.byte	0
+ 833 0307 19       		.uleb128 0x19
+ 834 0308 D5000000 		.4byte	.LASF43
+ 835 030c 01       		.byte	0x1
+ 836 030d 3B01     		.2byte	0x13b
+ 837 030f A3000000 		.4byte	0xa3
+ 838 0313 00000000 		.4byte	.LFB71
+ 839 0317 0C000000 		.4byte	.LFE71-.LFB71
+ 840 031b 01       		.uleb128 0x1
+ 841 031c 9C       		.byte	0x9c
+ 842 031d 32030000 		.4byte	0x332
+ 843 0321 1D       		.uleb128 0x1d
+ 844 0322 21000000 		.4byte	.LASF41
+ 845 0326 01       		.byte	0x1
+ 846 0327 3D01     		.2byte	0x13d
+ 847 0329 A3000000 		.4byte	0xa3
+ 848 032d 21000000 		.4byte	.LLST1
+ 849 0331 00       		.byte	0
+ 850 0332 1E       		.uleb128 0x1e
+ 851 0333 1B020000 		.4byte	.LASF44
+ 852 0337 01       		.byte	0x1
+ 853 0338 5601     		.2byte	0x156
+ 854 033a 00000000 		.4byte	.LFB72
+ 855 033e 10000000 		.4byte	.LFE72-.LFB72
+ 856 0342 01       		.uleb128 0x1
+ 857 0343 9C       		.byte	0x9c
+ 858 0344 1F       		.uleb128 0x1f
+ 859 0345 4A010000 		.4byte	.LASF77
+ 860 0349 01       		.byte	0x1
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cch10daQ.s 			page 24
 
 
- 861 02ec 00       		.byte	0
- 862 02ed 1B       		.uleb128 0x1b
- 863 02ee 55000000 		.4byte	.LASF39
- 864 02f2 01       		.byte	0x1
- 865 02f3 2501     		.2byte	0x125
- 866 02f5 00000000 		.4byte	.LFB70
- 867 02f9 10000000 		.4byte	.LFE70-.LFB70
- 868 02fd 01       		.uleb128 0x1
- 869 02fe 9C       		.byte	0x9c
- 870 02ff 14030000 		.4byte	0x314
- 871 0303 1C       		.uleb128 0x1c
- 872 0304 21000000 		.4byte	.LASF41
- 873 0308 01       		.byte	0x1
- 874 0309 2501     		.2byte	0x125
- 875 030b A3000000 		.4byte	0xa3
- 876 030f 00000000 		.4byte	.LLST0
- 877 0313 00       		.byte	0
- 878 0314 19       		.uleb128 0x19
- 879 0315 BB000000 		.4byte	.LASF43
- 880 0319 01       		.byte	0x1
- 881 031a 3B01     		.2byte	0x13b
- 882 031c A3000000 		.4byte	0xa3
- 883 0320 00000000 		.4byte	.LFB71
- 884 0324 0C000000 		.4byte	.LFE71-.LFB71
- 885 0328 01       		.uleb128 0x1
- 886 0329 9C       		.byte	0x9c
- 887 032a 3F030000 		.4byte	0x33f
- 888 032e 1D       		.uleb128 0x1d
- 889 032f 21000000 		.4byte	.LASF41
- 890 0333 01       		.byte	0x1
- 891 0334 3D01     		.2byte	0x13d
- 892 0336 A3000000 		.4byte	0xa3
- 893 033a 21000000 		.4byte	.LLST1
- 894 033e 00       		.byte	0
- 895 033f 1E       		.uleb128 0x1e
- 896 0340 01020000 		.4byte	.LASF44
- 897 0344 01       		.byte	0x1
- 898 0345 5601     		.2byte	0x156
- 899 0347 00000000 		.4byte	.LFB72
- 900 034b 0C000000 		.4byte	.LFE72-.LFB72
- 901 034f 01       		.uleb128 0x1
- 902 0350 9C       		.byte	0x9c
- 903 0351 1F       		.uleb128 0x1f
- 904 0352 30010000 		.4byte	.LASF78
- 905 0356 01       		.byte	0x1
- 906 0357 6B01     		.2byte	0x16b
- 907 0359 A3000000 		.4byte	0xa3
- 908 035d 00000000 		.4byte	.LFB73
- 909 0361 18000000 		.4byte	.LFE73-.LFB73
- 910 0365 01       		.uleb128 0x1
- 911 0366 9C       		.byte	0x9c
- 912 0367 1E       		.uleb128 0x1e
- 913 0368 50030000 		.4byte	.LASF45
- 914 036c 01       		.byte	0x1
- 915 036d 8001     		.2byte	0x180
- 916 036f 00000000 		.4byte	.LFB74
- 917 0373 0C000000 		.4byte	.LFE74-.LFB74
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 25
+ 861 034a 6B01     		.2byte	0x16b
+ 862 034c A3000000 		.4byte	0xa3
+ 863 0350 00000000 		.4byte	.LFB73
+ 864 0354 18000000 		.4byte	.LFE73-.LFB73
+ 865 0358 01       		.uleb128 0x1
+ 866 0359 9C       		.byte	0x9c
+ 867 035a 1E       		.uleb128 0x1e
+ 868 035b 6A030000 		.4byte	.LASF45
+ 869 035f 01       		.byte	0x1
+ 870 0360 8001     		.2byte	0x180
+ 871 0362 00000000 		.4byte	.LFB74
+ 872 0366 10000000 		.4byte	.LFE74-.LFB74
+ 873 036a 01       		.uleb128 0x1
+ 874 036b 9C       		.byte	0x9c
+ 875 036c 12       		.uleb128 0x12
+ 876 036d 52030000 		.4byte	.LASF46
+ 877 0371 01       		.byte	0x1
+ 878 0372 4E       		.byte	0x4e
+ 879 0373 00000000 		.4byte	.LFB64
+ 880 0377 1C000000 		.4byte	.LFE64-.LFB64
+ 881 037b 01       		.uleb128 0x1
+ 882 037c 9C       		.byte	0x9c
+ 883 037d BE030000 		.4byte	0x3be
+ 884 0381 13       		.uleb128 0x13
+ 885 0382 06000000 		.4byte	.LVL10
+ 886 0386 5A030000 		.4byte	0x35a
+ 887 038a 14       		.uleb128 0x14
+ 888 038b 0C000000 		.4byte	.LVL11
+ 889 038f 81020000 		.4byte	0x281
+ 890 0393 A1030000 		.4byte	0x3a1
+ 891 0397 15       		.uleb128 0x15
+ 892 0398 01       		.uleb128 0x1
+ 893 0399 50       		.byte	0x50
+ 894 039a 05       		.uleb128 0x5
+ 895 039b 03       		.byte	0x3
+ 896 039c 00000000 		.4byte	angle_control_isr_Interrupt
+ 897 03a0 00       		.byte	0
+ 898 03a1 14       		.uleb128 0x14
+ 899 03a2 12000000 		.4byte	.LVL12
+ 900 03a6 E0020000 		.4byte	0x2e0
+ 901 03aa B4030000 		.4byte	0x3b4
+ 902 03ae 15       		.uleb128 0x15
+ 903 03af 01       		.uleb128 0x1
+ 904 03b0 50       		.byte	0x50
+ 905 03b1 01       		.uleb128 0x1
+ 906 03b2 37       		.byte	0x37
+ 907 03b3 00       		.byte	0
+ 908 03b4 13       		.uleb128 0x13
+ 909 03b5 16000000 		.4byte	.LVL13
+ 910 03b9 32030000 		.4byte	0x332
+ 911 03bd 00       		.byte	0
+ 912 03be 12       		.uleb128 0x12
+ 913 03bf 34040000 		.4byte	.LASF47
+ 914 03c3 01       		.byte	0x1
+ 915 03c4 79       		.byte	0x79
+ 916 03c5 00000000 		.4byte	.LFB65
+ 917 03c9 1A000000 		.4byte	.LFE65-.LFB65
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cch10daQ.s 			page 25
 
 
- 918 0377 01       		.uleb128 0x1
- 919 0378 9C       		.byte	0x9c
- 920 0379 16       		.uleb128 0x16
- 921 037a 38030000 		.4byte	.LASF46
- 922 037e 01       		.byte	0x1
- 923 037f 4E       		.byte	0x4e
- 924 0380 00000000 		.4byte	.LFB64
- 925 0384 1C000000 		.4byte	.LFE64-.LFB64
- 926 0388 01       		.uleb128 0x1
- 927 0389 9C       		.byte	0x9c
- 928 038a CB030000 		.4byte	0x3cb
- 929 038e 13       		.uleb128 0x13
- 930 038f 06000000 		.4byte	.LVL13
- 931 0393 67030000 		.4byte	0x367
- 932 0397 14       		.uleb128 0x14
- 933 0398 0C000000 		.4byte	.LVL14
- 934 039c 8E020000 		.4byte	0x28e
- 935 03a0 AE030000 		.4byte	0x3ae
- 936 03a4 15       		.uleb128 0x15
- 937 03a5 01       		.uleb128 0x1
- 938 03a6 50       		.byte	0x50
- 939 03a7 05       		.uleb128 0x5
- 940 03a8 03       		.byte	0x3
- 941 03a9 00000000 		.4byte	angle_control_isr_Interrupt
- 942 03ad 00       		.byte	0
- 943 03ae 14       		.uleb128 0x14
- 944 03af 12000000 		.4byte	.LVL15
- 945 03b3 ED020000 		.4byte	0x2ed
- 946 03b7 C1030000 		.4byte	0x3c1
- 947 03bb 15       		.uleb128 0x15
- 948 03bc 01       		.uleb128 0x1
- 949 03bd 50       		.byte	0x50
- 950 03be 01       		.uleb128 0x1
- 951 03bf 37       		.byte	0x37
- 952 03c0 00       		.byte	0
- 953 03c1 13       		.uleb128 0x13
- 954 03c2 16000000 		.4byte	.LVL16
- 955 03c6 3F030000 		.4byte	0x33f
- 956 03ca 00       		.byte	0
- 957 03cb 16       		.uleb128 0x16
- 958 03cc 22040000 		.4byte	.LASF47
- 959 03d0 01       		.byte	0x1
- 960 03d1 79       		.byte	0x79
- 961 03d2 00000000 		.4byte	.LFB65
- 962 03d6 1A000000 		.4byte	.LFE65-.LFB65
- 963 03da 01       		.uleb128 0x1
- 964 03db 9C       		.byte	0x9c
- 965 03dc 29040000 		.4byte	0x429
- 966 03e0 20       		.uleb128 0x20
- 967 03e1 B3000000 		.4byte	.LASF40
- 968 03e5 01       		.byte	0x1
- 969 03e6 79       		.byte	0x79
- 970 03e7 F7000000 		.4byte	0xf7
- 971 03eb 38000000 		.4byte	.LLST2
- 972 03ef 13       		.uleb128 0x13
- 973 03f0 08000000 		.4byte	.LVL18
- 974 03f4 67030000 		.4byte	0x367
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 26
+ 918 03cd 01       		.uleb128 0x1
+ 919 03ce 9C       		.byte	0x9c
+ 920 03cf 1C040000 		.4byte	0x41c
+ 921 03d3 20       		.uleb128 0x20
+ 922 03d4 B3000000 		.4byte	.LASF40
+ 923 03d8 01       		.byte	0x1
+ 924 03d9 79       		.byte	0x79
+ 925 03da F7000000 		.4byte	0xf7
+ 926 03de 38000000 		.4byte	.LLST2
+ 927 03e2 13       		.uleb128 0x13
+ 928 03e3 08000000 		.4byte	.LVL15
+ 929 03e7 5A030000 		.4byte	0x35a
+ 930 03eb 14       		.uleb128 0x14
+ 931 03ec 0E000000 		.4byte	.LVL16
+ 932 03f0 81020000 		.4byte	0x281
+ 933 03f4 FF030000 		.4byte	0x3ff
+ 934 03f8 15       		.uleb128 0x15
+ 935 03f9 01       		.uleb128 0x1
+ 936 03fa 50       		.byte	0x50
+ 937 03fb 02       		.uleb128 0x2
+ 938 03fc 74       		.byte	0x74
+ 939 03fd 00       		.sleb128 0
+ 940 03fe 00       		.byte	0
+ 941 03ff 14       		.uleb128 0x14
+ 942 0400 14000000 		.4byte	.LVL17
+ 943 0404 E0020000 		.4byte	0x2e0
+ 944 0408 12040000 		.4byte	0x412
+ 945 040c 15       		.uleb128 0x15
+ 946 040d 01       		.uleb128 0x1
+ 947 040e 50       		.byte	0x50
+ 948 040f 01       		.uleb128 0x1
+ 949 0410 37       		.byte	0x37
+ 950 0411 00       		.byte	0
+ 951 0412 13       		.uleb128 0x13
+ 952 0413 18000000 		.4byte	.LVL18
+ 953 0417 32030000 		.4byte	0x332
+ 954 041b 00       		.byte	0
+ 955 041c 12       		.uleb128 0x12
+ 956 041d DC030000 		.4byte	.LASF48
+ 957 0421 01       		.byte	0x1
+ 958 0422 97       		.byte	0x97
+ 959 0423 00000000 		.4byte	.LFB66
+ 960 0427 14000000 		.4byte	.LFE66-.LFB66
+ 961 042b 01       		.uleb128 0x1
+ 962 042c 9C       		.byte	0x9c
+ 963 042d 44040000 		.4byte	0x444
+ 964 0431 13       		.uleb128 0x13
+ 965 0432 06000000 		.4byte	.LVL19
+ 966 0436 5A030000 		.4byte	0x35a
+ 967 043a 13       		.uleb128 0x13
+ 968 043b 0C000000 		.4byte	.LVL20
+ 969 043f 81020000 		.4byte	0x281
+ 970 0443 00       		.byte	0
+ 971 0444 1E       		.uleb128 0x1e
+ 972 0445 AF030000 		.4byte	.LASF49
+ 973 0449 01       		.byte	0x1
+ 974 044a 9B01     		.2byte	0x19b
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cch10daQ.s 			page 26
 
 
- 975 03f8 14       		.uleb128 0x14
- 976 03f9 0E000000 		.4byte	.LVL19
- 977 03fd 8E020000 		.4byte	0x28e
- 978 0401 0C040000 		.4byte	0x40c
- 979 0405 15       		.uleb128 0x15
- 980 0406 01       		.uleb128 0x1
- 981 0407 50       		.byte	0x50
- 982 0408 02       		.uleb128 0x2
- 983 0409 74       		.byte	0x74
- 984 040a 00       		.sleb128 0
- 985 040b 00       		.byte	0
- 986 040c 14       		.uleb128 0x14
- 987 040d 14000000 		.4byte	.LVL20
- 988 0411 ED020000 		.4byte	0x2ed
- 989 0415 1F040000 		.4byte	0x41f
- 990 0419 15       		.uleb128 0x15
- 991 041a 01       		.uleb128 0x1
- 992 041b 50       		.byte	0x50
- 993 041c 01       		.uleb128 0x1
- 994 041d 37       		.byte	0x37
- 995 041e 00       		.byte	0
- 996 041f 13       		.uleb128 0x13
- 997 0420 18000000 		.4byte	.LVL21
- 998 0424 3F030000 		.4byte	0x33f
- 999 0428 00       		.byte	0
- 1000 0429 16       		.uleb128 0x16
- 1001 042a CA030000 		.4byte	.LASF48
- 1002 042e 01       		.byte	0x1
- 1003 042f 97       		.byte	0x97
- 1004 0430 00000000 		.4byte	.LFB66
- 1005 0434 14000000 		.4byte	.LFE66-.LFB66
- 1006 0438 01       		.uleb128 0x1
- 1007 0439 9C       		.byte	0x9c
- 1008 043a 51040000 		.4byte	0x451
- 1009 043e 13       		.uleb128 0x13
- 1010 043f 06000000 		.4byte	.LVL22
- 1011 0443 67030000 		.4byte	0x367
- 1012 0447 13       		.uleb128 0x13
- 1013 0448 0C000000 		.4byte	.LVL23
- 1014 044c 8E020000 		.4byte	0x28e
- 1015 0450 00       		.byte	0
- 1016 0451 1E       		.uleb128 0x1e
- 1017 0452 9D030000 		.4byte	.LASF49
- 1018 0456 01       		.byte	0x1
- 1019 0457 9B01     		.2byte	0x19b
- 1020 0459 00000000 		.4byte	.LFB75
- 1021 045d 0C000000 		.4byte	.LFE75-.LFB75
- 1022 0461 01       		.uleb128 0x1
- 1023 0462 9C       		.byte	0x9c
- 1024 0463 1E       		.uleb128 0x1e
- 1025 0464 F1000000 		.4byte	.LASF50
- 1026 0468 01       		.byte	0x1
- 1027 0469 B401     		.2byte	0x1b4
- 1028 046b 00000000 		.4byte	.LFB76
- 1029 046f 0C000000 		.4byte	.LFE76-.LFB76
- 1030 0473 01       		.uleb128 0x1
- 1031 0474 9C       		.byte	0x9c
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 27
+ 975 044c 00000000 		.4byte	.LFB75
+ 976 0450 10000000 		.4byte	.LFE75-.LFB75
+ 977 0454 01       		.uleb128 0x1
+ 978 0455 9C       		.byte	0x9c
+ 979 0456 1E       		.uleb128 0x1e
+ 980 0457 0B010000 		.4byte	.LASF50
+ 981 045b 01       		.byte	0x1
+ 982 045c B401     		.2byte	0x1b4
+ 983 045e 00000000 		.4byte	.LFB76
+ 984 0462 10000000 		.4byte	.LFE76-.LFB76
+ 985 0466 01       		.uleb128 0x1
+ 986 0467 9C       		.byte	0x9c
+ 987 0468 21       		.uleb128 0x21
+ 988 0469 4E040000 		.4byte	.LASF51
+ 989 046d 08       		.byte	0x8
+ 990 046e 1207     		.2byte	0x712
+ 991 0470 74040000 		.4byte	0x474
+ 992 0474 08       		.uleb128 0x8
+ 993 0475 98000000 		.4byte	0x98
+ 994 0479 22       		.uleb128 0x22
+ 995 047a 524200   		.ascii	"RB\000"
+ 996 047d 06       		.byte	0x6
+ 997 047e 20       		.byte	0x20
+ 998 047f C9010000 		.4byte	0x1c9
+ 999 0483 05       		.uleb128 0x5
+ 1000 0484 03       		.byte	0x3
+ 1001 0485 00000000 		.4byte	RB
+ 1002 0489 22       		.uleb128 0x22
+ 1003 048a 504200   		.ascii	"PB\000"
+ 1004 048d 07       		.byte	0x7
+ 1005 048e 1F       		.byte	0x1f
+ 1006 048f 99040000 		.4byte	0x499
+ 1007 0493 05       		.uleb128 0x5
+ 1008 0494 03       		.byte	0x3
+ 1009 0495 00000000 		.4byte	PB
+ 1010 0499 08       		.uleb128 0x8
+ 1011 049a 33020000 		.4byte	0x233
+ 1012 049e 22       		.uleb128 0x22
+ 1013 049f 436800   		.ascii	"Ch\000"
+ 1014 04a2 07       		.byte	0x7
+ 1015 04a3 4F       		.byte	0x4f
+ 1016 04a4 E1000000 		.4byte	0xe1
+ 1017 04a8 05       		.uleb128 0x5
+ 1018 04a9 03       		.byte	0x3
+ 1019 04aa 00000000 		.4byte	Ch
+ 1020 04ae 23       		.uleb128 0x23
+ 1021 04af B0020000 		.4byte	.LASF52
+ 1022 04b3 07       		.byte	0x7
+ 1023 04b4 51       		.byte	0x51
+ 1024 04b5 E1000000 		.4byte	0xe1
+ 1025 04b9 05       		.uleb128 0x5
+ 1026 04ba 03       		.byte	0x3
+ 1027 04bb 00000000 		.4byte	ContinuouslySendData
+ 1028 04bf 23       		.uleb128 0x23
+ 1029 04c0 67020000 		.4byte	.LASF53
+ 1030 04c4 07       		.byte	0x7
+ 1031 04c5 52       		.byte	0x52
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cch10daQ.s 			page 27
 
 
- 1032 0475 21       		.uleb128 0x21
- 1033 0476 3C040000 		.4byte	.LASF51
- 1034 047a 08       		.byte	0x8
- 1035 047b 1207     		.2byte	0x712
- 1036 047d 81040000 		.4byte	0x481
- 1037 0481 08       		.uleb128 0x8
- 1038 0482 98000000 		.4byte	0x98
- 1039 0486 22       		.uleb128 0x22
- 1040 0487 524200   		.ascii	"RB\000"
- 1041 048a 06       		.byte	0x6
- 1042 048b 20       		.byte	0x20
- 1043 048c C9010000 		.4byte	0x1c9
- 1044 0490 05       		.uleb128 0x5
- 1045 0491 03       		.byte	0x3
- 1046 0492 00000000 		.4byte	RB
- 1047 0496 22       		.uleb128 0x22
- 1048 0497 504200   		.ascii	"PB\000"
- 1049 049a 07       		.byte	0x7
- 1050 049b 1E       		.byte	0x1e
- 1051 049c A6040000 		.4byte	0x4a6
- 1052 04a0 05       		.uleb128 0x5
- 1053 04a1 03       		.byte	0x3
- 1054 04a2 00000000 		.4byte	PB
- 1055 04a6 08       		.uleb128 0x8
- 1056 04a7 33020000 		.4byte	0x233
- 1057 04ab 22       		.uleb128 0x22
- 1058 04ac 436800   		.ascii	"Ch\000"
- 1059 04af 07       		.byte	0x7
- 1060 04b0 4F       		.byte	0x4f
- 1061 04b1 E1000000 		.4byte	0xe1
- 1062 04b5 05       		.uleb128 0x5
- 1063 04b6 03       		.byte	0x3
- 1064 04b7 00000000 		.4byte	Ch
- 1065 04bb 23       		.uleb128 0x23
- 1066 04bc 96020000 		.4byte	.LASF52
- 1067 04c0 07       		.byte	0x7
- 1068 04c1 51       		.byte	0x51
- 1069 04c2 E1000000 		.4byte	0xe1
- 1070 04c6 05       		.uleb128 0x5
- 1071 04c7 03       		.byte	0x3
- 1072 04c8 00000000 		.4byte	ContinuouslySendData
- 1073 04cc 23       		.uleb128 0x23
- 1074 04cd 4D020000 		.4byte	.LASF53
- 1075 04d1 07       		.byte	0x7
- 1076 04d2 52       		.byte	0x52
- 1077 04d3 E1000000 		.4byte	0xe1
- 1078 04d7 05       		.uleb128 0x5
- 1079 04d8 03       		.byte	0x3
- 1080 04d9 00000000 		.4byte	SendSingleByte
- 1081 04dd 23       		.uleb128 0x23
- 1082 04de D0020000 		.4byte	.LASF54
- 1083 04e2 07       		.byte	0x7
- 1084 04e3 53       		.byte	0x53
- 1085 04e4 E1000000 		.4byte	0xe1
- 1086 04e8 05       		.uleb128 0x5
- 1087 04e9 03       		.byte	0x3
- 1088 04ea 00000000 		.4byte	SendEmulatedData
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 28
+ 1032 04c6 E1000000 		.4byte	0xe1
+ 1033 04ca 05       		.uleb128 0x5
+ 1034 04cb 03       		.byte	0x3
+ 1035 04cc 00000000 		.4byte	SendSingleByte
+ 1036 04d0 23       		.uleb128 0x23
+ 1037 04d1 EA020000 		.4byte	.LASF54
+ 1038 04d5 07       		.byte	0x7
+ 1039 04d6 53       		.byte	0x53
+ 1040 04d7 E1000000 		.4byte	0xe1
+ 1041 04db 05       		.uleb128 0x5
+ 1042 04dc 03       		.byte	0x3
+ 1043 04dd 00000000 		.4byte	SendEmulatedData
+ 1044 04e1 23       		.uleb128 0x23
+ 1045 04e2 34020000 		.4byte	.LASF55
+ 1046 04e6 07       		.byte	0x7
+ 1047 04e7 54       		.byte	0x54
+ 1048 04e8 E1000000 		.4byte	0xe1
+ 1049 04ec 05       		.uleb128 0x5
+ 1050 04ed 03       		.byte	0x3
+ 1051 04ee 00000000 		.4byte	_uart_Reset
+ 1052 04f2 23       		.uleb128 0x23
+ 1053 04f3 00000000 		.4byte	.LASF56
+ 1054 04f7 07       		.byte	0x7
+ 1055 04f8 57       		.byte	0x57
+ 1056 04f9 25000000 		.4byte	0x25
+ 1057 04fd 05       		.uleb128 0x5
+ 1058 04fe 03       		.byte	0x3
+ 1059 04ff 00000000 		.4byte	_state_
+ 1060 0503 23       		.uleb128 0x23
+ 1061 0504 08000000 		.4byte	.LASF57
+ 1062 0508 01       		.byte	0x1
+ 1063 0509 29       		.byte	0x29
+ 1064 050a E1000000 		.4byte	0xe1
+ 1065 050e 05       		.uleb128 0x5
+ 1066 050f 03       		.byte	0x3
+ 1067 0510 00000000 		.4byte	dir_state
+ 1068 0514 23       		.uleb128 0x23
+ 1069 0515 80010000 		.4byte	.LASF58
+ 1070 0519 01       		.byte	0x1
+ 1071 051a 2D       		.byte	0x2d
+ 1072 051b 8D010000 		.4byte	0x18d
+ 1073 051f 05       		.uleb128 0x5
+ 1074 0520 03       		.byte	0x3
+ 1075 0521 00000000 		.4byte	pos_pid_
+ 1076 0525 23       		.uleb128 0x23
+ 1077 0526 F3040000 		.4byte	.LASF59
+ 1078 052a 01       		.byte	0x1
+ 1079 052b 26       		.byte	0x26
+ 1080 052c 74040000 		.4byte	0x474
+ 1081 0530 05       		.uleb128 0x5
+ 1082 0531 03       		.byte	0x3
+ 1083 0532 00000000 		.4byte	actual_pos
+ 1084 0536 23       		.uleb128 0x23
+ 1085 0537 10040000 		.4byte	.LASF60
+ 1086 053b 01       		.byte	0x1
+ 1087 053c 24       		.byte	0x24
+ 1088 053d 74040000 		.4byte	0x474
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cch10daQ.s 			page 28
 
 
- 1089 04ee 23       		.uleb128 0x23
- 1090 04ef 1A020000 		.4byte	.LASF55
- 1091 04f3 07       		.byte	0x7
- 1092 04f4 54       		.byte	0x54
- 1093 04f5 E1000000 		.4byte	0xe1
- 1094 04f9 05       		.uleb128 0x5
- 1095 04fa 03       		.byte	0x3
- 1096 04fb 00000000 		.4byte	_uart_Reset
- 1097 04ff 23       		.uleb128 0x23
- 1098 0500 00000000 		.4byte	.LASF56
- 1099 0504 07       		.byte	0x7
- 1100 0505 57       		.byte	0x57
- 1101 0506 25000000 		.4byte	0x25
- 1102 050a 05       		.uleb128 0x5
- 1103 050b 03       		.byte	0x3
- 1104 050c 00000000 		.4byte	_state_
- 1105 0510 23       		.uleb128 0x23
- 1106 0511 08000000 		.4byte	.LASF57
- 1107 0515 01       		.byte	0x1
- 1108 0516 29       		.byte	0x29
- 1109 0517 E1000000 		.4byte	0xe1
- 1110 051b 05       		.uleb128 0x5
- 1111 051c 03       		.byte	0x3
- 1112 051d 00000000 		.4byte	dir_state
- 1113 0521 23       		.uleb128 0x23
- 1114 0522 66010000 		.4byte	.LASF58
- 1115 0526 01       		.byte	0x1
- 1116 0527 2D       		.byte	0x2d
- 1117 0528 8D010000 		.4byte	0x18d
- 1118 052c 05       		.uleb128 0x5
- 1119 052d 03       		.byte	0x3
- 1120 052e 00000000 		.4byte	pos_pid_
- 1121 0532 23       		.uleb128 0x23
- 1122 0533 E1040000 		.4byte	.LASF59
- 1123 0537 01       		.byte	0x1
- 1124 0538 26       		.byte	0x26
- 1125 0539 81040000 		.4byte	0x481
- 1126 053d 05       		.uleb128 0x5
- 1127 053e 03       		.byte	0x3
- 1128 053f 00000000 		.4byte	actual_pos
- 1129 0543 23       		.uleb128 0x23
- 1130 0544 FE030000 		.4byte	.LASF60
- 1131 0548 01       		.byte	0x1
- 1132 0549 24       		.byte	0x24
- 1133 054a 81040000 		.4byte	0x481
- 1134 054e 05       		.uleb128 0x5
- 1135 054f 03       		.byte	0x3
- 1136 0550 00000000 		.4byte	pos_ref
- 1137 0554 23       		.uleb128 0x23
- 1138 0555 A0000000 		.4byte	.LASF61
- 1139 0559 01       		.byte	0x1
- 1140 055a 25       		.byte	0x25
- 1141 055b 81040000 		.4byte	0x481
- 1142 055f 05       		.uleb128 0x5
- 1143 0560 03       		.byte	0x3
- 1144 0561 00000000 		.4byte	init_pos
- 1145 0565 23       		.uleb128 0x23
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 29
+ 1089 0541 05       		.uleb128 0x5
+ 1090 0542 03       		.byte	0x3
+ 1091 0543 00000000 		.4byte	pos_ref
+ 1092 0547 23       		.uleb128 0x23
+ 1093 0548 A0000000 		.4byte	.LASF61
+ 1094 054c 01       		.byte	0x1
+ 1095 054d 25       		.byte	0x25
+ 1096 054e 74040000 		.4byte	0x474
+ 1097 0552 05       		.uleb128 0x5
+ 1098 0553 03       		.byte	0x3
+ 1099 0554 00000000 		.4byte	init_pos
+ 1100 0558 23       		.uleb128 0x23
+ 1101 0559 A9000000 		.4byte	.LASF62
+ 1102 055d 01       		.byte	0x1
+ 1103 055e 23       		.byte	0x23
+ 1104 055f 74040000 		.4byte	0x474
+ 1105 0563 05       		.uleb128 0x5
+ 1106 0564 03       		.byte	0x3
+ 1107 0565 00000000 		.4byte	speed_ref
+ 1108 0569 23       		.uleb128 0x23
+ 1109 056a D1020000 		.4byte	.LASF63
+ 1110 056e 01       		.byte	0x1
+ 1111 056f 2B       		.byte	0x2b
+ 1112 0570 74040000 		.4byte	0x474
+ 1113 0574 05       		.uleb128 0x5
+ 1114 0575 03       		.byte	0x3
+ 1115 0576 00000000 		.4byte	debug
+ 1116 057a 23       		.uleb128 0x23
+ 1117 057b 02040000 		.4byte	.LASF64
+ 1118 057f 09       		.byte	0x9
+ 1119 0580 17       		.byte	0x17
+ 1120 0581 A3000000 		.4byte	0xa3
+ 1121 0585 05       		.uleb128 0x5
+ 1122 0586 03       		.byte	0x3
+ 1123 0587 00000000 		.4byte	_braken_state
+ 1124 058b 22       		.uleb128 0x22
+ 1125 058c 6D736700 		.ascii	"msg\000"
+ 1126 0590 09       		.byte	0x9
+ 1127 0591 15       		.byte	0x15
+ 1128 0592 E6010000 		.4byte	0x1e6
+ 1129 0596 05       		.uleb128 0x5
+ 1130 0597 03       		.byte	0x3
+ 1131 0598 00000000 		.4byte	msg
+ 1132 059c 23       		.uleb128 0x23
+ 1133 059d 97000000 		.4byte	.LASF65
+ 1134 05a1 09       		.byte	0x9
+ 1135 05a2 16       		.byte	0x16
+ 1136 05a3 AD050000 		.4byte	0x5ad
+ 1137 05a7 05       		.uleb128 0x5
+ 1138 05a8 03       		.byte	0x3
+ 1139 05a9 00000000 		.4byte	TS_array
+ 1140 05ad 05       		.uleb128 0x5
+ 1141 05ae 04       		.byte	0x4
+ 1142 05af BB000000 		.4byte	0xbb
+ 1143 05b3 23       		.uleb128 0x23
+ 1144 05b4 FB020000 		.4byte	.LASF66
+ 1145 05b8 01       		.byte	0x1
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cch10daQ.s 			page 29
 
 
- 1146 0566 A9000000 		.4byte	.LASF62
- 1147 056a 01       		.byte	0x1
- 1148 056b 23       		.byte	0x23
- 1149 056c 81040000 		.4byte	0x481
- 1150 0570 05       		.uleb128 0x5
- 1151 0571 03       		.byte	0x3
- 1152 0572 00000000 		.4byte	speed_ref
- 1153 0576 23       		.uleb128 0x23
- 1154 0577 B7020000 		.4byte	.LASF63
- 1155 057b 01       		.byte	0x1
- 1156 057c 2B       		.byte	0x2b
- 1157 057d 81040000 		.4byte	0x481
- 1158 0581 05       		.uleb128 0x5
- 1159 0582 03       		.byte	0x3
- 1160 0583 00000000 		.4byte	debug
- 1161 0587 23       		.uleb128 0x23
- 1162 0588 F0030000 		.4byte	.LASF64
- 1163 058c 09       		.byte	0x9
- 1164 058d 17       		.byte	0x17
- 1165 058e A3000000 		.4byte	0xa3
- 1166 0592 05       		.uleb128 0x5
- 1167 0593 03       		.byte	0x3
- 1168 0594 00000000 		.4byte	_braken_state
- 1169 0598 22       		.uleb128 0x22
- 1170 0599 6D736700 		.ascii	"msg\000"
- 1171 059d 09       		.byte	0x9
- 1172 059e 15       		.byte	0x15
- 1173 059f E6010000 		.4byte	0x1e6
- 1174 05a3 05       		.uleb128 0x5
- 1175 05a4 03       		.byte	0x3
- 1176 05a5 00000000 		.4byte	msg
- 1177 05a9 23       		.uleb128 0x23
- 1178 05aa 97000000 		.4byte	.LASF65
- 1179 05ae 09       		.byte	0x9
- 1180 05af 16       		.byte	0x16
- 1181 05b0 BA050000 		.4byte	0x5ba
- 1182 05b4 05       		.uleb128 0x5
- 1183 05b5 03       		.byte	0x3
- 1184 05b6 00000000 		.4byte	TS_array
- 1185 05ba 05       		.uleb128 0x5
- 1186 05bb 04       		.byte	0x4
- 1187 05bc BB000000 		.4byte	0xbb
- 1188 05c0 23       		.uleb128 0x23
- 1189 05c1 E1020000 		.4byte	.LASF66
- 1190 05c5 01       		.byte	0x1
- 1191 05c6 22       		.byte	0x22
- 1192 05c7 81040000 		.4byte	0x481
- 1193 05cb 05       		.uleb128 0x5
- 1194 05cc 03       		.byte	0x3
- 1195 05cd 00000000 		.4byte	HA_counter
- 1196 05d1 22       		.uleb128 0x22
- 1197 05d2 7400     		.ascii	"t\000"
- 1198 05d4 01       		.byte	0x1
- 1199 05d5 27       		.byte	0x27
- 1200 05d6 81040000 		.4byte	0x481
- 1201 05da 05       		.uleb128 0x5
- 1202 05db 03       		.byte	0x3
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 30
+ 1146 05b9 22       		.byte	0x22
+ 1147 05ba 74040000 		.4byte	0x474
+ 1148 05be 05       		.uleb128 0x5
+ 1149 05bf 03       		.byte	0x3
+ 1150 05c0 00000000 		.4byte	HA_counter
+ 1151 05c4 22       		.uleb128 0x22
+ 1152 05c5 7400     		.ascii	"t\000"
+ 1153 05c7 01       		.byte	0x1
+ 1154 05c8 27       		.byte	0x27
+ 1155 05c9 74040000 		.4byte	0x474
+ 1156 05cd 05       		.uleb128 0x5
+ 1157 05ce 03       		.byte	0x3
+ 1158 05cf 00000000 		.4byte	t
+ 1159 05d3 23       		.uleb128 0x23
+ 1160 05d4 F3030000 		.4byte	.LASF67
+ 1161 05d8 01       		.byte	0x1
+ 1162 05d9 2E       		.byte	0x2e
+ 1163 05da 98000000 		.4byte	0x98
+ 1164 05de 05       		.uleb128 0x5
+ 1165 05df 03       		.byte	0x3
+ 1166 05e0 00000000 		.4byte	pos_pid_output
+ 1167 05e4 24       		.uleb128 0x24
+ 1168 05e5 BB000000 		.4byte	.LASF68
+ 1169 05e9 BB000000 		.4byte	.LASF68
+ 1170 05ed 0A       		.byte	0xa
+ 1171 05ee 4E       		.byte	0x4e
+ 1172 05ef 24       		.uleb128 0x24
+ 1173 05f0 FE040000 		.4byte	.LASF69
+ 1174 05f4 FE040000 		.4byte	.LASF69
+ 1175 05f8 05       		.byte	0x5
+ 1176 05f9 26       		.byte	0x26
+ 1177 05fa 24       		.uleb128 0x24
+ 1178 05fb 33010000 		.4byte	.LASF70
+ 1179 05ff 33010000 		.4byte	.LASF70
+ 1180 0603 05       		.byte	0x5
+ 1181 0604 29       		.byte	0x29
+ 1182 0605 00       		.byte	0
+ 1183              		.section	.debug_abbrev,"",%progbits
+ 1184              	.Ldebug_abbrev0:
+ 1185 0000 01       		.uleb128 0x1
+ 1186 0001 11       		.uleb128 0x11
+ 1187 0002 01       		.byte	0x1
+ 1188 0003 25       		.uleb128 0x25
+ 1189 0004 0E       		.uleb128 0xe
+ 1190 0005 13       		.uleb128 0x13
+ 1191 0006 0B       		.uleb128 0xb
+ 1192 0007 03       		.uleb128 0x3
+ 1193 0008 0E       		.uleb128 0xe
+ 1194 0009 1B       		.uleb128 0x1b
+ 1195 000a 0E       		.uleb128 0xe
+ 1196 000b 55       		.uleb128 0x55
+ 1197 000c 17       		.uleb128 0x17
+ 1198 000d 11       		.uleb128 0x11
+ 1199 000e 01       		.uleb128 0x1
+ 1200 000f 10       		.uleb128 0x10
+ 1201 0010 17       		.uleb128 0x17
+ 1202 0011 00       		.byte	0
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cch10daQ.s 			page 30
 
 
- 1203 05dc 00000000 		.4byte	t
- 1204 05e0 23       		.uleb128 0x23
- 1205 05e1 E1030000 		.4byte	.LASF67
- 1206 05e5 01       		.byte	0x1
- 1207 05e6 2E       		.byte	0x2e
- 1208 05e7 98000000 		.4byte	0x98
- 1209 05eb 05       		.uleb128 0x5
- 1210 05ec 03       		.byte	0x3
- 1211 05ed 00000000 		.4byte	pos_pid_output
- 1212 05f1 24       		.uleb128 0x24
- 1213 05f2 FD040000 		.4byte	.LASF68
- 1214 05f6 FD040000 		.4byte	.LASF68
- 1215 05fa 0A       		.byte	0xa
- 1216 05fb 4E       		.byte	0x4e
- 1217 05fc 24       		.uleb128 0x24
- 1218 05fd EC040000 		.4byte	.LASF69
- 1219 0601 EC040000 		.4byte	.LASF69
- 1220 0605 05       		.byte	0x5
- 1221 0606 26       		.byte	0x26
- 1222 0607 24       		.uleb128 0x24
- 1223 0608 19010000 		.4byte	.LASF70
- 1224 060c 19010000 		.4byte	.LASF70
- 1225 0610 05       		.byte	0x5
- 1226 0611 29       		.byte	0x29
- 1227 0612 24       		.uleb128 0x24
- 1228 0613 95030000 		.4byte	.LASF71
- 1229 0617 95030000 		.4byte	.LASF71
- 1230 061b 09       		.byte	0x9
- 1231 061c 1E       		.byte	0x1e
- 1232 061d 00       		.byte	0
- 1233              		.section	.debug_abbrev,"",%progbits
- 1234              	.Ldebug_abbrev0:
- 1235 0000 01       		.uleb128 0x1
- 1236 0001 11       		.uleb128 0x11
- 1237 0002 01       		.byte	0x1
- 1238 0003 25       		.uleb128 0x25
- 1239 0004 0E       		.uleb128 0xe
- 1240 0005 13       		.uleb128 0x13
- 1241 0006 0B       		.uleb128 0xb
- 1242 0007 03       		.uleb128 0x3
- 1243 0008 0E       		.uleb128 0xe
- 1244 0009 1B       		.uleb128 0x1b
- 1245 000a 0E       		.uleb128 0xe
- 1246 000b 55       		.uleb128 0x55
- 1247 000c 17       		.uleb128 0x17
- 1248 000d 11       		.uleb128 0x11
- 1249 000e 01       		.uleb128 0x1
- 1250 000f 10       		.uleb128 0x10
- 1251 0010 17       		.uleb128 0x17
- 1252 0011 00       		.byte	0
- 1253 0012 00       		.byte	0
- 1254 0013 02       		.uleb128 0x2
- 1255 0014 24       		.uleb128 0x24
- 1256 0015 00       		.byte	0
- 1257 0016 0B       		.uleb128 0xb
- 1258 0017 0B       		.uleb128 0xb
- 1259 0018 3E       		.uleb128 0x3e
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 31
+ 1203 0012 00       		.byte	0
+ 1204 0013 02       		.uleb128 0x2
+ 1205 0014 24       		.uleb128 0x24
+ 1206 0015 00       		.byte	0
+ 1207 0016 0B       		.uleb128 0xb
+ 1208 0017 0B       		.uleb128 0xb
+ 1209 0018 3E       		.uleb128 0x3e
+ 1210 0019 0B       		.uleb128 0xb
+ 1211 001a 03       		.uleb128 0x3
+ 1212 001b 08       		.uleb128 0x8
+ 1213 001c 00       		.byte	0
+ 1214 001d 00       		.byte	0
+ 1215 001e 03       		.uleb128 0x3
+ 1216 001f 24       		.uleb128 0x24
+ 1217 0020 00       		.byte	0
+ 1218 0021 0B       		.uleb128 0xb
+ 1219 0022 0B       		.uleb128 0xb
+ 1220 0023 3E       		.uleb128 0x3e
+ 1221 0024 0B       		.uleb128 0xb
+ 1222 0025 03       		.uleb128 0x3
+ 1223 0026 0E       		.uleb128 0xe
+ 1224 0027 00       		.byte	0
+ 1225 0028 00       		.byte	0
+ 1226 0029 04       		.uleb128 0x4
+ 1227 002a 16       		.uleb128 0x16
+ 1228 002b 00       		.byte	0
+ 1229 002c 03       		.uleb128 0x3
+ 1230 002d 0E       		.uleb128 0xe
+ 1231 002e 3A       		.uleb128 0x3a
+ 1232 002f 0B       		.uleb128 0xb
+ 1233 0030 3B       		.uleb128 0x3b
+ 1234 0031 0B       		.uleb128 0xb
+ 1235 0032 49       		.uleb128 0x49
+ 1236 0033 13       		.uleb128 0x13
+ 1237 0034 00       		.byte	0
+ 1238 0035 00       		.byte	0
+ 1239 0036 05       		.uleb128 0x5
+ 1240 0037 0F       		.uleb128 0xf
+ 1241 0038 00       		.byte	0
+ 1242 0039 0B       		.uleb128 0xb
+ 1243 003a 0B       		.uleb128 0xb
+ 1244 003b 49       		.uleb128 0x49
+ 1245 003c 13       		.uleb128 0x13
+ 1246 003d 00       		.byte	0
+ 1247 003e 00       		.byte	0
+ 1248 003f 06       		.uleb128 0x6
+ 1249 0040 15       		.uleb128 0x15
+ 1250 0041 00       		.byte	0
+ 1251 0042 27       		.uleb128 0x27
+ 1252 0043 19       		.uleb128 0x19
+ 1253 0044 00       		.byte	0
+ 1254 0045 00       		.byte	0
+ 1255 0046 07       		.uleb128 0x7
+ 1256 0047 16       		.uleb128 0x16
+ 1257 0048 00       		.byte	0
+ 1258 0049 03       		.uleb128 0x3
+ 1259 004a 0E       		.uleb128 0xe
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cch10daQ.s 			page 31
 
 
- 1260 0019 0B       		.uleb128 0xb
- 1261 001a 03       		.uleb128 0x3
- 1262 001b 08       		.uleb128 0x8
- 1263 001c 00       		.byte	0
- 1264 001d 00       		.byte	0
- 1265 001e 03       		.uleb128 0x3
- 1266 001f 24       		.uleb128 0x24
- 1267 0020 00       		.byte	0
- 1268 0021 0B       		.uleb128 0xb
- 1269 0022 0B       		.uleb128 0xb
- 1270 0023 3E       		.uleb128 0x3e
- 1271 0024 0B       		.uleb128 0xb
- 1272 0025 03       		.uleb128 0x3
- 1273 0026 0E       		.uleb128 0xe
- 1274 0027 00       		.byte	0
- 1275 0028 00       		.byte	0
- 1276 0029 04       		.uleb128 0x4
- 1277 002a 16       		.uleb128 0x16
- 1278 002b 00       		.byte	0
- 1279 002c 03       		.uleb128 0x3
- 1280 002d 0E       		.uleb128 0xe
- 1281 002e 3A       		.uleb128 0x3a
- 1282 002f 0B       		.uleb128 0xb
- 1283 0030 3B       		.uleb128 0x3b
- 1284 0031 0B       		.uleb128 0xb
- 1285 0032 49       		.uleb128 0x49
- 1286 0033 13       		.uleb128 0x13
- 1287 0034 00       		.byte	0
- 1288 0035 00       		.byte	0
- 1289 0036 05       		.uleb128 0x5
- 1290 0037 0F       		.uleb128 0xf
- 1291 0038 00       		.byte	0
- 1292 0039 0B       		.uleb128 0xb
- 1293 003a 0B       		.uleb128 0xb
- 1294 003b 49       		.uleb128 0x49
- 1295 003c 13       		.uleb128 0x13
- 1296 003d 00       		.byte	0
- 1297 003e 00       		.byte	0
- 1298 003f 06       		.uleb128 0x6
- 1299 0040 15       		.uleb128 0x15
- 1300 0041 00       		.byte	0
- 1301 0042 27       		.uleb128 0x27
- 1302 0043 19       		.uleb128 0x19
- 1303 0044 00       		.byte	0
- 1304 0045 00       		.byte	0
- 1305 0046 07       		.uleb128 0x7
- 1306 0047 16       		.uleb128 0x16
- 1307 0048 00       		.byte	0
- 1308 0049 03       		.uleb128 0x3
- 1309 004a 0E       		.uleb128 0xe
- 1310 004b 3A       		.uleb128 0x3a
- 1311 004c 0B       		.uleb128 0xb
- 1312 004d 3B       		.uleb128 0x3b
- 1313 004e 05       		.uleb128 0x5
- 1314 004f 49       		.uleb128 0x49
- 1315 0050 13       		.uleb128 0x13
- 1316 0051 00       		.byte	0
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 32
+ 1260 004b 3A       		.uleb128 0x3a
+ 1261 004c 0B       		.uleb128 0xb
+ 1262 004d 3B       		.uleb128 0x3b
+ 1263 004e 05       		.uleb128 0x5
+ 1264 004f 49       		.uleb128 0x49
+ 1265 0050 13       		.uleb128 0x13
+ 1266 0051 00       		.byte	0
+ 1267 0052 00       		.byte	0
+ 1268 0053 08       		.uleb128 0x8
+ 1269 0054 35       		.uleb128 0x35
+ 1270 0055 00       		.byte	0
+ 1271 0056 49       		.uleb128 0x49
+ 1272 0057 13       		.uleb128 0x13
+ 1273 0058 00       		.byte	0
+ 1274 0059 00       		.byte	0
+ 1275 005a 09       		.uleb128 0x9
+ 1276 005b 13       		.uleb128 0x13
+ 1277 005c 01       		.byte	0x1
+ 1278 005d 0B       		.uleb128 0xb
+ 1279 005e 0B       		.uleb128 0xb
+ 1280 005f 3A       		.uleb128 0x3a
+ 1281 0060 0B       		.uleb128 0xb
+ 1282 0061 3B       		.uleb128 0x3b
+ 1283 0062 0B       		.uleb128 0xb
+ 1284 0063 01       		.uleb128 0x1
+ 1285 0064 13       		.uleb128 0x13
+ 1286 0065 00       		.byte	0
+ 1287 0066 00       		.byte	0
+ 1288 0067 0A       		.uleb128 0xa
+ 1289 0068 0D       		.uleb128 0xd
+ 1290 0069 00       		.byte	0
+ 1291 006a 03       		.uleb128 0x3
+ 1292 006b 08       		.uleb128 0x8
+ 1293 006c 3A       		.uleb128 0x3a
+ 1294 006d 0B       		.uleb128 0xb
+ 1295 006e 3B       		.uleb128 0x3b
+ 1296 006f 0B       		.uleb128 0xb
+ 1297 0070 49       		.uleb128 0x49
+ 1298 0071 13       		.uleb128 0x13
+ 1299 0072 38       		.uleb128 0x38
+ 1300 0073 0B       		.uleb128 0xb
+ 1301 0074 00       		.byte	0
+ 1302 0075 00       		.byte	0
+ 1303 0076 0B       		.uleb128 0xb
+ 1304 0077 0D       		.uleb128 0xd
+ 1305 0078 00       		.byte	0
+ 1306 0079 03       		.uleb128 0x3
+ 1307 007a 0E       		.uleb128 0xe
+ 1308 007b 3A       		.uleb128 0x3a
+ 1309 007c 0B       		.uleb128 0xb
+ 1310 007d 3B       		.uleb128 0x3b
+ 1311 007e 0B       		.uleb128 0xb
+ 1312 007f 49       		.uleb128 0x49
+ 1313 0080 13       		.uleb128 0x13
+ 1314 0081 38       		.uleb128 0x38
+ 1315 0082 0B       		.uleb128 0xb
+ 1316 0083 00       		.byte	0
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cch10daQ.s 			page 32
 
 
- 1317 0052 00       		.byte	0
- 1318 0053 08       		.uleb128 0x8
- 1319 0054 35       		.uleb128 0x35
- 1320 0055 00       		.byte	0
- 1321 0056 49       		.uleb128 0x49
- 1322 0057 13       		.uleb128 0x13
- 1323 0058 00       		.byte	0
- 1324 0059 00       		.byte	0
- 1325 005a 09       		.uleb128 0x9
- 1326 005b 13       		.uleb128 0x13
- 1327 005c 01       		.byte	0x1
- 1328 005d 0B       		.uleb128 0xb
- 1329 005e 0B       		.uleb128 0xb
- 1330 005f 3A       		.uleb128 0x3a
- 1331 0060 0B       		.uleb128 0xb
- 1332 0061 3B       		.uleb128 0x3b
- 1333 0062 0B       		.uleb128 0xb
- 1334 0063 01       		.uleb128 0x1
- 1335 0064 13       		.uleb128 0x13
- 1336 0065 00       		.byte	0
- 1337 0066 00       		.byte	0
- 1338 0067 0A       		.uleb128 0xa
- 1339 0068 0D       		.uleb128 0xd
- 1340 0069 00       		.byte	0
- 1341 006a 03       		.uleb128 0x3
- 1342 006b 08       		.uleb128 0x8
- 1343 006c 3A       		.uleb128 0x3a
- 1344 006d 0B       		.uleb128 0xb
- 1345 006e 3B       		.uleb128 0x3b
- 1346 006f 0B       		.uleb128 0xb
- 1347 0070 49       		.uleb128 0x49
- 1348 0071 13       		.uleb128 0x13
- 1349 0072 38       		.uleb128 0x38
- 1350 0073 0B       		.uleb128 0xb
- 1351 0074 00       		.byte	0
- 1352 0075 00       		.byte	0
- 1353 0076 0B       		.uleb128 0xb
- 1354 0077 0D       		.uleb128 0xd
- 1355 0078 00       		.byte	0
- 1356 0079 03       		.uleb128 0x3
- 1357 007a 0E       		.uleb128 0xe
- 1358 007b 3A       		.uleb128 0x3a
- 1359 007c 0B       		.uleb128 0xb
- 1360 007d 3B       		.uleb128 0x3b
- 1361 007e 0B       		.uleb128 0xb
- 1362 007f 49       		.uleb128 0x49
- 1363 0080 13       		.uleb128 0x13
- 1364 0081 38       		.uleb128 0x38
- 1365 0082 0B       		.uleb128 0xb
- 1366 0083 00       		.byte	0
- 1367 0084 00       		.byte	0
- 1368 0085 0C       		.uleb128 0xc
- 1369 0086 01       		.uleb128 0x1
- 1370 0087 01       		.byte	0x1
- 1371 0088 49       		.uleb128 0x49
- 1372 0089 13       		.uleb128 0x13
- 1373 008a 01       		.uleb128 0x1
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 33
+ 1317 0084 00       		.byte	0
+ 1318 0085 0C       		.uleb128 0xc
+ 1319 0086 01       		.uleb128 0x1
+ 1320 0087 01       		.byte	0x1
+ 1321 0088 49       		.uleb128 0x49
+ 1322 0089 13       		.uleb128 0x13
+ 1323 008a 01       		.uleb128 0x1
+ 1324 008b 13       		.uleb128 0x13
+ 1325 008c 00       		.byte	0
+ 1326 008d 00       		.byte	0
+ 1327 008e 0D       		.uleb128 0xd
+ 1328 008f 21       		.uleb128 0x21
+ 1329 0090 00       		.byte	0
+ 1330 0091 49       		.uleb128 0x49
+ 1331 0092 13       		.uleb128 0x13
+ 1332 0093 2F       		.uleb128 0x2f
+ 1333 0094 0B       		.uleb128 0xb
+ 1334 0095 00       		.byte	0
+ 1335 0096 00       		.byte	0
+ 1336 0097 0E       		.uleb128 0xe
+ 1337 0098 17       		.uleb128 0x17
+ 1338 0099 01       		.byte	0x1
+ 1339 009a 03       		.uleb128 0x3
+ 1340 009b 0E       		.uleb128 0xe
+ 1341 009c 0B       		.uleb128 0xb
+ 1342 009d 0B       		.uleb128 0xb
+ 1343 009e 3A       		.uleb128 0x3a
+ 1344 009f 0B       		.uleb128 0xb
+ 1345 00a0 3B       		.uleb128 0x3b
+ 1346 00a1 0B       		.uleb128 0xb
+ 1347 00a2 01       		.uleb128 0x1
+ 1348 00a3 13       		.uleb128 0x13
+ 1349 00a4 00       		.byte	0
+ 1350 00a5 00       		.byte	0
+ 1351 00a6 0F       		.uleb128 0xf
+ 1352 00a7 0D       		.uleb128 0xd
+ 1353 00a8 00       		.byte	0
+ 1354 00a9 03       		.uleb128 0x3
+ 1355 00aa 0E       		.uleb128 0xe
+ 1356 00ab 3A       		.uleb128 0x3a
+ 1357 00ac 0B       		.uleb128 0xb
+ 1358 00ad 3B       		.uleb128 0x3b
+ 1359 00ae 0B       		.uleb128 0xb
+ 1360 00af 49       		.uleb128 0x49
+ 1361 00b0 13       		.uleb128 0x13
+ 1362 00b1 00       		.byte	0
+ 1363 00b2 00       		.byte	0
+ 1364 00b3 10       		.uleb128 0x10
+ 1365 00b4 0D       		.uleb128 0xd
+ 1366 00b5 00       		.byte	0
+ 1367 00b6 49       		.uleb128 0x49
+ 1368 00b7 13       		.uleb128 0x13
+ 1369 00b8 00       		.byte	0
+ 1370 00b9 00       		.byte	0
+ 1371 00ba 11       		.uleb128 0x11
+ 1372 00bb 13       		.uleb128 0x13
+ 1373 00bc 01       		.byte	0x1
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cch10daQ.s 			page 33
 
 
- 1374 008b 13       		.uleb128 0x13
- 1375 008c 00       		.byte	0
- 1376 008d 00       		.byte	0
- 1377 008e 0D       		.uleb128 0xd
- 1378 008f 21       		.uleb128 0x21
- 1379 0090 00       		.byte	0
- 1380 0091 49       		.uleb128 0x49
- 1381 0092 13       		.uleb128 0x13
- 1382 0093 2F       		.uleb128 0x2f
- 1383 0094 0B       		.uleb128 0xb
- 1384 0095 00       		.byte	0
- 1385 0096 00       		.byte	0
- 1386 0097 0E       		.uleb128 0xe
- 1387 0098 17       		.uleb128 0x17
- 1388 0099 01       		.byte	0x1
- 1389 009a 03       		.uleb128 0x3
- 1390 009b 0E       		.uleb128 0xe
- 1391 009c 0B       		.uleb128 0xb
- 1392 009d 0B       		.uleb128 0xb
- 1393 009e 3A       		.uleb128 0x3a
- 1394 009f 0B       		.uleb128 0xb
- 1395 00a0 3B       		.uleb128 0x3b
- 1396 00a1 0B       		.uleb128 0xb
- 1397 00a2 01       		.uleb128 0x1
- 1398 00a3 13       		.uleb128 0x13
- 1399 00a4 00       		.byte	0
- 1400 00a5 00       		.byte	0
- 1401 00a6 0F       		.uleb128 0xf
- 1402 00a7 0D       		.uleb128 0xd
- 1403 00a8 00       		.byte	0
- 1404 00a9 03       		.uleb128 0x3
- 1405 00aa 0E       		.uleb128 0xe
- 1406 00ab 3A       		.uleb128 0x3a
- 1407 00ac 0B       		.uleb128 0xb
- 1408 00ad 3B       		.uleb128 0x3b
- 1409 00ae 0B       		.uleb128 0xb
- 1410 00af 49       		.uleb128 0x49
- 1411 00b0 13       		.uleb128 0x13
- 1412 00b1 00       		.byte	0
- 1413 00b2 00       		.byte	0
- 1414 00b3 10       		.uleb128 0x10
- 1415 00b4 0D       		.uleb128 0xd
- 1416 00b5 00       		.byte	0
- 1417 00b6 49       		.uleb128 0x49
- 1418 00b7 13       		.uleb128 0x13
- 1419 00b8 00       		.byte	0
- 1420 00b9 00       		.byte	0
- 1421 00ba 11       		.uleb128 0x11
- 1422 00bb 13       		.uleb128 0x13
- 1423 00bc 01       		.byte	0x1
- 1424 00bd 03       		.uleb128 0x3
- 1425 00be 0E       		.uleb128 0xe
- 1426 00bf 0B       		.uleb128 0xb
- 1427 00c0 0B       		.uleb128 0xb
- 1428 00c1 3A       		.uleb128 0x3a
- 1429 00c2 0B       		.uleb128 0xb
- 1430 00c3 3B       		.uleb128 0x3b
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 34
+ 1374 00bd 03       		.uleb128 0x3
+ 1375 00be 0E       		.uleb128 0xe
+ 1376 00bf 0B       		.uleb128 0xb
+ 1377 00c0 0B       		.uleb128 0xb
+ 1378 00c1 3A       		.uleb128 0x3a
+ 1379 00c2 0B       		.uleb128 0xb
+ 1380 00c3 3B       		.uleb128 0x3b
+ 1381 00c4 0B       		.uleb128 0xb
+ 1382 00c5 01       		.uleb128 0x1
+ 1383 00c6 13       		.uleb128 0x13
+ 1384 00c7 00       		.byte	0
+ 1385 00c8 00       		.byte	0
+ 1386 00c9 12       		.uleb128 0x12
+ 1387 00ca 2E       		.uleb128 0x2e
+ 1388 00cb 01       		.byte	0x1
+ 1389 00cc 3F       		.uleb128 0x3f
+ 1390 00cd 19       		.uleb128 0x19
+ 1391 00ce 03       		.uleb128 0x3
+ 1392 00cf 0E       		.uleb128 0xe
+ 1393 00d0 3A       		.uleb128 0x3a
+ 1394 00d1 0B       		.uleb128 0xb
+ 1395 00d2 3B       		.uleb128 0x3b
+ 1396 00d3 0B       		.uleb128 0xb
+ 1397 00d4 27       		.uleb128 0x27
+ 1398 00d5 19       		.uleb128 0x19
+ 1399 00d6 11       		.uleb128 0x11
+ 1400 00d7 01       		.uleb128 0x1
+ 1401 00d8 12       		.uleb128 0x12
+ 1402 00d9 06       		.uleb128 0x6
+ 1403 00da 40       		.uleb128 0x40
+ 1404 00db 18       		.uleb128 0x18
+ 1405 00dc 9742     		.uleb128 0x2117
+ 1406 00de 19       		.uleb128 0x19
+ 1407 00df 01       		.uleb128 0x1
+ 1408 00e0 13       		.uleb128 0x13
+ 1409 00e1 00       		.byte	0
+ 1410 00e2 00       		.byte	0
+ 1411 00e3 13       		.uleb128 0x13
+ 1412 00e4 898201   		.uleb128 0x4109
+ 1413 00e7 00       		.byte	0
+ 1414 00e8 11       		.uleb128 0x11
+ 1415 00e9 01       		.uleb128 0x1
+ 1416 00ea 31       		.uleb128 0x31
+ 1417 00eb 13       		.uleb128 0x13
+ 1418 00ec 00       		.byte	0
+ 1419 00ed 00       		.byte	0
+ 1420 00ee 14       		.uleb128 0x14
+ 1421 00ef 898201   		.uleb128 0x4109
+ 1422 00f2 01       		.byte	0x1
+ 1423 00f3 11       		.uleb128 0x11
+ 1424 00f4 01       		.uleb128 0x1
+ 1425 00f5 31       		.uleb128 0x31
+ 1426 00f6 13       		.uleb128 0x13
+ 1427 00f7 01       		.uleb128 0x1
+ 1428 00f8 13       		.uleb128 0x13
+ 1429 00f9 00       		.byte	0
+ 1430 00fa 00       		.byte	0
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cch10daQ.s 			page 34
 
 
- 1431 00c4 0B       		.uleb128 0xb
- 1432 00c5 01       		.uleb128 0x1
- 1433 00c6 13       		.uleb128 0x13
- 1434 00c7 00       		.byte	0
- 1435 00c8 00       		.byte	0
- 1436 00c9 12       		.uleb128 0x12
- 1437 00ca 2E       		.uleb128 0x2e
- 1438 00cb 01       		.byte	0x1
- 1439 00cc 3F       		.uleb128 0x3f
- 1440 00cd 19       		.uleb128 0x19
- 1441 00ce 03       		.uleb128 0x3
- 1442 00cf 0E       		.uleb128 0xe
- 1443 00d0 3A       		.uleb128 0x3a
- 1444 00d1 0B       		.uleb128 0xb
- 1445 00d2 3B       		.uleb128 0x3b
- 1446 00d3 0B       		.uleb128 0xb
- 1447 00d4 27       		.uleb128 0x27
- 1448 00d5 19       		.uleb128 0x19
- 1449 00d6 11       		.uleb128 0x11
- 1450 00d7 01       		.uleb128 0x1
- 1451 00d8 12       		.uleb128 0x12
- 1452 00d9 06       		.uleb128 0x6
- 1453 00da 40       		.uleb128 0x40
- 1454 00db 18       		.uleb128 0x18
- 1455 00dc 9642     		.uleb128 0x2116
- 1456 00de 19       		.uleb128 0x19
- 1457 00df 01       		.uleb128 0x1
- 1458 00e0 13       		.uleb128 0x13
- 1459 00e1 00       		.byte	0
- 1460 00e2 00       		.byte	0
- 1461 00e3 13       		.uleb128 0x13
- 1462 00e4 898201   		.uleb128 0x4109
- 1463 00e7 00       		.byte	0
- 1464 00e8 11       		.uleb128 0x11
- 1465 00e9 01       		.uleb128 0x1
- 1466 00ea 31       		.uleb128 0x31
- 1467 00eb 13       		.uleb128 0x13
- 1468 00ec 00       		.byte	0
- 1469 00ed 00       		.byte	0
- 1470 00ee 14       		.uleb128 0x14
- 1471 00ef 898201   		.uleb128 0x4109
- 1472 00f2 01       		.byte	0x1
- 1473 00f3 11       		.uleb128 0x11
- 1474 00f4 01       		.uleb128 0x1
- 1475 00f5 31       		.uleb128 0x31
- 1476 00f6 13       		.uleb128 0x13
- 1477 00f7 01       		.uleb128 0x1
- 1478 00f8 13       		.uleb128 0x13
- 1479 00f9 00       		.byte	0
- 1480 00fa 00       		.byte	0
- 1481 00fb 15       		.uleb128 0x15
- 1482 00fc 8A8201   		.uleb128 0x410a
- 1483 00ff 00       		.byte	0
- 1484 0100 02       		.uleb128 0x2
- 1485 0101 18       		.uleb128 0x18
- 1486 0102 9142     		.uleb128 0x2111
- 1487 0104 18       		.uleb128 0x18
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 35
+ 1431 00fb 15       		.uleb128 0x15
+ 1432 00fc 8A8201   		.uleb128 0x410a
+ 1433 00ff 00       		.byte	0
+ 1434 0100 02       		.uleb128 0x2
+ 1435 0101 18       		.uleb128 0x18
+ 1436 0102 9142     		.uleb128 0x2111
+ 1437 0104 18       		.uleb128 0x18
+ 1438 0105 00       		.byte	0
+ 1439 0106 00       		.byte	0
+ 1440 0107 16       		.uleb128 0x16
+ 1441 0108 898201   		.uleb128 0x4109
+ 1442 010b 01       		.byte	0x1
+ 1443 010c 11       		.uleb128 0x11
+ 1444 010d 01       		.uleb128 0x1
+ 1445 010e 31       		.uleb128 0x31
+ 1446 010f 13       		.uleb128 0x13
+ 1447 0110 00       		.byte	0
+ 1448 0111 00       		.byte	0
+ 1449 0112 17       		.uleb128 0x17
+ 1450 0113 05       		.uleb128 0x5
+ 1451 0114 00       		.byte	0
+ 1452 0115 03       		.uleb128 0x3
+ 1453 0116 0E       		.uleb128 0xe
+ 1454 0117 3A       		.uleb128 0x3a
+ 1455 0118 0B       		.uleb128 0xb
+ 1456 0119 3B       		.uleb128 0x3b
+ 1457 011a 0B       		.uleb128 0xb
+ 1458 011b 49       		.uleb128 0x49
+ 1459 011c 13       		.uleb128 0x13
+ 1460 011d 02       		.uleb128 0x2
+ 1461 011e 18       		.uleb128 0x18
+ 1462 011f 00       		.byte	0
+ 1463 0120 00       		.byte	0
+ 1464 0121 18       		.uleb128 0x18
+ 1465 0122 34       		.uleb128 0x34
+ 1466 0123 00       		.byte	0
+ 1467 0124 03       		.uleb128 0x3
+ 1468 0125 0E       		.uleb128 0xe
+ 1469 0126 3A       		.uleb128 0x3a
+ 1470 0127 0B       		.uleb128 0xb
+ 1471 0128 3B       		.uleb128 0x3b
+ 1472 0129 0B       		.uleb128 0xb
+ 1473 012a 49       		.uleb128 0x49
+ 1474 012b 13       		.uleb128 0x13
+ 1475 012c 02       		.uleb128 0x2
+ 1476 012d 18       		.uleb128 0x18
+ 1477 012e 00       		.byte	0
+ 1478 012f 00       		.byte	0
+ 1479 0130 19       		.uleb128 0x19
+ 1480 0131 2E       		.uleb128 0x2e
+ 1481 0132 01       		.byte	0x1
+ 1482 0133 3F       		.uleb128 0x3f
+ 1483 0134 19       		.uleb128 0x19
+ 1484 0135 03       		.uleb128 0x3
+ 1485 0136 0E       		.uleb128 0xe
+ 1486 0137 3A       		.uleb128 0x3a
+ 1487 0138 0B       		.uleb128 0xb
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cch10daQ.s 			page 35
 
 
- 1488 0105 00       		.byte	0
- 1489 0106 00       		.byte	0
- 1490 0107 16       		.uleb128 0x16
- 1491 0108 2E       		.uleb128 0x2e
- 1492 0109 01       		.byte	0x1
- 1493 010a 3F       		.uleb128 0x3f
- 1494 010b 19       		.uleb128 0x19
- 1495 010c 03       		.uleb128 0x3
- 1496 010d 0E       		.uleb128 0xe
- 1497 010e 3A       		.uleb128 0x3a
- 1498 010f 0B       		.uleb128 0xb
- 1499 0110 3B       		.uleb128 0x3b
- 1500 0111 0B       		.uleb128 0xb
- 1501 0112 27       		.uleb128 0x27
- 1502 0113 19       		.uleb128 0x19
- 1503 0114 11       		.uleb128 0x11
- 1504 0115 01       		.uleb128 0x1
- 1505 0116 12       		.uleb128 0x12
- 1506 0117 06       		.uleb128 0x6
- 1507 0118 40       		.uleb128 0x40
- 1508 0119 18       		.uleb128 0x18
- 1509 011a 9742     		.uleb128 0x2117
- 1510 011c 19       		.uleb128 0x19
- 1511 011d 01       		.uleb128 0x1
- 1512 011e 13       		.uleb128 0x13
- 1513 011f 00       		.byte	0
- 1514 0120 00       		.byte	0
- 1515 0121 17       		.uleb128 0x17
- 1516 0122 05       		.uleb128 0x5
- 1517 0123 00       		.byte	0
- 1518 0124 03       		.uleb128 0x3
- 1519 0125 0E       		.uleb128 0xe
- 1520 0126 3A       		.uleb128 0x3a
- 1521 0127 0B       		.uleb128 0xb
- 1522 0128 3B       		.uleb128 0x3b
- 1523 0129 0B       		.uleb128 0xb
- 1524 012a 49       		.uleb128 0x49
- 1525 012b 13       		.uleb128 0x13
- 1526 012c 02       		.uleb128 0x2
- 1527 012d 18       		.uleb128 0x18
- 1528 012e 00       		.byte	0
- 1529 012f 00       		.byte	0
- 1530 0130 18       		.uleb128 0x18
- 1531 0131 34       		.uleb128 0x34
- 1532 0132 00       		.byte	0
- 1533 0133 03       		.uleb128 0x3
- 1534 0134 0E       		.uleb128 0xe
- 1535 0135 3A       		.uleb128 0x3a
- 1536 0136 0B       		.uleb128 0xb
- 1537 0137 3B       		.uleb128 0x3b
- 1538 0138 0B       		.uleb128 0xb
- 1539 0139 49       		.uleb128 0x49
- 1540 013a 13       		.uleb128 0x13
- 1541 013b 02       		.uleb128 0x2
- 1542 013c 18       		.uleb128 0x18
- 1543 013d 00       		.byte	0
- 1544 013e 00       		.byte	0
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 36
+ 1488 0139 3B       		.uleb128 0x3b
+ 1489 013a 05       		.uleb128 0x5
+ 1490 013b 27       		.uleb128 0x27
+ 1491 013c 19       		.uleb128 0x19
+ 1492 013d 49       		.uleb128 0x49
+ 1493 013e 13       		.uleb128 0x13
+ 1494 013f 11       		.uleb128 0x11
+ 1495 0140 01       		.uleb128 0x1
+ 1496 0141 12       		.uleb128 0x12
+ 1497 0142 06       		.uleb128 0x6
+ 1498 0143 40       		.uleb128 0x40
+ 1499 0144 18       		.uleb128 0x18
+ 1500 0145 9742     		.uleb128 0x2117
+ 1501 0147 19       		.uleb128 0x19
+ 1502 0148 01       		.uleb128 0x1
+ 1503 0149 13       		.uleb128 0x13
+ 1504 014a 00       		.byte	0
+ 1505 014b 00       		.byte	0
+ 1506 014c 1A       		.uleb128 0x1a
+ 1507 014d 34       		.uleb128 0x34
+ 1508 014e 00       		.byte	0
+ 1509 014f 03       		.uleb128 0x3
+ 1510 0150 0E       		.uleb128 0xe
+ 1511 0151 3A       		.uleb128 0x3a
+ 1512 0152 0B       		.uleb128 0xb
+ 1513 0153 3B       		.uleb128 0x3b
+ 1514 0154 05       		.uleb128 0x5
+ 1515 0155 49       		.uleb128 0x49
+ 1516 0156 13       		.uleb128 0x13
+ 1517 0157 02       		.uleb128 0x2
+ 1518 0158 18       		.uleb128 0x18
+ 1519 0159 00       		.byte	0
+ 1520 015a 00       		.byte	0
+ 1521 015b 1B       		.uleb128 0x1b
+ 1522 015c 2E       		.uleb128 0x2e
+ 1523 015d 01       		.byte	0x1
+ 1524 015e 3F       		.uleb128 0x3f
+ 1525 015f 19       		.uleb128 0x19
+ 1526 0160 03       		.uleb128 0x3
+ 1527 0161 0E       		.uleb128 0xe
+ 1528 0162 3A       		.uleb128 0x3a
+ 1529 0163 0B       		.uleb128 0xb
+ 1530 0164 3B       		.uleb128 0x3b
+ 1531 0165 05       		.uleb128 0x5
+ 1532 0166 27       		.uleb128 0x27
+ 1533 0167 19       		.uleb128 0x19
+ 1534 0168 11       		.uleb128 0x11
+ 1535 0169 01       		.uleb128 0x1
+ 1536 016a 12       		.uleb128 0x12
+ 1537 016b 06       		.uleb128 0x6
+ 1538 016c 40       		.uleb128 0x40
+ 1539 016d 18       		.uleb128 0x18
+ 1540 016e 9742     		.uleb128 0x2117
+ 1541 0170 19       		.uleb128 0x19
+ 1542 0171 01       		.uleb128 0x1
+ 1543 0172 13       		.uleb128 0x13
+ 1544 0173 00       		.byte	0
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cch10daQ.s 			page 36
 
 
- 1545 013f 19       		.uleb128 0x19
- 1546 0140 2E       		.uleb128 0x2e
- 1547 0141 01       		.byte	0x1
- 1548 0142 3F       		.uleb128 0x3f
- 1549 0143 19       		.uleb128 0x19
- 1550 0144 03       		.uleb128 0x3
- 1551 0145 0E       		.uleb128 0xe
- 1552 0146 3A       		.uleb128 0x3a
- 1553 0147 0B       		.uleb128 0xb
- 1554 0148 3B       		.uleb128 0x3b
- 1555 0149 05       		.uleb128 0x5
- 1556 014a 27       		.uleb128 0x27
- 1557 014b 19       		.uleb128 0x19
- 1558 014c 49       		.uleb128 0x49
- 1559 014d 13       		.uleb128 0x13
- 1560 014e 11       		.uleb128 0x11
- 1561 014f 01       		.uleb128 0x1
- 1562 0150 12       		.uleb128 0x12
- 1563 0151 06       		.uleb128 0x6
- 1564 0152 40       		.uleb128 0x40
- 1565 0153 18       		.uleb128 0x18
- 1566 0154 9742     		.uleb128 0x2117
- 1567 0156 19       		.uleb128 0x19
- 1568 0157 01       		.uleb128 0x1
- 1569 0158 13       		.uleb128 0x13
- 1570 0159 00       		.byte	0
- 1571 015a 00       		.byte	0
- 1572 015b 1A       		.uleb128 0x1a
- 1573 015c 34       		.uleb128 0x34
- 1574 015d 00       		.byte	0
- 1575 015e 03       		.uleb128 0x3
- 1576 015f 0E       		.uleb128 0xe
- 1577 0160 3A       		.uleb128 0x3a
- 1578 0161 0B       		.uleb128 0xb
- 1579 0162 3B       		.uleb128 0x3b
- 1580 0163 05       		.uleb128 0x5
- 1581 0164 49       		.uleb128 0x49
- 1582 0165 13       		.uleb128 0x13
- 1583 0166 02       		.uleb128 0x2
- 1584 0167 18       		.uleb128 0x18
- 1585 0168 00       		.byte	0
- 1586 0169 00       		.byte	0
- 1587 016a 1B       		.uleb128 0x1b
- 1588 016b 2E       		.uleb128 0x2e
- 1589 016c 01       		.byte	0x1
- 1590 016d 3F       		.uleb128 0x3f
- 1591 016e 19       		.uleb128 0x19
- 1592 016f 03       		.uleb128 0x3
- 1593 0170 0E       		.uleb128 0xe
- 1594 0171 3A       		.uleb128 0x3a
- 1595 0172 0B       		.uleb128 0xb
- 1596 0173 3B       		.uleb128 0x3b
- 1597 0174 05       		.uleb128 0x5
- 1598 0175 27       		.uleb128 0x27
- 1599 0176 19       		.uleb128 0x19
- 1600 0177 11       		.uleb128 0x11
- 1601 0178 01       		.uleb128 0x1
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 37
+ 1545 0174 00       		.byte	0
+ 1546 0175 1C       		.uleb128 0x1c
+ 1547 0176 05       		.uleb128 0x5
+ 1548 0177 00       		.byte	0
+ 1549 0178 03       		.uleb128 0x3
+ 1550 0179 0E       		.uleb128 0xe
+ 1551 017a 3A       		.uleb128 0x3a
+ 1552 017b 0B       		.uleb128 0xb
+ 1553 017c 3B       		.uleb128 0x3b
+ 1554 017d 05       		.uleb128 0x5
+ 1555 017e 49       		.uleb128 0x49
+ 1556 017f 13       		.uleb128 0x13
+ 1557 0180 02       		.uleb128 0x2
+ 1558 0181 17       		.uleb128 0x17
+ 1559 0182 00       		.byte	0
+ 1560 0183 00       		.byte	0
+ 1561 0184 1D       		.uleb128 0x1d
+ 1562 0185 34       		.uleb128 0x34
+ 1563 0186 00       		.byte	0
+ 1564 0187 03       		.uleb128 0x3
+ 1565 0188 0E       		.uleb128 0xe
+ 1566 0189 3A       		.uleb128 0x3a
+ 1567 018a 0B       		.uleb128 0xb
+ 1568 018b 3B       		.uleb128 0x3b
+ 1569 018c 05       		.uleb128 0x5
+ 1570 018d 49       		.uleb128 0x49
+ 1571 018e 13       		.uleb128 0x13
+ 1572 018f 02       		.uleb128 0x2
+ 1573 0190 17       		.uleb128 0x17
+ 1574 0191 00       		.byte	0
+ 1575 0192 00       		.byte	0
+ 1576 0193 1E       		.uleb128 0x1e
+ 1577 0194 2E       		.uleb128 0x2e
+ 1578 0195 00       		.byte	0
+ 1579 0196 3F       		.uleb128 0x3f
+ 1580 0197 19       		.uleb128 0x19
+ 1581 0198 03       		.uleb128 0x3
+ 1582 0199 0E       		.uleb128 0xe
+ 1583 019a 3A       		.uleb128 0x3a
+ 1584 019b 0B       		.uleb128 0xb
+ 1585 019c 3B       		.uleb128 0x3b
+ 1586 019d 05       		.uleb128 0x5
+ 1587 019e 27       		.uleb128 0x27
+ 1588 019f 19       		.uleb128 0x19
+ 1589 01a0 11       		.uleb128 0x11
+ 1590 01a1 01       		.uleb128 0x1
+ 1591 01a2 12       		.uleb128 0x12
+ 1592 01a3 06       		.uleb128 0x6
+ 1593 01a4 40       		.uleb128 0x40
+ 1594 01a5 18       		.uleb128 0x18
+ 1595 01a6 9742     		.uleb128 0x2117
+ 1596 01a8 19       		.uleb128 0x19
+ 1597 01a9 00       		.byte	0
+ 1598 01aa 00       		.byte	0
+ 1599 01ab 1F       		.uleb128 0x1f
+ 1600 01ac 2E       		.uleb128 0x2e
+ 1601 01ad 00       		.byte	0
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cch10daQ.s 			page 37
 
 
- 1602 0179 12       		.uleb128 0x12
- 1603 017a 06       		.uleb128 0x6
- 1604 017b 40       		.uleb128 0x40
- 1605 017c 18       		.uleb128 0x18
- 1606 017d 9742     		.uleb128 0x2117
- 1607 017f 19       		.uleb128 0x19
- 1608 0180 01       		.uleb128 0x1
- 1609 0181 13       		.uleb128 0x13
- 1610 0182 00       		.byte	0
- 1611 0183 00       		.byte	0
- 1612 0184 1C       		.uleb128 0x1c
- 1613 0185 05       		.uleb128 0x5
- 1614 0186 00       		.byte	0
- 1615 0187 03       		.uleb128 0x3
- 1616 0188 0E       		.uleb128 0xe
- 1617 0189 3A       		.uleb128 0x3a
- 1618 018a 0B       		.uleb128 0xb
- 1619 018b 3B       		.uleb128 0x3b
- 1620 018c 05       		.uleb128 0x5
- 1621 018d 49       		.uleb128 0x49
- 1622 018e 13       		.uleb128 0x13
- 1623 018f 02       		.uleb128 0x2
- 1624 0190 17       		.uleb128 0x17
- 1625 0191 00       		.byte	0
- 1626 0192 00       		.byte	0
- 1627 0193 1D       		.uleb128 0x1d
- 1628 0194 34       		.uleb128 0x34
- 1629 0195 00       		.byte	0
- 1630 0196 03       		.uleb128 0x3
- 1631 0197 0E       		.uleb128 0xe
- 1632 0198 3A       		.uleb128 0x3a
- 1633 0199 0B       		.uleb128 0xb
- 1634 019a 3B       		.uleb128 0x3b
- 1635 019b 05       		.uleb128 0x5
- 1636 019c 49       		.uleb128 0x49
- 1637 019d 13       		.uleb128 0x13
- 1638 019e 02       		.uleb128 0x2
- 1639 019f 17       		.uleb128 0x17
- 1640 01a0 00       		.byte	0
- 1641 01a1 00       		.byte	0
- 1642 01a2 1E       		.uleb128 0x1e
- 1643 01a3 2E       		.uleb128 0x2e
- 1644 01a4 00       		.byte	0
- 1645 01a5 3F       		.uleb128 0x3f
- 1646 01a6 19       		.uleb128 0x19
- 1647 01a7 03       		.uleb128 0x3
- 1648 01a8 0E       		.uleb128 0xe
- 1649 01a9 3A       		.uleb128 0x3a
- 1650 01aa 0B       		.uleb128 0xb
- 1651 01ab 3B       		.uleb128 0x3b
- 1652 01ac 05       		.uleb128 0x5
- 1653 01ad 27       		.uleb128 0x27
- 1654 01ae 19       		.uleb128 0x19
- 1655 01af 11       		.uleb128 0x11
- 1656 01b0 01       		.uleb128 0x1
- 1657 01b1 12       		.uleb128 0x12
- 1658 01b2 06       		.uleb128 0x6
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 38
+ 1602 01ae 3F       		.uleb128 0x3f
+ 1603 01af 19       		.uleb128 0x19
+ 1604 01b0 03       		.uleb128 0x3
+ 1605 01b1 0E       		.uleb128 0xe
+ 1606 01b2 3A       		.uleb128 0x3a
+ 1607 01b3 0B       		.uleb128 0xb
+ 1608 01b4 3B       		.uleb128 0x3b
+ 1609 01b5 05       		.uleb128 0x5
+ 1610 01b6 27       		.uleb128 0x27
+ 1611 01b7 19       		.uleb128 0x19
+ 1612 01b8 49       		.uleb128 0x49
+ 1613 01b9 13       		.uleb128 0x13
+ 1614 01ba 11       		.uleb128 0x11
+ 1615 01bb 01       		.uleb128 0x1
+ 1616 01bc 12       		.uleb128 0x12
+ 1617 01bd 06       		.uleb128 0x6
+ 1618 01be 40       		.uleb128 0x40
+ 1619 01bf 18       		.uleb128 0x18
+ 1620 01c0 9742     		.uleb128 0x2117
+ 1621 01c2 19       		.uleb128 0x19
+ 1622 01c3 00       		.byte	0
+ 1623 01c4 00       		.byte	0
+ 1624 01c5 20       		.uleb128 0x20
+ 1625 01c6 05       		.uleb128 0x5
+ 1626 01c7 00       		.byte	0
+ 1627 01c8 03       		.uleb128 0x3
+ 1628 01c9 0E       		.uleb128 0xe
+ 1629 01ca 3A       		.uleb128 0x3a
+ 1630 01cb 0B       		.uleb128 0xb
+ 1631 01cc 3B       		.uleb128 0x3b
+ 1632 01cd 0B       		.uleb128 0xb
+ 1633 01ce 49       		.uleb128 0x49
+ 1634 01cf 13       		.uleb128 0x13
+ 1635 01d0 02       		.uleb128 0x2
+ 1636 01d1 17       		.uleb128 0x17
+ 1637 01d2 00       		.byte	0
+ 1638 01d3 00       		.byte	0
+ 1639 01d4 21       		.uleb128 0x21
+ 1640 01d5 34       		.uleb128 0x34
+ 1641 01d6 00       		.byte	0
+ 1642 01d7 03       		.uleb128 0x3
+ 1643 01d8 0E       		.uleb128 0xe
+ 1644 01d9 3A       		.uleb128 0x3a
+ 1645 01da 0B       		.uleb128 0xb
+ 1646 01db 3B       		.uleb128 0x3b
+ 1647 01dc 05       		.uleb128 0x5
+ 1648 01dd 49       		.uleb128 0x49
+ 1649 01de 13       		.uleb128 0x13
+ 1650 01df 3F       		.uleb128 0x3f
+ 1651 01e0 19       		.uleb128 0x19
+ 1652 01e1 3C       		.uleb128 0x3c
+ 1653 01e2 19       		.uleb128 0x19
+ 1654 01e3 00       		.byte	0
+ 1655 01e4 00       		.byte	0
+ 1656 01e5 22       		.uleb128 0x22
+ 1657 01e6 34       		.uleb128 0x34
+ 1658 01e7 00       		.byte	0
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cch10daQ.s 			page 38
 
 
- 1659 01b3 40       		.uleb128 0x40
- 1660 01b4 18       		.uleb128 0x18
- 1661 01b5 9742     		.uleb128 0x2117
- 1662 01b7 19       		.uleb128 0x19
- 1663 01b8 00       		.byte	0
- 1664 01b9 00       		.byte	0
- 1665 01ba 1F       		.uleb128 0x1f
- 1666 01bb 2E       		.uleb128 0x2e
- 1667 01bc 00       		.byte	0
- 1668 01bd 3F       		.uleb128 0x3f
- 1669 01be 19       		.uleb128 0x19
- 1670 01bf 03       		.uleb128 0x3
- 1671 01c0 0E       		.uleb128 0xe
- 1672 01c1 3A       		.uleb128 0x3a
- 1673 01c2 0B       		.uleb128 0xb
- 1674 01c3 3B       		.uleb128 0x3b
- 1675 01c4 05       		.uleb128 0x5
- 1676 01c5 27       		.uleb128 0x27
- 1677 01c6 19       		.uleb128 0x19
- 1678 01c7 49       		.uleb128 0x49
- 1679 01c8 13       		.uleb128 0x13
- 1680 01c9 11       		.uleb128 0x11
- 1681 01ca 01       		.uleb128 0x1
- 1682 01cb 12       		.uleb128 0x12
- 1683 01cc 06       		.uleb128 0x6
- 1684 01cd 40       		.uleb128 0x40
- 1685 01ce 18       		.uleb128 0x18
- 1686 01cf 9742     		.uleb128 0x2117
- 1687 01d1 19       		.uleb128 0x19
- 1688 01d2 00       		.byte	0
- 1689 01d3 00       		.byte	0
- 1690 01d4 20       		.uleb128 0x20
- 1691 01d5 05       		.uleb128 0x5
- 1692 01d6 00       		.byte	0
- 1693 01d7 03       		.uleb128 0x3
- 1694 01d8 0E       		.uleb128 0xe
- 1695 01d9 3A       		.uleb128 0x3a
- 1696 01da 0B       		.uleb128 0xb
- 1697 01db 3B       		.uleb128 0x3b
- 1698 01dc 0B       		.uleb128 0xb
- 1699 01dd 49       		.uleb128 0x49
- 1700 01de 13       		.uleb128 0x13
- 1701 01df 02       		.uleb128 0x2
- 1702 01e0 17       		.uleb128 0x17
- 1703 01e1 00       		.byte	0
- 1704 01e2 00       		.byte	0
- 1705 01e3 21       		.uleb128 0x21
- 1706 01e4 34       		.uleb128 0x34
- 1707 01e5 00       		.byte	0
- 1708 01e6 03       		.uleb128 0x3
- 1709 01e7 0E       		.uleb128 0xe
- 1710 01e8 3A       		.uleb128 0x3a
- 1711 01e9 0B       		.uleb128 0xb
- 1712 01ea 3B       		.uleb128 0x3b
- 1713 01eb 05       		.uleb128 0x5
- 1714 01ec 49       		.uleb128 0x49
- 1715 01ed 13       		.uleb128 0x13
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 39
+ 1659 01e8 03       		.uleb128 0x3
+ 1660 01e9 08       		.uleb128 0x8
+ 1661 01ea 3A       		.uleb128 0x3a
+ 1662 01eb 0B       		.uleb128 0xb
+ 1663 01ec 3B       		.uleb128 0x3b
+ 1664 01ed 0B       		.uleb128 0xb
+ 1665 01ee 49       		.uleb128 0x49
+ 1666 01ef 13       		.uleb128 0x13
+ 1667 01f0 3F       		.uleb128 0x3f
+ 1668 01f1 19       		.uleb128 0x19
+ 1669 01f2 02       		.uleb128 0x2
+ 1670 01f3 18       		.uleb128 0x18
+ 1671 01f4 00       		.byte	0
+ 1672 01f5 00       		.byte	0
+ 1673 01f6 23       		.uleb128 0x23
+ 1674 01f7 34       		.uleb128 0x34
+ 1675 01f8 00       		.byte	0
+ 1676 01f9 03       		.uleb128 0x3
+ 1677 01fa 0E       		.uleb128 0xe
+ 1678 01fb 3A       		.uleb128 0x3a
+ 1679 01fc 0B       		.uleb128 0xb
+ 1680 01fd 3B       		.uleb128 0x3b
+ 1681 01fe 0B       		.uleb128 0xb
+ 1682 01ff 49       		.uleb128 0x49
+ 1683 0200 13       		.uleb128 0x13
+ 1684 0201 3F       		.uleb128 0x3f
+ 1685 0202 19       		.uleb128 0x19
+ 1686 0203 02       		.uleb128 0x2
+ 1687 0204 18       		.uleb128 0x18
+ 1688 0205 00       		.byte	0
+ 1689 0206 00       		.byte	0
+ 1690 0207 24       		.uleb128 0x24
+ 1691 0208 2E       		.uleb128 0x2e
+ 1692 0209 00       		.byte	0
+ 1693 020a 3F       		.uleb128 0x3f
+ 1694 020b 19       		.uleb128 0x19
+ 1695 020c 3C       		.uleb128 0x3c
+ 1696 020d 19       		.uleb128 0x19
+ 1697 020e 6E       		.uleb128 0x6e
+ 1698 020f 0E       		.uleb128 0xe
+ 1699 0210 03       		.uleb128 0x3
+ 1700 0211 0E       		.uleb128 0xe
+ 1701 0212 3A       		.uleb128 0x3a
+ 1702 0213 0B       		.uleb128 0xb
+ 1703 0214 3B       		.uleb128 0x3b
+ 1704 0215 0B       		.uleb128 0xb
+ 1705 0216 00       		.byte	0
+ 1706 0217 00       		.byte	0
+ 1707 0218 00       		.byte	0
+ 1708              		.section	.debug_loc,"",%progbits
+ 1709              	.Ldebug_loc0:
+ 1710              	.LLST0:
+ 1711 0000 00000000 		.4byte	.LVL6
+ 1712 0004 02000000 		.4byte	.LVL7
+ 1713 0008 0100     		.2byte	0x1
+ 1714 000a 50       		.byte	0x50
+ 1715 000b 02000000 		.4byte	.LVL7
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cch10daQ.s 			page 39
 
 
- 1716 01ee 3F       		.uleb128 0x3f
- 1717 01ef 19       		.uleb128 0x19
- 1718 01f0 3C       		.uleb128 0x3c
- 1719 01f1 19       		.uleb128 0x19
- 1720 01f2 00       		.byte	0
- 1721 01f3 00       		.byte	0
- 1722 01f4 22       		.uleb128 0x22
- 1723 01f5 34       		.uleb128 0x34
- 1724 01f6 00       		.byte	0
- 1725 01f7 03       		.uleb128 0x3
- 1726 01f8 08       		.uleb128 0x8
- 1727 01f9 3A       		.uleb128 0x3a
- 1728 01fa 0B       		.uleb128 0xb
- 1729 01fb 3B       		.uleb128 0x3b
- 1730 01fc 0B       		.uleb128 0xb
- 1731 01fd 49       		.uleb128 0x49
- 1732 01fe 13       		.uleb128 0x13
- 1733 01ff 3F       		.uleb128 0x3f
- 1734 0200 19       		.uleb128 0x19
- 1735 0201 02       		.uleb128 0x2
- 1736 0202 18       		.uleb128 0x18
- 1737 0203 00       		.byte	0
- 1738 0204 00       		.byte	0
- 1739 0205 23       		.uleb128 0x23
- 1740 0206 34       		.uleb128 0x34
- 1741 0207 00       		.byte	0
- 1742 0208 03       		.uleb128 0x3
- 1743 0209 0E       		.uleb128 0xe
- 1744 020a 3A       		.uleb128 0x3a
- 1745 020b 0B       		.uleb128 0xb
- 1746 020c 3B       		.uleb128 0x3b
- 1747 020d 0B       		.uleb128 0xb
- 1748 020e 49       		.uleb128 0x49
- 1749 020f 13       		.uleb128 0x13
- 1750 0210 3F       		.uleb128 0x3f
- 1751 0211 19       		.uleb128 0x19
- 1752 0212 02       		.uleb128 0x2
- 1753 0213 18       		.uleb128 0x18
- 1754 0214 00       		.byte	0
- 1755 0215 00       		.byte	0
- 1756 0216 24       		.uleb128 0x24
- 1757 0217 2E       		.uleb128 0x2e
- 1758 0218 00       		.byte	0
- 1759 0219 3F       		.uleb128 0x3f
- 1760 021a 19       		.uleb128 0x19
- 1761 021b 3C       		.uleb128 0x3c
- 1762 021c 19       		.uleb128 0x19
- 1763 021d 6E       		.uleb128 0x6e
- 1764 021e 0E       		.uleb128 0xe
- 1765 021f 03       		.uleb128 0x3
- 1766 0220 0E       		.uleb128 0xe
- 1767 0221 3A       		.uleb128 0x3a
- 1768 0222 0B       		.uleb128 0xb
- 1769 0223 3B       		.uleb128 0x3b
- 1770 0224 0B       		.uleb128 0xb
- 1771 0225 00       		.byte	0
- 1772 0226 00       		.byte	0
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 40
+ 1716 000f 10000000 		.4byte	.LFE70
+ 1717 0013 0400     		.2byte	0x4
+ 1718 0015 F3       		.byte	0xf3
+ 1719 0016 01       		.uleb128 0x1
+ 1720 0017 50       		.byte	0x50
+ 1721 0018 9F       		.byte	0x9f
+ 1722 0019 00000000 		.4byte	0
+ 1723 001d 00000000 		.4byte	0
+ 1724              	.LLST1:
+ 1725 0021 04000000 		.4byte	.LVL8
+ 1726 0025 06000000 		.4byte	.LVL9
+ 1727 0029 0500     		.2byte	0x5
+ 1728 002b 70       		.byte	0x70
+ 1729 002c 00       		.sleb128 0
+ 1730 002d 35       		.byte	0x35
+ 1731 002e 25       		.byte	0x25
+ 1732 002f 9F       		.byte	0x9f
+ 1733 0030 00000000 		.4byte	0
+ 1734 0034 00000000 		.4byte	0
+ 1735              	.LLST2:
+ 1736 0038 00000000 		.4byte	.LVL14
+ 1737 003c 07000000 		.4byte	.LVL15-1
+ 1738 0040 0100     		.2byte	0x1
+ 1739 0042 50       		.byte	0x50
+ 1740 0043 07000000 		.4byte	.LVL15-1
+ 1741 0047 1A000000 		.4byte	.LFE65
+ 1742 004b 0100     		.2byte	0x1
+ 1743 004d 54       		.byte	0x54
+ 1744 004e 00000000 		.4byte	0
+ 1745 0052 00000000 		.4byte	0
+ 1746              		.section	.debug_aranges,"",%progbits
+ 1747 0000 7C000000 		.4byte	0x7c
+ 1748 0004 0200     		.2byte	0x2
+ 1749 0006 00000000 		.4byte	.Ldebug_info0
+ 1750 000a 04       		.byte	0x4
+ 1751 000b 00       		.byte	0
+ 1752 000c 0000     		.2byte	0
+ 1753 000e 0000     		.2byte	0
+ 1754 0010 00000000 		.4byte	.LFB67
+ 1755 0014 44000000 		.4byte	.LFE67-.LFB67
+ 1756 0018 00000000 		.4byte	.LFB68
+ 1757 001c 0C000000 		.4byte	.LFE68-.LFB68
+ 1758 0020 00000000 		.4byte	.LFB69
+ 1759 0024 0C000000 		.4byte	.LFE69-.LFB69
+ 1760 0028 00000000 		.4byte	.LFB70
+ 1761 002c 10000000 		.4byte	.LFE70-.LFB70
+ 1762 0030 00000000 		.4byte	.LFB71
+ 1763 0034 0C000000 		.4byte	.LFE71-.LFB71
+ 1764 0038 00000000 		.4byte	.LFB72
+ 1765 003c 10000000 		.4byte	.LFE72-.LFB72
+ 1766 0040 00000000 		.4byte	.LFB73
+ 1767 0044 18000000 		.4byte	.LFE73-.LFB73
+ 1768 0048 00000000 		.4byte	.LFB74
+ 1769 004c 10000000 		.4byte	.LFE74-.LFB74
+ 1770 0050 00000000 		.4byte	.LFB64
+ 1771 0054 1C000000 		.4byte	.LFE64-.LFB64
+ 1772 0058 00000000 		.4byte	.LFB65
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cch10daQ.s 			page 40
 
 
- 1773 0227 00       		.byte	0
- 1774              		.section	.debug_loc,"",%progbits
- 1775              	.Ldebug_loc0:
- 1776              	.LLST0:
- 1777 0000 00000000 		.4byte	.LVL9
- 1778 0004 02000000 		.4byte	.LVL10
- 1779 0008 0100     		.2byte	0x1
- 1780 000a 50       		.byte	0x50
- 1781 000b 02000000 		.4byte	.LVL10
- 1782 000f 10000000 		.4byte	.LFE70
- 1783 0013 0400     		.2byte	0x4
- 1784 0015 F3       		.byte	0xf3
- 1785 0016 01       		.uleb128 0x1
- 1786 0017 50       		.byte	0x50
- 1787 0018 9F       		.byte	0x9f
- 1788 0019 00000000 		.4byte	0
- 1789 001d 00000000 		.4byte	0
- 1790              	.LLST1:
- 1791 0021 04000000 		.4byte	.LVL11
- 1792 0025 06000000 		.4byte	.LVL12
- 1793 0029 0500     		.2byte	0x5
- 1794 002b 70       		.byte	0x70
- 1795 002c 00       		.sleb128 0
- 1796 002d 35       		.byte	0x35
- 1797 002e 25       		.byte	0x25
- 1798 002f 9F       		.byte	0x9f
- 1799 0030 00000000 		.4byte	0
- 1800 0034 00000000 		.4byte	0
- 1801              	.LLST2:
- 1802 0038 00000000 		.4byte	.LVL17
- 1803 003c 07000000 		.4byte	.LVL18-1
- 1804 0040 0100     		.2byte	0x1
- 1805 0042 50       		.byte	0x50
- 1806 0043 07000000 		.4byte	.LVL18-1
- 1807 0047 1A000000 		.4byte	.LFE65
- 1808 004b 0100     		.2byte	0x1
- 1809 004d 54       		.byte	0x54
- 1810 004e 00000000 		.4byte	0
- 1811 0052 00000000 		.4byte	0
- 1812              		.section	.debug_aranges,"",%progbits
- 1813 0000 7C000000 		.4byte	0x7c
- 1814 0004 0200     		.2byte	0x2
- 1815 0006 00000000 		.4byte	.Ldebug_info0
- 1816 000a 04       		.byte	0x4
- 1817 000b 00       		.byte	0
- 1818 000c 0000     		.2byte	0
- 1819 000e 0000     		.2byte	0
- 1820 0010 00000000 		.4byte	.LFB67
- 1821 0014 8C000000 		.4byte	.LFE67-.LFB67
- 1822 0018 00000000 		.4byte	.LFB68
- 1823 001c 0C000000 		.4byte	.LFE68-.LFB68
- 1824 0020 00000000 		.4byte	.LFB69
- 1825 0024 0C000000 		.4byte	.LFE69-.LFB69
- 1826 0028 00000000 		.4byte	.LFB70
- 1827 002c 10000000 		.4byte	.LFE70-.LFB70
- 1828 0030 00000000 		.4byte	.LFB71
- 1829 0034 0C000000 		.4byte	.LFE71-.LFB71
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 41
+ 1773 005c 1A000000 		.4byte	.LFE65-.LFB65
+ 1774 0060 00000000 		.4byte	.LFB66
+ 1775 0064 14000000 		.4byte	.LFE66-.LFB66
+ 1776 0068 00000000 		.4byte	.LFB75
+ 1777 006c 10000000 		.4byte	.LFE75-.LFB75
+ 1778 0070 00000000 		.4byte	.LFB76
+ 1779 0074 10000000 		.4byte	.LFE76-.LFB76
+ 1780 0078 00000000 		.4byte	0
+ 1781 007c 00000000 		.4byte	0
+ 1782              		.section	.debug_ranges,"",%progbits
+ 1783              	.Ldebug_ranges0:
+ 1784 0000 00000000 		.4byte	.LFB67
+ 1785 0004 44000000 		.4byte	.LFE67
+ 1786 0008 00000000 		.4byte	.LFB68
+ 1787 000c 0C000000 		.4byte	.LFE68
+ 1788 0010 00000000 		.4byte	.LFB69
+ 1789 0014 0C000000 		.4byte	.LFE69
+ 1790 0018 00000000 		.4byte	.LFB70
+ 1791 001c 10000000 		.4byte	.LFE70
+ 1792 0020 00000000 		.4byte	.LFB71
+ 1793 0024 0C000000 		.4byte	.LFE71
+ 1794 0028 00000000 		.4byte	.LFB72
+ 1795 002c 10000000 		.4byte	.LFE72
+ 1796 0030 00000000 		.4byte	.LFB73
+ 1797 0034 18000000 		.4byte	.LFE73
+ 1798 0038 00000000 		.4byte	.LFB74
+ 1799 003c 10000000 		.4byte	.LFE74
+ 1800 0040 00000000 		.4byte	.LFB64
+ 1801 0044 1C000000 		.4byte	.LFE64
+ 1802 0048 00000000 		.4byte	.LFB65
+ 1803 004c 1A000000 		.4byte	.LFE65
+ 1804 0050 00000000 		.4byte	.LFB66
+ 1805 0054 14000000 		.4byte	.LFE66
+ 1806 0058 00000000 		.4byte	.LFB75
+ 1807 005c 10000000 		.4byte	.LFE75
+ 1808 0060 00000000 		.4byte	.LFB76
+ 1809 0064 10000000 		.4byte	.LFE76
+ 1810 0068 00000000 		.4byte	0
+ 1811 006c 00000000 		.4byte	0
+ 1812              		.section	.debug_line,"",%progbits
+ 1813              	.Ldebug_line0:
+ 1814 0000 96020000 		.section	.debug_str,"MS",%progbits,1
+ 1814      0200A501 
+ 1814      00000201 
+ 1814      FB0E0D00 
+ 1814      01010101 
+ 1815              	.LASF56:
+ 1816 0000 5F737461 		.ascii	"_state_\000"
+ 1816      74655F00 
+ 1817              	.LASF57:
+ 1818 0008 6469725F 		.ascii	"dir_state\000"
+ 1818      73746174 
+ 1818      6500
+ 1819              	.LASF28:
+ 1820 0012 7363616C 		.ascii	"scaledMin\000"
+ 1820      65644D69 
+ 1820      6E00
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cch10daQ.s 			page 41
 
 
- 1830 0038 00000000 		.4byte	.LFB72
- 1831 003c 0C000000 		.4byte	.LFE72-.LFB72
- 1832 0040 00000000 		.4byte	.LFB73
- 1833 0044 18000000 		.4byte	.LFE73-.LFB73
- 1834 0048 00000000 		.4byte	.LFB74
- 1835 004c 0C000000 		.4byte	.LFE74-.LFB74
- 1836 0050 00000000 		.4byte	.LFB64
- 1837 0054 1C000000 		.4byte	.LFE64-.LFB64
- 1838 0058 00000000 		.4byte	.LFB65
- 1839 005c 1A000000 		.4byte	.LFE65-.LFB65
- 1840 0060 00000000 		.4byte	.LFB66
- 1841 0064 14000000 		.4byte	.LFE66-.LFB66
- 1842 0068 00000000 		.4byte	.LFB75
- 1843 006c 0C000000 		.4byte	.LFE75-.LFB75
- 1844 0070 00000000 		.4byte	.LFB76
- 1845 0074 0C000000 		.4byte	.LFE76-.LFB76
- 1846 0078 00000000 		.4byte	0
- 1847 007c 00000000 		.4byte	0
- 1848              		.section	.debug_ranges,"",%progbits
- 1849              	.Ldebug_ranges0:
- 1850 0000 00000000 		.4byte	.LFB67
- 1851 0004 8C000000 		.4byte	.LFE67
- 1852 0008 00000000 		.4byte	.LFB68
- 1853 000c 0C000000 		.4byte	.LFE68
- 1854 0010 00000000 		.4byte	.LFB69
- 1855 0014 0C000000 		.4byte	.LFE69
- 1856 0018 00000000 		.4byte	.LFB70
- 1857 001c 10000000 		.4byte	.LFE70
- 1858 0020 00000000 		.4byte	.LFB71
- 1859 0024 0C000000 		.4byte	.LFE71
- 1860 0028 00000000 		.4byte	.LFB72
- 1861 002c 0C000000 		.4byte	.LFE72
- 1862 0030 00000000 		.4byte	.LFB73
- 1863 0034 18000000 		.4byte	.LFE73
- 1864 0038 00000000 		.4byte	.LFB74
- 1865 003c 0C000000 		.4byte	.LFE74
- 1866 0040 00000000 		.4byte	.LFB64
- 1867 0044 1C000000 		.4byte	.LFE64
- 1868 0048 00000000 		.4byte	.LFB65
- 1869 004c 1A000000 		.4byte	.LFE65
- 1870 0050 00000000 		.4byte	.LFB66
- 1871 0054 14000000 		.4byte	.LFE66
- 1872 0058 00000000 		.4byte	.LFB75
- 1873 005c 0C000000 		.4byte	.LFE75
- 1874 0060 00000000 		.4byte	.LFB76
- 1875 0064 0C000000 		.4byte	.LFE76
- 1876 0068 00000000 		.4byte	0
- 1877 006c 00000000 		.4byte	0
- 1878              		.section	.debug_line,"",%progbits
- 1879              	.Ldebug_line0:
- 1880 0000 99020000 		.section	.debug_str,"MS",%progbits,1
- 1880      0200A101 
- 1880      00000201 
- 1880      FB0E0D00 
- 1880      01010101 
- 1881              	.LASF56:
- 1882 0000 5F737461 		.ascii	"_state_\000"
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 42
+ 1821              	.LASF32:
+ 1822 001c 7056616C 		.ascii	"pVal\000"
+ 1822      00
+ 1823              	.LASF41:
+ 1824 0021 7072696F 		.ascii	"priority\000"
+ 1824      72697479 
+ 1824      00
+ 1825              	.LASF72:
+ 1826 002a 47656E65 		.ascii	"Generated_Source\\PSoC5\\angle_control_isr.c\000"
+ 1826      72617465 
+ 1826      645F536F 
+ 1826      75726365 
+ 1826      5C50536F 
+ 1827              	.LASF39:
+ 1828 0055 616E676C 		.ascii	"angle_control_isr_SetPriority\000"
+ 1828      655F636F 
+ 1828      6E74726F 
+ 1828      6C5F6973 
+ 1828      725F5365 
+ 1829              	.LASF5:
+ 1830 0073 73686F72 		.ascii	"short int\000"
+ 1830      7420696E 
+ 1830      7400
+ 1831              	.LASF34:
+ 1832 007d 6456616C 		.ascii	"dVal\000"
+ 1832      00
+ 1833              	.LASF10:
+ 1834 0082 73697A65 		.ascii	"sizetype\000"
+ 1834      74797065 
+ 1834      00
+ 1835              	.LASF2:
+ 1836 008b 6C6F6E67 		.ascii	"long double\000"
+ 1836      20646F75 
+ 1836      626C6500 
+ 1837              	.LASF65:
+ 1838 0097 54535F61 		.ascii	"TS_array\000"
+ 1838      72726179 
+ 1838      00
+ 1839              	.LASF61:
+ 1840 00a0 696E6974 		.ascii	"init_pos\000"
+ 1840      5F706F73 
+ 1840      00
+ 1841              	.LASF62:
+ 1842 00a9 73706565 		.ascii	"speed_ref\000"
+ 1842      645F7265 
+ 1842      6600
+ 1843              	.LASF40:
+ 1844 00b3 61646472 		.ascii	"address\000"
+ 1844      65737300 
+ 1845              	.LASF68:
+ 1846 00bb 504D315F 		.ascii	"PM1_DirCounter_GetCounter\000"
+ 1846      44697243 
+ 1846      6F756E74 
+ 1846      65725F47 
+ 1846      6574436F 
+ 1847              	.LASF43:
+ 1848 00d5 616E676C 		.ascii	"angle_control_isr_GetPriority\000"
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cch10daQ.s 			page 42
 
 
- 1882      74655F00 
- 1883              	.LASF57:
- 1884 0008 6469725F 		.ascii	"dir_state\000"
- 1884      73746174 
- 1884      6500
- 1885              	.LASF28:
- 1886 0012 7363616C 		.ascii	"scaledMin\000"
- 1886      65644D69 
- 1886      6E00
- 1887              	.LASF32:
- 1888 001c 7056616C 		.ascii	"pVal\000"
- 1888      00
- 1889              	.LASF41:
- 1890 0021 7072696F 		.ascii	"priority\000"
- 1890      72697479 
- 1890      00
- 1891              	.LASF73:
- 1892 002a 47656E65 		.ascii	"Generated_Source\\PSoC5\\angle_control_isr.c\000"
- 1892      72617465 
- 1892      645F536F 
- 1892      75726365 
- 1892      5C50536F 
- 1893              	.LASF39:
- 1894 0055 616E676C 		.ascii	"angle_control_isr_SetPriority\000"
- 1894      655F636F 
- 1894      6E74726F 
- 1894      6C5F6973 
- 1894      725F5365 
- 1895              	.LASF5:
- 1896 0073 73686F72 		.ascii	"short int\000"
- 1896      7420696E 
- 1896      7400
- 1897              	.LASF34:
- 1898 007d 6456616C 		.ascii	"dVal\000"
- 1898      00
- 1899              	.LASF10:
- 1900 0082 73697A65 		.ascii	"sizetype\000"
- 1900      74797065 
- 1900      00
- 1901              	.LASF2:
- 1902 008b 6C6F6E67 		.ascii	"long double\000"
- 1902      20646F75 
- 1902      626C6500 
- 1903              	.LASF65:
- 1904 0097 54535F61 		.ascii	"TS_array\000"
- 1904      72726179 
- 1904      00
- 1905              	.LASF61:
- 1906 00a0 696E6974 		.ascii	"init_pos\000"
- 1906      5F706F73 
- 1906      00
- 1907              	.LASF62:
- 1908 00a9 73706565 		.ascii	"speed_ref\000"
- 1908      645F7265 
- 1908      6600
- 1909              	.LASF40:
- 1910 00b3 61646472 		.ascii	"address\000"
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 43
+ 1848      655F636F 
+ 1848      6E74726F 
+ 1848      6C5F6973 
+ 1848      725F4765 
+ 1849              	.LASF16:
+ 1850 00f3 696E7431 		.ascii	"int16\000"
+ 1850      3600
+ 1851              	.LASF33:
+ 1852 00f9 6956616C 		.ascii	"iVal\000"
+ 1852      00
+ 1853              	.LASF14:
+ 1854 00fe 75696E74 		.ascii	"uint8\000"
+ 1854      3800
+ 1855              	.LASF22:
+ 1856 0104 72656656 		.ascii	"refVal\000"
+ 1856      616C00
+ 1857              	.LASF50:
+ 1858 010b 616E676C 		.ascii	"angle_control_isr_ClearPending\000"
+ 1858      655F636F 
+ 1858      6E74726F 
+ 1858      6C5F6973 
+ 1858      725F436C 
+ 1859              	.LASF26:
+ 1860 012a 6D696E56 		.ascii	"minValue\000"
+ 1860      616C7565 
+ 1860      00
+ 1861              	.LASF70:
+ 1862 0133 5049445F 		.ascii	"PID_calculatePID\000"
+ 1862      63616C63 
+ 1862      756C6174 
+ 1862      65504944 
+ 1862      00
+ 1863              	.LASF17:
+ 1864 0144 666C6F61 		.ascii	"float\000"
+ 1864      7400
+ 1865              	.LASF77:
+ 1866 014a 616E676C 		.ascii	"angle_control_isr_GetState\000"
+ 1866      655F636F 
+ 1866      6E74726F 
+ 1866      6C5F6973 
+ 1866      725F4765 
+ 1867              	.LASF1:
+ 1868 0165 6C6F6E67 		.ascii	"long long int\000"
+ 1868      206C6F6E 
+ 1868      6720696E 
+ 1868      7400
+ 1869              	.LASF21:
+ 1870 0173 63796973 		.ascii	"cyisraddress\000"
+ 1870      72616464 
+ 1870      72657373 
+ 1870      00
+ 1871              	.LASF58:
+ 1872 0180 706F735F 		.ascii	"pos_pid_\000"
+ 1872      7069645F 
+ 1872      00
+ 1873              	.LASF24:
+ 1874 0189 6C617374 		.ascii	"lastValue\000"
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cch10daQ.s 			page 43
 
 
- 1910      65737300 
- 1911              	.LASF43:
- 1912 00bb 616E676C 		.ascii	"angle_control_isr_GetPriority\000"
- 1912      655F636F 
- 1912      6E74726F 
- 1912      6C5F6973 
- 1912      725F4765 
- 1913              	.LASF16:
- 1914 00d9 696E7431 		.ascii	"int16\000"
- 1914      3600
- 1915              	.LASF33:
- 1916 00df 6956616C 		.ascii	"iVal\000"
- 1916      00
- 1917              	.LASF14:
- 1918 00e4 75696E74 		.ascii	"uint8\000"
- 1918      3800
- 1919              	.LASF22:
- 1920 00ea 72656656 		.ascii	"refVal\000"
- 1920      616C00
- 1921              	.LASF50:
- 1922 00f1 616E676C 		.ascii	"angle_control_isr_ClearPending\000"
- 1922      655F636F 
- 1922      6E74726F 
- 1922      6C5F6973 
- 1922      725F436C 
- 1923              	.LASF26:
- 1924 0110 6D696E56 		.ascii	"minValue\000"
- 1924      616C7565 
- 1924      00
- 1925              	.LASF70:
- 1926 0119 5049445F 		.ascii	"PID_calculatePID\000"
- 1926      63616C63 
- 1926      756C6174 
- 1926      65504944 
- 1926      00
- 1927              	.LASF17:
- 1928 012a 666C6F61 		.ascii	"float\000"
- 1928      7400
- 1929              	.LASF78:
- 1930 0130 616E676C 		.ascii	"angle_control_isr_GetState\000"
+ 1874      56616C75 
+ 1874      6500
+ 1875              	.LASF73:
+ 1876 0193 433A5C55 		.ascii	"C:\\Users\\Gonzalo Olave\\Dropbox (Personal)\\Magis"
+ 1876      73657273 
+ 1876      5C476F6E 
+ 1876      7A616C6F 
+ 1876      204F6C61 
+ 1877 01c2 7465725C 		.ascii	"ter\\Tesis\\tesis-source\\master-tesis\\dedo_v01.cy"
+ 1877      54657369 
+ 1877      735C7465 
+ 1877      7369732D 
+ 1877      736F7572 
+ 1878 01f1 64736E00 		.ascii	"dsn\000"
+ 1879              	.LASF27:
+ 1880 01f5 6D617856 		.ascii	"maxValue\000"
+ 1880      616C7565 
+ 1880      00
+ 1881              	.LASF38:
+ 1882 01fe 72616D56 		.ascii	"ramVectorTable\000"
+ 1882      6563746F 
+ 1882      72546162 
+ 1882      6C6500
+ 1883              	.LASF4:
+ 1884 020d 756E7369 		.ascii	"unsigned char\000"
+ 1884      676E6564 
+ 1884      20636861 
+ 1884      7200
+ 1885              	.LASF44:
+ 1886 021b 616E676C 		.ascii	"angle_control_isr_Enable\000"
+ 1886      655F636F 
+ 1886      6E74726F 
+ 1886      6C5F6973 
+ 1886      725F456E 
+ 1887              	.LASF55:
+ 1888 0234 5F756172 		.ascii	"_uart_Reset\000"
+ 1888      745F5265 
+ 1888      73657400 
+ 1889              	.LASF23:
+ 1890 0240 696E7075 		.ascii	"inputValue\000"
+ 1890      7456616C 
+ 1890      756500
+ 1891              	.LASF42:
+ 1892 024b 616E676C 		.ascii	"angle_control_isr_GetVector\000"
+ 1892      655F636F 
+ 1892      6E74726F 
+ 1892      6C5F6973 
+ 1892      725F4765 
+ 1893              	.LASF53:
+ 1894 0267 53656E64 		.ascii	"SendSingleByte\000"
+ 1894      53696E67 
+ 1894      6C654279 
+ 1894      746500
+ 1895              	.LASF3:
+ 1896 0276 7369676E 		.ascii	"signed char\000"
+ 1896      65642063 
+ 1896      68617200 
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cch10daQ.s 			page 44
+
+
+ 1897              	.LASF9:
+ 1898 0282 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1898      206C6F6E 
+ 1898      6720756E 
+ 1898      7369676E 
+ 1898      65642069 
+ 1899              	.LASF74:
+ 1900 0299 54527842 		.ascii	"TRxBuffer\000"
+ 1900      75666665 
+ 1900      7200
+ 1901              	.LASF0:
+ 1902 02a3 756E7369 		.ascii	"unsigned int\000"
+ 1902      676E6564 
+ 1902      20696E74 
+ 1902      00
+ 1903              	.LASF52:
+ 1904 02b0 436F6E74 		.ascii	"ContinuouslySendData\000"
+ 1904      696E756F 
+ 1904      75736C79 
+ 1904      53656E64 
+ 1904      44617461 
+ 1905              	.LASF35:
+ 1906 02c5 50617261 		.ascii	"ParamBuffer\000"
+ 1906      6D427566 
+ 1906      66657200 
+ 1907              	.LASF63:
+ 1908 02d1 64656275 		.ascii	"debug\000"
+ 1908      6700
+ 1909              	.LASF76:
+ 1910 02d7 54506172 		.ascii	"TParamBuffer\000"
+ 1910      616D4275 
+ 1910      66666572 
+ 1910      00
+ 1911              	.LASF20:
+ 1912 02e4 72656733 		.ascii	"reg32\000"
+ 1912      3200
+ 1913              	.LASF54:
+ 1914 02ea 53656E64 		.ascii	"SendEmulatedData\000"
+ 1914      456D756C 
+ 1914      61746564 
+ 1914      44617461 
+ 1914      00
+ 1915              	.LASF66:
+ 1916 02fb 48415F63 		.ascii	"HA_counter\000"
+ 1916      6F756E74 
+ 1916      657200
+ 1917              	.LASF31:
+ 1918 0306 76616C73 		.ascii	"valstr\000"
+ 1918      747200
+ 1919              	.LASF11:
+ 1920 030d 63686172 		.ascii	"char\000"
+ 1920      00
+ 1921              	.LASF7:
+ 1922 0312 6C6F6E67 		.ascii	"long int\000"
+ 1922      20696E74 
+ 1922      00
+ 1923              	.LASF36:
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cch10daQ.s 			page 45
+
+
+ 1924 031b 616E676C 		.ascii	"angle_control_isr_Interrupt\000"
+ 1924      655F636F 
+ 1924      6E74726F 
+ 1924      6C5F6973 
+ 1924      725F496E 
+ 1925              	.LASF13:
+ 1926 0337 696E7433 		.ascii	"int32_t\000"
+ 1926      325F7400 
+ 1927              	.LASF6:
+ 1928 033f 73686F72 		.ascii	"short unsigned int\000"
+ 1928      7420756E 
+ 1928      7369676E 
+ 1928      65642069 
+ 1928      6E7400
+ 1929              	.LASF46:
+ 1930 0352 616E676C 		.ascii	"angle_control_isr_Start\000"
  1930      655F636F 
  1930      6E74726F 
  1930      6C5F6973 
- 1930      725F4765 
- 1931              	.LASF1:
- 1932 014b 6C6F6E67 		.ascii	"long long int\000"
- 1932      206C6F6E 
- 1932      6720696E 
- 1932      7400
- 1933              	.LASF21:
- 1934 0159 63796973 		.ascii	"cyisraddress\000"
- 1934      72616464 
- 1934      72657373 
- 1934      00
- 1935              	.LASF58:
- 1936 0166 706F735F 		.ascii	"pos_pid_\000"
- 1936      7069645F 
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 44
+ 1930      725F5374 
+ 1931              	.LASF45:
+ 1932 036a 616E676C 		.ascii	"angle_control_isr_Disable\000"
+ 1932      655F636F 
+ 1932      6E74726F 
+ 1932      6C5F6973 
+ 1932      725F4469 
+ 1933              	.LASF75:
+ 1934 0384 52785374 		.ascii	"RxStr\000"
+ 1934      7200
+ 1935              	.LASF15:
+ 1936 038a 75696E74 		.ascii	"uint32\000"
+ 1936      333200
+ 1937              	.LASF19:
+ 1938 0391 72656738 		.ascii	"reg8\000"
+ 1938      00
+ 1939              	.LASF8:
+ 1940 0396 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1940      20756E73 
+ 1940      69676E65 
+ 1940      6420696E 
+ 1940      7400
+ 1941              	.LASF18:
+ 1942 03a8 646F7562 		.ascii	"double\000"
+ 1942      6C6500
+ 1943              	.LASF49:
+ 1944 03af 616E676C 		.ascii	"angle_control_isr_SetPending\000"
+ 1944      655F636F 
+ 1944      6E74726F 
+ 1944      6C5F6973 
+ 1944      725F5365 
+ 1945              	.LASF25:
+ 1946 03cc 69546572 		.ascii	"iTerm\000"
+ 1946      6D00
+ 1947              	.LASF12:
+ 1948 03d2 5F5F696E 		.ascii	"__int32_t\000"
+ 1948      7433325F 
+ 1948      7400
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cch10daQ.s 			page 46
 
 
- 1936      00
- 1937              	.LASF24:
- 1938 016f 6C617374 		.ascii	"lastValue\000"
- 1938      56616C75 
- 1938      6500
- 1939              	.LASF74:
- 1940 0179 433A5C55 		.ascii	"C:\\Users\\Gonzalo Olave\\Dropbox (Personal)\\Magis"
- 1940      73657273 
- 1940      5C476F6E 
- 1940      7A616C6F 
- 1940      204F6C61 
- 1941 01a8 7465725C 		.ascii	"ter\\Tesis\\tesis-source\\master-tesis\\dedo_v01.cy"
- 1941      54657369 
- 1941      735C7465 
- 1941      7369732D 
- 1941      736F7572 
- 1942 01d7 64736E00 		.ascii	"dsn\000"
- 1943              	.LASF27:
- 1944 01db 6D617856 		.ascii	"maxValue\000"
- 1944      616C7565 
- 1944      00
- 1945              	.LASF38:
- 1946 01e4 72616D56 		.ascii	"ramVectorTable\000"
- 1946      6563746F 
- 1946      72546162 
- 1946      6C6500
- 1947              	.LASF4:
- 1948 01f3 756E7369 		.ascii	"unsigned char\000"
- 1948      676E6564 
- 1948      20636861 
- 1948      7200
- 1949              	.LASF44:
- 1950 0201 616E676C 		.ascii	"angle_control_isr_Enable\000"
+ 1949              	.LASF48:
+ 1950 03dc 616E676C 		.ascii	"angle_control_isr_Stop\000"
  1950      655F636F 
  1950      6E74726F 
  1950      6C5F6973 
- 1950      725F456E 
- 1951              	.LASF55:
- 1952 021a 5F756172 		.ascii	"_uart_Reset\000"
- 1952      745F5265 
- 1952      73657400 
- 1953              	.LASF23:
- 1954 0226 696E7075 		.ascii	"inputValue\000"
- 1954      7456616C 
- 1954      756500
- 1955              	.LASF42:
- 1956 0231 616E676C 		.ascii	"angle_control_isr_GetVector\000"
- 1956      655F636F 
- 1956      6E74726F 
- 1956      6C5F6973 
- 1956      725F4765 
- 1957              	.LASF53:
- 1958 024d 53656E64 		.ascii	"SendSingleByte\000"
- 1958      53696E67 
- 1958      6C654279 
- 1958      746500
- 1959              	.LASF3:
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 45
+ 1950      725F5374 
+ 1951              	.LASF67:
+ 1952 03f3 706F735F 		.ascii	"pos_pid_output\000"
+ 1952      7069645F 
+ 1952      6F757470 
+ 1952      757400
+ 1953              	.LASF64:
+ 1954 0402 5F627261 		.ascii	"_braken_state\000"
+ 1954      6B656E5F 
+ 1954      73746174 
+ 1954      6500
+ 1955              	.LASF60:
+ 1956 0410 706F735F 		.ascii	"pos_ref\000"
+ 1956      72656600 
+ 1957              	.LASF37:
+ 1958 0418 616E676C 		.ascii	"angle_control_isr_SetVector\000"
+ 1958      655F636F 
+ 1958      6E74726F 
+ 1958      6C5F6973 
+ 1958      725F5365 
+ 1959              	.LASF47:
+ 1960 0434 616E676C 		.ascii	"angle_control_isr_StartEx\000"
+ 1960      655F636F 
+ 1960      6E74726F 
+ 1960      6C5F6973 
+ 1960      725F5374 
+ 1961              	.LASF51:
+ 1962 044e 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 1962      52784275 
+ 1962      66666572 
+ 1962      00
+ 1963              	.LASF71:
+ 1964 045b 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 1964      43313120 
+ 1964      352E342E 
+ 1964      31203230 
+ 1964      31363036 
+ 1965 048e 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m3 -mthumb -g -O"
+ 1965      20726576 
+ 1965      6973696F 
+ 1965      6E203233 
+ 1965      37373135 
+ 1966 04c1 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 1966      66756E63 
+ 1966      74696F6E 
+ 1966      2D736563 
+ 1966      74696F6E 
+ 1967              	.LASF29:
+ 1968 04e9 7363616C 		.ascii	"scaledMax\000"
+ 1968      65644D61 
+ 1968      7800
+ 1969              	.LASF59:
+ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\cch10daQ.s 			page 47
 
 
- 1960 025c 7369676E 		.ascii	"signed char\000"
- 1960      65642063 
- 1960      68617200 
- 1961              	.LASF9:
- 1962 0268 6C6F6E67 		.ascii	"long long unsigned int\000"
- 1962      206C6F6E 
- 1962      6720756E 
- 1962      7369676E 
- 1962      65642069 
- 1963              	.LASF75:
- 1964 027f 54527842 		.ascii	"TRxBuffer\000"
- 1964      75666665 
- 1964      7200
- 1965              	.LASF0:
- 1966 0289 756E7369 		.ascii	"unsigned int\000"
- 1966      676E6564 
- 1966      20696E74 
- 1966      00
- 1967              	.LASF52:
- 1968 0296 436F6E74 		.ascii	"ContinuouslySendData\000"
- 1968      696E756F 
- 1968      75736C79 
- 1968      53656E64 
- 1968      44617461 
- 1969              	.LASF35:
- 1970 02ab 50617261 		.ascii	"ParamBuffer\000"
- 1970      6D427566 
- 1970      66657200 
- 1971              	.LASF63:
- 1972 02b7 64656275 		.ascii	"debug\000"
- 1972      6700
- 1973              	.LASF77:
- 1974 02bd 54506172 		.ascii	"TParamBuffer\000"
- 1974      616D4275 
- 1974      66666572 
- 1974      00
- 1975              	.LASF20:
- 1976 02ca 72656733 		.ascii	"reg32\000"
- 1976      3200
- 1977              	.LASF54:
- 1978 02d0 53656E64 		.ascii	"SendEmulatedData\000"
- 1978      456D756C 
- 1978      61746564 
- 1978      44617461 
- 1978      00
- 1979              	.LASF66:
- 1980 02e1 48415F63 		.ascii	"HA_counter\000"
- 1980      6F756E74 
- 1980      657200
- 1981              	.LASF31:
- 1982 02ec 76616C73 		.ascii	"valstr\000"
- 1982      747200
- 1983              	.LASF11:
- 1984 02f3 63686172 		.ascii	"char\000"
- 1984      00
- 1985              	.LASF7:
- 1986 02f8 6C6F6E67 		.ascii	"long int\000"
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 46
-
-
- 1986      20696E74 
- 1986      00
- 1987              	.LASF36:
- 1988 0301 616E676C 		.ascii	"angle_control_isr_Interrupt\000"
- 1988      655F636F 
- 1988      6E74726F 
- 1988      6C5F6973 
- 1988      725F496E 
- 1989              	.LASF13:
- 1990 031d 696E7433 		.ascii	"int32_t\000"
- 1990      325F7400 
- 1991              	.LASF6:
- 1992 0325 73686F72 		.ascii	"short unsigned int\000"
- 1992      7420756E 
- 1992      7369676E 
- 1992      65642069 
- 1992      6E7400
- 1993              	.LASF46:
- 1994 0338 616E676C 		.ascii	"angle_control_isr_Start\000"
- 1994      655F636F 
- 1994      6E74726F 
- 1994      6C5F6973 
- 1994      725F5374 
- 1995              	.LASF45:
- 1996 0350 616E676C 		.ascii	"angle_control_isr_Disable\000"
- 1996      655F636F 
- 1996      6E74726F 
- 1996      6C5F6973 
- 1996      725F4469 
- 1997              	.LASF76:
- 1998 036a 52785374 		.ascii	"RxStr\000"
- 1998      7200
- 1999              	.LASF15:
- 2000 0370 75696E74 		.ascii	"uint32\000"
- 2000      333200
- 2001              	.LASF19:
- 2002 0377 72656738 		.ascii	"reg8\000"
- 2002      00
- 2003              	.LASF8:
- 2004 037c 6C6F6E67 		.ascii	"long unsigned int\000"
- 2004      20756E73 
- 2004      69676E65 
- 2004      6420696E 
- 2004      7400
- 2005              	.LASF18:
- 2006 038e 646F7562 		.ascii	"double\000"
- 2006      6C6500
- 2007              	.LASF71:
- 2008 0395 5369676D 		.ascii	"Sigmoid\000"
- 2008      6F696400 
- 2009              	.LASF49:
- 2010 039d 616E676C 		.ascii	"angle_control_isr_SetPending\000"
- 2010      655F636F 
- 2010      6E74726F 
- 2010      6C5F6973 
- 2010      725F5365 
- 2011              	.LASF25:
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 47
-
-
- 2012 03ba 69546572 		.ascii	"iTerm\000"
- 2012      6D00
- 2013              	.LASF12:
- 2014 03c0 5F5F696E 		.ascii	"__int32_t\000"
- 2014      7433325F 
- 2014      7400
- 2015              	.LASF48:
- 2016 03ca 616E676C 		.ascii	"angle_control_isr_Stop\000"
- 2016      655F636F 
- 2016      6E74726F 
- 2016      6C5F6973 
- 2016      725F5374 
- 2017              	.LASF67:
- 2018 03e1 706F735F 		.ascii	"pos_pid_output\000"
- 2018      7069645F 
- 2018      6F757470 
- 2018      757400
- 2019              	.LASF64:
- 2020 03f0 5F627261 		.ascii	"_braken_state\000"
- 2020      6B656E5F 
- 2020      73746174 
- 2020      6500
- 2021              	.LASF60:
- 2022 03fe 706F735F 		.ascii	"pos_ref\000"
- 2022      72656600 
- 2023              	.LASF37:
- 2024 0406 616E676C 		.ascii	"angle_control_isr_SetVector\000"
- 2024      655F636F 
- 2024      6E74726F 
- 2024      6C5F6973 
- 2024      725F5365 
- 2025              	.LASF47:
- 2026 0422 616E676C 		.ascii	"angle_control_isr_StartEx\000"
- 2026      655F636F 
- 2026      6E74726F 
- 2026      6C5F6973 
- 2026      725F5374 
- 2027              	.LASF51:
- 2028 043c 49544D5F 		.ascii	"ITM_RxBuffer\000"
- 2028      52784275 
- 2028      66666572 
- 2028      00
- 2029              	.LASF72:
- 2030 0449 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
- 2030      43313120 
- 2030      352E342E 
- 2030      31203230 
- 2030      31363036 
- 2031 047c 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m3 -mthumb -g -O"
- 2031      20726576 
- 2031      6973696F 
- 2031      6E203233 
- 2031      37373135 
- 2032 04af 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
- 2032      66756E63 
- 2032      74696F6E 
- 2032      2D736563 
-ARM GAS  C:\Users\GONZAL~1\AppData\Local\Temp\ccgACUFw.s 			page 48
-
-
- 2032      74696F6E 
- 2033              	.LASF29:
- 2034 04d7 7363616C 		.ascii	"scaledMax\000"
- 2034      65644D61 
- 2034      7800
- 2035              	.LASF59:
- 2036 04e1 61637475 		.ascii	"actual_pos\000"
- 2036      616C5F70 
- 2036      6F7300
- 2037              	.LASF69:
- 2038 04ec 5049445F 		.ascii	"PID_setRef\000"
- 2038      73657452 
- 2038      656600
- 2039              	.LASF30:
- 2040 04f7 5049445F 		.ascii	"PID_t\000"
- 2040      7400
- 2041              	.LASF68:
- 2042 04fd 44697243 		.ascii	"DirCounter_GetCounter\000"
- 2042      6F756E74 
- 2042      65725F47 
- 2042      6574436F 
- 2042      756E7465 
- 2043              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran
+ 1970 04f3 61637475 		.ascii	"actual_pos\000"
+ 1970      616C5F70 
+ 1970      6F7300
+ 1971              	.LASF69:
+ 1972 04fe 5049445F 		.ascii	"PID_setRef\000"
+ 1972      73657452 
+ 1972      656600
+ 1973              	.LASF30:
+ 1974 0509 5049445F 		.ascii	"PID_t\000"
+ 1974      7400
+ 1975              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

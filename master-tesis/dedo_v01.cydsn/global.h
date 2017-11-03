@@ -13,12 +13,13 @@
 #ifndef GLOBAL_VARIABLES_FILE_H
 #define GLOBAL_VARIABLES_FILE_H
 
-#include "stdio.h"
 #include "project.h"
+#include "motor.h"
+#include "stdio.h"
 #include "pid.h"
-#include "math.h"
 #include "string.h"
 #include "myUART.h"
+#include <math.h>
 
 /* Project structures */
 
@@ -28,7 +29,6 @@ typedef struct TParamBuffer{
     int pVal,iVal,dVal;   //int param
 } ParamBuffer;  //settings
 volatile ParamBuffer PB;     //volatile struct TParamBuffer PB;
-
 
 /* Project defines */
 #define FALSE  0
@@ -47,7 +47,7 @@ volatile ParamBuffer PB;     //volatile struct TParamBuffer PB;
 #define MAX_POSITION_LIMIT 72
 #define MIN_POSITION_LIMIT 0
 
-#define CONTROL_TYPE 1
+#define CONTROL_TYPE 2
 
 #if CONTROL_TYPE==0
     #define MANUAL_CONTROL
@@ -65,8 +65,8 @@ volatile ParamBuffer PB;     //volatile struct TParamBuffer PB;
 #define KD_POS 0.0
 
 /* speed control parameters */
-#define KP_VEL 2.0
-#define KI_VEL 0.3
+#define KP_VEL 1.0
+#define KI_VEL 0.2
 #define KD_VEL 0.0
 
 /* tensor control parameters */
@@ -87,12 +87,12 @@ volatile uint8 _uart_Reset;
 int _state_;
 
 // for rotor speed and direction
-extern volatile int16_t dir_count;
 extern volatile uint8 dir_state;
 extern volatile int8_t rotor_direction;
 
 // for speed measurement
 extern volatile int32_t t_ha,ca,ma;
+extern volatile int32_t PM1_HA_Period;
 
 //for tension control
 extern PID_t  tens_pid_;
@@ -115,8 +115,10 @@ extern volatile uint8 _pVal;
 extern volatile int32_t debug;
 
 extern uint8 _pid_out;
-
 extern uint8 _braken_state;
+
+extern MOTOR_t PM1;
+extern MOTOR_t PM2;
 
 #endif // GLOBAL_VARIABLES_FILE_H
 

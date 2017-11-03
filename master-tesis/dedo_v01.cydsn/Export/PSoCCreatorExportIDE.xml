@@ -40,13 +40,15 @@
           <File BuildType="BUILD" Toolchain="">pid.c</File>
           <File BuildType="BUILD" Toolchain="">main.c</File>
           <File BuildType="BUILD" Toolchain="">myUART.c</File>
+          <File BuildType="BUILD" Toolchain="">motor.c</File>
+          <File BuildType="BUILD" Toolchain="">isr_functions.c</File>
           <File BuildType="BUILD" Toolchain="">cyapicallbacks.h</File>
           <File BuildType="BUILD" Toolchain="">functions.h</File>
           <File BuildType="BUILD" Toolchain="">global.h</File>
           <File BuildType="BUILD" Toolchain="">pid.h</File>
           <File BuildType="BUILD" Toolchain="">myUART.h</File>
-          <File BuildType="BUILD" Toolchain="">isr_HA.c</File>
-          <File BuildType="BUILD" Toolchain="">isr_counter.c</File>
+          <File BuildType="BUILD" Toolchain="">motor.h</File>
+          <File BuildType="BUILD" Toolchain="">isr_functions.h</File>
           <File BuildType="BUILD" Toolchain="">vel_control_isr.c</File>
           <File BuildType="BUILD" Toolchain="">isr_button.c</File>
           <File BuildType="BUILD" Toolchain="">tensor_control_isr.c</File>
@@ -70,9 +72,6 @@
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\cyfitteriar.inc</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\cyfitter.h</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\cydisabledsheets.h</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\ENABLE_aliases.h</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\ENABLE.c</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\ENABLE.h</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\ADC.c</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\ADC.h</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\ADC_INT.c</File>
@@ -80,25 +79,6 @@
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\pote_PIN_aliases.h</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\pote_PIN.c</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\pote_PIN.h</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\SPEED_aliases.h</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\SPEED.c</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\SPEED.h</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\DIR_aliases.h</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\DIR.c</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\DIR.h</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\BRAKEn_aliases.h</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\BRAKEn.c</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\BRAKEn.h</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\HA_aliases.h</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\HA.c</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\HA.h</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\HB_aliases.h</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\HB.c</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\HB.h</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\vel_counter_clk.c</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\vel_counter_clk.h</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\isr_HA.h</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\isr_counter.h</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\control_clk.c</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\control_clk.h</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\vel_control_isr.h</File>
@@ -115,17 +95,11 @@
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\tensor_control_isr.h</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\angle_control_isr.c</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\angle_control_isr.h</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\DirCounter.c</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\DirCounter.h</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\DirCounter_PM.c</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\control_clk_1.c</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\control_clk_1.h</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\VDAC8_Speed.c</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\VDAC8_Speed.h</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\VDAC8_Speed_PM.c</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Timer_ha.c</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Timer_ha.h</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Timer_ha_PM.c</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\ADC_IRQ.c</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\ADC_IRQ.h</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\ADC_theACLK.c</File>
@@ -133,9 +107,6 @@
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\ADC_Bypass_aliases.h</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\ADC_Bypass.c</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\ADC_Bypass.h</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\DirCounter_Cnt16.c</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\DirCounter_Cnt16.h</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\DirCounter_Cnt16_PM.c</File>
           <File BuildType="BUILD" Toolchain="ARM GCC Generic">Generated_Source\PSoC5\cm3gcc.ld</File>
           <File BuildType="BUILD" Toolchain="ARM MDK Generic">Generated_Source\PSoC5\Cm3RealView.scat</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Cm3Start.c</File>
@@ -192,6 +163,61 @@
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\ADC_TS_FinalBuf_dma.h</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\ADC_TS_IRQ.c</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\ADC_TS_IRQ.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PM2_output_aliases.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PM2_input_aliases.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PM2_input.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PM2_input.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PM2_DirCounter.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PM2_DirCounter.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PM2_DirCounter_INT.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PM2_DirCounter_PM.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PM2_DirCounter_PVT.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PM2_HA_Timer.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PM2_HA_Timer.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PM2_HA_Timer_PM.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PM2_DirCounter_isr.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PM2_DirCounter_isr.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PM2_DirCounter_Cnt16.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PM2_DirCounter_Cnt16.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PM2_DirCounter_Cnt16_PM.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PM1_HA_ISR.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PM1_HA_ISR.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PM1_input_aliases.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PM1_input.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PM1_input.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PM2_HA_ISR.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PM2_HA_ISR.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PM1_HA_TIMER.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PM1_HA_TIMER.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PM1_HA_TIMER_PM.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\SPD_CLOCK_10K.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\SPD_CLOCK_10K.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\SPD_CLOCK_10.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\SPD_CLOCK_10.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PM1_DirCounter.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PM1_DirCounter.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PM1_DirCounter_INT.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PM1_DirCounter_PM.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PM1_DirCounter_PVT.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PM1_DirCounter_isr.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PM1_DirCounter_isr.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PM1_DirCounter_Cnt16.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PM1_DirCounter_Cnt16.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PM1_DirCounter_Cnt16_PM.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\COUNT_ISR.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\COUNT_ISR.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PM1_DIR_aliases.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PM1_DIR.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PM1_DIR.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PM1_BRAKEn_aliases.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PM1_BRAKEn.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PM1_BRAKEn.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PM1_ENABLE_aliases.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PM1_ENABLE.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PM1_ENABLE.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PM1_SPEED_aliases.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PM1_SPEED.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PM1_SPEED.h</File>
         </Files>
       </Folder>
       <Folder BuildType="STRICT" Path="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\Export\ARM_GCC_Generic">

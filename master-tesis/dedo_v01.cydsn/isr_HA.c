@@ -28,12 +28,14 @@
 ********************************************************************************/
 /* `#START isr_HA_intc` */
 #include <Timer_ha.h>
-      
+#include <DirCounter.h>
+    
 volatile int32_t t_ha;
 volatile int32_t ca;
-volatile int32_t ma; 
-
-volatile int32_t HA_counter;
+volatile int32_t ma;
+volatile int8 rotor_direction;
+    
+int16 last_count, aux;
     
 /* `#END` */
 
@@ -172,13 +174,12 @@ CY_ISR(isr_HA_Interrupt)
 
     /*  Place your Interrupt code here. */
     /* `#START isr_HA_Interrupt` */
-    
-    HA_counter+=1;
+
     ca = Timer_ha_ReadCounter(); // read counter
     t_ha = -1*(ca+ma); //
     ma = ca;
     Timer_ha_WriteCounter(0); // reset the counter
-
+   
     /* `#END` */
 }
 

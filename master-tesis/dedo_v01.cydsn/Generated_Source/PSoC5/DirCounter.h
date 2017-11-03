@@ -29,7 +29,7 @@
     #error Component QuadDec_v3_0 requires cy_boot v3.0 or later
 #endif /* (CY_PSOC5LP) */
 
-#define DirCounter_COUNTER_SIZE               (16u)
+#define DirCounter_COUNTER_SIZE               (32u)
 #define DirCounter_COUNTER_SIZE_8_BIT         (8u)
 #define DirCounter_COUNTER_SIZE_16_BIT        (16u)
 #define DirCounter_COUNTER_SIZE_32_BIT        (32u)
@@ -75,8 +75,8 @@ void  DirCounter_Enable(void) ;
 uint8 DirCounter_GetEvents(void) ;
 void  DirCounter_SetInterruptMask(uint8 mask) ;
 uint8 DirCounter_GetInterruptMask(void) ;
-int16 DirCounter_GetCounter(void) ;
-void  DirCounter_SetCounter(int16 value)
+int32 DirCounter_GetCounter(void) ;
+void  DirCounter_SetCounter(int32 value)
 ;
 void  DirCounter_Sleep(void) ;
 void  DirCounter_Wakeup(void) ;
@@ -102,7 +102,7 @@ void  DirCounter_RestoreConfig(void) ;
 *    Enumerated Types and Parameters
 ***************************************/
 
-#define DirCounter_GLITCH_FILTERING           (0u)
+#define DirCounter_GLITCH_FILTERING           (1u)
 #define DirCounter_INDEX_INPUT                (0u)
 
 

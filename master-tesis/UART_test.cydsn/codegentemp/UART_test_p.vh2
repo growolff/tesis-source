@@ -1,5 +1,5 @@
 -- Project:   UART_test
--- Generated: 09/15/2017 12:54:29
+-- Generated: 11/02/2017 11:45:05
 -- PSoC Creator  4.1 Update 1
 
 ENTITY UART_test IS

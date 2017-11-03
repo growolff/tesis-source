@@ -22,8 +22,6 @@ char msg[20];
 int16 * TS_array;
 uint8 _braken_state;
 
-
-
 int32_t fn_mapper(int32_t x, int32_t in_min, int32_t in_max, int32_t out_min, int32_t out_max);
 uint8 fn_mapper_8b(int32_t x, int32_t in_min, int32_t in_max, int32_t out_min, int32_t out_max);
 

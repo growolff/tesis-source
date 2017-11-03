@@ -178,7 +178,7 @@ CY_ISR(vel_control_isr_Interrupt)
     /*  Place your Interrupt code here. */
     /* `#START vel_control_isr_Interrupt` */
 
-    actual_speed = HF_CLK/t_ha * 30; // 60 * 2 / 4 = 30, in RPM
+    actual_speed = (HF_CLK/PM1_HA_Period) * 30; // 60 * 2 / 4 = 30, in RPM
     
     PID_setRef(&speed_pid_,speed_ref);
     
@@ -192,7 +192,7 @@ CY_ISR(vel_control_isr_Interrupt)
     //debug = _pid_out;
 
     #if defined(ANGLE_CONTROL) || defined(SPEED_CONTROL)
-            VDAC8_Speed_SetValue((uint8)(_pid_out));
+            VDAC8_Speed_SetValue(_pid_out);
     #endif
     
     /* `#END` */

@@ -1,3 +1,3 @@
-# Component constraints for D:\Dropbox\Magister\Tesis\tesis-source\master-tesis\UART_test.cydsn\TopDesign\TopDesign.cysch
-# Project: D:\Dropbox\Magister\Tesis\tesis-source\master-tesis\UART_test.cydsn\UART_test.cyprj
-# Date: Fri, 15 Sep 2017 15:53:59 GMT
+# Component constraints for C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\UART_test.cydsn\TopDesign\TopDesign.cysch
+# Project: C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\UART_test.cydsn\UART_test.cyprj
+# Date: Thu, 02 Nov 2017 14:44:52 GMT
