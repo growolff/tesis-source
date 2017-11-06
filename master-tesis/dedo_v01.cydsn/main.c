@@ -12,6 +12,8 @@
 #include "global.h"
 #include "math.h"
 
+//#define M_PIN_SET(pin) #pin"_DR |=" #pin"_MASK"
+
 void initHardware(void){
     
     ADC_Start();
@@ -37,11 +39,17 @@ void initMotors()
     float spd[3] = {KP_VEL, KI_VEL, KD_VEL}; 
     float tns[3] = {KP_TENS, KI_TENS, KD_TENS};
         
+    PIN_t PM1_BR;
+
+    PM1_BR.DR = &PM1_BRAKEn_DR;
+    PM1_BR.MASK = PM1_BRAKEn_MASK;
+    PM1.BRAKEn_state_ = 1;
+    
     PM1_HA_ISR_StartEx(PM1_HA_INT);
     MOTOR_setControlParams(&PM1,rvt,spd,tns);
     MOTOR_setControlParams(&PM2,rvt,spd,tns);
-    MOTOR_init(&PM1);
-    MOTOR_init(&PM2);
+    MOTOR_init(&PM1,PM1_BR);
+    //MOTOR_init(&PM2);
 
 }
 
@@ -100,7 +108,7 @@ int main(void)
     
     while(_state_ == 0){
         Ch = UART_GetChar();
-        if(Ch == 'i'){
+        if(Ch == 'n'){
             sprintf(TransmitBuffer, "& INIT CTRL_TYPE = %d\r\n",CONTROL_TYPE);
             UART_PutString(TransmitBuffer);
             sprintf(TransmitBuffer, "!%d\r\n",CONTROL_TYPE);
@@ -113,15 +121,22 @@ int main(void)
                 sprintf(TransmitBuffer, "*%d*%d*%d\r\n",(int)(kp_tens*100.0),(int)(ki_tens*100.0),(int)(kd_tens*100.0));
             #endif
             UART_PutString(TransmitBuffer);
+        }
+        if(Ch == 'i'){
             _state_=1;
             break;
         }
     }
     CyGlobalIntEnable; /* Enable global interrupts. */
-    PM1_BRAKEn_Write(PM1.BRAKEn);
+    //PM1_BRAKEn_Write(0);
+    //M_PIN_SET(PM1_BRAKEn);
+    //PM1_BRAKEn_DR |= PM1_BRAKEn_MASK; //set BRAKEn pin port
+    //PM1_BRAKEn_DR &= ~PM1_BRAKEn_MASK; //clear BRAKEn pin port
     
     for(;;)
     {
+        //sprintf(TransmitBuffer, "& DEBUG: %d\r\n",*PM1.BRAKEn.DR);
+        UART_PutString(TransmitBuffer);
         /* Check for PID update */
         while(IsCharReady()){
             //UART_PutString("&IsCharReady\r\n");

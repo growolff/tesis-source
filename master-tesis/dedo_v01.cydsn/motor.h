@@ -15,6 +15,12 @@
 
 #include "pid.h"
 #include "project.h"
+
+typedef struct PIN_t
+{
+    reg8 *DR;
+    uint8 MASK;
+} PIN_t;
     
 typedef struct MOTOR_t {
     uint8_t control_mode;
@@ -42,13 +48,15 @@ typedef struct MOTOR_t {
     
     int32_t rvt_aux, rvt_last_count;
 
+    PIN_t BRAKEn;
     uint8_t ENABLE;
-    uint8_t BRAKEn;
+    uint8_t BRAKEn_state_;
     uint8_t DIR;
+
 
 } MOTOR_t;
 
-void MOTOR_init(MOTOR_t* motor);
+void MOTOR_init(MOTOR_t* motor, PIN_t pin);
 void MOTOR_setMode(MOTOR_t* motor, uint8_t mode);
 void MOTOR_setControlParams(MOTOR_t* motor, float* rvt, float* spd, float* tns);
 void MOTOR_setRvtRef(MOTOR_t* motor, int32_t rvtRef);

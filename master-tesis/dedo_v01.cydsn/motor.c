@@ -12,7 +12,7 @@
 
 #include "motor.h"
 
-void MOTOR_init(MOTOR_t* motor)
+void MOTOR_init(MOTOR_t* motor, PIN_t pin)
 {    
     /* initialize motor controllers */
     PID_init(&motor->spd_controller,motor->spd_params[0],motor->spd_params[1],motor->spd_params[2]);
@@ -27,9 +27,10 @@ void MOTOR_init(MOTOR_t* motor)
     PID_setMaxValue(&motor->tns_controller, 4096);
     PID_setMinValue(&motor->tns_controller, -4096);
     
-    motor->BRAKEn = 0;
+    motor->BRAKEn = pin;
     motor->DIR = 1;
     motor->ENABLE = 1;
+    motor->BRAKEn_state_ = 1;
     
     
 }
@@ -62,13 +63,16 @@ void MOTOR_setSpdRef(MOTOR_t* motor, int32_t spdRef)
 
 void MOTOR_ToggleHandBrake(MOTOR_t* motor)
 {
-    if (motor->BRAKEn == 0){
-        motor->BRAKEn = 1;                  // update motor status
-        PM1_BRAKEn_Write(motor->BRAKEn);    // write to BRAKEn pin
+    
+    if (motor->BRAKEn_state_ == 1){                 
+        //PM1_BRAKEn_Write(motor->BRAKEn_state_);    // write to BRAKEn pin
+        *motor->BRAKEn.DR |= motor->BRAKEn.MASK;
+        motor->BRAKEn_state_ = 0;   // update motor status
     }
     else{
-        motor->BRAKEn = 0;
-        PM1_BRAKEn_Write(motor->BRAKEn);
+        //PM1_BRAKEn_Write(motor->BRAKEn_state_);
+        *motor->BRAKEn.DR &= ~(motor->BRAKEn.MASK);
+        motor->BRAKEn_state_ = 1; // update motor status
     }    
 }
 

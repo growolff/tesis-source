@@ -94,29 +94,15 @@ void ProcessCommandMsg(void)
             PM1.ref_tns = atoi(RB.valstr);
         }
     }
-    else if (RB.cmd == '1'){
-        pos_ref = 20;
-    }
-    else if (RB.cmd == '0'){
-        pos_ref = 0;
+    else if (RB.cmd == '?'){
+        if(strlen(RB.valstr) > 0){
+            PM1.ref_spd = atoi(RB.valstr);
+        }
     }
     
     if ( updatePID == TRUE ){
         PID_setCoeffs(&PM1.spd_controller,(float)PB.pVal/100.0,(float)PB.iVal/100.0,(float)PB.dVal/100.0);
         updatePID = FALSE;
-    }
-}
-
-void ToggleHandBrake()
-{
-    if (PM1.BRAKEn == 0){
-        PM1.BRAKEn = 1;      // update motor status
-        PM1_BRAKEn_Write(PM1.BRAKEn); // write to pin
-                
-    }
-    else{
-        PM1.BRAKEn = 0;
-        PM1_BRAKEn_Write(PM1.BRAKEn);
     }
 }
 
