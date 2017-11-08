@@ -21,7 +21,7 @@
 
 extern MOTOR_t PM1,PM2;
     
-char msg[20];
+char msg[16];
 int16 * TS_array;
 
 int32_t fn_mapper(int32_t x, int32_t in_min, int32_t in_max, int32_t out_min, int32_t out_max);

@@ -1,6 +1,6 @@
 // ======================================================================
 // dedo_v01.v generated from TopDesign.cysch
-// 11/03/2017 at 16:21
+// 11/07/2017 at 19:46
 // This file is auto generated. ANY EDITS YOU MAKE MAY BE LOST WHEN THIS FILE IS REGENERATED!!!
 // ======================================================================
 
@@ -2763,10 +2763,10 @@ module top ;
 		#(.id("5398140e-b358-4326-bc8a-ffec59ef4419"),
 		  .source_clock_id(""),
 		  .divisor(0),
-		  .period("100000000000000"),
+		  .period("20000000000000"),
 		  .is_direct(0),
 		  .is_digital(1))
-		SPD_CLOCK_10
+		SPD_CLOCK_25
 		 (.clock_out(Net_431));
 
 
@@ -3046,7 +3046,7 @@ module top ;
 
 	cy_isr_v1_0
 		#(.int_type(2'b00))
-		angle_control_isr
+		RVT_COMMAND_ISR
 		 (.int_signal(Net_750));
 
 
@@ -3072,7 +3072,7 @@ module top ;
 		#(.id("55382992-32c2-4855-8123-f54988153140"),
 		  .source_clock_id(""),
 		  .divisor(0),
-		  .period("20000000000000"),
+		  .period("100000000000000"),
 		  .is_direct(0),
 		  .is_digital(1))
 		control_clk_1

@@ -71,6 +71,7 @@ void ProcessCommandMsg(void)
     }
     else if (RB.cmd == 'q'){
         CySoftwareReset();
+        CyDelay(500);
     }
     else if (RB.cmd == 'x'){
         //UART_PutString("&X");
@@ -81,7 +82,7 @@ void ProcessCommandMsg(void)
     }
     else if (RB.cmd == '!'){
         if(strlen(RB.valstr) > 0){
-            PM1.ref_rvt = atoi(RB.valstr);
+            PM1.ref_rvt = atoi(RB.valstr)*4; // 4 conteos por vuelta
         }
     }
     else if (RB.cmd == '#'){
@@ -96,12 +97,29 @@ void ProcessCommandMsg(void)
     }
     else if (RB.cmd == '?'){
         if(strlen(RB.valstr) > 0){
-            PM1.ref_spd = atoi(RB.valstr);
+            MOTOR_setControlMode(&PM1,atoi(RB.valstr));
+            
+            sprintf(msg, "!%d\r\n",PM1.control_mode);
+            UART_PutString(msg);
+            if (PM1.control_mode == 1){
+                sprintf(msg, "*%d*%d*%d\r\n",(int)(PM1.rvt_params[0]*100.0),(int)(PM1.rvt_params[1]*100.0),(int)(PM1.rvt_params[2]*100.0));     
+            }
+            if (PM1.control_mode == 2){
+                sprintf(msg, "*%d*%d*%d\r\n",(int)(PM1.spd_params[0]*100.0),(int)(PM1.spd_params[1]*100.0),(int)(PM1.spd_params[2]*100.0));    
+            }
+            if (PM1.control_mode == 3){
+                sprintf(msg, "*%d*%d*%d\r\n",(int)(PM1.tns_params[0]*100.0),(int)(PM1.tns_params[1]*100.0),(int)(PM1.tns_params[2]*100.0));
+            }
+            UART_PutString(msg);
         }
     }
-    
     if ( updatePID == TRUE ){
-        PID_setCoeffs(&PM1.spd_controller,(float)PB.pVal/100.0,(float)PB.iVal/100.0,(float)PB.dVal/100.0);
+        if(PM1.control_mode == 1){
+            MOTOR_setRvtControlParams(&PM1,(float)PB.pVal/100.0,(float)PB.iVal/100.0,(float)PB.dVal/100.0);
+        }
+        else if(PM1.control_mode == 2){
+            MOTOR_setSpdControlParams(&PM1,(float)PB.pVal/100.0,(float)PB.iVal/100.0,(float)PB.dVal/100.0);
+        }
         updatePID = FALSE;
     }
 }

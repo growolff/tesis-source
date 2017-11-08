@@ -83,8 +83,6 @@
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\tension_PIN.c</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\tension_PIN.h</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\tensor_control_isr.h</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\angle_control_isr.c</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\angle_control_isr.h</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\control_clk_1.c</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\control_clk_1.h</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\ADC_IRQ.c</File>
@@ -178,8 +176,6 @@
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PM1_HA_TIMER_PM.c</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\SPD_CLOCK_10K.c</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\SPD_CLOCK_10K.h</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\SPD_CLOCK_10.c</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\SPD_CLOCK_10.h</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PM1_DirCounter.c</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PM1_DirCounter.h</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PM1_DirCounter_INT.c</File>
@@ -224,6 +220,10 @@
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PM2_ENABLE_aliases.h</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PM2_ENABLE.c</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PM2_ENABLE.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\SPD_CLOCK_25.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\SPD_CLOCK_25.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\RVT_COMMAND_ISR.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\RVT_COMMAND_ISR.h</File>
         </Files>
       </Folder>
       <Folder BuildType="STRICT" Path="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\Export\ARM_GCC_Generic">

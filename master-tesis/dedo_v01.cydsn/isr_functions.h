@@ -25,6 +25,7 @@ CY_ISR_PROTO(PM1_HA_INT);          // process PM1_HA_ISR interrupt
 CY_ISR_PROTO(COUNT_INT);          // process PM1_COUNT_ISR interrupt
 
 CY_ISR_PROTO(SPD_COMMAND_INT);
+CY_ISR_PROTO(RVT_COMMAND_INT);
 
 #endif // ISR_FUNCTIONS_H
 

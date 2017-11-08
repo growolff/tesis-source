@@ -22,12 +22,12 @@
       <register name="PM1_DirCounter_Cnt16_COUNTER" address="0x40006402" bitWidth="16" desc="UDB.A0 - Current Counter Value" hidden="false" />
       <register name="PM1_DirCounter_Cnt16_PERIOD" address="0x40006422" bitWidth="16" desc="UDB.D0 - Assigned Period" hidden="false" />
       <register name="PM1_DirCounter_Cnt16_COMPARE" address="0x40006432" bitWidth="16" desc="UDB.D1 - Assigned Compare Value" hidden="false" />
-      <register name="PM1_DirCounter_Cnt16_Control_Reg" address="0x40006471" bitWidth="8" desc="UDB Control Register - Assigned Control Register Value" hidden="false">
+      <register name="PM1_DirCounter_Cnt16_Control_Reg" address="0x40006473" bitWidth="8" desc="UDB Control Register - Assigned Control Register Value" hidden="false">
         <field name="CTRL_ENABLE" from="7" to="7" access="RW" resetVal="" desc="Enable Counter" hidden="false" />
         <field name="CTRL_CAPMODE" from="4" to="3" access="RW" resetVal="" desc="Capture mode" hidden="false" />
         <field name="CTRL_CMPMODE" from="2" to="0" access="RW" resetVal="" desc="Compare mode" hidden="false" />
       </register>
-      <register name="PM1_DirCounter_Cnt16_STATUS_MASK" address="0x40006483" bitWidth="8" desc="UDB Status bits Interrupt Mask Enable Register" hidden="false">
+      <register name="PM1_DirCounter_Cnt16_STATUS_MASK" address="0x40006480" bitWidth="8" desc="UDB Status bits Interrupt Mask Enable Register" hidden="false">
         <field name="COUNTER_STS_CMP" from="0" to="0" access="RW" resetVal="" desc="Compare output status" hidden="false" />
         <field name="COUNTER_STS_A0ZERO" from="1" to="1" access="RW" resetVal="" desc="A0 Zero ouput status" hidden="false" />
         <field name="COUNTER_STS_OVERFLOW" from="2" to="2" access="RW" resetVal="" desc="Overflow status " hidden="false" />
@@ -36,7 +36,7 @@
         <field name="COUNTER_STS_FIFO_FULL" from="5" to="5" access="RW" resetVal="" desc="FIFO Full Status " hidden="false" />
         <field name="COUNTER_STS_FIFO_NEMPTY" from="6" to="6" access="RW" resetVal="" desc="FIFO Not Empty Status " hidden="false" />
       </register>
-      <register name="PM1_DirCounter_Cnt16_STATUS_AUX_CTRL" address="0x40006493" bitWidth="8" desc="UDB Auxilliary Control Register" hidden="false">
+      <register name="PM1_DirCounter_Cnt16_STATUS_AUX_CTRL" address="0x40006490" bitWidth="8" desc="UDB Auxilliary Control Register" hidden="false">
         <field name="FIFO0_CLR" from="0" to="0" access="RW" resetVal="" desc="FIFO0 clear" hidden="false">
           <value name="E_FIFO_CLR_0" value="0" desc="Normal FIFO operation" />
           <value name="E_FIFO_CLR_1" value="1" desc="Clear FIFO state" />
@@ -66,7 +66,7 @@
     <block name="bQuadDec" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
     <block name="VirtualMux_3" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
     <register name="PM1_DirCounter_Cnt16_COUNTER" address="0x40006402" bitWidth="16" desc="Counter value" hidden="false" />
-    <register name="PM1_DirCounter_STATUS_REG" address="0x40006460" bitWidth="8" desc="Quadrature Decoder Status Register" hidden="false">
+    <register name="PM1_DirCounter_STATUS_REG" address="0x40006462" bitWidth="8" desc="Quadrature Decoder Status Register" hidden="false">
       <field name="OVERFLOW" from="0" to="0" access="R" resetVal="" desc="Counter overflow" hidden="false" />
       <field name="UNDERFLOW" from="1" to="1" access="R" resetVal="" desc="Counter underflow" hidden="false" />
       <field name="RESET" from="2" to="2" access="R" resetVal="" desc="Counter Reset due index" hidden="false" />
@@ -241,7 +241,7 @@
   </block>
   <block name="tensor_control_isr" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="tension_PIN" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="angle_control_isr" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="RVT_COMMAND_ISR" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="control_clk_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="PM1_HA_TIMER" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false">
     <block name="VirtualMux_2" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
@@ -250,22 +250,13 @@
     <block name="OneTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
     <block name="TimerUDB" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
     <block name="ZeroTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-    <register name="PM1_HA_TIMER_COUNTER" address="0x40006408" bitWidth="32" desc="UDB.A0 - Current Down Counter Value" hidden="false" />
-    <register name="PM1_HA_TIMER_PERIOD" address="0x40006428" bitWidth="32" desc="UDB.D0 - Assigned Period" hidden="false" />
-    <register name="PM1_HA_TIMER_Control_Reg" address="0x40006478" bitWidth="8" desc="UDB Control Register - Assigned Control Register Value" hidden="false">
-      <field name="CTRL_ENABLE" from="7" to="7" access="RW" resetVal="" desc="Enable the Timer" hidden="false" />
-      <field name="CTRL_CMODE" from="6" to="5" access="RW" resetVal="" desc="Capture Mode" hidden="false" />
-      <field name="CTRL_TEN" from="4" to="4" access="RW" resetVal="" desc="Trigger Enable Bit" hidden="false" />
-      <field name="CTRL_TMODE" from="3" to="2" access="RW" resetVal="" desc="Trigger Mode" hidden="false" />
-      <field name="CTRL_IC" from="1" to="0" access="RW" resetVal="" desc="Interrupt Count" hidden="false" />
-    </register>
-    <register name="PM1_HA_TIMER_STATUS_MASK" address="0x4000648B" bitWidth="8" desc="UDB Status bits Interrupt Mask Enable Register" hidden="false">
+    <register name="PM1_HA_TIMER_STATUS_MASK" address="0x40006487" bitWidth="8" desc="UDB Status bits Interrupt Mask Enable Register" hidden="false">
       <field name="TIMER_STS_TC" from="0" to="0" access="R" resetVal="" desc="Enables the Interrupt on TC" hidden="false" />
       <field name="TIMER_STS_CAPT" from="1" to="1" access="R" resetVal="" desc="Enables the Interrupt on Capture" hidden="false" />
       <field name="TIMER_STS_FIFO_FULL" from="2" to="2" access="R" resetVal="" desc="FIFO Full Status " hidden="false" />
       <field name="TIMER_STS_FIFO_NEMPTY" from="3" to="3" access="R" resetVal="" desc="FIFO Empty status " hidden="false" />
     </register>
-    <register name="PM1_HA_TIMER_STATUS_AUX_CTRL" address="0x4000649B" bitWidth="8" desc="UDB Auxilliary Control Register" hidden="false">
+    <register name="PM1_HA_TIMER_STATUS_AUX_CTRL" address="0x40006497" bitWidth="8" desc="UDB Auxilliary Control Register" hidden="false">
       <field name="FIFO0_CLR" from="0" to="0" access="RW" resetVal="" desc="FIFO0 clear" hidden="false">
         <value name="E_FIFO_CLR_0" value="0" desc="Normal FIFO operation" />
         <value name="E_FIFO_CLR_1" value="1" desc="Clear FIFO state" />
@@ -291,6 +282,15 @@
         <value name="E_CNT_START1" value="1" desc="Enable counter" />
       </field>
     </register>
+    <register name="PM1_HA_TIMER_COUNTER" address="0x40006504" bitWidth="32" desc="UDB.A0 - Current Down Counter Value" hidden="false" />
+    <register name="PM1_HA_TIMER_PERIOD" address="0x40006524" bitWidth="32" desc="UDB.D0 - Assigned Period" hidden="false" />
+    <register name="PM1_HA_TIMER_Control_Reg" address="0x40006574" bitWidth="8" desc="UDB Control Register - Assigned Control Register Value" hidden="false">
+      <field name="CTRL_ENABLE" from="7" to="7" access="RW" resetVal="" desc="Enable the Timer" hidden="false" />
+      <field name="CTRL_CMODE" from="6" to="5" access="RW" resetVal="" desc="Capture Mode" hidden="false" />
+      <field name="CTRL_TEN" from="4" to="4" access="RW" resetVal="" desc="Trigger Enable Bit" hidden="false" />
+      <field name="CTRL_TMODE" from="3" to="2" access="RW" resetVal="" desc="Trigger Mode" hidden="false" />
+      <field name="CTRL_IC" from="1" to="0" access="RW" resetVal="" desc="Interrupt Count" hidden="false" />
+    </register>
   </block>
   <block name="PM1_HA_ISR" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="PM2_input" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
@@ -308,20 +308,20 @@
     <block name="ZeroTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
     <register name="PM2_HA_Timer_COUNTER" address="0x40006404" bitWidth="32" desc="UDB.A0 - Current Down Counter Value" hidden="false" />
     <register name="PM2_HA_Timer_PERIOD" address="0x40006424" bitWidth="32" desc="UDB.D0 - Assigned Period" hidden="false" />
-    <register name="PM2_HA_Timer_Control_Reg" address="0x40006477" bitWidth="8" desc="UDB Control Register - Assigned Control Register Value" hidden="false">
+    <register name="PM2_HA_Timer_Control_Reg" address="0x40006470" bitWidth="8" desc="UDB Control Register - Assigned Control Register Value" hidden="false">
       <field name="CTRL_ENABLE" from="7" to="7" access="RW" resetVal="" desc="Enable the Timer" hidden="false" />
       <field name="CTRL_CMODE" from="6" to="5" access="RW" resetVal="" desc="Capture Mode" hidden="false" />
       <field name="CTRL_TEN" from="4" to="4" access="RW" resetVal="" desc="Trigger Enable Bit" hidden="false" />
       <field name="CTRL_TMODE" from="3" to="2" access="RW" resetVal="" desc="Trigger Mode" hidden="false" />
       <field name="CTRL_IC" from="1" to="0" access="RW" resetVal="" desc="Interrupt Count" hidden="false" />
     </register>
-    <register name="PM2_HA_Timer_STATUS_MASK" address="0x40006487" bitWidth="8" desc="UDB Status bits Interrupt Mask Enable Register" hidden="false">
+    <register name="PM2_HA_Timer_STATUS_MASK" address="0x40006483" bitWidth="8" desc="UDB Status bits Interrupt Mask Enable Register" hidden="false">
       <field name="TIMER_STS_TC" from="0" to="0" access="R" resetVal="" desc="Enables the Interrupt on TC" hidden="false" />
       <field name="TIMER_STS_CAPT" from="1" to="1" access="R" resetVal="" desc="Enables the Interrupt on Capture" hidden="false" />
       <field name="TIMER_STS_FIFO_FULL" from="2" to="2" access="R" resetVal="" desc="FIFO Full Status " hidden="false" />
       <field name="TIMER_STS_FIFO_NEMPTY" from="3" to="3" access="R" resetVal="" desc="FIFO Empty status " hidden="false" />
     </register>
-    <register name="PM2_HA_Timer_STATUS_AUX_CTRL" address="0x40006497" bitWidth="8" desc="UDB Auxilliary Control Register" hidden="false">
+    <register name="PM2_HA_Timer_STATUS_AUX_CTRL" address="0x40006493" bitWidth="8" desc="UDB Auxilliary Control Register" hidden="false">
       <field name="FIFO0_CLR" from="0" to="0" access="RW" resetVal="" desc="FIFO0 clear" hidden="false">
         <value name="E_FIFO_CLR_0" value="0" desc="Normal FIFO operation" />
         <value name="E_FIFO_CLR_1" value="1" desc="Clear FIFO state" />
@@ -367,15 +367,15 @@
       <block name="ZeroTerminal_2" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
       <block name="CounterUDB" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
       <block name="int_vm" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-      <register name="PM2_DirCounter_Cnt16_COUNTER" address="0x4000640C" bitWidth="16" desc="UDB.A0 - Current Counter Value" hidden="false" />
-      <register name="PM2_DirCounter_Cnt16_PERIOD" address="0x4000642C" bitWidth="16" desc="UDB.D0 - Assigned Period" hidden="false" />
-      <register name="PM2_DirCounter_Cnt16_COMPARE" address="0x4000643C" bitWidth="16" desc="UDB.D1 - Assigned Compare Value" hidden="false" />
-      <register name="PM2_DirCounter_Cnt16_Control_Reg" address="0x4000647E" bitWidth="8" desc="UDB Control Register - Assigned Control Register Value" hidden="false">
+      <register name="PM2_DirCounter_Cnt16_COUNTER" address="0x4000640E" bitWidth="16" desc="UDB.A0 - Current Counter Value" hidden="false" />
+      <register name="PM2_DirCounter_Cnt16_PERIOD" address="0x4000642E" bitWidth="16" desc="UDB.D0 - Assigned Period" hidden="false" />
+      <register name="PM2_DirCounter_Cnt16_COMPARE" address="0x4000643E" bitWidth="16" desc="UDB.D1 - Assigned Compare Value" hidden="false" />
+      <register name="PM2_DirCounter_Cnt16_Control_Reg" address="0x4000647F" bitWidth="8" desc="UDB Control Register - Assigned Control Register Value" hidden="false">
         <field name="CTRL_ENABLE" from="7" to="7" access="RW" resetVal="" desc="Enable Counter" hidden="false" />
         <field name="CTRL_CAPMODE" from="4" to="3" access="RW" resetVal="" desc="Capture mode" hidden="false" />
         <field name="CTRL_CMPMODE" from="2" to="0" access="RW" resetVal="" desc="Compare mode" hidden="false" />
       </register>
-      <register name="PM2_DirCounter_Cnt16_STATUS_MASK" address="0x4000648E" bitWidth="8" desc="UDB Status bits Interrupt Mask Enable Register" hidden="false">
+      <register name="PM2_DirCounter_Cnt16_STATUS_MASK" address="0x4000648F" bitWidth="8" desc="UDB Status bits Interrupt Mask Enable Register" hidden="false">
         <field name="COUNTER_STS_CMP" from="0" to="0" access="RW" resetVal="" desc="Compare output status" hidden="false" />
         <field name="COUNTER_STS_A0ZERO" from="1" to="1" access="RW" resetVal="" desc="A0 Zero ouput status" hidden="false" />
         <field name="COUNTER_STS_OVERFLOW" from="2" to="2" access="RW" resetVal="" desc="Overflow status " hidden="false" />
@@ -384,7 +384,7 @@
         <field name="COUNTER_STS_FIFO_FULL" from="5" to="5" access="RW" resetVal="" desc="FIFO Full Status " hidden="false" />
         <field name="COUNTER_STS_FIFO_NEMPTY" from="6" to="6" access="RW" resetVal="" desc="FIFO Not Empty Status " hidden="false" />
       </register>
-      <register name="PM2_DirCounter_Cnt16_STATUS_AUX_CTRL" address="0x4000649E" bitWidth="8" desc="UDB Auxilliary Control Register" hidden="false">
+      <register name="PM2_DirCounter_Cnt16_STATUS_AUX_CTRL" address="0x4000649F" bitWidth="8" desc="UDB Auxilliary Control Register" hidden="false">
         <field name="FIFO0_CLR" from="0" to="0" access="RW" resetVal="" desc="FIFO0 clear" hidden="false">
           <value name="E_FIFO_CLR_0" value="0" desc="Normal FIFO operation" />
           <value name="E_FIFO_CLR_1" value="1" desc="Clear FIFO state" />
@@ -413,8 +413,8 @@
     </block>
     <block name="bQuadDec" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
     <block name="VirtualMux_3" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-    <register name="PM2_DirCounter_Cnt16_COUNTER" address="0x4000640C" bitWidth="16" desc="Counter value" hidden="false" />
-    <register name="PM2_DirCounter_STATUS_REG" address="0x4000646D" bitWidth="8" desc="Quadrature Decoder Status Register" hidden="false">
+    <register name="PM2_DirCounter_Cnt16_COUNTER" address="0x4000640E" bitWidth="16" desc="Counter value" hidden="false" />
+    <register name="PM2_DirCounter_STATUS_REG" address="0x40006466" bitWidth="8" desc="Quadrature Decoder Status Register" hidden="false">
       <field name="OVERFLOW" from="0" to="0" access="R" resetVal="" desc="Counter overflow" hidden="false" />
       <field name="UNDERFLOW" from="1" to="1" access="R" resetVal="" desc="Counter underflow" hidden="false" />
       <field name="RESET" from="2" to="2" access="R" resetVal="" desc="Counter Reset due index" hidden="false" />
@@ -466,11 +466,14 @@
   <block name="PM1_ENABLE" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="Rx_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="UART" BASE="0x0" SIZE="0x0" desc="UART" visible="true" hidden="false">
-    <block name="RXInternalInterrupt" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
     <block name="IntClock" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-    <block name="BUART" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
     <block name="VirtualMux_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-    <register name="RX_UART_RX_STATUS" address="0x4000646F" bitWidth="8" desc="RX status register" hidden="false">
+    <block name="RXInternalInterrupt" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="BUART" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <register name="RX_UART_RX_ADDRESS1" address="0x40006428" bitWidth="8" desc="RX Address1 Register" hidden="false" />
+    <register name="RX_UART_RX_ADDRESS2" address="0x40006438" bitWidth="8" desc="RX Address2 Register" hidden="false" />
+    <register name="RX_UART_RX_DATA" address="0x40006448" bitWidth="8" desc="RX Data Register" hidden="false" />
+    <register name="RX_UART_RX_STATUS" address="0x40006468" bitWidth="8" desc="RX status register" hidden="false">
       <field name="UART_RX_STS_MRKSPC" from="0" to="0" access="R" resetVal="" desc="" hidden="false" />
       <field name="UART_RX_STS_BREAK" from="1" to="1" access="R" resetVal="" desc="" hidden="false" />
       <field name="UART_RX_STS_PAR_ERROR" from="2" to="2" access="R" resetVal="" desc="" hidden="false" />
@@ -479,16 +482,13 @@
       <field name="UART_RX_STS_FIFO_NOTEMPTY" from="5" to="5" access="R" resetVal="" desc="" hidden="false" />
       <field name="UART_RX_STS_ADDR_MATCH" from="6" to="6" access="R" resetVal="" desc="" hidden="false" />
     </register>
-    <register name="RX_UART_RX_ADDRESS1" address="0x40006524" bitWidth="8" desc="RX Address1 Register" hidden="false" />
-    <register name="RX_UART_RX_ADDRESS2" address="0x40006534" bitWidth="8" desc="RX Address2 Register" hidden="false" />
-    <register name="RX_UART_RX_DATA" address="0x40006544" bitWidth="8" desc="RX Data Register" hidden="false" />
-    <register name="TX_UART_TX_DATA" address="0x40006547" bitWidth="8" desc="TX Data Register" hidden="false" />
-    <register name="TX_UART_TX_STATUS" address="0x40006566" bitWidth="8" desc="TX status register" hidden="false">
+    <register name="TX_UART_TX_STATUS" address="0x4000646C" bitWidth="8" desc="TX status register" hidden="false">
       <field name="UART_TX_STS_COMPLETE" from="0" to="0" access="R" resetVal="" desc="" hidden="false" />
       <field name="UART_TX_STS_FIFO_EMPTY" from="1" to="1" access="R" resetVal="" desc="" hidden="false" />
       <field name="UART_TX_STS_FIFO_FULL" from="2" to="2" access="R" resetVal="" desc="" hidden="false" />
       <field name="UART_TX_STS_FIFO_NOT_FULL" from="3" to="3" access="R" resetVal="" desc="" hidden="false" />
     </register>
+    <register name="TX_UART_TX_DATA" address="0x4000654B" bitWidth="8" desc="TX Data Register" hidden="false" />
   </block>
   <block name="pote_PIN" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="PM1_DIR" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
@@ -510,10 +510,10 @@
     <register name="VDAC8_PM_STBY_CFG" address="0x400043B8" bitWidth="8" desc="Standby Power Mode Configuration Register 8" hidden="false">
       <field name="en_dac" from="4" to="0" access="RW" resetVal="" desc="Enable DAC block(s). Populated subsystems are counted from the LSB" hidden="false" />
     </register>
-    <register name="VDAC8_TR" address="0x40004609" bitWidth="8" desc="VDAC8_TR" hidden="false">
+    <register name="VDAC8_TR" address="0x4000460A" bitWidth="8" desc="VDAC8_TR" hidden="false">
       <field name="tr" from="7" to="0" access="RW" resetVal="" desc="8 Calibration bits" hidden="false" />
     </register>
-    <register name="VDAC8_CR0" address="0x40005824" bitWidth="8" desc="DAC Block Control Register 0" hidden="false">
+    <register name="VDAC8_CR0" address="0x40005828" bitWidth="8" desc="DAC Block Control Register 0" hidden="false">
       <field name="mode" from="4" to="4" access="R" resetVal="" desc="Mode Bit" hidden="false">
         <value name="DAC_MODE_V" value="0" desc="voltage DAC" />
         <value name="DAC_MODE_I" value="1" desc="current DAC" />
@@ -529,7 +529,7 @@
         <value name="DAC_HS_HIGHSPEED" value="1" desc="high speed (higher power)" />
       </field>
     </register>
-    <register name="VDAC8_CR1" address="0x40005825" bitWidth="8" desc="DAC Block Control Register 1" hidden="false">
+    <register name="VDAC8_CR1" address="0x40005829" bitWidth="8" desc="DAC Block Control Register 1" hidden="false">
       <field name="mx_data" from="5" to="5" access="RW" resetVal="" desc="Select DATA source" hidden="false">
         <value name="MX_DATA_REG" value="0" desc="Select register source (DACxn_D)" />
         <value name="MX_DATA_UDB" value="1" desc="Select UDB source" />
@@ -547,7 +547,7 @@
         <value name="RESET_UDB_EN_ENABLE" value="1" desc="Enable DAC Reset Source from UDB" />
       </field>
     </register>
-    <register name="VDAC8_SW0" address="0x40005A88" bitWidth="8" desc="DAC Analog Routing Register 0" hidden="false">
+    <register name="VDAC8_SW0" address="0x40005A90" bitWidth="8" desc="DAC Analog Routing Register 0" hidden="false">
       <field name="v_ag1" from="1" to="1" access="RW" resetVal="" desc="Connect voltage output to analog global of same side" hidden="false">
         <value name="AG_NC" value="0" desc="not connected" />
         <value name="AG_CONNECTED" value="1" desc="Connect to Analog Global" />
@@ -557,7 +557,7 @@
         <value name="AG_CONNECTED" value="1" desc="Connect to Analog Global" />
       </field>
     </register>
-    <register name="VDAC8_SW2" address="0x40005A8A" bitWidth="8" desc="DAC Analog Routing Register 2" hidden="false">
+    <register name="VDAC8_SW2" address="0x40005A92" bitWidth="8" desc="DAC Analog Routing Register 2" hidden="false">
       <field name="v_abus3" from="3" to="3" access="RW" resetVal="" desc="Connect voltage output to analog (local) bus of the same side " hidden="false">
         <value name="ABUS_NC" value="0" desc="not connected" />
         <value name="ABUS_CONNECTED" value="1" desc="Connect to Analog (local) Bus" />
@@ -567,7 +567,7 @@
         <value name="ABUS_CONNECTED" value="1" desc="Connect to Analog (local) Bus" />
       </field>
     </register>
-    <register name="VDAC8_SW3" address="0x40005A8B" bitWidth="8" desc="DAC Analog Routing Register 3" hidden="false">
+    <register name="VDAC8_SW3" address="0x40005A93" bitWidth="8" desc="DAC Analog Routing Register 3" hidden="false">
       <field name="iout" from="7" to="7" access="RW" resetVal="" desc="Connect current output to pad" hidden="false">
         <value name="IOUT_NC" value="0" desc="not connected" />
         <value name="IOUT_CONNECT" value="1" desc="Connect to pad" />
@@ -581,7 +581,7 @@
         <value name="AMX_CONNECTED" value="1" desc="Connect to AMUXBUS" />
       </field>
     </register>
-    <register name="VDAC8_SW4" address="0x40005A8C" bitWidth="8" desc="DAC Analog Routing Register 4" hidden="false">
+    <register name="VDAC8_SW4" address="0x40005A94" bitWidth="8" desc="DAC Analog Routing Register 4" hidden="false">
       <field name="i_ag1" from="1" to="1" access="RW" resetVal="" desc="Connect current output to analog global of same side" hidden="false">
         <value name="AG_NC" value="0" desc="not connected" />
         <value name="AG_CONNECTED" value="1" desc="Connect to Analog Global" />
@@ -591,7 +591,7 @@
         <value name="AG_CONNECTED" value="1" desc="Connect to Analog Global" />
       </field>
     </register>
-    <register name="VDAC8_STROBE" address="0x40005A8F" bitWidth="8" desc="DAC Strobe Register" hidden="false">
+    <register name="VDAC8_STROBE" address="0x40005A97" bitWidth="8" desc="DAC Strobe Register" hidden="false">
       <field name="mx_strobe" from="2" to="0" access="RW" resetVal="" desc="Strobe source selection" hidden="false">
         <value name="MX_STROBE_BUSWRITE" value="000" desc="Select bus write strobe source (Enable gater regardless of strobe_en setting)" />
         <value name="MX_STROBE_UDB_SRC" value="001" desc="Select UDB strobe source" />
@@ -607,7 +607,7 @@
         <value name="STROBE_EN_1" value="1" desc="enable strobe" />
       </field>
     </register>
-    <register name="VDAC8_DATA" address="0x40005B81" bitWidth="8" desc="DAC Data Register" hidden="false">
+    <register name="VDAC8_DATA" address="0x40005B82" bitWidth="8" desc="DAC Data Register" hidden="false">
       <field name="data" from="7" to="0" access="RW" resetVal="" desc="8 DAC Data bits" hidden="false" />
     </register>
   </block>
@@ -616,5 +616,5 @@
   <block name="Tx_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="COUNT_ISR" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="SPD_CLOCK_10K" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="SPD_CLOCK_10" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="SPD_CLOCK_25" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
 </blockRegMap>

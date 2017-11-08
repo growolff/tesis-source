@@ -27,8 +27,9 @@ void initHardware(void){
     RxInt_StartEx(MyRxInt);
     
     SPD_COMMAND_ISR_StartEx(SPD_COMMAND_INT);
+    RVT_COMMAND_ISR_StartEx(RVT_COMMAND_INT);
     COUNT_ISR_StartEx(COUNT_INT);
-    angle_control_isr_Start();
+
     tensor_control_isr_Start();
 
 }
@@ -39,42 +40,31 @@ void initMotors()
     float spd[3] = {KP_VEL, KI_VEL, KD_VEL}; 
     float tns[3] = {KP_TENS, KI_TENS, KD_TENS};
         
-    PIN_t PM1_BR;
+    PIN_t PM1_BR,PM1_DR,PM1_EN;
 
     PM1_BR.DR = &PM1_BRAKEn_DR;
     PM1_BR.MASK = PM1_BRAKEn_MASK;
-    PM1.BRAKEn_state_ = 1;
+    PM1_BR.STATE = 0;
+    PM1_DR.DR = &PM1_DIR_DR;
+    PM1_DR.MASK = PM1_DIR_MASK;
+    PM1_DR.STATE = 1;
+    PM1_EN.DR = &PM1_ENABLE_DR;
+    PM1_EN.MASK = PM1_ENABLE_MASK;
+    PM1_EN.STATE = 1;
+    
+    PM1.control_mode = 2;
     
     PM1_HA_ISR_StartEx(PM1_HA_INT);
-    MOTOR_setControlParams(&PM1,rvt,spd,tns);
-    MOTOR_setControlParams(&PM2,rvt,spd,tns);
-    MOTOR_init(&PM1,PM1_BR);
+    //MOTOR_setControlParams(&PM2,rvt,spd,tns);
+    MOTOR_initControlParams(&PM1,rvt,spd,tns);
+    MOTOR_init(&PM1,PM1_EN,PM1_BR,PM1_DR);
+    
     //MOTOR_init(&PM2);
 
 }
 
 int main(void)
 {
-    /*
-    // set speed PID parameters 
-    float kp_vel = KP_VEL, ki_vel = KI_VEL, kd_vel = KD_VEL;  
-    PID_init(&speed_pid_,kp_vel,ki_vel,kd_vel);
-    PID_setMaxValue(&speed_pid_, 10000);
-    PID_setMinValue(&speed_pid_, 0);
-    
-    // set position PID parameters 
-    float kp_pos = KP_POS, ki_pos = KI_POS, kd_pos = KD_POS;  
-    PID_init(&pos_pid_,kp_pos,ki_pos,kd_pos);
-    PID_setMaxValue(&pos_pid_, 500);
-    PID_setMinValue(&pos_pid_, -500);
-    
-    // set tension PID parameters
-    float kp_tens = KP_TENS, ki_tens = KI_TENS, kd_tens = KD_TENS;  
-    PID_init(&tens_pid_,kp_tens,ki_tens,kd_tens);
-    PID_setMaxValue(&tens_pid_, 4096);
-    PID_setMinValue(&tens_pid_, -4096);
-    */
-    
     char TransmitBuffer[TRANSMIT_BUFFER_SIZE];
    
     initHardware();
@@ -88,38 +78,38 @@ int main(void)
     SendSingleByte = FALSE;
     SendEmulatedData = FALSE;
 
-    PM1_ENABLE_Write(PM1.ENABLE); // true: speed control, else: external pwm control
+    PM1_ENABLE_Write(PM1.ENABLE.STATE); // true: speed control, else: external pwm control
     //SPEED_Write(TRUE); // true: external pwm control, else: analog voltage control
-    PM1_DIR_Write(PM1.DIR);     // true: left(ccw), false: right(cw)
-    PM1_BRAKEn_Write(FALSE);  // true: turning, false: braken
+    PM1_DIR_Write(PM1.DIR.STATE);     // true: left(ccw), false: right(cw)
+    PM1_BRAKEn_Write(PM1.BRAKEn.STATE);  // true: turning, false: braken
     
     CyDelay(250);
     
-    dir_state = TRUE; //left, negative counter
-    
     /* Set initial position of rotor */
-    init_pos = 0; 
+    //init_pos = 0; 
     /* Set reference position for control */
-    pos_ref = 0;
+    //pos_ref = 0;
     /* Set reference tension for control */
-    tension_ref = 2048;    
+    //tension_ref = 2048;    
     
     debug = 0;
     
     while(_state_ == 0){
         Ch = UART_GetChar();
         if(Ch == 'n'){
-            sprintf(TransmitBuffer, "& INIT CTRL_TYPE = %d\r\n",CONTROL_TYPE);
+            sprintf(TransmitBuffer, "& INIT CTRL_TYPE = %d\r\n",PM1.control_mode);
             UART_PutString(TransmitBuffer);
-            sprintf(TransmitBuffer, "!%d\r\n",CONTROL_TYPE);
+            sprintf(TransmitBuffer, "!%d\r\n",PM1.control_mode);
             UART_PutString(TransmitBuffer);
-            #if CONTROL_TYPE==1
-                sprintf(TransmitBuffer, "*%d*%d*%d\r\n",(int)(kp_pos*100.0),(int)(ki_pos*100.0),(int)(kd_pos*100.0));     
-            #elif CONTROL_TYPE==2
+            if (PM1.control_mode == 1){
+                sprintf(TransmitBuffer, "*%d*%d*%d\r\n",(int)(PM1.rvt_params[0]*100.0),(int)(PM1.rvt_params[1]*100.0),(int)(PM1.rvt_params[2]*100.0));     
+            }
+            if (PM1.control_mode == 2){
                 sprintf(TransmitBuffer, "*%d*%d*%d\r\n",(int)(PM1.spd_params[0]*100.0),(int)(PM1.spd_params[1]*100.0),(int)(PM1.spd_params[2]*100.0));    
-            #elif CONTROL_TYPE==3
-                sprintf(TransmitBuffer, "*%d*%d*%d\r\n",(int)(kp_tens*100.0),(int)(ki_tens*100.0),(int)(kd_tens*100.0));
-            #endif
+            }
+            if (PM1.control_mode == 3){
+                sprintf(TransmitBuffer, "*%d*%d*%d\r\n",(int)(PM1.tns_params[0]*100.0),(int)(PM1.tns_params[1]*100.0),(int)(PM1.tns_params[2]*100.0));
+            }
             UART_PutString(TransmitBuffer);
         }
         if(Ch == 'i'){
@@ -135,7 +125,7 @@ int main(void)
     
     for(;;)
     {
-        //sprintf(TransmitBuffer, "& DEBUG: %d\r\n",*PM1.BRAKEn.DR);
+        sprintf(TransmitBuffer, "& REF: %d\tCUR: %d\tPID: %d\r\n",PM1.ref_rvt,PM1.curr_rvt,PM1.rvtPID_out);
         UART_PutString(TransmitBuffer);
         /* Check for PID update */
         while(IsCharReady()){
@@ -152,16 +142,6 @@ int main(void)
         //_pVal = ADC_GetResult8();
         _tVal = TS_array[0];
         
-        #ifdef MANUAL_CONTROL
-            VDAC8_Speed_SetValue((uint8)(_pVal));
-        #endif
-        #ifdef SPEED_CONTROL
-            //speed_ref = fn_mapper(_pVal,0,255,0,10000);        
-        #endif
-                
-        /* change motor direction */
-        PM1_DIR_Write(PM1.DIR);
-        
         #ifdef TENDON_TENSION_CONTROL
             /* rotor zero crossing checks */
             if(actual_pos >= 0 && dir_state == 0){ 
@@ -172,10 +152,6 @@ int main(void)
             }
         #endif
         
-        if( abs(PM1.ref_spd - PM1.curr_spd) > 0 ){
-            MOTOR_setSpdRef(&PM1,PM1.ref_spd);
-        }
-        
         /* Check UART for any sent command */
         Ch = UART_GetChar();
         
@@ -183,31 +159,25 @@ int main(void)
         if(SendSingleByte || ContinuouslySendData)
         {
             /* Format ADC result for transmition */
-            #ifdef MANUAL_CONTROL
-                sprintf(TransmitBuffer, "Ref: %d\tActual: %d\r\n",(int)_pVal,(int)actual_speed);
-            #elif defined(ANGLE_CONTROL)
-                sprintf(TransmitBuffer, "Ref: %d\tActual: %d\tpid_out: %d\r\n",(int)pos_ref*4,(int)actual_pos,(int)_pid_out);
-            #elif defined(SPEED_CONTROL)
+            if (PM1.control_mode == 0){
+                //sprintf(TransmitBuffer, "Ref: %d\tActual: %d\r\n",(int)_pVal,(int)actual_speed);
+            }
+            else if(PM1.control_mode == 1){
+                sprintf(TransmitBuffer, "Ref: %d\tActual: %d\r\n",(int)PM1.ref_rvt,(int)PM1.curr_rvt);
+            }
+            else if(PM1.control_mode == 2){
                 //sprintf(TransmitBuffer, "sRef: %d\tsActual: %d\tdirection: %d\tcounter: %d\r\n",(int)speed_ref,(int)actual_speed,(int)dir_state,(int)dir_count);
                 sprintf(TransmitBuffer, "Ref: %d\tActual: %d\r\n",(int)PM1.ref_spd,(int)PM1.curr_spd);
-            #elif defined(TENDON_TENSION_CONTROL)
-                sprintf(TransmitBuffer, "Ref: %d\tActual: %d\r\n",(int)tension_ref,(int)actual_tension);
-            #endif
+            }
+            else if(PM1.control_mode == 3){
+                //sprintf(TransmitBuffer, "Ref: %d\tActual: %d\r\n",(int)tension_ref,(int)actual_tension);
+            }
             /* Send out the data */
             UART_PutString(TransmitBuffer);
             /* Reset the send once flag */
             SendSingleByte = FALSE;
         }
-        else if(SendEmulatedData)
-        {
-            /* Format ADC result for transmition */
-            sprintf(TransmitBuffer, "Dir: %s \r\n", (dir_state?"Left":"Right"));
-            /* Send out the data */
-            UART_PutString(TransmitBuffer);
-            /* Reset the send once flag */
-            SendEmulatedData = FALSE;   
-        }
-        
+
         if(_uart_Reset)
         {
             /* Reset the psoc using software */
