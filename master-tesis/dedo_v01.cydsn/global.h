@@ -9,18 +9,18 @@
  *
  * ========================================
 */
-
 #ifndef GLOBAL_VARIABLES_FILE_H
 #define GLOBAL_VARIABLES_FILE_H
 
 #include "project.h"
 #include "motor.h"
+#include "structs.h"
 #include "stdio.h"
 #include "pid.h"
 #include "string.h"
 #include "myUART.h"
-#include "functions.h"
-#include "isr_functions.h"    
+#include "functions.h" 
+#include "isr_functions.h"
     
 /* Project structures */
 
@@ -36,8 +36,8 @@ volatile ParamBuffer PB;     //volatile struct TParamBuffer PB;
 #define TRUE   1
 #define TRANSMIT_BUFFER_SIZE  16
 
-#define VEL_MAX 4000 // max vel for speed control
-#define K_VEL 0.5 // constant for sigmoid in speed control
+#define VEL_MAX 3500 // max vel for speed control
+#define K_VEL 0.9 // constant for sigmoid in speed control
 
 #define PWM_MAX 255 // max value for force control
 #define K_PWM 0.02 // constan for sigmoidal function in force control
@@ -48,7 +48,7 @@ volatile ParamBuffer PB;     //volatile struct TParamBuffer PB;
 #define MAX_POSITION_LIMIT 72
 #define MIN_POSITION_LIMIT 0
 
-#define CONTROL_TYPE 2
+#define CONTROL_TYPE 1
 
 #if CONTROL_TYPE==0
     #define MANUAL_CONTROL
@@ -61,9 +61,9 @@ volatile ParamBuffer PB;     //volatile struct TParamBuffer PB;
 #endif
 
 /* position control parameters */
-#define KP_POS 0.3
+#define KP_POS 1.5
 #define KI_POS 0.0
-#define KD_POS 0.2
+#define KD_POS 0.23
 
 /* speed control parameters */
 #define KP_VEL 1.0
@@ -119,6 +119,8 @@ extern uint8 _pid_out;
 
 MOTOR_t PM1;
 MOTOR_t PM2;
+
+FINGER_t pulgar;
 
 #endif // GLOBAL_VARIABLES_FILE_H
 

@@ -13,7 +13,7 @@
 #define ISR_FUNCTIONS_H
 
 #include "global.h"
-
+    
 extern MOTOR_t PM1,PM2;
 
 CY_ISR_PROTO(PM1_HA_INT);          // process PM1_HA_ISR interrupt

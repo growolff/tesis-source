@@ -83,12 +83,13 @@ void ProcessCommandMsg(void)
     else if (RB.cmd == '!'){
         if(strlen(RB.valstr) > 0){
             PM1.ref_rvt = atoi(RB.valstr)*4; // 4 conteos por vuelta
+            //PM2.ref_rvt = atoi(RB.valstr)*4;
         }
     }
     else if (RB.cmd == '#'){
         if(strlen(RB.valstr) > 0){
             PM1.ref_spd = atoi(RB.valstr);
-            PM2.ref_spd = atoi(RB.valstr);
+            //PM2.ref_spd = atoi(RB.valstr);
         }
     }
     else if (RB.cmd == '$'){

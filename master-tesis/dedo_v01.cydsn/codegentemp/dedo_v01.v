@@ -1,6 +1,6 @@
 // ======================================================================
 // dedo_v01.v generated from TopDesign.cysch
-// 11/09/2017 at 17:29
+// 11/10/2017 at 17:01
 // This file is auto generated. ANY EDITS YOU MAKE MAY BE LOST WHEN THIS FILE IS REGENERATED!!!
 // ======================================================================
 
@@ -2763,10 +2763,10 @@ module top ;
 		#(.id("5398140e-b358-4326-bc8a-ffec59ef4419"),
 		  .source_clock_id(""),
 		  .divisor(0),
-		  .period("20000000000000"),
+		  .period("33333333333333.3"),
 		  .is_direct(0),
 		  .is_digital(1))
-		SPD_CLOCK_25
+		SPD_CLOCK_30
 		 (.clock_out(Net_431));
 
 
@@ -2775,7 +2775,7 @@ module top ;
 		#(.id("c0fb34bd-1044-4931-9788-16b01ce89812"),
 		  .source_clock_id(""),
 		  .divisor(0),
-		  .period("10000000000"),
+		  .period("50000000000"),
 		  .is_direct(0),
 		  .is_digital(1))
 		SPD_CLOCK_10K

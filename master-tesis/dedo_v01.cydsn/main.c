@@ -69,8 +69,8 @@ void initMotors()
     PM2_EN.MASK = PM2_ENABLE_MASK;
     PM2_EN.STATE = 1;
     
-    PM1.control_mode = 2;
-    PM2.control_mode = 2;
+    PM1.control_mode = 1;
+    PM2.control_mode = 1;
     
     PM1_HA_ISR_StartEx(PM1_HA_INT);
     MOTOR_initControlParams(&PM1,rvt,spd,tns);
@@ -137,7 +137,7 @@ int main(void)
     
     for(;;)
     {
-        sprintf(TransmitBuffer, "& REF: %d\tCUR: %d\tPID: %d\r\n",PM2.ref_spd,PM2.curr_spd,PM2.spdPID_out);
+        sprintf(TransmitBuffer, "& REF: %d\tCUR: %d\tPID: %d\r\n",PM1.ref_rvt,PM1.curr_rvt,PM1.rvtPID_out);
         UART_PutString(TransmitBuffer);
         /* Check for PID update */
         while(IsCharReady()){

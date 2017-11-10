@@ -54,5 +54,8 @@ dkms.conf
 # Generated files folders and etc
 master-tesis/UART_test.cydsn/
 master-tesis/dedo_v01.cydsn/CortexM3/
+master-tesis/dedo_v01.cydsn/codegentemp/
+master-tesis/dedo_v01.cydsn/Generated_Source/
 master-tesis/Archive/
 master-tesis/Backup/
+master-tesis/ComponentUpdateLog.txt

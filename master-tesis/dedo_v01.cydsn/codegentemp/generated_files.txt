@@ -44,8 +44,8 @@
   <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\PM1_input.h" value="HEADER;;;;;PM1_input" />
   <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\COUNT_ISR.c" value="SOURCE_C;CortexM3;;;;COUNT_ISR" />
   <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\COUNT_ISR.h" value="HEADER;;;;;COUNT_ISR" />
-  <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\SPD_CLOCK_25.c" value="SOURCE_C;CortexM3;;;;SPD_CLOCK_25" />
-  <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\SPD_CLOCK_25.h" value="HEADER;;;;;SPD_CLOCK_25" />
+  <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\SPD_CLOCK_30.c" value="SOURCE_C;CortexM3;;;;SPD_CLOCK_30" />
+  <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\SPD_CLOCK_30.h" value="HEADER;;;;;SPD_CLOCK_30" />
   <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\SPD_CLOCK_10K.c" value="SOURCE_C;CortexM3;;;;SPD_CLOCK_10K" />
   <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\SPD_CLOCK_10K.h" value="HEADER;;;;;SPD_CLOCK_10K" />
   <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\control_clk.c" value="SOURCE_C;CortexM3;;;;control_clk" />

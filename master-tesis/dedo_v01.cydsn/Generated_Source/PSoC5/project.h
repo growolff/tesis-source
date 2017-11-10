@@ -32,7 +32,7 @@
 #include "PM1_input_aliases.h"
 #include "PM1_input.h"
 #include "COUNT_ISR.h"
-#include "SPD_CLOCK_25.h"
+#include "SPD_CLOCK_30.h"
 #include "SPD_CLOCK_10K.h"
 #include "control_clk.h"
 #include "SPD_COMMAND_ISR.h"

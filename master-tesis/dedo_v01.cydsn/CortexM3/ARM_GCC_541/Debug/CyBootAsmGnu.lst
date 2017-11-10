@@ -11523,7 +11523,7 @@ ARM GAS  Generated_Source\PSoC5\CyBootAsmGnu.s 			page 1
 
  215              	.set COUNT_ISR__INTC_MASK, 0x01
  216              	.set COUNT_ISR__INTC_NUMBER, 0
- 217              	.set COUNT_ISR__INTC_PRIOR_NUM, 1
+ 217              	.set COUNT_ISR__INTC_PRIOR_NUM, 2
  218              	.set COUNT_ISR__INTC_PRIOR_REG, CYREG_NVIC_PRI_0
  219              	.set COUNT_ISR__INTC_SET_EN_REG, CYREG_NVIC_SETENA0
  220              	.set COUNT_ISR__INTC_SET_PD_REG, CYREG_NVIC_SETPEND0
@@ -11691,7 +11691,7 @@ ARM GAS  Generated_Source\PSoC5\CyBootAsmGnu.s 			page 1
  376              	.set PM1_DirCounter_isr__INTC_CLR_PD_REG, CYREG_NVIC_CLRPEND0
  377              	.set PM1_DirCounter_isr__INTC_MASK, 0x100
  378              	.set PM1_DirCounter_isr__INTC_NUMBER, 8
- 379              	.set PM1_DirCounter_isr__INTC_PRIOR_NUM, 7
+ 379              	.set PM1_DirCounter_isr__INTC_PRIOR_NUM, 2
  380              	.set PM1_DirCounter_isr__INTC_PRIOR_REG, CYREG_NVIC_PRI_8
  381              	.set PM1_DirCounter_isr__INTC_SET_EN_REG, CYREG_NVIC_SETENA0
  382              	.set PM1_DirCounter_isr__INTC_SET_PD_REG, CYREG_NVIC_SETPEND0
@@ -12131,7 +12131,7 @@ ARM GAS  Generated_Source\PSoC5\CyBootAsmGnu.s 			page 1
  792              	.set PM2_DirCounter_isr__INTC_CLR_PD_REG, CYREG_NVIC_CLRPEND0
  793              	.set PM2_DirCounter_isr__INTC_MASK, 0x200
  794              	.set PM2_DirCounter_isr__INTC_NUMBER, 9
- 795              	.set PM2_DirCounter_isr__INTC_PRIOR_NUM, 7
+ 795              	.set PM2_DirCounter_isr__INTC_PRIOR_NUM, 2
  796              	.set PM2_DirCounter_isr__INTC_PRIOR_REG, CYREG_NVIC_PRI_9
  797              	.set PM2_DirCounter_isr__INTC_SET_EN_REG, CYREG_NVIC_SETENA0
  798              	.set PM2_DirCounter_isr__INTC_SET_PD_REG, CYREG_NVIC_SETPEND0
@@ -12171,7 +12171,7 @@ ARM GAS  Generated_Source\PSoC5\CyBootAsmGnu.s 			page 1
  832              	.set PM2_HA_ISR__INTC_CLR_PD_REG, CYREG_NVIC_CLRPEND0
  833              	.set PM2_HA_ISR__INTC_MASK, 0x04
  834              	.set PM2_HA_ISR__INTC_NUMBER, 2
- 835              	.set PM2_HA_ISR__INTC_PRIOR_NUM, 7
+ 835              	.set PM2_HA_ISR__INTC_PRIOR_NUM, 0
  836              	.set PM2_HA_ISR__INTC_PRIOR_REG, CYREG_NVIC_PRI_2
  837              	.set PM2_HA_ISR__INTC_SET_EN_REG, CYREG_NVIC_SETENA0
  838              	.set PM2_HA_ISR__INTC_SET_PD_REG, CYREG_NVIC_SETPEND0
@@ -12429,7 +12429,7 @@ ARM GAS  Generated_Source\PSoC5\CyBootAsmGnu.s 			page 1
  1075              	.set RVT_COMMAND_ISR__INTC_CLR_PD_REG, CYREG_NVIC_CLRPEND0
  1076              	.set RVT_COMMAND_ISR__INTC_MASK, 0x08
  1077              	.set RVT_COMMAND_ISR__INTC_NUMBER, 3
- 1078              	.set RVT_COMMAND_ISR__INTC_PRIOR_NUM, 7
+ 1078              	.set RVT_COMMAND_ISR__INTC_PRIOR_NUM, 1
  1079              	.set RVT_COMMAND_ISR__INTC_PRIOR_REG, CYREG_NVIC_PRI_3
  1080              	.set RVT_COMMAND_ISR__INTC_SET_EN_REG, CYREG_NVIC_SETENA0
  1081              	.set RVT_COMMAND_ISR__INTC_SET_PD_REG, CYREG_NVIC_SETPEND0
@@ -12484,20 +12484,20 @@ ARM GAS  Generated_Source\PSoC5\CyBootAsmGnu.s 			page 1
  1127              	.set SPD_CLOCK_10K__PM_ACT_MSK, 0x08
  1128              	.set SPD_CLOCK_10K__PM_STBY_CFG, CYREG_PM_STBY_CFG2
  1129              	.set SPD_CLOCK_10K__PM_STBY_MSK, 0x08
- 1130              	.set SPD_CLOCK_25__CFG0, CYREG_CLKDIST_DCFG5_CFG0
- 1131              	.set SPD_CLOCK_25__CFG1, CYREG_CLKDIST_DCFG5_CFG1
- 1132              	.set SPD_CLOCK_25__CFG2, CYREG_CLKDIST_DCFG5_CFG2
- 1133              	.set SPD_CLOCK_25__CFG2_SRC_SEL_MASK, 0x07
- 1134              	.set SPD_CLOCK_25__INDEX, 0x05
- 1135              	.set SPD_CLOCK_25__PM_ACT_CFG, CYREG_PM_ACT_CFG2
- 1136              	.set SPD_CLOCK_25__PM_ACT_MSK, 0x20
- 1137              	.set SPD_CLOCK_25__PM_STBY_CFG, CYREG_PM_STBY_CFG2
- 1138              	.set SPD_CLOCK_25__PM_STBY_MSK, 0x20
+ 1130              	.set SPD_CLOCK_30__CFG0, CYREG_CLKDIST_DCFG5_CFG0
+ 1131              	.set SPD_CLOCK_30__CFG1, CYREG_CLKDIST_DCFG5_CFG1
+ 1132              	.set SPD_CLOCK_30__CFG2, CYREG_CLKDIST_DCFG5_CFG2
+ 1133              	.set SPD_CLOCK_30__CFG2_SRC_SEL_MASK, 0x07
+ 1134              	.set SPD_CLOCK_30__INDEX, 0x05
+ 1135              	.set SPD_CLOCK_30__PM_ACT_CFG, CYREG_PM_ACT_CFG2
+ 1136              	.set SPD_CLOCK_30__PM_ACT_MSK, 0x20
+ 1137              	.set SPD_CLOCK_30__PM_STBY_CFG, CYREG_PM_STBY_CFG2
+ 1138              	.set SPD_CLOCK_30__PM_STBY_MSK, 0x20
  1139              	.set SPD_COMMAND_ISR__INTC_CLR_EN_REG, CYREG_NVIC_CLRENA0
  1140              	.set SPD_COMMAND_ISR__INTC_CLR_PD_REG, CYREG_NVIC_CLRPEND0
  1141              	.set SPD_COMMAND_ISR__INTC_MASK, 0x20
  1142              	.set SPD_COMMAND_ISR__INTC_NUMBER, 5
- 1143              	.set SPD_COMMAND_ISR__INTC_PRIOR_NUM, 7
+ 1143              	.set SPD_COMMAND_ISR__INTC_PRIOR_NUM, 1
  1144              	.set SPD_COMMAND_ISR__INTC_PRIOR_REG, CYREG_NVIC_PRI_5
  1145              	.set SPD_COMMAND_ISR__INTC_SET_EN_REG, CYREG_NVIC_SETENA0
  1146              	.set SPD_COMMAND_ISR__INTC_SET_PD_REG, CYREG_NVIC_SETPEND0

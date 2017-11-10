@@ -16,12 +16,12 @@ void MOTOR_init(MOTOR_t* motor, PIN_t pin_enable, PIN_t pin_braken, PIN_t pin_di
 {    
     /* initialize motor controllers */
     PID_init(&motor->spd_controller,motor->spd_params[0],motor->spd_params[1],motor->spd_params[2]);
-    PID_setMaxValue(&motor->spd_controller, 10000);
+    PID_setMaxValue(&motor->spd_controller, 9500);
     PID_setMinValue(&motor->spd_controller, 0);
     
     PID_init(&motor->rvt_controller,motor->rvt_params[0],motor->rvt_params[1],motor->rvt_params[2]);
-    PID_setMaxValue(&motor->rvt_controller, 500);
-    PID_setMinValue(&motor->rvt_controller, -500);
+    PID_setMaxValue(&motor->rvt_controller, 100);
+    PID_setMinValue(&motor->rvt_controller, -100);
 
     PID_init(&motor->tns_controller,motor->tns_params[0],motor->tns_params[1],motor->tns_params[2]);
     PID_setMaxValue(&motor->tns_controller, 4096);
@@ -141,7 +141,7 @@ void MOTOR_readCurrentSpeed(MOTOR_t* motor, uint8 motor_number)
     }
     motor->period_ha = -1*((motor->ca)+motor->ma);
     motor->ma = motor->ca;
-    motor->curr_spd = (100000/motor->period_ha) * 30;
+    motor->curr_spd = (20000/motor->period_ha) * 30;
     
 }
 
@@ -179,15 +179,9 @@ void MOTOR_readCurrentRevolution(MOTOR_t* motor, uint8 motor_number)
 void MOTOR_ToggleHandBrake(MOTOR_t* motor)
 {    
     if (motor->BRAKEn.STATE == 0){                 
-        //PM1_BRAKEn_Write(motor->BRAKEn_state_);    // write to BRAKEn pin
-//        *motor->BRAKEn.DR |= motor->BRAKEn.MASK;
-//        motor->BRAKEn.STATE = 1;   // update motor status
         MOTOR_setPinBRAKEn(motor);
     }
     else{
-        //PM1_BRAKEn_Write(motor->BRAKEn_state_);
-//        *motor->BRAKEn.DR &= ~(motor->BRAKEn.MASK);
-//        motor->BRAKEn.STATE = 0; // update motor status
         MOTOR_clearPinBRAKEn(motor);
     }    
 }

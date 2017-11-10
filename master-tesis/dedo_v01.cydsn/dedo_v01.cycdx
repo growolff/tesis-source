@@ -616,5 +616,5 @@
   <block name="Tx_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="COUNT_ISR" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="SPD_CLOCK_10K" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="SPD_CLOCK_25" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="SPD_CLOCK_30" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
 </blockRegMap>
