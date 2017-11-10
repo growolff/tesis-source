@@ -6,7 +6,7 @@
 
 #Build Date:         Jul 19 2017 14:31:00
 
-#File Generated:     Nov 7 2017 19:46:28
+#File Generated:     Nov 9 2017 17:29:07
 
 #Purpose:            
 
@@ -102,7 +102,7 @@ Clock: control_clk_1(routed) | Frequency: N/A       | Target:   0.0 MHz
                      End of Clock Summary
 ######################################################################
 
-D2088: Phase 6, elapsed time : 0.2 (sec)
+D2088: Phase 6, elapsed time : 0.1 (sec)
 
 Phase 7
 ######################################################################
@@ -130,7 +130,7 @@ Clock: control_clk_1(routed) | Frequency: N/A       | Target:   0.0 MHz
 ======================================================================
                      End of Clock Summary
 ######################################################################
-D2088: Phase 7, elapsed time : 4.2 (sec)
+D2088: Phase 7, elapsed time : 3.8 (sec)
 
 Final Design Statistics
     Number of Combinational MCs 	:	31
@@ -188,5 +188,5 @@ D2088: Phase 8, elapsed time : 0.0 (sec)
 
 D2054: Placement of the design completed successfully
 
-I2076: Total run-time: 5.3 sec.
+I2076: Total run-time: 4.9 sec.
 

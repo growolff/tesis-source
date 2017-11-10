@@ -64,6 +64,9 @@ void MOTOR_setSpdControlParams(MOTOR_t* motor, float kp, float ki, float kd);
 void MOTOR_setRvtControlParams(MOTOR_t* motor, float kp, float ki, float kd);
 void MOTOR_resetVariables(MOTOR_t* motor);
 
+void MOTOR_readCurrentSpeed(MOTOR_t* motor, uint8 motor_number);
+void MOTOR_readCurrentRevolution(MOTOR_t* motor, uint8 motor_number);
+
 void MOTOR_setRvtRef(MOTOR_t* motor, int32_t rvtRef);
 void MOTOR_setSpdRef(MOTOR_t* motor, int32_t spdRef);
 void MOTOR_setTnsRef(MOTOR_t* motor, int32_t tnsRef);

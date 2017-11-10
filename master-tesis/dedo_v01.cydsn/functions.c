@@ -74,11 +74,11 @@ void ProcessCommandMsg(void)
         CyDelay(500);
     }
     else if (RB.cmd == 'x'){
-        //UART_PutString("&X");
         ContinuouslySendData = FALSE;
     }
     else if (RB.cmd == 'b'){
         MOTOR_ToggleHandBrake(&PM1);
+        MOTOR_ToggleHandBrake(&PM2);
     }
     else if (RB.cmd == '!'){
         if(strlen(RB.valstr) > 0){
@@ -88,6 +88,7 @@ void ProcessCommandMsg(void)
     else if (RB.cmd == '#'){
         if(strlen(RB.valstr) > 0){
             PM1.ref_spd = atoi(RB.valstr);
+            PM2.ref_spd = atoi(RB.valstr);
         }
     }
     else if (RB.cmd == '$'){
@@ -98,6 +99,7 @@ void ProcessCommandMsg(void)
     else if (RB.cmd == '?'){
         if(strlen(RB.valstr) > 0){
             MOTOR_setControlMode(&PM1,atoi(RB.valstr));
+            MOTOR_setControlMode(&PM2,atoi(RB.valstr));
             
             sprintf(msg, "!%d\r\n",PM1.control_mode);
             UART_PutString(msg);

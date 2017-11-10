@@ -52,15 +52,15 @@
   <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\control_clk.h" value="HEADER;;;;;control_clk" />
   <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\SPD_COMMAND_ISR.c" value="SOURCE_C;CortexM3;;;;SPD_COMMAND_ISR" />
   <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\SPD_COMMAND_ISR.h" value="HEADER;;;;;SPD_COMMAND_ISR" />
-  <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\PM2_DIR_aliases.h" value="HEADER;;;;;PM2_DIR" />
-  <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\PM2_DIR.c" value="SOURCE_C;CortexM3;;;;PM2_DIR" />
-  <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\PM2_DIR.h" value="HEADER;;;;;PM2_DIR" />
-  <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\PM2_BRAKEn_aliases.h" value="HEADER;;;;;PM2_BRAKEn" />
-  <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\PM2_BRAKEn.c" value="SOURCE_C;CortexM3;;;;PM2_BRAKEn" />
-  <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\PM2_BRAKEn.h" value="HEADER;;;;;PM2_BRAKEn" />
   <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\PM2_SPD_VDAC8.c" value="SOURCE_C;CortexM3;;;;PM2_SPD_VDAC8" />
   <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\PM2_SPD_VDAC8.h" value="HEADER;;;;;PM2_SPD_VDAC8" />
   <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\PM2_SPD_VDAC8_PM.c" value="SOURCE_C;CortexM3;;;;PM2_SPD_VDAC8" />
+  <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\PM2_BRAKEn_aliases.h" value="HEADER;;;;;PM2_BRAKEn" />
+  <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\PM2_BRAKEn.c" value="SOURCE_C;CortexM3;;;;PM2_BRAKEn" />
+  <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\PM2_BRAKEn.h" value="HEADER;;;;;PM2_BRAKEn" />
+  <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\PM2_DIR_aliases.h" value="HEADER;;;;;PM2_DIR" />
+  <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\PM2_DIR.c" value="SOURCE_C;CortexM3;;;;PM2_DIR" />
+  <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\PM2_DIR.h" value="HEADER;;;;;PM2_DIR" />
   <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\tension_PIN_aliases.h" value="HEADER;;;;;tension_PIN" />
   <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\tension_PIN.c" value="SOURCE_C;CortexM3;;;;tension_PIN" />
   <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\tension_PIN.h" value="HEADER;;;;;tension_PIN" />
@@ -87,14 +87,14 @@
   <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\ADC_TS.h" value="HEADER;;;;;ADC_TS" />
   <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\ADC_TS_PM.c" value="SOURCE_C;CortexM3;;;;ADC_TS" />
   <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\ADC_TS_INT.c" value="SOURCE_C;CortexM3;;;;ADC_TS" />
-  <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\PM2_SPEED_aliases.h" value="HEADER;;;;;PM2_SPEED" />
-  <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\PM2_SPEED.c" value="SOURCE_C;CortexM3;;;;PM2_SPEED" />
-  <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\PM2_SPEED.h" value="HEADER;;;;;PM2_SPEED" />
+  <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\PM2_ENABLE_aliases.h" value="HEADER;;;;;PM2_ENABLE" />
+  <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\PM2_ENABLE.c" value="SOURCE_C;CortexM3;;;;PM2_ENABLE" />
+  <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\PM2_ENABLE.h" value="HEADER;;;;;PM2_ENABLE" />
   <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\PM2_HA_ISR.c" value="SOURCE_C;CortexM3;;;;PM2_HA_ISR" />
   <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\PM2_HA_ISR.h" value="HEADER;;;;;PM2_HA_ISR" />
-  <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\PM2_HA_Timer.c" value="SOURCE_C;CortexM3;;;;PM2_HA_Timer" />
-  <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\PM2_HA_Timer.h" value="HEADER;;;;;PM2_HA_Timer" />
-  <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\PM2_HA_Timer_PM.c" value="SOURCE_C;CortexM3;;;;PM2_HA_Timer" />
+  <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\PM2_HA_TIMER.c" value="SOURCE_C;CortexM3;;;;PM2_HA_TIMER" />
+  <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\PM2_HA_TIMER.h" value="HEADER;;;;;PM2_HA_TIMER" />
+  <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\PM2_HA_TIMER_PM.c" value="SOURCE_C;CortexM3;;;;PM2_HA_TIMER" />
   <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\PM1_SPEED_aliases.h" value="HEADER;;;;;PM1_SPEED" />
   <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\PM1_SPEED.c" value="SOURCE_C;CortexM3;;;;PM1_SPEED" />
   <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\PM1_SPEED.h" value="HEADER;;;;;PM1_SPEED" />
@@ -108,9 +108,9 @@
   <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\PM2_input.h" value="HEADER;;;;;PM2_input" />
   <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\PM1_HA_ISR.c" value="SOURCE_C;CortexM3;;;;PM1_HA_ISR" />
   <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\PM1_HA_ISR.h" value="HEADER;;;;;PM1_HA_ISR" />
-  <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\PM2_ENABLE_aliases.h" value="HEADER;;;;;PM2_ENABLE" />
-  <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\PM2_ENABLE.c" value="SOURCE_C;CortexM3;;;;PM2_ENABLE" />
-  <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\PM2_ENABLE.h" value="HEADER;;;;;PM2_ENABLE" />
+  <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\PM2_SPEED_aliases.h" value="HEADER;;;;;PM2_SPEED" />
+  <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\PM2_SPEED.c" value="SOURCE_C;CortexM3;;;;PM2_SPEED" />
+  <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\PM2_SPEED.h" value="HEADER;;;;;PM2_SPEED" />
   <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\ADC_IRQ.c" value="SOURCE_C;CortexM3;;;;ADC_IRQ" />
   <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\ADC_IRQ.h" value="HEADER;;;;;ADC_IRQ" />
   <file name="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\codegentemp\ADC_theACLK.c" value="SOURCE_C;CortexM3;;;;ADC_theACLK" />

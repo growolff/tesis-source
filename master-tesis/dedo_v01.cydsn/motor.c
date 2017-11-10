@@ -32,6 +32,10 @@ void MOTOR_init(MOTOR_t* motor, PIN_t pin_enable, PIN_t pin_braken, PIN_t pin_di
     motor->ENABLE = pin_enable;
     
     MOTOR_resetVariables(motor);
+
+    MOTOR_setPinENABLE(motor);
+    MOTOR_setPinDIR(motor);
+    MOTOR_clearPinBRAKEn(motor);
     
 }
 
@@ -98,10 +102,10 @@ void MOTOR_initControlParams(MOTOR_t* motor, float* rvt, float* spd, float* tns)
 void MOTOR_setControlMode(MOTOR_t* motor, uint8_t mode)
 {
     MOTOR_clearPinBRAKEn(motor);    // stop the motor
-    MOTOR_resetVariables(motor);
     if(mode == 1){  // set the initial position if control mode is revolution
-        motor->init_pos = 0;
+        motor->init_pos = motor->curr_rvt;
     }
+    MOTOR_resetVariables(motor);
     
     motor->control_mode = mode;     // set the control mode
 }
@@ -123,43 +127,110 @@ void MOTOR_setRvtRef(MOTOR_t* motor, int32_t rvtRef)
     motor->rvtPID_out = PID_calculatePID(&motor->rvt_controller,motor->curr_rvt);
 }
 
+void MOTOR_readCurrentSpeed(MOTOR_t* motor, uint8 motor_number)
+{
+    switch(motor_number){
+        case 1 :
+            motor->ca = PM1_HA_TIMER_ReadCounter();
+            PM1_HA_TIMER_WriteCounter(0);
+            break;
+        case 2 :
+            motor->ca = PM2_HA_TIMER_ReadCounter();
+            PM2_HA_TIMER_WriteCounter(0);
+            break;        
+    }
+    motor->period_ha = -1*((motor->ca)+motor->ma);
+    motor->ma = motor->ca;
+    motor->curr_spd = (100000/motor->period_ha) * 30;
+    
+}
+
+void MOTOR_readCurrentRevolution(MOTOR_t* motor, uint8 motor_number)
+{
+    switch(motor_number) {
+        case 1:
+            motor->rvt_aux = PM1_DirCounter_GetCounter();
+            break;
+        case 2:
+            motor->rvt_aux = PM2_DirCounter_GetCounter();
+            break;
+    }
+    motor->curr_rvt = motor->rvt_aux - motor->init_pos;
+    if ( motor->rvt_aux - motor->rvt_last_count > 0 )
+    {
+        // if > 0 its turning right (CW) 
+        motor->curr_dir = 1;
+    }
+    else if ( motor->rvt_aux - motor->rvt_last_count < 0 )
+    {
+        // if < 0 its turning left (CCW)
+        motor->curr_dir = -1;
+    }
+    else if ( motor->rvt_aux - motor->rvt_last_count == 0 )
+    {
+        // if = 0 its not rotating
+        motor->curr_dir = 0;
+        motor->curr_spd = 0;
+    }
+    // update variable
+    motor->rvt_last_count = motor->rvt_aux;
+}
+
 void MOTOR_ToggleHandBrake(MOTOR_t* motor)
 {    
     if (motor->BRAKEn.STATE == 0){                 
         //PM1_BRAKEn_Write(motor->BRAKEn_state_);    // write to BRAKEn pin
-        *motor->BRAKEn.DR |= motor->BRAKEn.MASK;
-        motor->BRAKEn.STATE = 1;   // update motor status
+//        *motor->BRAKEn.DR |= motor->BRAKEn.MASK;
+//        motor->BRAKEn.STATE = 1;   // update motor status
+        MOTOR_setPinBRAKEn(motor);
     }
     else{
         //PM1_BRAKEn_Write(motor->BRAKEn_state_);
-        *motor->BRAKEn.DR &= ~(motor->BRAKEn.MASK);
-        motor->BRAKEn.STATE = 0; // update motor status
+//        *motor->BRAKEn.DR &= ~(motor->BRAKEn.MASK);
+//        motor->BRAKEn.STATE = 0; // update motor status
+        MOTOR_clearPinBRAKEn(motor);
     }    
 }
+void MOTOR_ToggleDir(MOTOR_t* motor)
+{    
+    if (motor->DIR.STATE == 0){   
+        MOTOR_setPinDIR(motor);
+    }
+    else{
+        MOTOR_clearPinDIR(motor);
+    }    
+}
+
 
 void MOTOR_clearPinBRAKEn(MOTOR_t * motor)
 {
     *motor->BRAKEn.DR &= ~(motor->BRAKEn.MASK);
+    motor->BRAKEn.STATE = 0;
 }
 void MOTOR_clearPinDIR(MOTOR_t * motor)
 {
     *motor->DIR.DR &= ~(motor->DIR.MASK);
+    motor->DIR.STATE = 0;
 }
 void MOTOR_clearPinENABLE(MOTOR_t * motor)
 {
     *motor->ENABLE.DR &= ~(motor->ENABLE.MASK);
+    motor->ENABLE.STATE = 0;
 }
 void MOTOR_setPinBRAKEn(MOTOR_t * motor)
 {
     *motor->BRAKEn.DR |= motor->BRAKEn.MASK;
+    motor->BRAKEn.STATE = 1;
 }
 void MOTOR_setPinDIR(MOTOR_t * motor)
 {
     *motor->DIR.DR |= motor->DIR.MASK;    
+    motor->DIR.STATE = 1;
 }
 void MOTOR_setPinENABLE(MOTOR_t * motor)
 {
     *motor->ENABLE.DR |= motor->ENABLE.MASK;
+    motor->ENABLE.STATE = 1;
 }
 
 /* [] END OF FILE */

@@ -1,4 +1,4 @@
-Loading plugins phase: Elapsed time ==> 0s.647ms
+Loading plugins phase: Elapsed time ==> 0s.165ms
 <CYPRESSTAG name="CyDsfit arguments...">
 cydsfit arguments: -.fdsnotice -.fdswarpdepfile=warp_dependencies.txt -.fdselabdepfile=elab_dependencies.txt -.fdsbldfile=generated_files.txt -.fdsreffile=referenced_files.txt -p C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\dedo_v01.cyprj -d CY8C5888LTI-LP097 -s C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\Generated_Source\PSoC5 -- -yv2 -q10 -ygs -o2 -v3 -.fftcfgtype=LE
 </CYPRESSTAG>
@@ -33,10 +33,10 @@ ADD: fit.M0032: warning: Clock Warning: (control_clk_1's accuracy range '10  Hz 
  * C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\TopDesign\TopDesign.cysch (Instance:control_clk_1)
 
 </CYPRESSTAG>
-Elaboration phase: Elapsed time ==> 9s.496ms
+Elaboration phase: Elapsed time ==> 2s.755ms
 <CYPRESSTAG name="HDL generation results...">
 </CYPRESSTAG>
-HDL generation phase: Elapsed time ==> 0s.325ms
+HDL generation phase: Elapsed time ==> 0s.094ms
 <CYPRESSTAG name="Synthesis results...">
 
      | | | | | | |
@@ -70,7 +70,7 @@ Options  :    -yv2 -q10 -ygs -o2 -v3 -.fftcfgtype=LE -ya -.fftprj=C:\Users\Gonza
 ======================================================================
 
 vlogfe V6.3 IR 41:  Verilog parser
-Tue Nov 07 19:46:18 2017
+Thu Nov 09 17:29:03 2017
 
 
 ======================================================================
@@ -80,7 +80,7 @@ Options  :    -yv2 -q10 dedo_v01.v
 ======================================================================
 
 vpp V6.3 IR 41:  Verilog Pre-Processor
-Tue Nov 07 19:46:19 2017
+Thu Nov 09 17:29:03 2017
 
 Flattening file 'C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\cy_analog_virtualmux_v1_0\cy_analog_virtualmux_v1_0.v'
 Flattening file 'C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\ZeroTerminal\ZeroTerminal.v'
@@ -146,7 +146,7 @@ Options  :    -yv2 -q10 -ygs -o2 -v3 -.fftcfgtype=LE -ya -.fftprj=C:\Users\Gonza
 ======================================================================
 
 tovif V6.3 IR 41:  High-level synthesis
-Tue Nov 07 19:46:21 2017
+Thu Nov 09 17:29:03 2017
 
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\warp\lib\common\std.vhd'.
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\warp\lib\common\cypress.vhd'.
@@ -192,7 +192,7 @@ Options  :    -yv2 -q10 -ygs -o2 -v3 -.fftcfgtype=LE -ya -.fftprj=C:\Users\Gonza
 ======================================================================
 
 topld V6.3 IR 41:  Synthesis and optimization
-Tue Nov 07 19:46:22 2017
+Thu Nov 09 17:29:04 2017
 
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\warp\lib\common\std.vhd'.
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\warp\lib\common\cypress.vhd'.
@@ -300,17 +300,17 @@ Detecting unused logic.
 	\ADC_TS:MODULE_1:gte\
 	\ADC_TS:MODULE_1:lte\
 	\ADC_TS:MODULE_1:neq\
-	\PM2_HA_Timer:Net_260\
+	\PM2_HA_TIMER:Net_260\
 	Net_418
 	Net_421
-	\PM2_HA_Timer:Net_53\
-	\PM2_HA_Timer:TimerUDB:ctrl_ten\
-	\PM2_HA_Timer:TimerUDB:ctrl_tmode_1\
-	\PM2_HA_Timer:TimerUDB:ctrl_tmode_0\
-	\PM2_HA_Timer:TimerUDB:ctrl_ic_1\
-	\PM2_HA_Timer:TimerUDB:ctrl_ic_0\
-	\PM2_HA_Timer:Net_102\
-	\PM2_HA_Timer:Net_266\
+	\PM2_HA_TIMER:Net_53\
+	\PM2_HA_TIMER:TimerUDB:ctrl_ten\
+	\PM2_HA_TIMER:TimerUDB:ctrl_tmode_1\
+	\PM2_HA_TIMER:TimerUDB:ctrl_tmode_0\
+	\PM2_HA_TIMER:TimerUDB:ctrl_ic_1\
+	\PM2_HA_TIMER:TimerUDB:ctrl_ic_0\
+	\PM2_HA_TIMER:Net_102\
+	\PM2_HA_TIMER:Net_266\
 	\PM2_DirCounter:Net_1129\
 	\PM2_DirCounter:Cnt16:Net_82\
 	\PM2_DirCounter:Cnt16:Net_95\
@@ -379,11 +379,11 @@ Aliasing tmpOE__Rx_1_net_0 to tmpOE__PM1_DIR_net_0
 Aliasing tmpOE__Tx_1_net_0 to tmpOE__PM1_DIR_net_0
 Aliasing tmpOE__PM1_input_net_1 to tmpOE__PM1_DIR_net_0
 Aliasing tmpOE__PM1_input_net_0 to tmpOE__PM1_DIR_net_0
-Aliasing tmpOE__PM2_DIR_net_0 to tmpOE__PM1_DIR_net_0
-Aliasing tmpOE__PM2_BRAKEn_net_0 to tmpOE__PM1_DIR_net_0
 Aliasing \PM2_SPD_VDAC8:Net_83\ to zero
 Aliasing \PM2_SPD_VDAC8:Net_81\ to zero
 Aliasing \PM2_SPD_VDAC8:Net_82\ to zero
+Aliasing tmpOE__PM2_BRAKEn_net_0 to tmpOE__PM1_DIR_net_0
+Aliasing tmpOE__PM2_DIR_net_0 to tmpOE__PM1_DIR_net_0
 Aliasing tmpOE__tension_PIN_net_0 to tmpOE__PM1_DIR_net_0
 Aliasing \PM1_HA_TIMER:TimerUDB:ctrl_cmode_1\ to tmpOE__PM1_DIR_net_0
 Aliasing \PM1_HA_TIMER:TimerUDB:ctrl_cmode_0\ to tmpOE__PM1_DIR_net_0
@@ -424,15 +424,15 @@ Aliasing \ADC_TS:bSAR_SEQ:status_2\ to zero
 Aliasing \ADC_TS:bSAR_SEQ:status_1\ to zero
 Aliasing Net_192 to \ADC_TS:bSAR_SEQ:status_0\
 Aliasing \ADC_TS:MODULE_1:g1:a0:gx:u0:aeqb_0\ to tmpOE__PM1_DIR_net_0
-Aliasing tmpOE__PM2_SPEED_net_0 to tmpOE__PM1_DIR_net_0
+Aliasing tmpOE__PM2_ENABLE_net_0 to tmpOE__PM1_DIR_net_0
 Aliasing Net_417 to zero
-Aliasing \PM2_HA_Timer:TimerUDB:ctrl_cmode_1\ to tmpOE__PM1_DIR_net_0
-Aliasing \PM2_HA_Timer:TimerUDB:ctrl_cmode_0\ to tmpOE__PM1_DIR_net_0
-Aliasing \PM2_HA_Timer:TimerUDB:trigger_enable\ to tmpOE__PM1_DIR_net_0
-Aliasing \PM2_HA_Timer:TimerUDB:status_6\ to zero
-Aliasing \PM2_HA_Timer:TimerUDB:status_5\ to zero
-Aliasing \PM2_HA_Timer:TimerUDB:status_4\ to zero
-Aliasing \PM2_HA_Timer:TimerUDB:status_0\ to \PM2_HA_Timer:TimerUDB:tc_i\
+Aliasing \PM2_HA_TIMER:TimerUDB:ctrl_cmode_1\ to tmpOE__PM1_DIR_net_0
+Aliasing \PM2_HA_TIMER:TimerUDB:ctrl_cmode_0\ to tmpOE__PM1_DIR_net_0
+Aliasing \PM2_HA_TIMER:TimerUDB:trigger_enable\ to tmpOE__PM1_DIR_net_0
+Aliasing \PM2_HA_TIMER:TimerUDB:status_6\ to zero
+Aliasing \PM2_HA_TIMER:TimerUDB:status_5\ to zero
+Aliasing \PM2_HA_TIMER:TimerUDB:status_4\ to zero
+Aliasing \PM2_HA_TIMER:TimerUDB:status_0\ to \PM2_HA_TIMER:TimerUDB:tc_i\
 Aliasing tmpOE__PM1_SPEED_net_0 to tmpOE__PM1_DIR_net_0
 Aliasing \PM2_DirCounter:Cnt16:CounterUDB:ctrl_capmode_1\ to zero
 Aliasing \PM2_DirCounter:Cnt16:CounterUDB:ctrl_capmode_0\ to zero
@@ -445,7 +445,7 @@ Aliasing \PM2_DirCounter:bQuadDec:status_6\ to zero
 Aliasing \PM2_DirCounter:Net_1229\ to tmpOE__PM1_DIR_net_0
 Aliasing tmpOE__PM2_input_net_1 to tmpOE__PM1_DIR_net_0
 Aliasing tmpOE__PM2_input_net_0 to tmpOE__PM1_DIR_net_0
-Aliasing tmpOE__PM2_ENABLE_net_0 to tmpOE__PM1_DIR_net_0
+Aliasing tmpOE__PM2_SPEED_net_0 to tmpOE__PM1_DIR_net_0
 Aliasing \UART:BUART:reset_reg\\D\ to zero
 Aliasing \UART:BUART:rx_break_status\\D\ to zero
 Aliasing \PM1_HA_TIMER:TimerUDB:hwEnable_reg\\D\ to \PM1_HA_TIMER:TimerUDB:run_mode\
@@ -458,8 +458,8 @@ Aliasing \ADC_TS:AMuxHw_2_Decoder_old_id_3\\D\ to \ADC_TS:MODIN1_3\
 Aliasing \ADC_TS:AMuxHw_2_Decoder_old_id_2\\D\ to \ADC_TS:MODIN1_2\
 Aliasing \ADC_TS:AMuxHw_2_Decoder_old_id_1\\D\ to \ADC_TS:MODIN1_1\
 Aliasing \ADC_TS:AMuxHw_2_Decoder_old_id_0\\D\ to \ADC_TS:MODIN1_0\
-Aliasing \PM2_HA_Timer:TimerUDB:hwEnable_reg\\D\ to \PM2_HA_Timer:TimerUDB:run_mode\
-Aliasing \PM2_HA_Timer:TimerUDB:capture_out_reg_i\\D\ to \PM2_HA_Timer:TimerUDB:capt_fifo_load_int\
+Aliasing \PM2_HA_TIMER:TimerUDB:hwEnable_reg\\D\ to \PM2_HA_TIMER:TimerUDB:run_mode\
+Aliasing \PM2_HA_TIMER:TimerUDB:capture_out_reg_i\\D\ to \PM2_HA_TIMER:TimerUDB:capt_fifo_load_int\
 Aliasing \PM2_DirCounter:Cnt16:CounterUDB:prevCapture\\D\ to zero
 Aliasing \PM2_DirCounter:Cnt16:CounterUDB:cmp_out_reg_i\\D\ to \PM2_DirCounter:Cnt16:CounterUDB:prevCompare\\D\
 Removing Lhs of wire one[6] = tmpOE__PM1_DIR_net_0[1]
@@ -576,11 +576,11 @@ Removing Lhs of wire tmpOE__Rx_1_net_0[377] = tmpOE__PM1_DIR_net_0[1]
 Removing Lhs of wire tmpOE__Tx_1_net_0[382] = tmpOE__PM1_DIR_net_0[1]
 Removing Lhs of wire tmpOE__PM1_input_net_1[388] = tmpOE__PM1_DIR_net_0[1]
 Removing Lhs of wire tmpOE__PM1_input_net_0[389] = tmpOE__PM1_DIR_net_0[1]
-Removing Lhs of wire tmpOE__PM2_DIR_net_0[405] = tmpOE__PM1_DIR_net_0[1]
-Removing Lhs of wire tmpOE__PM2_BRAKEn_net_0[411] = tmpOE__PM1_DIR_net_0[1]
-Removing Lhs of wire \PM2_SPD_VDAC8:Net_83\[417] = zero[2]
-Removing Lhs of wire \PM2_SPD_VDAC8:Net_81\[418] = zero[2]
-Removing Lhs of wire \PM2_SPD_VDAC8:Net_82\[419] = zero[2]
+Removing Lhs of wire \PM2_SPD_VDAC8:Net_83\[405] = zero[2]
+Removing Lhs of wire \PM2_SPD_VDAC8:Net_81\[406] = zero[2]
+Removing Lhs of wire \PM2_SPD_VDAC8:Net_82\[407] = zero[2]
+Removing Lhs of wire tmpOE__PM2_BRAKEn_net_0[412] = tmpOE__PM1_DIR_net_0[1]
+Removing Lhs of wire tmpOE__PM2_DIR_net_0[418] = tmpOE__PM1_DIR_net_0[1]
 Removing Lhs of wire tmpOE__tension_PIN_net_0[424] = tmpOE__PM1_DIR_net_0[1]
 Removing Lhs of wire \PM1_HA_TIMER:TimerUDB:ctrl_enable\[452] = \PM1_HA_TIMER:TimerUDB:control_7\[444]
 Removing Lhs of wire \PM1_HA_TIMER:TimerUDB:ctrl_cmode_1\[454] = tmpOE__PM1_DIR_net_0[1]
@@ -729,29 +729,29 @@ Removing Lhs of wire \ADC_TS:MODULE_1:g1:a0:gx:u0:aeqb_0\[1180] = tmpOE__PM1_DIR
 Removing Lhs of wire \ADC_TS:MODULE_1:g1:a0:gx:u0:eq_0\[1181] = \ADC_TS:MODULE_1:g1:a0:gx:u0:xnor_array_0\[1179]
 Removing Lhs of wire \ADC_TS:MODULE_1:g1:a0:gx:u0:eqi_0\[1187] = \ADC_TS:MODULE_1:g1:a0:gx:u0:eq_5\[1186]
 Removing Rhs of wire \ADC_TS:MODULE_1:g1:a0:xeq\[1215] = \ADC_TS:MODULE_1:g1:a0:gx:u0:aeqb_1\[1188]
-Removing Lhs of wire tmpOE__PM2_SPEED_net_0[1227] = tmpOE__PM1_DIR_net_0[1]
+Removing Lhs of wire tmpOE__PM2_ENABLE_net_0[1227] = tmpOE__PM1_DIR_net_0[1]
 Removing Lhs of wire Net_417[1232] = zero[2]
-Removing Rhs of wire Net_339[1234] = \PM2_HA_Timer:TimerUDB:capture_out_reg_i\[1283]
-Removing Lhs of wire \PM2_HA_Timer:TimerUDB:ctrl_enable\[1253] = \PM2_HA_Timer:TimerUDB:control_7\[1245]
-Removing Lhs of wire \PM2_HA_Timer:TimerUDB:ctrl_cmode_1\[1255] = tmpOE__PM1_DIR_net_0[1]
-Removing Lhs of wire \PM2_HA_Timer:TimerUDB:ctrl_cmode_0\[1256] = tmpOE__PM1_DIR_net_0[1]
-Removing Lhs of wire \PM2_HA_Timer:TimerUDB:capt_fifo_load\[1274] = \PM2_HA_Timer:TimerUDB:tmp_fifo_load\[1273]
-Removing Rhs of wire \PM2_HA_Timer:TimerUDB:run_mode\[1275] = \PM2_HA_Timer:TimerUDB:hwEnable\[1276]
-Removing Lhs of wire \PM2_HA_Timer:TimerUDB:run_mode\[1275] = \PM2_HA_Timer:TimerUDB:control_7\[1245]
-Removing Lhs of wire \PM2_HA_Timer:TimerUDB:trigger_enable\[1278] = tmpOE__PM1_DIR_net_0[1]
-Removing Lhs of wire \PM2_HA_Timer:TimerUDB:tc_i\[1280] = \PM2_HA_Timer:TimerUDB:status_tc\[1277]
-Removing Lhs of wire \PM2_HA_Timer:TimerUDB:capt_fifo_load_int\[1284] = \PM2_HA_Timer:TimerUDB:tmp_fifo_load\[1273]
-Removing Lhs of wire \PM2_HA_Timer:TimerUDB:timer_enable\[1286] = \PM2_HA_Timer:TimerUDB:runmode_enable\[1285]
-Removing Lhs of wire \PM2_HA_Timer:TimerUDB:status_6\[1288] = zero[2]
-Removing Lhs of wire \PM2_HA_Timer:TimerUDB:status_5\[1289] = zero[2]
-Removing Lhs of wire \PM2_HA_Timer:TimerUDB:status_4\[1290] = zero[2]
-Removing Lhs of wire \PM2_HA_Timer:TimerUDB:status_0\[1291] = \PM2_HA_Timer:TimerUDB:status_tc\[1277]
-Removing Lhs of wire \PM2_HA_Timer:TimerUDB:status_1\[1292] = \PM2_HA_Timer:TimerUDB:tmp_fifo_load\[1273]
-Removing Rhs of wire \PM2_HA_Timer:TimerUDB:status_2\[1293] = \PM2_HA_Timer:TimerUDB:fifo_full\[1294]
-Removing Rhs of wire \PM2_HA_Timer:TimerUDB:status_3\[1295] = \PM2_HA_Timer:TimerUDB:fifo_nempty\[1296]
-Removing Lhs of wire \PM2_HA_Timer:TimerUDB:cs_addr_2\[1298] = zero[2]
-Removing Lhs of wire \PM2_HA_Timer:TimerUDB:cs_addr_1\[1299] = \PM2_HA_Timer:TimerUDB:trig_reg\[1287]
-Removing Lhs of wire \PM2_HA_Timer:TimerUDB:cs_addr_0\[1300] = \PM2_HA_Timer:TimerUDB:per_zero\[1279]
+Removing Rhs of wire Net_339[1234] = \PM2_HA_TIMER:TimerUDB:capture_out_reg_i\[1283]
+Removing Lhs of wire \PM2_HA_TIMER:TimerUDB:ctrl_enable\[1253] = \PM2_HA_TIMER:TimerUDB:control_7\[1245]
+Removing Lhs of wire \PM2_HA_TIMER:TimerUDB:ctrl_cmode_1\[1255] = tmpOE__PM1_DIR_net_0[1]
+Removing Lhs of wire \PM2_HA_TIMER:TimerUDB:ctrl_cmode_0\[1256] = tmpOE__PM1_DIR_net_0[1]
+Removing Lhs of wire \PM2_HA_TIMER:TimerUDB:capt_fifo_load\[1274] = \PM2_HA_TIMER:TimerUDB:tmp_fifo_load\[1273]
+Removing Rhs of wire \PM2_HA_TIMER:TimerUDB:run_mode\[1275] = \PM2_HA_TIMER:TimerUDB:hwEnable\[1276]
+Removing Lhs of wire \PM2_HA_TIMER:TimerUDB:run_mode\[1275] = \PM2_HA_TIMER:TimerUDB:control_7\[1245]
+Removing Lhs of wire \PM2_HA_TIMER:TimerUDB:trigger_enable\[1278] = tmpOE__PM1_DIR_net_0[1]
+Removing Lhs of wire \PM2_HA_TIMER:TimerUDB:tc_i\[1280] = \PM2_HA_TIMER:TimerUDB:status_tc\[1277]
+Removing Lhs of wire \PM2_HA_TIMER:TimerUDB:capt_fifo_load_int\[1284] = \PM2_HA_TIMER:TimerUDB:tmp_fifo_load\[1273]
+Removing Lhs of wire \PM2_HA_TIMER:TimerUDB:timer_enable\[1286] = \PM2_HA_TIMER:TimerUDB:runmode_enable\[1285]
+Removing Lhs of wire \PM2_HA_TIMER:TimerUDB:status_6\[1288] = zero[2]
+Removing Lhs of wire \PM2_HA_TIMER:TimerUDB:status_5\[1289] = zero[2]
+Removing Lhs of wire \PM2_HA_TIMER:TimerUDB:status_4\[1290] = zero[2]
+Removing Lhs of wire \PM2_HA_TIMER:TimerUDB:status_0\[1291] = \PM2_HA_TIMER:TimerUDB:status_tc\[1277]
+Removing Lhs of wire \PM2_HA_TIMER:TimerUDB:status_1\[1292] = \PM2_HA_TIMER:TimerUDB:tmp_fifo_load\[1273]
+Removing Rhs of wire \PM2_HA_TIMER:TimerUDB:status_2\[1293] = \PM2_HA_TIMER:TimerUDB:fifo_full\[1294]
+Removing Rhs of wire \PM2_HA_TIMER:TimerUDB:status_3\[1295] = \PM2_HA_TIMER:TimerUDB:fifo_nempty\[1296]
+Removing Lhs of wire \PM2_HA_TIMER:TimerUDB:cs_addr_2\[1298] = zero[2]
+Removing Lhs of wire \PM2_HA_TIMER:TimerUDB:cs_addr_1\[1299] = \PM2_HA_TIMER:TimerUDB:trig_reg\[1287]
+Removing Lhs of wire \PM2_HA_TIMER:TimerUDB:cs_addr_0\[1300] = \PM2_HA_TIMER:TimerUDB:per_zero\[1279]
 Removing Lhs of wire tmpOE__PM1_SPEED_net_0[1478] = tmpOE__PM1_DIR_net_0[1]
 Removing Rhs of wire \PM2_DirCounter:Net_1275\[1487] = \PM2_DirCounter:Cnt16:Net_49\[1488]
 Removing Rhs of wire \PM2_DirCounter:Net_1275\[1487] = \PM2_DirCounter:Cnt16:CounterUDB:tc_reg_i\[1544]
@@ -795,7 +795,7 @@ Removing Lhs of wire \PM2_DirCounter:Net_1229\[1660] = tmpOE__PM1_DIR_net_0[1]
 Removing Lhs of wire \PM2_DirCounter:Net_1272\[1661] = \PM2_DirCounter:Net_1264\[1549]
 Removing Lhs of wire tmpOE__PM2_input_net_1[1664] = tmpOE__PM1_DIR_net_0[1]
 Removing Lhs of wire tmpOE__PM2_input_net_0[1665] = tmpOE__PM1_DIR_net_0[1]
-Removing Lhs of wire tmpOE__PM2_ENABLE_net_0[1672] = tmpOE__PM1_DIR_net_0[1]
+Removing Lhs of wire tmpOE__PM2_SPEED_net_0[1672] = tmpOE__PM1_DIR_net_0[1]
 Removing Lhs of wire \UART:BUART:reset_reg\\D\[1677] = zero[2]
 Removing Lhs of wire \UART:BUART:rx_bitclk\\D\[1692] = \UART:BUART:rx_bitclk_pre\[216]
 Removing Lhs of wire \UART:BUART:rx_parity_error_pre\\D\[1701] = \UART:BUART:rx_parity_error_pre\[293]
@@ -819,10 +819,10 @@ Removing Lhs of wire \ADC_TS:AMuxHw_2_Decoder_old_id_1\\D\[1731] = \ADC_TS:ch_ad
 Removing Lhs of wire \ADC_TS:AMuxHw_2_Decoder_old_id_0\\D\[1732] = \ADC_TS:ch_addr_0\[894]
 Removing Lhs of wire \ADC_TS:bSAR_SEQ:nrq_edge_detect_reg\\D\[1797] = \ADC_TS:bSAR_SEQ:nrq_edge_detect\[1102]
 Removing Lhs of wire \ADC_TS:bSAR_SEQ:nrq_reg\\D\[1799] = \ADC_TS:bSAR_SEQ:bus_clk_nrq_reg\[1099]
-Removing Lhs of wire \PM2_HA_Timer:TimerUDB:capture_last\\D\[1800] = Net_322[1262]
-Removing Lhs of wire \PM2_HA_Timer:TimerUDB:tc_reg_i\\D\[1803] = \PM2_HA_Timer:TimerUDB:status_tc\[1277]
-Removing Lhs of wire \PM2_HA_Timer:TimerUDB:hwEnable_reg\\D\[1804] = \PM2_HA_Timer:TimerUDB:control_7\[1245]
-Removing Lhs of wire \PM2_HA_Timer:TimerUDB:capture_out_reg_i\\D\[1805] = \PM2_HA_Timer:TimerUDB:tmp_fifo_load\[1273]
+Removing Lhs of wire \PM2_HA_TIMER:TimerUDB:capture_last\\D\[1800] = Net_322[1262]
+Removing Lhs of wire \PM2_HA_TIMER:TimerUDB:tc_reg_i\\D\[1803] = \PM2_HA_TIMER:TimerUDB:status_tc\[1277]
+Removing Lhs of wire \PM2_HA_TIMER:TimerUDB:hwEnable_reg\\D\[1804] = \PM2_HA_TIMER:TimerUDB:control_7\[1245]
+Removing Lhs of wire \PM2_HA_TIMER:TimerUDB:capture_out_reg_i\\D\[1805] = \PM2_HA_TIMER:TimerUDB:tmp_fifo_load\[1273]
 Removing Lhs of wire \PM2_DirCounter:Cnt16:CounterUDB:prevCapture\\D\[1807] = zero[2]
 Removing Lhs of wire \PM2_DirCounter:Cnt16:CounterUDB:overflow_reg_i\\D\[1808] = \PM2_DirCounter:Cnt16:CounterUDB:overflow\[1538]
 Removing Lhs of wire \PM2_DirCounter:Cnt16:CounterUDB:underflow_reg_i\\D\[1809] = \PM2_DirCounter:Cnt16:CounterUDB:status_1\[1526]
@@ -1143,8 +1143,8 @@ Note:  Expanding virtual equation for '\ADC_TS:MODULE_1:g1:a0:gx:u0:gt_1\' (cost
 	OR (not \ADC_TS:AMuxHw_2_Decoder_old_id_0\ and \ADC_TS:ch_addr_1\ and \ADC_TS:ch_addr_0\)
 	OR (not \ADC_TS:AMuxHw_2_Decoder_old_id_1\ and \ADC_TS:ch_addr_1\));
 
-Note:  Expanding virtual equation for '\PM2_HA_Timer:TimerUDB:runmode_enable\' (cost = 0):
-\PM2_HA_Timer:TimerUDB:runmode_enable\ <= (\PM2_HA_Timer:TimerUDB:control_7\);
+Note:  Expanding virtual equation for '\PM2_HA_TIMER:TimerUDB:runmode_enable\' (cost = 0):
+\PM2_HA_TIMER:TimerUDB:runmode_enable\ <= (\PM2_HA_TIMER:TimerUDB:control_7\);
 
 Note:  Expanding virtual equation for '\PM2_DirCounter:Cnt16:CounterUDB:capt_either_edge\' (cost = 0):
 \PM2_DirCounter:Cnt16:CounterUDB:capt_either_edge\ <= (\PM2_DirCounter:Cnt16:CounterUDB:prevCapture\);
@@ -1357,7 +1357,7 @@ Removing Lhs of wire \UART:BUART:rx_status_0\[279] = zero[2]
 Removing Lhs of wire \UART:BUART:rx_status_6\[288] = zero[2]
 Removing Lhs of wire \PM1_HA_TIMER:TimerUDB:trig_reg\[487] = \PM1_HA_TIMER:TimerUDB:control_7\[444]
 Removing Lhs of wire \PM1_DirCounter:Cnt16:CounterUDB:hwCapture\[720] = zero[2]
-Removing Lhs of wire \PM2_HA_Timer:TimerUDB:trig_reg\[1287] = \PM2_HA_Timer:TimerUDB:control_7\[1245]
+Removing Lhs of wire \PM2_HA_TIMER:TimerUDB:trig_reg\[1287] = \PM2_HA_TIMER:TimerUDB:control_7\[1245]
 Removing Lhs of wire \PM2_DirCounter:Cnt16:CounterUDB:hwCapture\[1518] = zero[2]
 Removing Lhs of wire \UART:BUART:tx_ctrl_mark_last\\D\[1684] = \UART:BUART:tx_ctrl_mark_last\[171]
 Removing Lhs of wire \UART:BUART:rx_markspace_status\\D\[1696] = zero[2]
@@ -1403,14 +1403,14 @@ CYPRESS_DIR    : C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\wa
 Warp Program   : C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\warp\bin\warp.exe
 Warp Arguments : -yv2 -q10 -ygs -o2 -v3 -.fftcfgtype=LE -ya "-.fftprj=C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\dedo_v01.cyprj" -dcpsoc3 dedo_v01.v -verilog
 </CYPRESSTAG>
-Warp synthesis phase: Elapsed time ==> 7s.507ms
+Warp synthesis phase: Elapsed time ==> 2s.303ms
 <CYPRESSTAG name="Fitter results...">
 <CYPRESSTAG name="Fitter startup details...">
-cyp3fit: V4.1.0.3210, Family: PSoC3, Started at: Tuesday, 07 November 2017 19:46:23
+cyp3fit: V4.1.0.3210, Family: PSoC3, Started at: Thursday, 09 November 2017 17:29:05
 Options: -yv2 -q10 -ygs -o2 -v3 -.fftcfgtype=LE -ya -.fftprj=C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\dedo_v01.cyprj -d CY8C5888LTI-LP097 dedo_v01.v -verilog
 </CYPRESSTAG>
 <CYPRESSTAG name="Design parsing">
-Design parsing phase: Elapsed time ==> 0s.171ms
+Design parsing phase: Elapsed time ==> 0s.038ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Tech Mapping">
 <CYPRESSTAG name="Initial Mapping" icon="FILE_RPT_TECHM">
@@ -1471,11 +1471,11 @@ Done removing unused cells.
         ClockIn: ADC_TS_IntClock was determined to be a global clock that is synchronous to BUS_CLK
         EnableIn: Constant 1 was determined to be synchronous to ClockIn
         ClockOut: ADC_TS_IntClock, EnableOut: Constant 1
-    UDB Clk/Enable \PM2_HA_Timer:TimerUDB:clock_enable_block\: with output requested to be synchronous
+    UDB Clk/Enable \PM2_HA_TIMER:TimerUDB:clock_enable_block\: with output requested to be synchronous
         ClockIn: SPD_CLOCK_10K was determined to be a global clock that is synchronous to BUS_CLK
         EnableIn: Constant 1 was determined to be synchronous to ClockIn
         ClockOut: SPD_CLOCK_10K, EnableOut: Constant 1
-    UDB Clk/Enable \PM2_HA_Timer:TimerUDB:sCTRLReg:SyncCtl:cy_psoc3_udb_Ctl_Clk_Sync\: with output requested to be synchronous
+    UDB Clk/Enable \PM2_HA_TIMER:TimerUDB:sCTRLReg:SyncCtl:cy_psoc3_udb_Ctl_Clk_Sync\: with output requested to be synchronous
         ClockIn: SPD_CLOCK_10K was determined to be a global clock that is synchronous to BUS_CLK
         EnableIn: Constant 1 was determined to be synchronous to ClockIn
         ClockOut: SPD_CLOCK_10K, EnableOut: Constant 1
@@ -1513,8 +1513,8 @@ Removing duplicate macrocells
         );
         Output = \PM2_DirCounter:Net_1264\ (fanout=2)
 
-    Removing \PM2_HA_Timer:TimerUDB:capture_last\, Duplicate of \PM2_DirCounter:bQuadDec:quad_A_filt\ 
-    MacroCell: Name=\PM2_HA_Timer:TimerUDB:capture_last\, Mode=(D-Register)
+    Removing \PM2_HA_TIMER:TimerUDB:capture_last\, Duplicate of \PM2_DirCounter:bQuadDec:quad_A_filt\ 
+    MacroCell: Name=\PM2_HA_TIMER:TimerUDB:capture_last\, Mode=(D-Register)
         Total # of inputs        : 1
         Total # of product terms : 1
         List of special equations: 
@@ -1524,7 +1524,7 @@ Removing duplicate macrocells
         (
               Net_322
         );
-        Output = \PM2_HA_Timer:TimerUDB:capture_last\ (fanout=1)
+        Output = \PM2_HA_TIMER:TimerUDB:capture_last\ (fanout=1)
 
     Removing \PM1_DirCounter:Net_1264\, Duplicate of \PM1_DirCounter:Cnt16:CounterUDB:prevCompare\ 
     MacroCell: Name=\PM1_DirCounter:Net_1264\, Mode=(D-Register)
@@ -2019,54 +2019,15 @@ Design Equations
         {
         }
 
-    Pin : Name = PM2_DIR(0)
-        Attributes:
-            In Group/Port: True
-            In Sync Option: NOSYNC
-            Out Sync Option: AUTO
-            Interrupt generated: False
-            Interrupt mode: NONE
-            Drive mode: HI_Z_ANALOG
-            VTrip: CMOS
-            Slew: FAST
-            Input Sync needed: False
-            Output Sync needed: False
-            SC shield enabled: False
-            POR State: ANY
-            LCD Mode: COMMON
-            Register Mode: RegComb
-            CaSense Mode: NEITHER
-            Treat as pin: True
-            Is OE Registered: False
-            Uses Analog: False
-            Can contain Digital: True
-            Is SIO: False
-            SIO Output Buf: NONREGULATED
-            SIO Input Buf: SINGLE_ENDED
-            SIO HiFreq: LOW
-            SIO Hyst: DISABLED
-            SIO Vtrip: MULTIPLIER_0_5
-            SIO Multiplier Index: 0
-            SIO RefSel: VCC_IO
-            Required Capabilities: DIGITAL
-            Initial Value: 0
-            IO Voltage: 0
-        PORT MAP (
-            pa_out => PM2_DIR(0)__PA ,
-            pad => PM2_DIR(0)_PAD );
-        Properties:
-        {
-        }
-
     Pin : Name = PM2_BRAKEn(0)
         Attributes:
             In Group/Port: True
-            In Sync Option: NOSYNC
-            Out Sync Option: AUTO
+            In Sync Option: AUTO
+            Out Sync Option: NOSYNC
             Interrupt generated: False
             Interrupt mode: NONE
-            Drive mode: HI_Z_ANALOG
-            VTrip: CMOS
+            Drive mode: CMOS_OUT
+            VTrip: EITHER
             Slew: FAST
             Input Sync needed: False
             Output Sync needed: False
@@ -2093,6 +2054,45 @@ Design Equations
         PORT MAP (
             pa_out => PM2_BRAKEn(0)__PA ,
             pad => PM2_BRAKEn(0)_PAD );
+        Properties:
+        {
+        }
+
+    Pin : Name = PM2_DIR(0)
+        Attributes:
+            In Group/Port: True
+            In Sync Option: AUTO
+            Out Sync Option: NOSYNC
+            Interrupt generated: False
+            Interrupt mode: NONE
+            Drive mode: CMOS_OUT
+            VTrip: EITHER
+            Slew: FAST
+            Input Sync needed: False
+            Output Sync needed: False
+            SC shield enabled: False
+            POR State: ANY
+            LCD Mode: COMMON
+            Register Mode: RegComb
+            CaSense Mode: NEITHER
+            Treat as pin: True
+            Is OE Registered: False
+            Uses Analog: False
+            Can contain Digital: True
+            Is SIO: False
+            SIO Output Buf: NONREGULATED
+            SIO Input Buf: SINGLE_ENDED
+            SIO HiFreq: LOW
+            SIO Hyst: DISABLED
+            SIO Vtrip: MULTIPLIER_0_5
+            SIO Multiplier Index: 0
+            SIO RefSel: VCC_IO
+            Required Capabilities: DIGITAL
+            Initial Value: 0
+            IO Voltage: 0
+        PORT MAP (
+            pa_out => PM2_DIR(0)__PA ,
+            pad => PM2_DIR(0)_PAD );
         Properties:
         {
         }
@@ -2138,14 +2138,14 @@ Design Equations
         {
         }
 
-    Pin : Name = PM2_SPEED(0)
+    Pin : Name = PM2_ENABLE(0)
         Attributes:
             In Group/Port: True
             In Sync Option: AUTO
-            Out Sync Option: AUTO
+            Out Sync Option: NOSYNC
             Interrupt generated: False
             Interrupt mode: NONE
-            Drive mode: HI_Z_ANALOG
+            Drive mode: CMOS_OUT
             VTrip: EITHER
             Slew: FAST
             Input Sync needed: False
@@ -2157,8 +2157,8 @@ Design Equations
             CaSense Mode: NEITHER
             Treat as pin: True
             Is OE Registered: False
-            Uses Analog: True
-            Can contain Digital: False
+            Uses Analog: False
+            Can contain Digital: True
             Is SIO: False
             SIO Output Buf: NONREGULATED
             SIO Input Buf: SINGLE_ENDED
@@ -2167,13 +2167,12 @@ Design Equations
             SIO Vtrip: MULTIPLIER_0_5
             SIO Multiplier Index: 0
             SIO RefSel: VCC_IO
-            Required Capabilities: ANALOG
+            Required Capabilities: DIGITAL
             Initial Value: 0
             IO Voltage: 0
         PORT MAP (
-            pa_out => PM2_SPEED(0)__PA ,
-            analog_term => Net_449 ,
-            pad => PM2_SPEED(0)_PAD );
+            pa_out => PM2_ENABLE(0)__PA ,
+            pad => PM2_ENABLE(0)_PAD );
         Properties:
         {
         }
@@ -2300,15 +2299,15 @@ Design Equations
         {
         }
 
-    Pin : Name = PM2_ENABLE(0)
+    Pin : Name = PM2_SPEED(0)
         Attributes:
             In Group/Port: True
-            In Sync Option: NOSYNC
+            In Sync Option: AUTO
             Out Sync Option: AUTO
             Interrupt generated: False
             Interrupt mode: NONE
             Drive mode: HI_Z_ANALOG
-            VTrip: CMOS
+            VTrip: EITHER
             Slew: FAST
             Input Sync needed: False
             Output Sync needed: False
@@ -2319,8 +2318,8 @@ Design Equations
             CaSense Mode: NEITHER
             Treat as pin: True
             Is OE Registered: False
-            Uses Analog: False
-            Can contain Digital: True
+            Uses Analog: True
+            Can contain Digital: False
             Is SIO: False
             SIO Output Buf: NONREGULATED
             SIO Input Buf: SINGLE_ENDED
@@ -2329,12 +2328,13 @@ Design Equations
             SIO Vtrip: MULTIPLIER_0_5
             SIO Multiplier Index: 0
             SIO RefSel: VCC_IO
-            Required Capabilities: DIGITAL
+            Required Capabilities: ANALOG
             Initial Value: 0
             IO Voltage: 0
         PORT MAP (
-            pa_out => PM2_ENABLE(0)__PA ,
-            pad => PM2_ENABLE(0)_PAD );
+            pa_out => PM2_SPEED(0)__PA ,
+            analog_term => Net_451 ,
+            pad => PM2_SPEED(0)_PAD );
         Properties:
         {
         }
@@ -2561,7 +2561,7 @@ Design Equations
         );
         Output = \ADC_TS:bSAR_SEQ:cnt_enable\ (fanout=1)
 
-    MacroCell: Name=\PM2_HA_Timer:TimerUDB:fifo_load_polarized\, Mode=(Combinatorial)
+    MacroCell: Name=\PM2_HA_TIMER:TimerUDB:fifo_load_polarized\, Mode=(Combinatorial)
         Total # of inputs        : 2
         Total # of product terms : 2
             Clock Enable: True
@@ -2570,18 +2570,18 @@ Design Equations
               !Net_322 * \PM2_DirCounter:bQuadDec:quad_A_filt\
             + Net_322 * !\PM2_DirCounter:bQuadDec:quad_A_filt\
         );
-        Output = \PM2_HA_Timer:TimerUDB:fifo_load_polarized\ (fanout=1)
+        Output = \PM2_HA_TIMER:TimerUDB:fifo_load_polarized\ (fanout=1)
 
-    MacroCell: Name=\PM2_HA_Timer:TimerUDB:status_tc\, Mode=(Combinatorial)
+    MacroCell: Name=\PM2_HA_TIMER:TimerUDB:status_tc\, Mode=(Combinatorial)
         Total # of inputs        : 2
         Total # of product terms : 1
             Clock Enable: True
         Main Equation            : 1 pterm
         (
-              \PM2_HA_Timer:TimerUDB:control_7\ * 
-              \PM2_HA_Timer:TimerUDB:per_zero\
+              \PM2_HA_TIMER:TimerUDB:control_7\ * 
+              \PM2_HA_TIMER:TimerUDB:per_zero\
         );
-        Output = \PM2_HA_Timer:TimerUDB:status_tc\ (fanout=1)
+        Output = \PM2_HA_TIMER:TimerUDB:status_tc\ (fanout=1)
 
     MacroCell: Name=\PM2_DirCounter:Cnt16:CounterUDB:reload\, Mode=(Combinatorial)
         Total # of inputs        : 3
@@ -4724,7 +4724,7 @@ Design Equations
         );
         Output = \PM2_DirCounter:Net_1251_split\ (fanout=1)
 
-    MacroCell: Name=\PM2_HA_Timer:TimerUDB:cntr_load\, Mode=(D-Register)
+    MacroCell: Name=\PM2_HA_TIMER:TimerUDB:cntr_load\, Mode=(D-Register)
         Total # of inputs        : 7
         Total # of product terms : 1
         List of special equations: 
@@ -4732,17 +4732,17 @@ Design Equations
             Clock Enable: True
         Main Equation            : 1 pterm
         (
-              !\PM2_HA_Timer:TimerUDB:count_6\ * 
-              !\PM2_HA_Timer:TimerUDB:count_5\ * 
-              !\PM2_HA_Timer:TimerUDB:count_4\ * 
-              !\PM2_HA_Timer:TimerUDB:count_3\ * 
-              !\PM2_HA_Timer:TimerUDB:count_2\ * 
-              !\PM2_HA_Timer:TimerUDB:count_1\ * 
-              \PM2_HA_Timer:TimerUDB:count_0\
+              !\PM2_HA_TIMER:TimerUDB:count_6\ * 
+              !\PM2_HA_TIMER:TimerUDB:count_5\ * 
+              !\PM2_HA_TIMER:TimerUDB:count_4\ * 
+              !\PM2_HA_TIMER:TimerUDB:count_3\ * 
+              !\PM2_HA_TIMER:TimerUDB:count_2\ * 
+              !\PM2_HA_TIMER:TimerUDB:count_1\ * 
+              \PM2_HA_TIMER:TimerUDB:count_0\
         );
-        Output = \PM2_HA_Timer:TimerUDB:cntr_load\ (fanout=2)
+        Output = \PM2_HA_TIMER:TimerUDB:cntr_load\ (fanout=2)
 
-    MacroCell: Name=\PM2_HA_Timer:TimerUDB:tmp_fifo_load\, Mode=(D-Register)
+    MacroCell: Name=\PM2_HA_TIMER:TimerUDB:tmp_fifo_load\, Mode=(D-Register)
         Total # of inputs        : 8
         Total # of product terms : 1
         List of special equations: 
@@ -4750,16 +4750,16 @@ Design Equations
             Clock Enable: True
         Main Equation            : 1 pterm
         (
-              !\PM2_HA_Timer:TimerUDB:cntr_load\ * 
-              !\PM2_HA_Timer:TimerUDB:count_6\ * 
-              !\PM2_HA_Timer:TimerUDB:count_5\ * 
-              !\PM2_HA_Timer:TimerUDB:count_4\ * 
-              !\PM2_HA_Timer:TimerUDB:count_3\ * 
-              !\PM2_HA_Timer:TimerUDB:count_2\ * 
-              !\PM2_HA_Timer:TimerUDB:count_1\ * 
-              \PM2_HA_Timer:TimerUDB:count_0\
+              !\PM2_HA_TIMER:TimerUDB:cntr_load\ * 
+              !\PM2_HA_TIMER:TimerUDB:count_6\ * 
+              !\PM2_HA_TIMER:TimerUDB:count_5\ * 
+              !\PM2_HA_TIMER:TimerUDB:count_4\ * 
+              !\PM2_HA_TIMER:TimerUDB:count_3\ * 
+              !\PM2_HA_TIMER:TimerUDB:count_2\ * 
+              !\PM2_HA_TIMER:TimerUDB:count_1\ * 
+              \PM2_HA_TIMER:TimerUDB:count_0\
         );
-        Output = \PM2_HA_Timer:TimerUDB:tmp_fifo_load\ (fanout=6)
+        Output = \PM2_HA_TIMER:TimerUDB:tmp_fifo_load\ (fanout=6)
 
     MacroCell: Name=Net_339, Mode=(D-Register)
         Total # of inputs        : 1
@@ -4769,7 +4769,7 @@ Design Equations
             Clock Enable: True
         Main Equation            : 1 pterm
         (
-              \PM2_HA_Timer:TimerUDB:tmp_fifo_load\
+              \PM2_HA_TIMER:TimerUDB:tmp_fifo_load\
         );
         Output = Net_339 (fanout=1)
 
@@ -5329,13 +5329,13 @@ Design Equations
         Clock Enable: True
         Previous in chain : \PM1_DirCounter:Cnt16:CounterUDB:sC16:counterdp:u0\
 
-    datapathcell: Name =\PM2_HA_Timer:TimerUDB:sT32:timerdp:u0\
+    datapathcell: Name =\PM2_HA_TIMER:TimerUDB:sT32:timerdp:u0\
         PORT MAP (
             clock => Net_737 ,
-            cs_addr_1 => \PM2_HA_Timer:TimerUDB:control_7\ ,
-            cs_addr_0 => \PM2_HA_Timer:TimerUDB:per_zero\ ,
-            f0_load => \PM2_HA_Timer:TimerUDB:tmp_fifo_load\ ,
-            chain_out => \PM2_HA_Timer:TimerUDB:sT32:timerdp:carry0\ );
+            cs_addr_1 => \PM2_HA_TIMER:TimerUDB:control_7\ ,
+            cs_addr_0 => \PM2_HA_TIMER:TimerUDB:per_zero\ ,
+            f0_load => \PM2_HA_TIMER:TimerUDB:tmp_fifo_load\ ,
+            chain_out => \PM2_HA_TIMER:TimerUDB:sT32:timerdp:carry0\ );
         Properties:
         {
             a0_init = "00000000"
@@ -5362,16 +5362,16 @@ Design Equations
         }
         Clock Polarity: Active High
         Clock Enable: True
-        Next in chain : \PM2_HA_Timer:TimerUDB:sT32:timerdp:u1\
+        Next in chain : \PM2_HA_TIMER:TimerUDB:sT32:timerdp:u1\
 
-    datapathcell: Name =\PM2_HA_Timer:TimerUDB:sT32:timerdp:u1\
+    datapathcell: Name =\PM2_HA_TIMER:TimerUDB:sT32:timerdp:u1\
         PORT MAP (
             clock => Net_737 ,
-            cs_addr_1 => \PM2_HA_Timer:TimerUDB:control_7\ ,
-            cs_addr_0 => \PM2_HA_Timer:TimerUDB:per_zero\ ,
-            f0_load => \PM2_HA_Timer:TimerUDB:tmp_fifo_load\ ,
-            chain_in => \PM2_HA_Timer:TimerUDB:sT32:timerdp:carry0\ ,
-            chain_out => \PM2_HA_Timer:TimerUDB:sT32:timerdp:carry1\ );
+            cs_addr_1 => \PM2_HA_TIMER:TimerUDB:control_7\ ,
+            cs_addr_0 => \PM2_HA_TIMER:TimerUDB:per_zero\ ,
+            f0_load => \PM2_HA_TIMER:TimerUDB:tmp_fifo_load\ ,
+            chain_in => \PM2_HA_TIMER:TimerUDB:sT32:timerdp:carry0\ ,
+            chain_out => \PM2_HA_TIMER:TimerUDB:sT32:timerdp:carry1\ );
         Properties:
         {
             a0_init = "00000000"
@@ -5398,17 +5398,17 @@ Design Equations
         }
         Clock Polarity: Active High
         Clock Enable: True
-        Previous in chain : \PM2_HA_Timer:TimerUDB:sT32:timerdp:u0\
-        Next in chain : \PM2_HA_Timer:TimerUDB:sT32:timerdp:u2\
+        Previous in chain : \PM2_HA_TIMER:TimerUDB:sT32:timerdp:u0\
+        Next in chain : \PM2_HA_TIMER:TimerUDB:sT32:timerdp:u2\
 
-    datapathcell: Name =\PM2_HA_Timer:TimerUDB:sT32:timerdp:u2\
+    datapathcell: Name =\PM2_HA_TIMER:TimerUDB:sT32:timerdp:u2\
         PORT MAP (
             clock => Net_737 ,
-            cs_addr_1 => \PM2_HA_Timer:TimerUDB:control_7\ ,
-            cs_addr_0 => \PM2_HA_Timer:TimerUDB:per_zero\ ,
-            f0_load => \PM2_HA_Timer:TimerUDB:tmp_fifo_load\ ,
-            chain_in => \PM2_HA_Timer:TimerUDB:sT32:timerdp:carry1\ ,
-            chain_out => \PM2_HA_Timer:TimerUDB:sT32:timerdp:carry2\ );
+            cs_addr_1 => \PM2_HA_TIMER:TimerUDB:control_7\ ,
+            cs_addr_0 => \PM2_HA_TIMER:TimerUDB:per_zero\ ,
+            f0_load => \PM2_HA_TIMER:TimerUDB:tmp_fifo_load\ ,
+            chain_in => \PM2_HA_TIMER:TimerUDB:sT32:timerdp:carry1\ ,
+            chain_out => \PM2_HA_TIMER:TimerUDB:sT32:timerdp:carry2\ );
         Properties:
         {
             a0_init = "00000000"
@@ -5435,19 +5435,19 @@ Design Equations
         }
         Clock Polarity: Active High
         Clock Enable: True
-        Previous in chain : \PM2_HA_Timer:TimerUDB:sT32:timerdp:u1\
-        Next in chain : \PM2_HA_Timer:TimerUDB:sT32:timerdp:u3\
+        Previous in chain : \PM2_HA_TIMER:TimerUDB:sT32:timerdp:u1\
+        Next in chain : \PM2_HA_TIMER:TimerUDB:sT32:timerdp:u3\
 
-    datapathcell: Name =\PM2_HA_Timer:TimerUDB:sT32:timerdp:u3\
+    datapathcell: Name =\PM2_HA_TIMER:TimerUDB:sT32:timerdp:u3\
         PORT MAP (
             clock => Net_737 ,
-            cs_addr_1 => \PM2_HA_Timer:TimerUDB:control_7\ ,
-            cs_addr_0 => \PM2_HA_Timer:TimerUDB:per_zero\ ,
-            f0_load => \PM2_HA_Timer:TimerUDB:tmp_fifo_load\ ,
-            z0_comb => \PM2_HA_Timer:TimerUDB:per_zero\ ,
-            f0_bus_stat_comb => \PM2_HA_Timer:TimerUDB:status_3\ ,
-            f0_blk_stat_comb => \PM2_HA_Timer:TimerUDB:status_2\ ,
-            chain_in => \PM2_HA_Timer:TimerUDB:sT32:timerdp:carry2\ );
+            cs_addr_1 => \PM2_HA_TIMER:TimerUDB:control_7\ ,
+            cs_addr_0 => \PM2_HA_TIMER:TimerUDB:per_zero\ ,
+            f0_load => \PM2_HA_TIMER:TimerUDB:tmp_fifo_load\ ,
+            z0_comb => \PM2_HA_TIMER:TimerUDB:per_zero\ ,
+            f0_bus_stat_comb => \PM2_HA_TIMER:TimerUDB:status_3\ ,
+            f0_blk_stat_comb => \PM2_HA_TIMER:TimerUDB:status_2\ ,
+            chain_in => \PM2_HA_TIMER:TimerUDB:sT32:timerdp:carry2\ );
         Properties:
         {
             a0_init = "00000000"
@@ -5474,7 +5474,7 @@ Design Equations
         }
         Clock Polarity: Active High
         Clock Enable: True
-        Previous in chain : \PM2_HA_Timer:TimerUDB:sT32:timerdp:u2\
+        Previous in chain : \PM2_HA_TIMER:TimerUDB:sT32:timerdp:u2\
 
     datapathcell: Name =\PM2_DirCounter:Cnt16:CounterUDB:sC16:counterdp:u0\
         PORT MAP (
@@ -5660,13 +5660,13 @@ Design Equations
         Clock Polarity: Active High
         Clock Enable: True
 
-    statusicell: Name =\PM2_HA_Timer:TimerUDB:rstSts:stsreg\
+    statusicell: Name =\PM2_HA_TIMER:TimerUDB:rstSts:stsreg\
         PORT MAP (
             clock => Net_737 ,
-            status_3 => \PM2_HA_Timer:TimerUDB:status_3\ ,
-            status_2 => \PM2_HA_Timer:TimerUDB:status_2\ ,
-            status_1 => \PM2_HA_Timer:TimerUDB:tmp_fifo_load\ ,
-            status_0 => \PM2_HA_Timer:TimerUDB:status_tc\ );
+            status_3 => \PM2_HA_TIMER:TimerUDB:status_3\ ,
+            status_2 => \PM2_HA_TIMER:TimerUDB:status_2\ ,
+            status_1 => \PM2_HA_TIMER:TimerUDB:tmp_fifo_load\ ,
+            status_0 => \PM2_HA_TIMER:TimerUDB:status_tc\ );
         Properties:
         {
             cy_force_order = 1
@@ -5798,17 +5798,17 @@ Design Equations
         Clock Polarity: Active High
         Clock Enable: True
 
-    controlcell: Name =\PM2_HA_Timer:TimerUDB:sCTRLReg:SyncCtl:ctrlreg\
+    controlcell: Name =\PM2_HA_TIMER:TimerUDB:sCTRLReg:SyncCtl:ctrlreg\
         PORT MAP (
             clock => Net_737 ,
-            control_7 => \PM2_HA_Timer:TimerUDB:control_7\ ,
-            control_6 => \PM2_HA_Timer:TimerUDB:control_6\ ,
-            control_5 => \PM2_HA_Timer:TimerUDB:control_5\ ,
-            control_4 => \PM2_HA_Timer:TimerUDB:control_4\ ,
-            control_3 => \PM2_HA_Timer:TimerUDB:control_3\ ,
-            control_2 => \PM2_HA_Timer:TimerUDB:control_2\ ,
-            control_1 => \PM2_HA_Timer:TimerUDB:control_1\ ,
-            control_0 => \PM2_HA_Timer:TimerUDB:control_0\ );
+            control_7 => \PM2_HA_TIMER:TimerUDB:control_7\ ,
+            control_6 => \PM2_HA_TIMER:TimerUDB:control_6\ ,
+            control_5 => \PM2_HA_TIMER:TimerUDB:control_5\ ,
+            control_4 => \PM2_HA_TIMER:TimerUDB:control_4\ ,
+            control_3 => \PM2_HA_TIMER:TimerUDB:control_3\ ,
+            control_2 => \PM2_HA_TIMER:TimerUDB:control_2\ ,
+            control_1 => \PM2_HA_TIMER:TimerUDB:control_1\ ,
+            control_0 => \PM2_HA_TIMER:TimerUDB:control_0\ );
         Properties:
         {
             cy_ctrl_mode_0 = "11111111"
@@ -5919,18 +5919,18 @@ Design Equations
         Clock Polarity: Active High
         Clock Enable: PosEdge(\ADC_TS:bSAR_SEQ:enable\)
 
-    count7cell: Name =\PM2_HA_Timer:TimerUDB:sCapCount:counter\
+    count7cell: Name =\PM2_HA_TIMER:TimerUDB:sCapCount:counter\
         PORT MAP (
             clock => Net_737 ,
-            load => \PM2_HA_Timer:TimerUDB:cntr_load\ ,
-            enable => \PM2_HA_Timer:TimerUDB:fifo_load_polarized\ ,
-            count_6 => \PM2_HA_Timer:TimerUDB:count_6\ ,
-            count_5 => \PM2_HA_Timer:TimerUDB:count_5\ ,
-            count_4 => \PM2_HA_Timer:TimerUDB:count_4\ ,
-            count_3 => \PM2_HA_Timer:TimerUDB:count_3\ ,
-            count_2 => \PM2_HA_Timer:TimerUDB:count_2\ ,
-            count_1 => \PM2_HA_Timer:TimerUDB:count_1\ ,
-            count_0 => \PM2_HA_Timer:TimerUDB:count_0\ );
+            load => \PM2_HA_TIMER:TimerUDB:cntr_load\ ,
+            enable => \PM2_HA_TIMER:TimerUDB:fifo_load_polarized\ ,
+            count_6 => \PM2_HA_TIMER:TimerUDB:count_6\ ,
+            count_5 => \PM2_HA_TIMER:TimerUDB:count_5\ ,
+            count_4 => \PM2_HA_TIMER:TimerUDB:count_4\ ,
+            count_3 => \PM2_HA_TIMER:TimerUDB:count_3\ ,
+            count_2 => \PM2_HA_TIMER:TimerUDB:count_2\ ,
+            count_1 => \PM2_HA_TIMER:TimerUDB:count_1\ ,
+            count_0 => \PM2_HA_TIMER:TimerUDB:count_0\ );
         Properties:
         {
             cy_alt_mode = 0
@@ -6127,8 +6127,8 @@ Analog (SC/CT) Blocks         :    0 :    4 :    4 :  0.00 %
 DAC                           :      :      :      :        
   VIDAC                       :    2 :    2 :    4 : 50.00 %
 </CYPRESSTAG>
-Technology Mapping: Elapsed time ==> 0s.404ms
-Tech Mapping phase: Elapsed time ==> 0s.571ms
+Technology Mapping: Elapsed time ==> 0s.370ms
+Tech Mapping phase: Elapsed time ==> 0s.444ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Analog Placement">
 Info: apr.M0002: Analog signal "Net_194" is connected to one terminal only. (App=cydsfit)
@@ -6243,10 +6243,10 @@ SAR[1]@[FFB(SAR,1)] : \ADC_TS:SAR:ADC_SAR\
 VIDAC[3]@[FFB(VIDAC,3)] : \PM1_SPD_VDAC8:viDAC8\
 VIDAC[2]@[FFB(VIDAC,2)] : \PM2_SPD_VDAC8:viDAC8\
 
-Analog Placement phase: Elapsed time ==> 1s.445ms
+Analog Placement phase: Elapsed time ==> 1s.123ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Analog Routing">
-Analog Routing phase: Elapsed time ==> 0s.006ms
+Analog Routing phase: Elapsed time ==> 0s.005ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Analog Code Generation">
 ============ Analog Final Answer Routes ============
@@ -6391,7 +6391,7 @@ Map of net to items {
     agr5_x_p3_5
     p3_5
   }
-  Net: Net_449 {
+  Net: Net_451 {
     vidac_2_vout
     agl4_x_vidac_2_vout
     agl4
@@ -6454,13 +6454,13 @@ Map of item to net {
   agr5                                             -> Net_438
   agr5_x_p3_5                                      -> Net_438
   p3_5                                             -> Net_438
-  vidac_2_vout                                     -> Net_449
-  agl4_x_vidac_2_vout                              -> Net_449
-  agl4                                             -> Net_449
-  agl4_x_agr4                                      -> Net_449
-  agr4                                             -> Net_449
-  agr4_x_p3_4                                      -> Net_449
-  p3_4                                             -> Net_449
+  vidac_2_vout                                     -> Net_451
+  agl4_x_vidac_2_vout                              -> Net_451
+  agl4                                             -> Net_451
+  agl4_x_agr4                                      -> Net_451
+  agr4                                             -> Net_451
+  agr4_x_p3_4                                      -> Net_451
+  p3_4                                             -> Net_451
   p3_7                                             -> Net_67
   agr7_x_p3_7                                      -> Net_67
   agr7                                             -> Net_67
@@ -6957,11 +6957,11 @@ Dump of CyP35AnalogRoutingResultsDB
 IsVddaHalfUsedForComp = False
 IsVddaHalfUsedForSar0 = True
 IsVddaHalfUsedForSar1 = True
-Analog Code Generation phase: Elapsed time ==> 0s.583ms
+Analog Code Generation phase: Elapsed time ==> 0s.260ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Digital Placement">
 <CYPRESSTAG name="Detailed placement messages">
-I2076: Total run-time: 5.3 sec.
+I2076: Total run-time: 4.9 sec.
 
 </CYPRESSTAG>
 <CYPRESSTAG name="PLD Packing">
@@ -6985,14 +6985,14 @@ PLD Packing Summary
 <CYPRESSTAG name="Packed PLD Contents">
 Packed PLD Contents not displayed at this verbose level.</CYPRESSTAG>
 </CYPRESSTAG>
-PLD Packing: Elapsed time ==> 0s.011ms
+PLD Packing: Elapsed time ==> 0s.003ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Partitioning">
 <CYPRESSTAG name="Initial Partitioning Summary">
 Initial Partitioning Summary not displayed at this verbose level.</CYPRESSTAG>
 <CYPRESSTAG name="Final Partitioning Summary">
 Final Partitioning Summary not displayed at this verbose level.</CYPRESSTAG>
-Partitioning: Elapsed time ==> 0s.313ms
+Partitioning: Elapsed time ==> 0s.265ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Final Placement Summary">
 
@@ -8580,7 +8580,7 @@ LAB@[UDB=(1,3)][LB=0] #macrocells=3, #inputs=7, #pterms=5
         }
 
     [McSlotId=1]: (empty)
-    [McSlotId=2]:     MacroCell: Name=\PM2_HA_Timer:TimerUDB:fifo_load_polarized\, Mode=(Combinatorial) @ [UDB=(1,3)][LB=0][MC=2]
+    [McSlotId=2]:     MacroCell: Name=\PM2_HA_TIMER:TimerUDB:fifo_load_polarized\, Mode=(Combinatorial) @ [UDB=(1,3)][LB=0][MC=2]
         Total # of inputs        : 2
         Total # of product terms : 2
             Clock Enable: True
@@ -8589,7 +8589,7 @@ LAB@[UDB=(1,3)][LB=0] #macrocells=3, #inputs=7, #pterms=5
               !Net_322 * \PM2_DirCounter:bQuadDec:quad_A_filt\
             + Net_322 * !\PM2_DirCounter:bQuadDec:quad_A_filt\
         );
-        Output = \PM2_HA_Timer:TimerUDB:fifo_load_polarized\ (fanout=2)
+        Output = \PM2_HA_TIMER:TimerUDB:fifo_load_polarized\ (fanout=2)
         Properties               : 
         {
         }
@@ -8656,18 +8656,18 @@ LAB@[UDB=(1,3)][LB=1] #macrocells=3, #inputs=3, #pterms=3
     [McSlotId=3]: (empty)
 }
 
-count7cell: Name =\PM2_HA_Timer:TimerUDB:sCapCount:counter\
+count7cell: Name =\PM2_HA_TIMER:TimerUDB:sCapCount:counter\
     PORT MAP (
         clock => Net_737 ,
-        load => \PM2_HA_Timer:TimerUDB:cntr_load\ ,
-        enable => \PM2_HA_Timer:TimerUDB:fifo_load_polarized\ ,
-        count_6 => \PM2_HA_Timer:TimerUDB:count_6\ ,
-        count_5 => \PM2_HA_Timer:TimerUDB:count_5\ ,
-        count_4 => \PM2_HA_Timer:TimerUDB:count_4\ ,
-        count_3 => \PM2_HA_Timer:TimerUDB:count_3\ ,
-        count_2 => \PM2_HA_Timer:TimerUDB:count_2\ ,
-        count_1 => \PM2_HA_Timer:TimerUDB:count_1\ ,
-        count_0 => \PM2_HA_Timer:TimerUDB:count_0\ );
+        load => \PM2_HA_TIMER:TimerUDB:cntr_load\ ,
+        enable => \PM2_HA_TIMER:TimerUDB:fifo_load_polarized\ ,
+        count_6 => \PM2_HA_TIMER:TimerUDB:count_6\ ,
+        count_5 => \PM2_HA_TIMER:TimerUDB:count_5\ ,
+        count_4 => \PM2_HA_TIMER:TimerUDB:count_4\ ,
+        count_3 => \PM2_HA_TIMER:TimerUDB:count_3\ ,
+        count_2 => \PM2_HA_TIMER:TimerUDB:count_2\ ,
+        count_1 => \PM2_HA_TIMER:TimerUDB:count_1\ ,
+        count_0 => \PM2_HA_TIMER:TimerUDB:count_0\ );
     Properties:
     {
         cy_alt_mode = 0
@@ -8778,7 +8778,7 @@ LAB@[UDB=(1,4)][LB=1] #macrocells=4, #inputs=11, #pterms=4
         {
         }
 
-    [McSlotId=2]:     MacroCell: Name=\PM2_HA_Timer:TimerUDB:tmp_fifo_load\, Mode=(D-Register) @ [UDB=(1,4)][LB=1][MC=2]
+    [McSlotId=2]:     MacroCell: Name=\PM2_HA_TIMER:TimerUDB:tmp_fifo_load\, Mode=(D-Register) @ [UDB=(1,4)][LB=1][MC=2]
         Total # of inputs        : 8
         Total # of product terms : 1
         List of special equations: 
@@ -8786,21 +8786,21 @@ LAB@[UDB=(1,4)][LB=1] #macrocells=4, #inputs=11, #pterms=4
             Clock Enable: True
         Main Equation            : 1 pterm
         (
-              !\PM2_HA_Timer:TimerUDB:cntr_load\ * 
-              !\PM2_HA_Timer:TimerUDB:count_6\ * 
-              !\PM2_HA_Timer:TimerUDB:count_5\ * 
-              !\PM2_HA_Timer:TimerUDB:count_4\ * 
-              !\PM2_HA_Timer:TimerUDB:count_3\ * 
-              !\PM2_HA_Timer:TimerUDB:count_2\ * 
-              !\PM2_HA_Timer:TimerUDB:count_1\ * 
-              \PM2_HA_Timer:TimerUDB:count_0\
+              !\PM2_HA_TIMER:TimerUDB:cntr_load\ * 
+              !\PM2_HA_TIMER:TimerUDB:count_6\ * 
+              !\PM2_HA_TIMER:TimerUDB:count_5\ * 
+              !\PM2_HA_TIMER:TimerUDB:count_4\ * 
+              !\PM2_HA_TIMER:TimerUDB:count_3\ * 
+              !\PM2_HA_TIMER:TimerUDB:count_2\ * 
+              !\PM2_HA_TIMER:TimerUDB:count_1\ * 
+              \PM2_HA_TIMER:TimerUDB:count_0\
         );
-        Output = \PM2_HA_Timer:TimerUDB:tmp_fifo_load\ (fanout=6)
+        Output = \PM2_HA_TIMER:TimerUDB:tmp_fifo_load\ (fanout=6)
         Properties               : 
         {
         }
 
-    [McSlotId=3]:     MacroCell: Name=\PM2_HA_Timer:TimerUDB:cntr_load\, Mode=(D-Register) @ [UDB=(1,4)][LB=1][MC=3]
+    [McSlotId=3]:     MacroCell: Name=\PM2_HA_TIMER:TimerUDB:cntr_load\, Mode=(D-Register) @ [UDB=(1,4)][LB=1][MC=3]
         Total # of inputs        : 7
         Total # of product terms : 1
         List of special equations: 
@@ -8808,15 +8808,15 @@ LAB@[UDB=(1,4)][LB=1] #macrocells=4, #inputs=11, #pterms=4
             Clock Enable: True
         Main Equation            : 1 pterm
         (
-              !\PM2_HA_Timer:TimerUDB:count_6\ * 
-              !\PM2_HA_Timer:TimerUDB:count_5\ * 
-              !\PM2_HA_Timer:TimerUDB:count_4\ * 
-              !\PM2_HA_Timer:TimerUDB:count_3\ * 
-              !\PM2_HA_Timer:TimerUDB:count_2\ * 
-              !\PM2_HA_Timer:TimerUDB:count_1\ * 
-              \PM2_HA_Timer:TimerUDB:count_0\
+              !\PM2_HA_TIMER:TimerUDB:count_6\ * 
+              !\PM2_HA_TIMER:TimerUDB:count_5\ * 
+              !\PM2_HA_TIMER:TimerUDB:count_4\ * 
+              !\PM2_HA_TIMER:TimerUDB:count_3\ * 
+              !\PM2_HA_TIMER:TimerUDB:count_2\ * 
+              !\PM2_HA_TIMER:TimerUDB:count_1\ * 
+              \PM2_HA_TIMER:TimerUDB:count_0\
         );
-        Output = \PM2_HA_Timer:TimerUDB:cntr_load\ (fanout=3)
+        Output = \PM2_HA_TIMER:TimerUDB:cntr_load\ (fanout=3)
         Properties               : 
         {
         }
@@ -9351,16 +9351,16 @@ LAB@[UDB=(2,2)][LB=0] #macrocells=3, #inputs=5, #pterms=3
         {
         }
 
-    [McSlotId=1]:     MacroCell: Name=\PM2_HA_Timer:TimerUDB:status_tc\, Mode=(Combinatorial) @ [UDB=(2,2)][LB=0][MC=1]
+    [McSlotId=1]:     MacroCell: Name=\PM2_HA_TIMER:TimerUDB:status_tc\, Mode=(Combinatorial) @ [UDB=(2,2)][LB=0][MC=1]
         Total # of inputs        : 2
         Total # of product terms : 1
             Clock Enable: True
         Main Equation            : 1 pterm
         (
-              \PM2_HA_Timer:TimerUDB:control_7\ * 
-              \PM2_HA_Timer:TimerUDB:per_zero\
+              \PM2_HA_TIMER:TimerUDB:control_7\ * 
+              \PM2_HA_TIMER:TimerUDB:per_zero\
         );
-        Output = \PM2_HA_Timer:TimerUDB:status_tc\ (fanout=1)
+        Output = \PM2_HA_TIMER:TimerUDB:status_tc\ (fanout=1)
         Properties               : 
         {
         }
@@ -9464,16 +9464,16 @@ LAB@[UDB=(2,2)][LB=1] #macrocells=4, #inputs=8, #pterms=4
         }
 }
 
-datapathcell: Name =\PM2_HA_Timer:TimerUDB:sT32:timerdp:u3\
+datapathcell: Name =\PM2_HA_TIMER:TimerUDB:sT32:timerdp:u3\
     PORT MAP (
         clock => Net_737 ,
-        cs_addr_1 => \PM2_HA_Timer:TimerUDB:control_7\ ,
-        cs_addr_0 => \PM2_HA_Timer:TimerUDB:per_zero\ ,
-        f0_load => \PM2_HA_Timer:TimerUDB:tmp_fifo_load\ ,
-        z0_comb => \PM2_HA_Timer:TimerUDB:per_zero\ ,
-        f0_bus_stat_comb => \PM2_HA_Timer:TimerUDB:status_3\ ,
-        f0_blk_stat_comb => \PM2_HA_Timer:TimerUDB:status_2\ ,
-        chain_in => \PM2_HA_Timer:TimerUDB:sT32:timerdp:carry2\ );
+        cs_addr_1 => \PM2_HA_TIMER:TimerUDB:control_7\ ,
+        cs_addr_0 => \PM2_HA_TIMER:TimerUDB:per_zero\ ,
+        f0_load => \PM2_HA_TIMER:TimerUDB:tmp_fifo_load\ ,
+        z0_comb => \PM2_HA_TIMER:TimerUDB:per_zero\ ,
+        f0_bus_stat_comb => \PM2_HA_TIMER:TimerUDB:status_3\ ,
+        f0_blk_stat_comb => \PM2_HA_TIMER:TimerUDB:status_2\ ,
+        chain_in => \PM2_HA_TIMER:TimerUDB:sT32:timerdp:carry2\ );
     Properties:
     {
         a0_init = "00000000"
@@ -9500,7 +9500,7 @@ datapathcell: Name =\PM2_HA_Timer:TimerUDB:sT32:timerdp:u3\
     }
     Clock Polarity: Active High
     Clock Enable: True
-    Previous in chain : \PM2_HA_Timer:TimerUDB:sT32:timerdp:u2\
+    Previous in chain : \PM2_HA_TIMER:TimerUDB:sT32:timerdp:u2\
 
 statusicell: Name =\PM1_HA_TIMER:TimerUDB:rstSts:stsreg\
     PORT MAP (
@@ -9650,13 +9650,13 @@ LAB@[UDB=(2,3)][LB=1] #macrocells=4, #inputs=5, #pterms=6
         }
 }
 
-datapathcell: Name =\PM2_HA_Timer:TimerUDB:sT32:timerdp:u0\
+datapathcell: Name =\PM2_HA_TIMER:TimerUDB:sT32:timerdp:u0\
     PORT MAP (
         clock => Net_737 ,
-        cs_addr_1 => \PM2_HA_Timer:TimerUDB:control_7\ ,
-        cs_addr_0 => \PM2_HA_Timer:TimerUDB:per_zero\ ,
-        f0_load => \PM2_HA_Timer:TimerUDB:tmp_fifo_load\ ,
-        chain_out => \PM2_HA_Timer:TimerUDB:sT32:timerdp:carry0\ );
+        cs_addr_1 => \PM2_HA_TIMER:TimerUDB:control_7\ ,
+        cs_addr_0 => \PM2_HA_TIMER:TimerUDB:per_zero\ ,
+        f0_load => \PM2_HA_TIMER:TimerUDB:tmp_fifo_load\ ,
+        chain_out => \PM2_HA_TIMER:TimerUDB:sT32:timerdp:carry0\ );
     Properties:
     {
         a0_init = "00000000"
@@ -9683,7 +9683,7 @@ datapathcell: Name =\PM2_HA_Timer:TimerUDB:sT32:timerdp:u0\
     }
     Clock Polarity: Active High
     Clock Enable: True
-    Next in chain : \PM2_HA_Timer:TimerUDB:sT32:timerdp:u1\
+    Next in chain : \PM2_HA_TIMER:TimerUDB:sT32:timerdp:u1\
 
 count7cell: Name =\PM1_HA_TIMER:TimerUDB:sCapCount:counter\
     PORT MAP (
@@ -9799,7 +9799,7 @@ LAB@[UDB=(2,4)][LB=1] #macrocells=4, #inputs=7, #pterms=4
             Clock Enable: True
         Main Equation            : 1 pterm
         (
-              \PM2_HA_Timer:TimerUDB:tmp_fifo_load\
+              \PM2_HA_TIMER:TimerUDB:tmp_fifo_load\
         );
         Output = Net_339 (fanout=1)
         Properties               : 
@@ -9847,13 +9847,13 @@ datapathcell: Name =\PM1_DirCounter:Cnt16:CounterUDB:sC16:counterdp:u1\
     Clock Enable: True
     Previous in chain : \PM1_DirCounter:Cnt16:CounterUDB:sC16:counterdp:u0\
 
-statusicell: Name =\PM2_HA_Timer:TimerUDB:rstSts:stsreg\
+statusicell: Name =\PM2_HA_TIMER:TimerUDB:rstSts:stsreg\
     PORT MAP (
         clock => Net_737 ,
-        status_3 => \PM2_HA_Timer:TimerUDB:status_3\ ,
-        status_2 => \PM2_HA_Timer:TimerUDB:status_2\ ,
-        status_1 => \PM2_HA_Timer:TimerUDB:tmp_fifo_load\ ,
-        status_0 => \PM2_HA_Timer:TimerUDB:status_tc\ );
+        status_3 => \PM2_HA_TIMER:TimerUDB:status_3\ ,
+        status_2 => \PM2_HA_TIMER:TimerUDB:status_2\ ,
+        status_1 => \PM2_HA_TIMER:TimerUDB:tmp_fifo_load\ ,
+        status_0 => \PM2_HA_TIMER:TimerUDB:status_tc\ );
     Properties:
     {
         cy_force_order = 1
@@ -10061,17 +10061,17 @@ statusicell: Name =\PM1_DirCounter:Cnt16:CounterUDB:sSTSReg:stsreg\
     Clock Polarity: Active High
     Clock Enable: True
 
-controlcell: Name =\PM2_HA_Timer:TimerUDB:sCTRLReg:SyncCtl:ctrlreg\
+controlcell: Name =\PM2_HA_TIMER:TimerUDB:sCTRLReg:SyncCtl:ctrlreg\
     PORT MAP (
         clock => Net_737 ,
-        control_7 => \PM2_HA_Timer:TimerUDB:control_7\ ,
-        control_6 => \PM2_HA_Timer:TimerUDB:control_6\ ,
-        control_5 => \PM2_HA_Timer:TimerUDB:control_5\ ,
-        control_4 => \PM2_HA_Timer:TimerUDB:control_4\ ,
-        control_3 => \PM2_HA_Timer:TimerUDB:control_3\ ,
-        control_2 => \PM2_HA_Timer:TimerUDB:control_2\ ,
-        control_1 => \PM2_HA_Timer:TimerUDB:control_1\ ,
-        control_0 => \PM2_HA_Timer:TimerUDB:control_0\ );
+        control_7 => \PM2_HA_TIMER:TimerUDB:control_7\ ,
+        control_6 => \PM2_HA_TIMER:TimerUDB:control_6\ ,
+        control_5 => \PM2_HA_TIMER:TimerUDB:control_5\ ,
+        control_4 => \PM2_HA_TIMER:TimerUDB:control_4\ ,
+        control_3 => \PM2_HA_TIMER:TimerUDB:control_3\ ,
+        control_2 => \PM2_HA_TIMER:TimerUDB:control_2\ ,
+        control_1 => \PM2_HA_TIMER:TimerUDB:control_1\ ,
+        control_0 => \PM2_HA_TIMER:TimerUDB:control_0\ );
     Properties:
     {
         cy_ctrl_mode_0 = "11111111"
@@ -10668,14 +10668,14 @@ LAB@[UDB=(3,2)][LB=1] #macrocells=4, #inputs=7, #pterms=4
         }
 }
 
-datapathcell: Name =\PM2_HA_Timer:TimerUDB:sT32:timerdp:u2\
+datapathcell: Name =\PM2_HA_TIMER:TimerUDB:sT32:timerdp:u2\
     PORT MAP (
         clock => Net_737 ,
-        cs_addr_1 => \PM2_HA_Timer:TimerUDB:control_7\ ,
-        cs_addr_0 => \PM2_HA_Timer:TimerUDB:per_zero\ ,
-        f0_load => \PM2_HA_Timer:TimerUDB:tmp_fifo_load\ ,
-        chain_in => \PM2_HA_Timer:TimerUDB:sT32:timerdp:carry1\ ,
-        chain_out => \PM2_HA_Timer:TimerUDB:sT32:timerdp:carry2\ );
+        cs_addr_1 => \PM2_HA_TIMER:TimerUDB:control_7\ ,
+        cs_addr_0 => \PM2_HA_TIMER:TimerUDB:per_zero\ ,
+        f0_load => \PM2_HA_TIMER:TimerUDB:tmp_fifo_load\ ,
+        chain_in => \PM2_HA_TIMER:TimerUDB:sT32:timerdp:carry1\ ,
+        chain_out => \PM2_HA_TIMER:TimerUDB:sT32:timerdp:carry2\ );
     Properties:
     {
         a0_init = "00000000"
@@ -10702,8 +10702,8 @@ datapathcell: Name =\PM2_HA_Timer:TimerUDB:sT32:timerdp:u2\
     }
     Clock Polarity: Active High
     Clock Enable: True
-    Previous in chain : \PM2_HA_Timer:TimerUDB:sT32:timerdp:u1\
-    Next in chain : \PM2_HA_Timer:TimerUDB:sT32:timerdp:u3\
+    Previous in chain : \PM2_HA_TIMER:TimerUDB:sT32:timerdp:u1\
+    Next in chain : \PM2_HA_TIMER:TimerUDB:sT32:timerdp:u3\
 
 statusicell: Name =\PM2_DirCounter:bQuadDec:Stsreg\
     PORT MAP (
@@ -10897,14 +10897,14 @@ LAB@[UDB=(3,3)][LB=1] #macrocells=4, #inputs=7, #pterms=4
         }
 }
 
-datapathcell: Name =\PM2_HA_Timer:TimerUDB:sT32:timerdp:u1\
+datapathcell: Name =\PM2_HA_TIMER:TimerUDB:sT32:timerdp:u1\
     PORT MAP (
         clock => Net_737 ,
-        cs_addr_1 => \PM2_HA_Timer:TimerUDB:control_7\ ,
-        cs_addr_0 => \PM2_HA_Timer:TimerUDB:per_zero\ ,
-        f0_load => \PM2_HA_Timer:TimerUDB:tmp_fifo_load\ ,
-        chain_in => \PM2_HA_Timer:TimerUDB:sT32:timerdp:carry0\ ,
-        chain_out => \PM2_HA_Timer:TimerUDB:sT32:timerdp:carry1\ );
+        cs_addr_1 => \PM2_HA_TIMER:TimerUDB:control_7\ ,
+        cs_addr_0 => \PM2_HA_TIMER:TimerUDB:per_zero\ ,
+        f0_load => \PM2_HA_TIMER:TimerUDB:tmp_fifo_load\ ,
+        chain_in => \PM2_HA_TIMER:TimerUDB:sT32:timerdp:carry0\ ,
+        chain_out => \PM2_HA_TIMER:TimerUDB:sT32:timerdp:carry1\ );
     Properties:
     {
         a0_init = "00000000"
@@ -10931,8 +10931,8 @@ datapathcell: Name =\PM2_HA_Timer:TimerUDB:sT32:timerdp:u1\
     }
     Clock Polarity: Active High
     Clock Enable: True
-    Previous in chain : \PM2_HA_Timer:TimerUDB:sT32:timerdp:u0\
-    Next in chain : \PM2_HA_Timer:TimerUDB:sT32:timerdp:u2\
+    Previous in chain : \PM2_HA_TIMER:TimerUDB:sT32:timerdp:u0\
+    Next in chain : \PM2_HA_TIMER:TimerUDB:sT32:timerdp:u2\
 
 UDB [UDB=(3,4)] contents:
 LAB@[UDB=(3,4)][LB=0] #macrocells=4, #inputs=7, #pterms=4
@@ -11439,12 +11439,12 @@ Port 1 contains the following IO cells:
 Pin : Name = PM2_BRAKEn(0)
     Attributes:
         In Group/Port: True
-        In Sync Option: NOSYNC
-        Out Sync Option: AUTO
+        In Sync Option: AUTO
+        Out Sync Option: NOSYNC
         Interrupt generated: False
         Interrupt mode: NONE
-        Drive mode: HI_Z_ANALOG
-        VTrip: CMOS
+        Drive mode: CMOS_OUT
+        VTrip: EITHER
         Slew: FAST
         Input Sync needed: False
         Output Sync needed: False
@@ -11479,12 +11479,12 @@ Pin : Name = PM2_BRAKEn(0)
 Pin : Name = PM2_DIR(0)
     Attributes:
         In Group/Port: True
-        In Sync Option: NOSYNC
-        Out Sync Option: AUTO
+        In Sync Option: AUTO
+        Out Sync Option: NOSYNC
         Interrupt generated: False
         Interrupt mode: NONE
-        Drive mode: HI_Z_ANALOG
-        VTrip: CMOS
+        Drive mode: CMOS_OUT
+        VTrip: EITHER
         Slew: FAST
         Input Sync needed: False
         Output Sync needed: False
@@ -11519,12 +11519,12 @@ Pin : Name = PM2_DIR(0)
 Pin : Name = PM2_ENABLE(0)
     Attributes:
         In Group/Port: True
-        In Sync Option: NOSYNC
-        Out Sync Option: AUTO
+        In Sync Option: AUTO
+        Out Sync Option: NOSYNC
         Interrupt generated: False
         Interrupt mode: NONE
-        Drive mode: HI_Z_ANALOG
-        VTrip: CMOS
+        Drive mode: CMOS_OUT
+        VTrip: EITHER
         Slew: FAST
         Input Sync needed: False
         Output Sync needed: False
@@ -11760,7 +11760,7 @@ Pin : Name = PM2_SPEED(0)
         IO Voltage: 0
     PORT MAP (
         pa_out => PM2_SPEED(0)__PA ,
-        analog_term => Net_449 ,
+        analog_term => Net_451 ,
         pad => PM2_SPEED(0)_PAD );
     Properties:
     {
@@ -12149,7 +12149,7 @@ VIDAC group 0:
     VIDAC Block @ F(VIDAC,2): 
     vidaccell: Name =\PM2_SPD_VDAC8:viDAC8\
         PORT MAP (
-            vout => Net_449 ,
+            vout => Net_451 ,
             iout => \PM2_SPD_VDAC8:Net_77\ );
         Properties:
         {
@@ -12396,16 +12396,16 @@ Port | Pin | Fixed |      Type |       Drive Mode |            Name | Connection
 -----+-----+-------+-----------+------------------+-----------------+---------------------------------------------------------
    0 |   4 |       |      NONE |      HI_Z_ANALOG | \ADC:Bypass(0)\ | Analog(\ADC:Net_210\)
 -----+-----+-------+-----------+------------------+-----------------+---------------------------------------------------------
-   1 |   5 |     * |      NONE |      HI_Z_ANALOG |   PM2_BRAKEn(0) | 
-     |   6 |     * |      NONE |      HI_Z_ANALOG |      PM2_DIR(0) | 
-     |   7 |     * |      NONE |      HI_Z_ANALOG |   PM2_ENABLE(0) | 
+   1 |   5 |     * |      NONE |         CMOS_OUT |   PM2_BRAKEn(0) | 
+     |   6 |     * |      NONE |         CMOS_OUT |      PM2_DIR(0) | 
+     |   7 |     * |      NONE |         CMOS_OUT |   PM2_ENABLE(0) | 
 -----+-----+-------+-----------+------------------+-----------------+---------------------------------------------------------
    2 |   4 |     * |      NONE |     HI_Z_DIGITAL |    PM1_input(0) | FB(Net_787)
      |   5 |     * |      NONE |     HI_Z_DIGITAL |    PM1_input(1) | FB(Net_788)
      |   6 |     * |      NONE |     HI_Z_DIGITAL |    PM2_input(0) | FB(Net_322)
      |   7 |     * |      NONE |     HI_Z_DIGITAL |    PM2_input(1) | FB(Net_323)
 -----+-----+-------+-----------+------------------+-----------------+---------------------------------------------------------
-   3 |   4 |     * |      NONE |      HI_Z_ANALOG |    PM2_SPEED(0) | Analog(Net_449)
+   3 |   4 |     * |      NONE |      HI_Z_ANALOG |    PM2_SPEED(0) | Analog(Net_451)
      |   5 |     * |      NONE |      HI_Z_ANALOG |    PM1_SPEED(0) | Analog(Net_438)
      |   6 |     * |      NONE |      HI_Z_ANALOG |  tension_PIN(0) | In(\ADC_TS:AMuxHw_2_Decoder_one_hot_0\), Analog(Net_193)
      |   7 |     * |      NONE |      HI_Z_ANALOG |     pote_PIN(0) | Analog(Net_67)
@@ -12420,32 +12420,32 @@ Port | Pin | Fixed |      Type |       Drive Mode |            Name | Connection
 </CYPRESSTAG>
 </CYPRESSTAG>
 Digital component placer commit/Report: Elapsed time ==> 0s.180ms
-Digital Placement phase: Elapsed time ==> 7s.723ms
+Digital Placement phase: Elapsed time ==> 5s.668ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Digital Routing">
 "C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\bin/sjrouter.exe" --xml-path "C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\dev\psoc5/psoc5lp/route_arch-rrg.cydata" --vh2-path "dedo_v01_r.vh2" --pcf-path "dedo_v01.pco" --des-name "dedo_v01" --dsf-path "dedo_v01.dsf" --sdc-path "dedo_v01.sdc" --lib-path "dedo_v01_r.lib"
 Routing successful.
-Digital Routing phase: Elapsed time ==> 5s.679ms
+Digital Routing phase: Elapsed time ==> 4s.912ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Bitstream Generation">
-Bitstream Generation phase: Elapsed time ==> 1s.412ms
+Bitstream Generation phase: Elapsed time ==> 0s.279ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Bitstream Verification">
-Bitstream Verification phase: Elapsed time ==> 0s.110ms
+Bitstream Verification phase: Elapsed time ==> 0s.034ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Static timing analysis">
 Timing report is in dedo_v01_timing.html.
-Static timing analysis phase: Elapsed time ==> 2s.539ms
+Static timing analysis phase: Elapsed time ==> 0s.789ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Data reporting">
 Data reporting phase: Elapsed time ==> 0s.000ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Database update...">
-Design database save phase: Elapsed time ==> 0s.379ms
+Design database save phase: Elapsed time ==> 0s.308ms
 </CYPRESSTAG>
-cydsfit: Elapsed time ==> 20s.761ms
+cydsfit: Elapsed time ==> 13s.882ms
 </CYPRESSTAG>
-Fitter phase: Elapsed time ==> 20s.817ms
-API generation phase: Elapsed time ==> 7s.294ms
-Dependency generation phase: Elapsed time ==> 0s.101ms
+Fitter phase: Elapsed time ==> 13s.882ms
+API generation phase: Elapsed time ==> 1s.922ms
+Dependency generation phase: Elapsed time ==> 0s.019ms
 Cleanup phase: Elapsed time ==> 0s.001ms

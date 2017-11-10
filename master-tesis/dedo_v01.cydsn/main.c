@@ -18,9 +18,15 @@ void initHardware(void){
     
     ADC_Start();
     ADC_TS_Start();
+    
     PM1_HA_TIMER_Start();
     PM1_DirCounter_Start();
     PM1_SPD_VDAC8_Start();
+    
+    PM2_HA_TIMER_Start();
+    PM2_DirCounter_Start();
+    PM2_SPD_VDAC8_Start();
+    
     UART_Start();
     
     /* Initialize interrupt blocks */
@@ -41,6 +47,7 @@ void initMotors()
     float tns[3] = {KP_TENS, KI_TENS, KD_TENS};
         
     PIN_t PM1_BR,PM1_DR,PM1_EN;
+    PIN_t PM2_BR,PM2_DR,PM2_EN;
 
     PM1_BR.DR = &PM1_BRAKEn_DR;
     PM1_BR.MASK = PM1_BRAKEn_MASK;
@@ -52,15 +59,27 @@ void initMotors()
     PM1_EN.MASK = PM1_ENABLE_MASK;
     PM1_EN.STATE = 1;
     
+    PM2_BR.DR = &PM2_BRAKEn_DR;
+    PM2_BR.MASK = PM2_BRAKEn_MASK;
+    PM2_BR.STATE = 0;
+    PM2_DR.DR = &PM2_DIR_DR;
+    PM2_DR.MASK = PM2_DIR_MASK;
+    PM2_DR.STATE = 1;
+    PM2_EN.DR = &PM2_ENABLE_DR;
+    PM2_EN.MASK = PM2_ENABLE_MASK;
+    PM2_EN.STATE = 1;
+    
     PM1.control_mode = 2;
+    PM2.control_mode = 2;
     
     PM1_HA_ISR_StartEx(PM1_HA_INT);
-    //MOTOR_setControlParams(&PM2,rvt,spd,tns);
     MOTOR_initControlParams(&PM1,rvt,spd,tns);
     MOTOR_init(&PM1,PM1_EN,PM1_BR,PM1_DR);
     
-    //MOTOR_init(&PM2);
-
+    PM2_HA_ISR_StartEx(PM2_HA_INT);
+    MOTOR_initControlParams(&PM2,rvt,spd,tns);
+    MOTOR_init(&PM2,PM2_EN,PM2_BR,PM2_DR);
+    
 }
 
 int main(void)
@@ -78,19 +97,12 @@ int main(void)
     SendSingleByte = FALSE;
     SendEmulatedData = FALSE;
 
-    PM1_ENABLE_Write(PM1.ENABLE.STATE); // true: speed control, else: external pwm control
-    //SPEED_Write(TRUE); // true: external pwm control, else: analog voltage control
-    PM1_DIR_Write(PM1.DIR.STATE);     // true: left(ccw), false: right(cw)
-    PM1_BRAKEn_Write(PM1.BRAKEn.STATE);  // true: turning, false: braken
+//    PM1_ENABLE_Write(PM1.ENABLE.STATE); // true: speed control, else: external pwm control
+//    //SPEED_Write(TRUE); // true: external pwm control, else: analog voltage control
+//    PM1_DIR_Write(PM1.DIR.STATE);     // true: left(ccw), false: right(cw)
+//    PM1_BRAKEn_Write(PM1.BRAKEn.STATE);  // true: turning, false: braken
     
     CyDelay(250);
-    
-    /* Set initial position of rotor */
-    //init_pos = 0; 
-    /* Set reference position for control */
-    //pos_ref = 0;
-    /* Set reference tension for control */
-    //tension_ref = 2048;    
     
     debug = 0;
     
@@ -125,7 +137,7 @@ int main(void)
     
     for(;;)
     {
-        sprintf(TransmitBuffer, "& REF: %d\tCUR: %d\tPID: %d\r\n",PM1.ref_rvt,PM1.curr_rvt,PM1.rvtPID_out);
+        sprintf(TransmitBuffer, "& REF: %d\tCUR: %d\tPID: %d\r\n",PM2.ref_spd,PM2.curr_spd,PM2.spdPID_out);
         UART_PutString(TransmitBuffer);
         /* Check for PID update */
         while(IsCharReady()){
