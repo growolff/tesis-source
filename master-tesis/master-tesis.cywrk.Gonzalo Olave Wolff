@@ -102,10 +102,12 @@
 <v>master-tesis\dedo_v01\CortexM3\ARM_GCC_541\Debug\Listing Files\ADC_TS_SAR_INT.lst</v>
 <v>master-tesis\dedo_v01\CortexM3\ARM_GCC_541\Debug\Listing Files\ADC_TS_SAR_PM.lst</v>
 <v>master-tesis\dedo_v01\CortexM3\ARM_GCC_541\Debug\Listing Files\ADC_TS_TempBuf_dma.lst</v>
+<v>master-tesis\dedo_v01\CortexM3\ARM_GCC_541\Debug\Listing Files\CHECK_MOVEMENT_ISR.lst</v>
+<v>master-tesis\dedo_v01\CortexM3\ARM_GCC_541\Debug\Listing Files\CLOCK_10.lst</v>
+<v>master-tesis\dedo_v01\CortexM3\ARM_GCC_541\Debug\Listing Files\CLOCK_200.lst</v>
 <v>master-tesis\dedo_v01\CortexM3\ARM_GCC_541\Debug\Listing Files\Cm3Start.lst</v>
 <v>master-tesis\dedo_v01\CortexM3\ARM_GCC_541\Debug\Listing Files\control_clk.lst</v>
 <v>master-tesis\dedo_v01\CortexM3\ARM_GCC_541\Debug\Listing Files\control_clk_1.lst</v>
-<v>master-tesis\dedo_v01\CortexM3\ARM_GCC_541\Debug\Listing Files\COUNT_ISR.lst</v>
 <v>master-tesis\dedo_v01\CortexM3\ARM_GCC_541\Debug\Listing Files\CyBootAsmGnu.lst</v>
 <v>master-tesis\dedo_v01\CortexM3\ARM_GCC_541\Debug\Listing Files\CyDmac.lst</v>
 <v>master-tesis\dedo_v01\CortexM3\ARM_GCC_541\Debug\Listing Files\cyfitter_cfg.lst</v>
@@ -137,6 +139,7 @@
 <v>master-tesis\dedo_v01\CortexM3\ARM_GCC_541\Debug\Listing Files\PM1_SPD_VDAC8.lst</v>
 <v>master-tesis\dedo_v01\CortexM3\ARM_GCC_541\Debug\Listing Files\PM1_SPD_VDAC8_PM.lst</v>
 <v>master-tesis\dedo_v01\CortexM3\ARM_GCC_541\Debug\Listing Files\PM1_SPEED.lst</v>
+<v>master-tesis\dedo_v01\CortexM3\ARM_GCC_541\Debug\Listing Files\PM1_tension.lst</v>
 <v>master-tesis\dedo_v01\CortexM3\ARM_GCC_541\Debug\Listing Files\PM2_BRAKEn.lst</v>
 <v>master-tesis\dedo_v01\CortexM3\ARM_GCC_541\Debug\Listing Files\PM2_DIR.lst</v>
 <v>master-tesis\dedo_v01\CortexM3\ARM_GCC_541\Debug\Listing Files\PM2_DirCounter.lst</v>
@@ -151,15 +154,15 @@
 <v>master-tesis\dedo_v01\CortexM3\ARM_GCC_541\Debug\Listing Files\PM2_SPD_VDAC8.lst</v>
 <v>master-tesis\dedo_v01\CortexM3\ARM_GCC_541\Debug\Listing Files\PM2_SPD_VDAC8_PM.lst</v>
 <v>master-tesis\dedo_v01\CortexM3\ARM_GCC_541\Debug\Listing Files\PM2_SPEED.lst</v>
+<v>master-tesis\dedo_v01\CortexM3\ARM_GCC_541\Debug\Listing Files\PM2_tension.lst</v>
 <v>master-tesis\dedo_v01\CortexM3\ARM_GCC_541\Debug\Listing Files\pote_PIN.lst</v>
+<v>master-tesis\dedo_v01\CortexM3\ARM_GCC_541\Debug\Listing Files\READ_RVT_ISR.lst</v>
 <v>master-tesis\dedo_v01\CortexM3\ARM_GCC_541\Debug\Listing Files\RVT_COMMAND_ISR.lst</v>
 <v>master-tesis\dedo_v01\CortexM3\ARM_GCC_541\Debug\Listing Files\RxInt.lst</v>
 <v>master-tesis\dedo_v01\CortexM3\ARM_GCC_541\Debug\Listing Files\SPD_CLOCK_10K.lst</v>
-<v>master-tesis\dedo_v01\CortexM3\ARM_GCC_541\Debug\Listing Files\SPD_CLOCK_30.lst</v>
 <v>master-tesis\dedo_v01\CortexM3\ARM_GCC_541\Debug\Listing Files\SPD_COMMAND_ISR.lst</v>
 <v>master-tesis\dedo_v01\CortexM3\ARM_GCC_541\Debug\Listing Files\structs.lst</v>
-<v>master-tesis\dedo_v01\CortexM3\ARM_GCC_541\Debug\Listing Files\tension_PIN.lst</v>
-<v>master-tesis\dedo_v01\CortexM3\ARM_GCC_541\Debug\Listing Files\tensor_control_isr.lst</v>
+<v>master-tesis\dedo_v01\CortexM3\ARM_GCC_541\Debug\Listing Files\TNS_COMMAND_ISR.lst</v>
 <v>master-tesis\dedo_v01\CortexM3\ARM_GCC_541\Debug\Listing Files\UART.lst</v>
 <v>master-tesis\dedo_v01\CortexM3\ARM_GCC_541\Debug\Listing Files\UART_BOOT.lst</v>
 <v>master-tesis\dedo_v01\CortexM3\ARM_GCC_541\Debug\Listing Files\UART_INT.lst</v>
@@ -236,14 +239,14 @@
 <v>master-tesis\dedo_v01\CortexM3\ARM_GCC_541\Debug\Listing Files\ADC_TS_SAR_INT.lst</v>
 <v>master-tesis\dedo_v01\CortexM3\ARM_GCC_541\Debug\Listing Files\ADC_TS_SAR_PM.lst</v>
 <v>master-tesis\dedo_v01\CortexM3\ARM_GCC_541\Debug\Listing Files\ADC_TS_TempBuf_dma.lst</v>
+<v>master-tesis\dedo_v01\CortexM3\ARM_GCC_541\Debug\Listing Files\CHECK_MOVEMENT_ISR.lst</v>
+<v>master-tesis\dedo_v01\CortexM3\ARM_GCC_541\Debug\Listing Files\CLOCK_10.lst</v>
+<v>master-tesis\dedo_v01\CortexM3\ARM_GCC_541\Debug\Listing Files\CLOCK_200.lst</v>
 <v>master-tesis\dedo_v01\CortexM3\ARM_GCC_541\Debug\Listing Files\Cm3Start.lst</v>
 <v>master-tesis\dedo_v01\CortexM3\ARM_GCC_541\Debug\Listing Files\control_clk.lst</v>
 <v>master-tesis\dedo_v01\CortexM3\ARM_GCC_541\Debug\Listing Files\control_clk_1.lst</v>
-<v>master-tesis\dedo_v01\CortexM3\ARM_GCC_541\Debug\Listing Files\COUNT_ISR.lst</v>
 <v>master-tesis\dedo_v01\CortexM3\ARM_GCC_541\Debug\Listing Files\CyBootAsmGnu.lst</v>
 <v>master-tesis\dedo_v01\CortexM3\ARM_GCC_541\Debug\Listing Files\CyDmac.lst</v>
-<v>master-tesis\dedo_v01\CortexM3\ARM_GCC_541\Debug\Listing Files\cyfitter_cfg.lst</v>
-<v>master-tesis\dedo_v01\CortexM3\ARM_GCC_541\Debug\Listing Files\CyFlash.lst</v>
 </VisibleNodeIds>
 </CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237>
 </TreeStates>
@@ -311,6 +314,8 @@
 <name v=".\dedo_v01.cydsn\isr_functions.c" />
 <name v=".\dedo_v01.cydsn\functions.h" />
 <name v=".\dedo_v01.cydsn\functions.c" />
+<name v=".\dedo_v01.cydsn\structs.c" />
+<name v=".\dedo_v01.cydsn\structs.h" />
 </OpenDocs>
 <OpenDocsLayout><![CDATA[<?xml version="1.0"?><!--
 
@@ -318,7 +323,7 @@
   Copyright (c) 2001-2016 Actipro Software LLC.  All rights reserved.
   http://www.actiprosoftware.com
 
---><DocumentLayout Version="1.0"><LayoutData><TabbedMdiRootContainer Orientation="Horizontal"><TabbedMdiContainer Size="908, 403" SelectedTabbedMdiWindow="b44adf9c-a3c1-49d7-af70-0cf8287049c3"><DocumentWindow Key="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\dedo_v01.cydwr" Guid="f97c47ea-d5a4-4753-accc-a021bc3336c2" /><DocumentWindow Key="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\TopDesign\TopDesign.cysch" Guid="b44adf9c-a3c1-49d7-af70-0cf8287049c3" /><DocumentWindow Key="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\main.c" Guid="ea18ae68-27c6-4766-9a57-7714f001cbd1" /><DocumentWindow Key="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\global.h" Guid="5a862520-6c3e-496f-b5f3-06342d2fea7c" /><DocumentWindow Key="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\motor.h" Guid="91ded687-c4ac-4b3a-a47b-d7cab65e2218" /><DocumentWindow Key="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\motor.c" Guid="a99fbda9-0757-428b-82c8-1aa48f6c0004" /><DocumentWindow Key="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\isr_functions.h" Guid="0a482428-a7f3-432a-808c-7e28ddb71736" /><DocumentWindow Key="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\isr_functions.c" Guid="b98f598f-bc64-4b5d-9cb5-e496897a2939" /><DocumentWindow Key="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\functions.h" Guid="0db2d8f1-d9c0-4a9d-b1e3-093fa0545d5a" /><DocumentWindow Key="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\functions.c" Guid="c76c74c2-516c-464d-a479-fbb670b53f54" /></TabbedMdiContainer></TabbedMdiRootContainer><FloatingContainers /></LayoutData></DocumentLayout>]]></OpenDocsLayout>
+--><DocumentLayout Version="1.0"><LayoutData><TabbedMdiRootContainer Orientation="Horizontal"><TabbedMdiContainer Size="887, 395" SelectedTabbedMdiWindow="a99fbda9-0757-428b-82c8-1aa48f6c0004"><DocumentWindow Key="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\dedo_v01.cydwr" Guid="f97c47ea-d5a4-4753-accc-a021bc3336c2" /><DocumentWindow Key="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\TopDesign\TopDesign.cysch" Guid="b44adf9c-a3c1-49d7-af70-0cf8287049c3" /><DocumentWindow Key="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\main.c" Guid="ea18ae68-27c6-4766-9a57-7714f001cbd1" /><DocumentWindow Key="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\global.h" Guid="5a862520-6c3e-496f-b5f3-06342d2fea7c" /><DocumentWindow Key="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\motor.h" Guid="91ded687-c4ac-4b3a-a47b-d7cab65e2218" /><DocumentWindow Key="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\motor.c" Guid="a99fbda9-0757-428b-82c8-1aa48f6c0004" /><DocumentWindow Key="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\isr_functions.h" Guid="0a482428-a7f3-432a-808c-7e28ddb71736" /><DocumentWindow Key="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\isr_functions.c" Guid="b98f598f-bc64-4b5d-9cb5-e496897a2939" /><DocumentWindow Key="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\functions.h" Guid="0db2d8f1-d9c0-4a9d-b1e3-093fa0545d5a" /><DocumentWindow Key="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\functions.c" Guid="c76c74c2-516c-464d-a479-fbb670b53f54" /><DocumentWindow Key="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\structs.c" Guid="0eb14c84-6628-4f49-9a82-db3e71c334ab" /><DocumentWindow Key="C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\dedo_v01.cydsn\structs.h" Guid="71c39200-8ddf-4c28-b9ad-e09248ef8335" /><ToolWindow Key="Start Page:bd4649ab-da6b-4d04-a663-c722b8bf99db:Start Page" Guid="d7f4512e-2a23-47f6-8425-25b18d7b79e2" /></TabbedMdiContainer></TabbedMdiRootContainer><FloatingContainers /></LayoutData></DocumentLayout>]]></OpenDocsLayout>
 <config v="" />
 <AutoUpdate v="true" />
 </CyGuid_843a90a4-0c4b-4e44-991d-05e7fb117a21>

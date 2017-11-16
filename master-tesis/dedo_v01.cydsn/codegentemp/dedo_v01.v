@@ -1,6 +1,6 @@
 // ======================================================================
 // dedo_v01.v generated from TopDesign.cysch
-// 11/10/2017 at 17:01
+// 11/16/2017 at 15:10
 // This file is auto generated. ANY EDITS YOU MAKE MAY BE LOST WHEN THIS FILE IS REGENERATED!!!
 // ======================================================================
 
@@ -2002,6 +2002,8 @@ endmodule
 // top
 module top ;
 
+          wire  Net_472;
+    electrical  Net_454;
           wire  Net_415;
           wire  Net_414;
           wire  Net_421;
@@ -2147,6 +2149,8 @@ module top ;
     electrical  Net_303;
     electrical  Net_302;
           wire  Net_431;
+          wire  Net_464;
+          wire  Net_463;
           wire  Net_737;
           wire  Net_690;
           wire  Net_788;
@@ -2154,10 +2158,9 @@ module top ;
           wire  Net_339;
           wire  Net_323;
           wire  Net_322;
+          wire  Net_750;
     electrical  Net_67;
           wire  Net_16;
-          wire  Net_750;
-          wire  Net_804;
           wire  Net_234;
           wire  Net_239;
 
@@ -2754,7 +2757,7 @@ module top ;
 
 	cy_isr_v1_0
 		#(.int_type(2'b00))
-		COUNT_ISR
+		READ_RVT_ISR
 		 (.int_signal(Net_431));
 
 
@@ -2763,10 +2766,10 @@ module top ;
 		#(.id("5398140e-b358-4326-bc8a-ffec59ef4419"),
 		  .source_clock_id(""),
 		  .divisor(0),
-		  .period("33333333333333.3"),
+		  .period("5000000000000"),
 		  .is_direct(0),
 		  .is_digital(1))
-		SPD_CLOCK_30
+		CLOCK_200
 		 (.clock_out(Net_431));
 
 
@@ -2775,7 +2778,7 @@ module top ;
 		#(.id("c0fb34bd-1044-4931-9788-16b01ce89812"),
 		  .source_clock_id(""),
 		  .divisor(0),
-		  .period("50000000000"),
+		  .period("100000000000"),
 		  .is_direct(0),
 		  .is_digital(1))
 		SPD_CLOCK_10K
@@ -2791,14 +2794,14 @@ module top ;
 		  .is_direct(0),
 		  .is_digital(1))
 		control_clk
-		 (.clock_out(Net_804));
+		 (.clock_out(Net_463));
 
 
 
 	cy_isr_v1_0
 		#(.int_type(2'b00))
 		SPD_COMMAND_ISR
-		 (.int_signal(Net_804));
+		 (.int_signal(Net_463));
 
 
     VDAC8_v1_90_2 PM2_SPD_VDAC8 (
@@ -2959,11 +2962,11 @@ module top ;
 
 	assign tmpOE__PM2_DIR_net = (`CYDEV_CHIP_MEMBER_USED == `CYDEV_CHIP_MEMBER_3A && `CYDEV_CHIP_REVISION_USED < `CYDEV_CHIP_REVISION_3A_ES3) ? ~{1'b1} : {1'b1};
 
-	wire [0:0] tmpOE__tension_PIN_net;
-	wire [0:0] tmpFB_0__tension_PIN_net;
-	wire [0:0] tmpIO_0__tension_PIN_net;
-	wire [0:0] tmpINTERRUPT_0__tension_PIN_net;
-	electrical [0:0] tmpSIOVREF__tension_PIN_net;
+	wire [0:0] tmpOE__PM1_tension_net;
+	wire [0:0] tmpFB_0__PM1_tension_net;
+	wire [0:0] tmpIO_0__PM1_tension_net;
+	wire [0:0] tmpINTERRUPT_0__PM1_tension_net;
+	electrical [0:0] tmpSIOVREF__PM1_tension_net;
 
 	cy_psoc3_pins_v1_10
 		#(.id("98f48257-251d-4c80-bfa6-35dbe9e203cf"),
@@ -3018,14 +3021,14 @@ module top ;
 		  .ovt_needed(1'b0),
 		  .ovt_slew_control(2'b00),
 		  .input_buffer_sel(2'b00))
-		tension_PIN
-		 (.oe(tmpOE__tension_PIN_net),
+		PM1_tension
+		 (.oe(tmpOE__PM1_tension_net),
 		  .y({1'b0}),
-		  .fb({tmpFB_0__tension_PIN_net[0:0]}),
+		  .fb({tmpFB_0__PM1_tension_net[0:0]}),
 		  .analog({Net_193}),
-		  .io({tmpIO_0__tension_PIN_net[0:0]}),
-		  .siovref(tmpSIOVREF__tension_PIN_net),
-		  .interrupt({tmpINTERRUPT_0__tension_PIN_net[0:0]}),
+		  .io({tmpIO_0__PM1_tension_net[0:0]}),
+		  .siovref(tmpSIOVREF__PM1_tension_net),
+		  .interrupt({tmpINTERRUPT_0__PM1_tension_net[0:0]}),
 		  .annotation({Net_293}),
 		  .in_clock({1'b0}),
 		  .in_clock_en({1'b1}),
@@ -3034,13 +3037,13 @@ module top ;
 		  .out_clock_en({1'b1}),
 		  .out_reset({1'b0}));
 
-	assign tmpOE__tension_PIN_net = (`CYDEV_CHIP_MEMBER_USED == `CYDEV_CHIP_MEMBER_3A && `CYDEV_CHIP_REVISION_USED < `CYDEV_CHIP_REVISION_3A_ES3) ? ~{1'b1} : {1'b1};
+	assign tmpOE__PM1_tension_net = (`CYDEV_CHIP_MEMBER_USED == `CYDEV_CHIP_MEMBER_3A && `CYDEV_CHIP_REVISION_USED < `CYDEV_CHIP_REVISION_3A_ES3) ? ~{1'b1} : {1'b1};
 
 
 	cy_isr_v1_0
 		#(.int_type(2'b00))
-		tensor_control_isr
-		 (.int_signal(Net_804));
+		TNS_COMMAND_ISR
+		 (.int_signal(Net_750));
 
 
 
@@ -3553,6 +3556,102 @@ module top ;
 		  .out_reset({1'b0}));
 
 	assign tmpOE__PM2_SPEED_net = (`CYDEV_CHIP_MEMBER_USED == `CYDEV_CHIP_MEMBER_3A && `CYDEV_CHIP_REVISION_USED < `CYDEV_CHIP_REVISION_3A_ES3) ? ~{1'b1} : {1'b1};
+
+	wire [0:0] tmpOE__PM2_tension_net;
+	wire [0:0] tmpFB_0__PM2_tension_net;
+	wire [0:0] tmpIO_0__PM2_tension_net;
+	wire [0:0] tmpINTERRUPT_0__PM2_tension_net;
+	electrical [0:0] tmpSIOVREF__PM2_tension_net;
+
+	cy_psoc3_pins_v1_10
+		#(.id("38951a1e-39ba-40f7-82f5-b254ee14a307"),
+		  .drive_mode(3'b000),
+		  .ibuf_enabled(1'b0),
+		  .init_dr_st(1'b0),
+		  .input_clk_en(0),
+		  .input_sync(1'b1),
+		  .input_sync_mode(1'b0),
+		  .intr_mode(2'b00),
+		  .invert_in_clock(0),
+		  .invert_in_clock_en(0),
+		  .invert_in_reset(0),
+		  .invert_out_clock(0),
+		  .invert_out_clock_en(0),
+		  .invert_out_reset(0),
+		  .io_voltage(""),
+		  .layout_mode("CONTIGUOUS"),
+		  .oe_conn(1'b0),
+		  .oe_reset(0),
+		  .oe_sync(1'b0),
+		  .output_clk_en(0),
+		  .output_clock_mode(1'b0),
+		  .output_conn(1'b0),
+		  .output_mode(1'b0),
+		  .output_reset(0),
+		  .output_sync(1'b0),
+		  .pa_in_clock(-1),
+		  .pa_in_clock_en(-1),
+		  .pa_in_reset(-1),
+		  .pa_out_clock(-1),
+		  .pa_out_clock_en(-1),
+		  .pa_out_reset(-1),
+		  .pin_aliases(""),
+		  .pin_mode("A"),
+		  .por_state(4),
+		  .sio_group_cnt(0),
+		  .sio_hyst(1'b1),
+		  .sio_ibuf(""),
+		  .sio_info(2'b00),
+		  .sio_obuf(""),
+		  .sio_refsel(""),
+		  .sio_vtrip(""),
+		  .sio_hifreq(""),
+		  .sio_vohsel(""),
+		  .slew_rate(1'b0),
+		  .spanning(0),
+		  .use_annotation(1'b1),
+		  .vtrip(2'b10),
+		  .width(1),
+		  .ovt_hyst_trim(1'b0),
+		  .ovt_needed(1'b0),
+		  .ovt_slew_control(2'b00),
+		  .input_buffer_sel(2'b00))
+		PM2_tension
+		 (.oe(tmpOE__PM2_tension_net),
+		  .y({1'b0}),
+		  .fb({tmpFB_0__PM2_tension_net[0:0]}),
+		  .analog({Net_194}),
+		  .io({tmpIO_0__PM2_tension_net[0:0]}),
+		  .siovref(tmpSIOVREF__PM2_tension_net),
+		  .interrupt({tmpINTERRUPT_0__PM2_tension_net[0:0]}),
+		  .annotation({Net_454}),
+		  .in_clock({1'b0}),
+		  .in_clock_en({1'b1}),
+		  .in_reset({1'b0}),
+		  .out_clock({1'b0}),
+		  .out_clock_en({1'b1}),
+		  .out_reset({1'b0}));
+
+	assign tmpOE__PM2_tension_net = (`CYDEV_CHIP_MEMBER_USED == `CYDEV_CHIP_MEMBER_3A && `CYDEV_CHIP_REVISION_USED < `CYDEV_CHIP_REVISION_3A_ES3) ? ~{1'b1} : {1'b1};
+
+
+	cy_isr_v1_0
+		#(.int_type(2'b00))
+		CHECK_MOVEMENT_ISR
+		 (.int_signal(Net_464));
+
+
+
+	cy_clock_v1_0
+		#(.id("a90f7548-7b15-41c6-b55f-2118f1ef3101"),
+		  .source_clock_id(""),
+		  .divisor(0),
+		  .period("100000000000000"),
+		  .is_direct(0),
+		  .is_digital(1))
+		CLOCK_10
+		 (.clock_out(Net_464));
+
 
 
 

@@ -34,9 +34,10 @@ void initHardware(void){
     
     SPD_COMMAND_ISR_StartEx(SPD_COMMAND_INT);
     RVT_COMMAND_ISR_StartEx(RVT_COMMAND_INT);
-    COUNT_ISR_StartEx(COUNT_INT);
-
-    tensor_control_isr_Start();
+    TNS_COMMAND_ISR_StartEx(TNS_COMMAND_INT);
+    
+    READ_RVT_ISR_StartEx(READ_RVT_INT);
+    CHECK_MOVEMENT_ISR_StartEx(CHECK_MOVEMENT_INT);
 
 }
 
@@ -72,6 +73,10 @@ void initMotors()
     PM1.control_mode = 1;
     PM2.control_mode = 1;
     
+    PM1.L = 40.0;
+    PM1.A = 1.5;
+    PM1.R = 0.19;
+    
     PM1_HA_ISR_StartEx(PM1_HA_INT);
     MOTOR_initControlParams(&PM1,rvt,spd,tns);
     MOTOR_init(&PM1,PM1_EN,PM1_BR,PM1_DR);
@@ -84,6 +89,7 @@ void initMotors()
 
 int main(void)
 {
+    extern volatile int16_t _tVal;
     char TransmitBuffer[TRANSMIT_BUFFER_SIZE];
    
     initHardware();
@@ -103,8 +109,6 @@ int main(void)
 //    PM1_BRAKEn_Write(PM1.BRAKEn.STATE);  // true: turning, false: braken
     
     CyDelay(250);
-    
-    debug = 0;
     
     while(_state_ == 0){
         Ch = UART_GetChar();
@@ -137,7 +141,7 @@ int main(void)
     
     for(;;)
     {
-        sprintf(TransmitBuffer, "& REF: %d\tCUR: %d\tPID: %d\r\n",PM1.ref_rvt,PM1.curr_rvt,PM1.rvtPID_out);
+        sprintf(TransmitBuffer, "& CUR: %d\tPID: %d\tRVT: %d\r\n",PM1.curr_spd,PM1.spdPID_out,(int)PM1.ref_spd);
         UART_PutString(TransmitBuffer);
         /* Check for PID update */
         while(IsCharReady()){
@@ -147,12 +151,9 @@ int main(void)
                 ProcessCommandMsg();
             }
         }
-        if(ADC_TS_IsEndConversion(ADC_TS_RETURN_STATUS)!=0){
-            TS_array = StoreResults();
-        }
-        
+       
         //_pVal = ADC_GetResult8();
-        _tVal = TS_array[0];
+        _tVal = PM1.curr_tns;
         
         #ifdef TENDON_TENSION_CONTROL
             /* rotor zero crossing checks */
@@ -182,7 +183,7 @@ int main(void)
                 sprintf(TransmitBuffer, "Ref: %d\tActual: %d\r\n",(int)PM1.ref_spd,(int)PM1.curr_spd);
             }
             else if(PM1.control_mode == 3){
-                //sprintf(TransmitBuffer, "Ref: %d\tActual: %d\r\n",(int)tension_ref,(int)actual_tension);
+                sprintf(TransmitBuffer, "Ref: %d\tActual: %d\r\n",(int)PM1.ref_tns,(int)PM1.curr_tns);
             }
             /* Send out the data */
             UART_PutString(TransmitBuffer);

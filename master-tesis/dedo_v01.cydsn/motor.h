@@ -15,7 +15,20 @@
 
 #include "pid.h"
 #include "project.h"
+#include "math.h"
 
+#define PMF 1 
+#define PME 2
+#define MMF 3
+#define MME 4
+#define IMF 5
+#define IME 6
+    
+#define HIGH_FREQ_CLOCK 10000
+    
+#define NUM_SENSORS 6
+int16 * TS_array;
+    
 typedef struct PIN_t
 {
     reg8 *DR;
@@ -54,6 +67,13 @@ typedef struct MOTOR_t {
     PIN_t BRAKEn;
     PIN_t DIR;
     PIN_t ENABLE;
+    
+    // for TR calculus
+    float R,L,A;
+    float tension_control_signal;
+    
+    int32_t MAX_RVT;
+    int32_t MIN_RVT;
 
 } MOTOR_t;
 
@@ -62,14 +82,26 @@ void MOTOR_setControlMode(MOTOR_t* motor, uint8_t mode);
 void MOTOR_initControlParams(MOTOR_t* motor, float* rvt, float* spd, float* tns);
 void MOTOR_setSpdControlParams(MOTOR_t* motor, float kp, float ki, float kd);
 void MOTOR_setRvtControlParams(MOTOR_t* motor, float kp, float ki, float kd);
+void MOTOR_setTnsControlParams(MOTOR_t* motor, float kp, float ki, float kd);
 void MOTOR_resetVariables(MOTOR_t* motor);
 
 void MOTOR_readCurrentSpeed(MOTOR_t* motor, uint8 motor_number);
 void MOTOR_readCurrentRevolution(MOTOR_t* motor, uint8 motor_number);
+void MOTOR_readCurrentTension(MOTOR_t* motor, uint8 motor_number);
+
+void MOTOR_checkDir(MOTOR_t* motor, uint8 motor_number);
 
 void MOTOR_setRvtRef(MOTOR_t* motor, int32_t rvtRef);
 void MOTOR_setSpdRef(MOTOR_t* motor, int32_t spdRef);
 void MOTOR_setTnsRef(MOTOR_t* motor, int32_t tnsRef);
+
+float MOTOR_getTR(MOTOR_t* motor, float alpha);
+
+void MOTOR_commandDriver(MOTOR_t* motor, uint8 motor_number, uint8 speed_value);
+
+uint8 MOTOR_checkActuatorLimits(MOTOR_t* motor);
+
+int16 * MOTOR_StoreADCResults();
 
 // pin operations
 void MOTOR_ToggleHandBrake(MOTOR_t* motor);

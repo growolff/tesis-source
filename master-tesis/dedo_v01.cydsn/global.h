@@ -36,13 +36,9 @@ volatile ParamBuffer PB;     //volatile struct TParamBuffer PB;
 #define TRUE   1
 #define TRANSMIT_BUFFER_SIZE  16
 
-#define VEL_MAX 3500 // max vel for speed control
-#define K_VEL 0.9 // constant for sigmoid in speed control
+#define VEL_MAX 6230 // max vel for speed control
 
-#define PWM_MAX 255 // max value for force control
-#define K_PWM 0.02 // constan for sigmoidal function in force control
-
-#define HF_CLK 100000 // rate of high frequency clock for speed measurement
+#define HF_CLK 200000 // rate of high frequency clock for speed measurement
 #define MAX_COUNTER 6500 // max counter for checking zero speed
 
 #define MAX_POSITION_LIMIT 72
@@ -63,7 +59,7 @@ volatile ParamBuffer PB;     //volatile struct TParamBuffer PB;
 /* position control parameters */
 #define KP_POS 1.5
 #define KI_POS 0.0
-#define KD_POS 0.23
+#define KD_POS 0.05
 
 /* speed control parameters */
 #define KP_VEL 1.0
@@ -91,15 +87,11 @@ int _state_;
 extern volatile uint8 dir_state;
 extern volatile int8_t rotor_direction;
 
-// for speed measurement
-extern volatile int32_t t_ha,ca,ma;
-extern volatile int32_t PM1_HA_Period;
-
 //for tension control
 extern PID_t  tens_pid_;
 extern volatile int32_t actual_tension;
 extern volatile int32_t tension_ref;
-extern volatile int16_t _tVal;
+volatile int16_t _tVal;
 
 /* for position control */
 extern PID_t  pos_pid_;

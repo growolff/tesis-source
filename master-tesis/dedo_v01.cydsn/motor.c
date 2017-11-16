@@ -20,8 +20,8 @@ void MOTOR_init(MOTOR_t* motor, PIN_t pin_enable, PIN_t pin_braken, PIN_t pin_di
     PID_setMinValue(&motor->spd_controller, 0);
     
     PID_init(&motor->rvt_controller,motor->rvt_params[0],motor->rvt_params[1],motor->rvt_params[2]);
-    PID_setMaxValue(&motor->rvt_controller, 100);
-    PID_setMinValue(&motor->rvt_controller, -100);
+    PID_setMaxValue(&motor->rvt_controller, 110);
+    PID_setMinValue(&motor->rvt_controller, -110);
 
     PID_init(&motor->tns_controller,motor->tns_params[0],motor->tns_params[1],motor->tns_params[2]);
     PID_setMaxValue(&motor->tns_controller, 4096);
@@ -36,6 +36,9 @@ void MOTOR_init(MOTOR_t* motor, PIN_t pin_enable, PIN_t pin_braken, PIN_t pin_di
     MOTOR_setPinENABLE(motor);
     MOTOR_setPinDIR(motor);
     MOTOR_clearPinBRAKEn(motor);
+    
+    motor->MAX_RVT = 18;
+    motor->MIN_RVT = 0;
     
 }
 
@@ -76,6 +79,14 @@ void MOTOR_setSpdControlParams(MOTOR_t* motor, float kp, float ki, float kd)
     PID_setCoeffs(&motor->spd_controller,kp,ki,kd);
 }
 
+void MOTOR_setTnsControlParams(MOTOR_t* motor, float kp, float ki, float kd)
+{
+    motor->tns_params[0] = kp;
+    motor->tns_params[1] = ki;
+    motor->tns_params[2] = kd;
+    PID_setCoeffs(&motor->tns_controller,kp,ki,kd);
+}
+
 void MOTOR_initControlParams(MOTOR_t* motor, float* rvt, float* spd, float* tns)
 {
     motor->rvt_params[0] = rvt[0];
@@ -110,6 +121,47 @@ void MOTOR_setControlMode(MOTOR_t* motor, uint8_t mode)
     motor->control_mode = mode;     // set the control mode
 }
 
+void MOTOR_commandDriver(MOTOR_t* motor, uint8 motor_number, uint8 speed_value)
+{
+    switch( motor_number ){
+        case 1:
+            if (MOTOR_checkActuatorLimits(motor) != 0){
+                MOTOR_setPinBRAKEn(motor);
+                PM1_SPD_VDAC8_SetValue(speed_value);
+            }
+            else{
+                MOTOR_clearPinBRAKEn(motor);
+                PM1_SPD_VDAC8_SetValue(0);
+            }
+            break;
+        case 2:
+            if (MOTOR_checkActuatorLimits(motor) != 0){
+                MOTOR_setPinBRAKEn(motor);
+                PM2_SPD_VDAC8_SetValue(speed_value);
+            }
+            else{
+                MOTOR_clearPinBRAKEn(motor);
+                PM2_SPD_VDAC8_SetValue(0);
+            }
+            break;
+    }
+    
+}
+
+uint8 MOTOR_checkActuatorLimits(MOTOR_t* motor)
+{
+    // check if rotor should or shouldn't move
+    if (motor->DIR.STATE == 0 && motor->curr_rvt >= motor->MAX_RVT*4){ // rotate right
+        return 0;
+    }
+    if (motor->DIR.STATE == 1 && motor->curr_rvt <= motor->MIN_RVT*4){ // rotate left
+        return 0;
+    }
+    else{
+        return 1;
+    }
+}
+
 void MOTOR_setSpdRef(MOTOR_t* motor, int32_t spdRef)
 {
     PID_setRef(&motor->spd_controller,spdRef);
@@ -122,9 +174,15 @@ void MOTOR_setSpdRef(MOTOR_t* motor, int32_t spdRef)
 
 void MOTOR_setRvtRef(MOTOR_t* motor, int32_t rvtRef)
 {
-    PID_setRef(&motor->rvt_controller,(rvtRef) - (motor->init_pos));
-        
+    PID_setRef(&motor->rvt_controller,rvtRef);
     motor->rvtPID_out = PID_calculatePID(&motor->rvt_controller,motor->curr_rvt);
+}
+
+void MOTOR_setTnsRef(MOTOR_t* motor, int32_t tnsRef)
+{
+    PID_setRef(&motor->tns_controller,tnsRef);
+        
+    motor->tnsPID_out = PID_calculatePID(&motor->tns_controller,motor->curr_tns);
 }
 
 void MOTOR_readCurrentSpeed(MOTOR_t* motor, uint8 motor_number)
@@ -132,16 +190,16 @@ void MOTOR_readCurrentSpeed(MOTOR_t* motor, uint8 motor_number)
     switch(motor_number){
         case 1 :
             motor->ca = PM1_HA_TIMER_ReadCounter();
-            PM1_HA_TIMER_WriteCounter(0);
             break;
         case 2 :
             motor->ca = PM2_HA_TIMER_ReadCounter();
-            PM2_HA_TIMER_WriteCounter(0);
             break;        
     }
     motor->period_ha = -1*((motor->ca)+motor->ma);
     motor->ma = motor->ca;
-    motor->curr_spd = (20000/motor->period_ha) * 30;
+    motor->curr_spd = (HIGH_FREQ_CLOCK/motor->period_ha) * 30;
+    PM1_HA_TIMER_WriteCounter(0);
+    PM2_HA_TIMER_WriteCounter(0);
     
 }
 
@@ -156,6 +214,18 @@ void MOTOR_readCurrentRevolution(MOTOR_t* motor, uint8 motor_number)
             break;
     }
     motor->curr_rvt = motor->rvt_aux - motor->init_pos;
+}
+
+void MOTOR_checkDir(MOTOR_t* motor, uint8 motor_number)
+{
+    switch(motor_number) {
+        case 1:
+            motor->rvt_aux = PM1_DirCounter_GetCounter();
+            break;
+        case 2:
+            motor->rvt_aux = PM2_DirCounter_GetCounter();
+            break;
+    }
     if ( motor->rvt_aux - motor->rvt_last_count > 0 )
     {
         // if > 0 its turning right (CW) 
@@ -165,6 +235,7 @@ void MOTOR_readCurrentRevolution(MOTOR_t* motor, uint8 motor_number)
     {
         // if < 0 its turning left (CCW)
         motor->curr_dir = -1;
+        //motor->curr_rvt = motor->curr_rvt < motor->MIN_RVT * 4 ? motor->MIN_RVT * 4 : motor->curr_rvt ;
     }
     else if ( motor->rvt_aux - motor->rvt_last_count == 0 )
     {
@@ -174,6 +245,39 @@ void MOTOR_readCurrentRevolution(MOTOR_t* motor, uint8 motor_number)
     }
     // update variable
     motor->rvt_last_count = motor->rvt_aux;
+}
+
+void MOTOR_readCurrentTension(MOTOR_t* motor, uint8 motor_number)
+{
+    if(ADC_TS_IsEndConversion(ADC_TS_RETURN_STATUS)!=0){
+            TS_array = MOTOR_StoreADCResults();
+    }
+    switch(motor_number) {
+        case 1:
+            motor->curr_tns = TS_array[1];
+            break;
+        case 2:
+            motor->curr_tns = TS_array[1];
+            break;
+    
+    }
+}
+
+float MOTOR_getTR(MOTOR_t* motor, float alpha)
+{
+    float ax1 = motor->A + (motor->R * alpha);   
+    return (sqrt((motor->L * motor->L) - (ax1 * ax1)) / (motor->R*ax1));
+}
+
+int16 * MOTOR_StoreADCResults() // store ADC conversion result in a sensor data array
+{
+	uint16 i;
+    static int16 dest[NUM_SENSORS];
+	
+	for (i = 0; i < NUM_SENSORS; i++) {
+		dest[i] = ADC_TS_GetResult16(i);
+	}
+    return dest;
 }
 
 void MOTOR_ToggleHandBrake(MOTOR_t* motor)

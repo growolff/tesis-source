@@ -82,14 +82,14 @@ void ProcessCommandMsg(void)
     }
     else if (RB.cmd == '!'){
         if(strlen(RB.valstr) > 0){
-            PM1.ref_rvt = atoi(RB.valstr)*4; // 4 conteos por vuelta
-            //PM2.ref_rvt = atoi(RB.valstr)*4;
+            PM1.ref_rvt = atoi(RB.valstr);
+            PM2.ref_rvt = atoi(RB.valstr);
         }
     }
     else if (RB.cmd == '#'){
         if(strlen(RB.valstr) > 0){
             PM1.ref_spd = atoi(RB.valstr);
-            //PM2.ref_spd = atoi(RB.valstr);
+            PM2.ref_spd = atoi(RB.valstr);
         }
     }
     else if (RB.cmd == '$'){
@@ -119,24 +119,14 @@ void ProcessCommandMsg(void)
     if ( updatePID == TRUE ){
         if(PM1.control_mode == 1){
             MOTOR_setRvtControlParams(&PM1,(float)PB.pVal/100.0,(float)PB.iVal/100.0,(float)PB.dVal/100.0);
+            MOTOR_setRvtControlParams(&PM2,(float)PB.pVal/100.0,(float)PB.iVal/100.0,(float)PB.dVal/100.0);
         }
         else if(PM1.control_mode == 2){
             MOTOR_setSpdControlParams(&PM1,(float)PB.pVal/100.0,(float)PB.iVal/100.0,(float)PB.dVal/100.0);
+            MOTOR_setSpdControlParams(&PM2,(float)PB.pVal/100.0,(float)PB.iVal/100.0,(float)PB.dVal/100.0);
         }
         updatePID = FALSE;
     }
 }
-
-int16 * StoreResults() // store ADC conversion result in a sensor data array
-{
-	uint16 i;
-    static int16 dest[NUM_SENSORS];
-	
-	for (i = 0; i < NUM_SENSORS; i++) {
-		dest[i] = ADC_TS_GetResult16(i);
-	}
-    return dest;
-}
-
 
 /* [] END OF FILE */
