@@ -36,12 +36,12 @@ volatile ParamBuffer PB;     //volatile struct TParamBuffer PB;
 #define TRUE   1
 #define TRANSMIT_BUFFER_SIZE  16
 
-#define VEL_MAX 6230 // max vel for speed control
+#define VEL_MAX 9500 // max vel for speed control
 
 #define HF_CLK 200000 // rate of high frequency clock for speed measurement
 #define MAX_COUNTER 6500 // max counter for checking zero speed
 
-#define MAX_POSITION_LIMIT 72
+#define MAX_POSITION_LIMIT 90
 #define MIN_POSITION_LIMIT 0
 
 #define CONTROL_TYPE 1
@@ -57,13 +57,13 @@ volatile ParamBuffer PB;     //volatile struct TParamBuffer PB;
 #endif
 
 /* position control parameters */
-#define KP_POS 1.5
+#define KP_POS 2.0
 #define KI_POS 0.0
-#define KD_POS 0.05
+#define KD_POS 0.0
 
 /* speed control parameters */
 #define KP_VEL 1.0
-#define KI_VEL 0.16
+#define KI_VEL 0.01
 #define KD_VEL 0.0
 
 /* tensor control parameters */
@@ -112,7 +112,7 @@ extern uint8 _pid_out;
 MOTOR_t PM1;
 MOTOR_t PM2;
 
-FINGER_t pulgar;
+//FINGER_t pulgar;
 
 #endif // GLOBAL_VARIABLES_FILE_H
 

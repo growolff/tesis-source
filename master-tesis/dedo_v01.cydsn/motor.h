@@ -24,8 +24,9 @@
 #define IMF 5
 #define IME 6
     
-#define HIGH_FREQ_CLOCK 10000
+#define HIGH_FREQ_CLOCK 20000
     
+#define VEL_MAX_MOTOR 9500
 #define NUM_SENSORS 6
 int16 * TS_array;
     
@@ -98,6 +99,7 @@ void MOTOR_setTnsRef(MOTOR_t* motor, int32_t tnsRef);
 float MOTOR_getTR(MOTOR_t* motor, float alpha);
 
 void MOTOR_commandDriver(MOTOR_t* motor, uint8 motor_number, uint8 speed_value);
+void MOTOR_sendSpeedCommand(uint8 motor, uint8 speed_value);
 
 uint8 MOTOR_checkActuatorLimits(MOTOR_t* motor);
 

@@ -25,6 +25,9 @@ char msg[16];
 int32_t fn_mapper(int32_t x, int32_t in_min, int32_t in_max, int32_t out_min, int32_t out_max);
 uint8 fn_mapper_8b(int32_t x, int32_t in_min, int32_t in_max, int32_t out_min, int32_t out_max);
 
+int32 get_tension_g(int16 tension);
+float get_tension_kg(int16 tension);
+
 double Sigmoid(double x,double a, double b);
 
 void ProcessCommandMsg(void);

@@ -16,7 +16,7 @@ void MOTOR_init(MOTOR_t* motor, PIN_t pin_enable, PIN_t pin_braken, PIN_t pin_di
 {    
     /* initialize motor controllers */
     PID_init(&motor->spd_controller,motor->spd_params[0],motor->spd_params[1],motor->spd_params[2]);
-    PID_setMaxValue(&motor->spd_controller, 9500);
+    PID_setMaxValue(&motor->spd_controller, VEL_MAX_MOTOR);
     PID_setMinValue(&motor->spd_controller, 0);
     
     PID_init(&motor->rvt_controller,motor->rvt_params[0],motor->rvt_params[1],motor->rvt_params[2]);
@@ -37,8 +37,8 @@ void MOTOR_init(MOTOR_t* motor, PIN_t pin_enable, PIN_t pin_braken, PIN_t pin_di
     MOTOR_setPinDIR(motor);
     MOTOR_clearPinBRAKEn(motor);
     
-    motor->MAX_RVT = 18;
-    motor->MIN_RVT = 0;
+    motor->MAX_RVT = 0;
+    motor->MIN_RVT = -20;
     
 }
 
@@ -123,36 +123,33 @@ void MOTOR_setControlMode(MOTOR_t* motor, uint8_t mode)
 
 void MOTOR_commandDriver(MOTOR_t* motor, uint8 motor_number, uint8 speed_value)
 {
+    if (MOTOR_checkActuatorLimits(motor) != 0){
+        MOTOR_setPinBRAKEn(motor);
+        MOTOR_sendSpeedCommand(motor_number,speed_value);
+    }
+    else{
+        MOTOR_clearPinBRAKEn(motor);
+    }            
+}
+
+void MOTOR_sendSpeedCommand(uint8 motor_number, uint8 speed_value)
+{
     switch( motor_number ){
         case 1:
-            if (MOTOR_checkActuatorLimits(motor) != 0){
-                MOTOR_setPinBRAKEn(motor);
-                PM1_SPD_VDAC8_SetValue(speed_value);
-            }
-            else{
-                MOTOR_clearPinBRAKEn(motor);
-                PM1_SPD_VDAC8_SetValue(0);
-            }
+            PM1_SPD_VDAC8_SetValue(speed_value);
             break;
         case 2:
-            if (MOTOR_checkActuatorLimits(motor) != 0){
-                MOTOR_setPinBRAKEn(motor);
-                PM2_SPD_VDAC8_SetValue(speed_value);
-            }
-            else{
-                MOTOR_clearPinBRAKEn(motor);
-                PM2_SPD_VDAC8_SetValue(0);
-            }
+            PM2_SPD_VDAC8_SetValue(speed_value);
             break;
     }
-    
 }
+
 
 uint8 MOTOR_checkActuatorLimits(MOTOR_t* motor)
 {
     // check if rotor should or shouldn't move
     if (motor->DIR.STATE == 0 && motor->curr_rvt >= motor->MAX_RVT*4){ // rotate right
-        return 0;
+        return 0; // if shouldn't rotate, return 0
     }
     if (motor->DIR.STATE == 1 && motor->curr_rvt <= motor->MIN_RVT*4){ // rotate left
         return 0;
@@ -190,16 +187,16 @@ void MOTOR_readCurrentSpeed(MOTOR_t* motor, uint8 motor_number)
     switch(motor_number){
         case 1 :
             motor->ca = PM1_HA_TIMER_ReadCounter();
+            PM1_HA_TIMER_WriteCounter(0);
             break;
         case 2 :
             motor->ca = PM2_HA_TIMER_ReadCounter();
+            PM2_HA_TIMER_WriteCounter(0);
             break;        
     }
-    motor->period_ha = -1*((motor->ca)+motor->ma);
+    motor->period_ha = -1*(motor->ca+motor->ma);
     motor->ma = motor->ca;
     motor->curr_spd = (HIGH_FREQ_CLOCK/motor->period_ha) * 30;
-    PM1_HA_TIMER_WriteCounter(0);
-    PM2_HA_TIMER_WriteCounter(0);
     
 }
 
@@ -259,7 +256,6 @@ void MOTOR_readCurrentTension(MOTOR_t* motor, uint8 motor_number)
         case 2:
             motor->curr_tns = TS_array[1];
             break;
-    
     }
 }
 

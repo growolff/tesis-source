@@ -25,6 +25,17 @@ uint8 fn_mapper_8b(int32_t x, int32_t in_min, int32_t in_max, int32_t out_min, i
     return (uint8)(out_min + slope*(x - in_min));
 }
 
+int32 get_tension_g(int16 tension)
+{
+       return (int32)((5000.0/4096.0)*tension/0.0035);
+}
+
+float get_tension_kg(int16 tension)
+{
+       return 1000*(ADC_TS_CountsTo_Volts(tension))/0.0034;
+}
+
+
 double Sigmoid(double x,double a, double b)
 {
     return a*(2/(1 + exp(-x*b))-1);
@@ -78,7 +89,7 @@ void ProcessCommandMsg(void)
     }
     else if (RB.cmd == 'b'){
         MOTOR_ToggleHandBrake(&PM1);
-        MOTOR_ToggleHandBrake(&PM2);
+        ///MOTOR_ToggleHandBrake(&PM2);
     }
     else if (RB.cmd == '!'){
         if(strlen(RB.valstr) > 0){
@@ -95,6 +106,7 @@ void ProcessCommandMsg(void)
     else if (RB.cmd == '$'){
         if(strlen(RB.valstr) > 0){
             PM1.ref_tns = atoi(RB.valstr);
+            PM2.ref_tns = atoi(RB.valstr);
         }
     }
     else if (RB.cmd == '?'){
@@ -124,6 +136,10 @@ void ProcessCommandMsg(void)
         else if(PM1.control_mode == 2){
             MOTOR_setSpdControlParams(&PM1,(float)PB.pVal/100.0,(float)PB.iVal/100.0,(float)PB.dVal/100.0);
             MOTOR_setSpdControlParams(&PM2,(float)PB.pVal/100.0,(float)PB.iVal/100.0,(float)PB.dVal/100.0);
+        }
+        else if(PM1.control_mode == 3){
+            MOTOR_setTnsControlParams(&PM1,(float)PB.pVal/100.0,(float)PB.iVal/100.0,(float)PB.dVal/100.0);
+            MOTOR_setTnsControlParams(&PM2,(float)PB.pVal/100.0,(float)PB.iVal/100.0,(float)PB.dVal/100.0);
         }
         updatePID = FALSE;
     }

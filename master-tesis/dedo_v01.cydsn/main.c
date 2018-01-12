@@ -12,23 +12,11 @@
 #include "global.h"
 #include "math.h"
 
-//#define M_PIN_SET(pin) #pin"_DR |=" #pin"_MASK"
-
-void initHardware(void){
+void initGeneralHardware(void){
     
-    ADC_Start();
-    ADC_TS_Start();
-    
-    PM1_HA_TIMER_Start();
-    PM1_DirCounter_Start();
-    PM1_SPD_VDAC8_Start();
-    
-    PM2_HA_TIMER_Start();
-    PM2_DirCounter_Start();
-    PM2_SPD_VDAC8_Start();
-    
+    ADC_TS_Start();    
     UART_Start();
-    
+ 
     /* Initialize interrupt blocks */
     RxInt_StartEx(MyRxInt);
     
@@ -40,16 +28,15 @@ void initHardware(void){
     CHECK_MOVEMENT_ISR_StartEx(CHECK_MOVEMENT_INT);
 
 }
-
-void initMotors()
+void initMotorPM1()
 {
-    float rvt[3] = {KP_POS, KI_POS, KD_POS}; 
-    float spd[3] = {KP_VEL, KI_VEL, KD_VEL}; 
-    float tns[3] = {KP_TENS, KI_TENS, KD_TENS};
-        
+    // Initialize hardware associated to motor PM1
+    PM1_HA_TIMER_Start();
+    PM1_DirCounter_Start();
+    PM1_SPD_VDAC8_Start();
+    
+    // initialize software associated to motor PM1
     PIN_t PM1_BR,PM1_DR,PM1_EN;
-    PIN_t PM2_BR,PM2_DR,PM2_EN;
-
     PM1_BR.DR = &PM1_BRAKEn_DR;
     PM1_BR.MASK = PM1_BRAKEn_MASK;
     PM1_BR.STATE = 0;
@@ -60,6 +47,20 @@ void initMotors()
     PM1_EN.MASK = PM1_ENABLE_MASK;
     PM1_EN.STATE = 1;
     
+    PM1.control_mode = 1;
+    PM1_HA_ISR_StartEx(PM1_HA_INT);
+    
+    MOTOR_init(&PM1,PM1_EN,PM1_BR,PM1_DR);
+}
+void initMotorPM2()
+{
+    // initialize hardware associated to motor PM2
+    PM2_HA_TIMER_Start();
+    PM2_DirCounter_Start();
+    PM2_SPD_VDAC8_Start();
+    
+    // initialize software associated to motor PM2
+    PIN_t PM2_BR,PM2_DR,PM2_EN;
     PM2_BR.DR = &PM2_BRAKEn_DR;
     PM2_BR.MASK = PM2_BRAKEn_MASK;
     PM2_BR.STATE = 0;
@@ -70,21 +71,27 @@ void initMotors()
     PM2_EN.MASK = PM2_ENABLE_MASK;
     PM2_EN.STATE = 1;
     
-    PM1.control_mode = 1;
     PM2.control_mode = 1;
     
+    PM2_HA_ISR_StartEx(PM2_HA_INT);
+    MOTOR_init(&PM2,PM2_EN,PM2_BR,PM2_DR);
+}
+void initMotors()
+{
+    float rvt[3] = {KP_POS, KI_POS, KD_POS}; 
+    float spd[3] = {KP_VEL, KI_VEL, KD_VEL}; 
+    float tns[3] = {KP_TENS, KI_TENS, KD_TENS};
+   
     PM1.L = 40.0;
     PM1.A = 1.5;
     PM1.R = 0.19;
     
-    PM1_HA_ISR_StartEx(PM1_HA_INT);
     MOTOR_initControlParams(&PM1,rvt,spd,tns);
-    MOTOR_init(&PM1,PM1_EN,PM1_BR,PM1_DR);
+    //MOTOR_initControlParams(&PM2,rvt,spd,tns);
     
-    PM2_HA_ISR_StartEx(PM2_HA_INT);
-    MOTOR_initControlParams(&PM2,rvt,spd,tns);
-    MOTOR_init(&PM2,PM2_EN,PM2_BR,PM2_DR);
-    
+    initMotorPM1();
+    //initMotorPM2();
+   
 }
 
 int main(void)
@@ -92,10 +99,9 @@ int main(void)
     extern volatile int16_t _tVal;
     char TransmitBuffer[TRANSMIT_BUFFER_SIZE];
    
-    initHardware();
+    initGeneralHardware();
     initMotors();
 
-    ADC_StartConvert();
     ADC_TS_StartConvert();
         
     /* Initialize Variables */
@@ -106,7 +112,7 @@ int main(void)
 //    PM1_ENABLE_Write(PM1.ENABLE.STATE); // true: speed control, else: external pwm control
 //    //SPEED_Write(TRUE); // true: external pwm control, else: analog voltage control
 //    PM1_DIR_Write(PM1.DIR.STATE);     // true: left(ccw), false: right(cw)
-//    PM1_BRAKEn_Write(PM1.BRAKEn.STATE);  // true: turning, false: braken
+//    PM1_BRAKEn_Write(PM1.BRAKEn.STATE);  // true: running, false: braken
     
     CyDelay(250);
     
@@ -141,7 +147,7 @@ int main(void)
     
     for(;;)
     {
-        sprintf(TransmitBuffer, "& CUR: %d\tPID: %d\tRVT: %d\r\n",PM1.curr_spd,PM1.spdPID_out,(int)PM1.ref_spd);
+        sprintf(TransmitBuffer, "& CUR: %d\tPID: %d\tSOut: %d\tRVT: %d\r\n",(int)PM1.spdPID_out,(int)PM1.rvtPID_out,(int)PM1.BRAKEn.STATE,(int)PM1.curr_tns);
         UART_PutString(TransmitBuffer);
         /* Check for PID update */
         while(IsCharReady()){
@@ -176,14 +182,14 @@ int main(void)
                 //sprintf(TransmitBuffer, "Ref: %d\tActual: %d\r\n",(int)_pVal,(int)actual_speed);
             }
             else if(PM1.control_mode == 1){
-                sprintf(TransmitBuffer, "Ref: %d\tActual: %d\r\n",(int)PM1.ref_rvt,(int)PM1.curr_rvt);
+                sprintf(TransmitBuffer, "Ref: %d\tActual: %d\tTens: %d\r\n",(int)PM1.ref_rvt,(int)PM1.curr_rvt,(int)get_tension_g(PM1.curr_tns));
             }
             else if(PM1.control_mode == 2){
                 //sprintf(TransmitBuffer, "sRef: %d\tsActual: %d\tdirection: %d\tcounter: %d\r\n",(int)speed_ref,(int)actual_speed,(int)dir_state,(int)dir_count);
-                sprintf(TransmitBuffer, "Ref: %d\tActual: %d\r\n",(int)PM1.ref_spd,(int)PM1.curr_spd);
+                sprintf(TransmitBuffer, "Ref: %d\tActual: %d\tTens: %d\r\n",(int)PM1.ref_spd,(int)PM1.curr_spd,(int)PM1.curr_tns);
             }
             else if(PM1.control_mode == 3){
-                sprintf(TransmitBuffer, "Ref: %d\tActual: %d\r\n",(int)PM1.ref_tns,(int)PM1.curr_tns);
+                sprintf(TransmitBuffer, "Ref: %d\tActual: %d\tTens: %d\r\n",(int)PM1.ref_tns,(int)PM1.curr_tns,(int)PM1.curr_tns);
             }
             /* Send out the data */
             UART_PutString(TransmitBuffer);
