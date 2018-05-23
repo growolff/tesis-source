@@ -36,15 +36,16 @@ volatile ParamBuffer PB;     //volatile struct TParamBuffer PB;
 #define TRUE   1
 #define TRANSMIT_BUFFER_SIZE  16
 
-#define VEL_MAX 9500 // max vel for speed control
+#define VEL_MAX 7000 // max vel for speed control
+#define TNS_MAX 1300 // max tension for string tension control, in gr
 
 #define HF_CLK 200000 // rate of high frequency clock for speed measurement
 #define MAX_COUNTER 6500 // max counter for checking zero speed
 
-#define MAX_POSITION_LIMIT 90
+#define MAX_POSITION_LIMIT 100
 #define MIN_POSITION_LIMIT 0
 
-#define CONTROL_TYPE 1
+//#define CONTROL_TYPE 1
 
 #if CONTROL_TYPE==0
     #define MANUAL_CONTROL
@@ -57,19 +58,19 @@ volatile ParamBuffer PB;     //volatile struct TParamBuffer PB;
 #endif
 
 /* position control parameters */
-#define KP_POS 2.0
+#define KP_POS 4.0
 #define KI_POS 0.0
 #define KD_POS 0.0
 
 /* speed control parameters */
-#define KP_VEL 1.0
+#define KP_VEL 0.7
 #define KI_VEL 0.01
 #define KD_VEL 0.0
 
 /* tensor control parameters */
-#define KP_TENS 0.5
-#define KI_TENS 0.5
-#define KD_TENS 0.5
+#define KP_TENS 2.0
+#define KI_TENS 0.01
+#define KD_TENS 0.02
 
 
 /* Variable to store UART received character */
@@ -78,7 +79,7 @@ volatile uint8 Ch;
 volatile uint8 ContinuouslySendData;
 volatile uint8 SendSingleByte;
 volatile uint8 SendEmulatedData;
-volatile uint8 _uart_Reset;
+volatile uint8 SoftwareReset;
 
 /* Project variables */
 int _state_;

@@ -24,7 +24,6 @@ void initGeneralHardware(void){
     RVT_COMMAND_ISR_StartEx(RVT_COMMAND_INT);
     TNS_COMMAND_ISR_StartEx(TNS_COMMAND_INT);
     
-    READ_RVT_ISR_StartEx(READ_RVT_INT);
     CHECK_MOVEMENT_ISR_StartEx(CHECK_MOVEMENT_INT);
 
 }
@@ -42,12 +41,14 @@ void initMotorPM1()
     PM1_BR.STATE = 0;
     PM1_DR.DR = &PM1_DIR_DR;
     PM1_DR.MASK = PM1_DIR_MASK;
-    PM1_DR.STATE = 1;
+    PM1_DR.STATE = 0;
     PM1_EN.DR = &PM1_ENABLE_DR;
     PM1_EN.MASK = PM1_ENABLE_MASK;
-    PM1_EN.STATE = 1;
+    PM1_EN.STATE = 0;
     
-    PM1.control_mode = 1;
+    PM1.init_pos = 0;
+    PM1_DirCounter_SetCounter(PM1.init_pos);
+    
     PM1_HA_ISR_StartEx(PM1_HA_INT);
     
     MOTOR_init(&PM1,PM1_EN,PM1_BR,PM1_DR);
@@ -70,8 +71,9 @@ void initMotorPM2()
     PM2_EN.DR = &PM2_ENABLE_DR;
     PM2_EN.MASK = PM2_ENABLE_MASK;
     PM2_EN.STATE = 1;
-    
-    PM2.control_mode = 1;
+
+    PM2.init_pos = 0;
+    PM2_DirCounter_SetCounter(PM2.init_pos);
     
     PM2_HA_ISR_StartEx(PM2_HA_INT);
     MOTOR_init(&PM2,PM2_EN,PM2_BR,PM2_DR);
@@ -87,16 +89,15 @@ void initMotors()
     PM1.R = 0.19;
     
     MOTOR_initControlParams(&PM1,rvt,spd,tns);
-    //MOTOR_initControlParams(&PM2,rvt,spd,tns);
+    MOTOR_initControlParams(&PM2,rvt,spd,tns);
     
     initMotorPM1();
-    //initMotorPM2();
+    initMotorPM2();
    
 }
 
 int main(void)
 {
-    extern volatile int16_t _tVal;
     char TransmitBuffer[TRANSMIT_BUFFER_SIZE];
    
     initGeneralHardware();
@@ -106,8 +107,7 @@ int main(void)
         
     /* Initialize Variables */
     ContinuouslySendData = FALSE;
-    SendSingleByte = FALSE;
-    SendEmulatedData = FALSE;
+    SoftwareReset = FALSE;
 
 //    PM1_ENABLE_Write(PM1.ENABLE.STATE); // true: speed control, else: external pwm control
 //    //SPEED_Write(TRUE); // true: external pwm control, else: analog voltage control
@@ -121,7 +121,7 @@ int main(void)
         if(Ch == 'n'){
             sprintf(TransmitBuffer, "& INIT CTRL_TYPE = %d\r\n",PM1.control_mode);
             UART_PutString(TransmitBuffer);
-            sprintf(TransmitBuffer, "!%d\r\n",PM1.control_mode);
+            sprintf(TransmitBuffer, "!%d%d\r\n",PM1.control_mode,PM1.init_pos);
             UART_PutString(TransmitBuffer);
             if (PM1.control_mode == 1){
                 sprintf(TransmitBuffer, "*%d*%d*%d\r\n",(int)(PM1.rvt_params[0]*100.0),(int)(PM1.rvt_params[1]*100.0),(int)(PM1.rvt_params[2]*100.0));     
@@ -144,11 +144,15 @@ int main(void)
     //M_PIN_SET(PM1_BRAKEn);
     //PM1_BRAKEn_DR |= PM1_BRAKEn_MASK; //set BRAKEn pin port
     //PM1_BRAKEn_DR &= ~PM1_BRAKEn_MASK; //clear BRAKEn pin port
+    MOTOR_setPinBRAKEn(&PM1);
+    MOTOR_setPinDIR(&PM1);
+    MOTOR_setPinENABLE(&PM1);
     
     for(;;)
     {
-        sprintf(TransmitBuffer, "& CUR: %d\tPID: %d\tSOut: %d\tRVT: %d\r\n",(int)PM1.spdPID_out,(int)PM1.rvtPID_out,(int)PM1.BRAKEn.STATE,(int)PM1.curr_tns);
-        UART_PutString(TransmitBuffer);
+        //sprintf(TransmitBuffer, "& TNS_PID: %d\tDIR: %d\tTNS_CURR: %d\r\n",(int)PM1.tnsPID_out,(int)PM1.DIR.STATE,(int)(PM1.curr_tns));
+        //sprintf(TransmitBuffer, "& curr_rvt: %d\tDirState: %d\tinit_pos: %d\r\n",(int)PM1.curr_rvt,(int)PM1.DIR.STATE,(int)(PM1.init_pos));
+        //UART_PutString(TransmitBuffer);
         /* Check for PID update */
         while(IsCharReady()){
             //UART_PutString("&IsCharReady\r\n");
@@ -157,32 +161,16 @@ int main(void)
                 ProcessCommandMsg();
             }
         }
-       
-        //_pVal = ADC_GetResult8();
-        _tVal = PM1.curr_tns;
-        
-        #ifdef TENDON_TENSION_CONTROL
-            /* rotor zero crossing checks */
-            if(actual_pos >= 0 && dir_state == 0){ 
-                BRAKEn_Write(0);
-            }
-            else if(dir_state == 1){
-                BRAKEn_Write(1);
-            }
-        #endif
-        
-        /* Check UART for any sent command */
-        Ch = UART_GetChar();
-        
+        ContinuouslySendData = FALSE;
         /* Send data based on last UART command */
-        if(SendSingleByte || ContinuouslySendData)
+        if(ContinuouslySendData)
         {
             /* Format ADC result for transmition */
             if (PM1.control_mode == 0){
                 //sprintf(TransmitBuffer, "Ref: %d\tActual: %d\r\n",(int)_pVal,(int)actual_speed);
             }
             else if(PM1.control_mode == 1){
-                sprintf(TransmitBuffer, "Ref: %d\tActual: %d\tTens: %d\r\n",(int)PM1.ref_rvt,(int)PM1.curr_rvt,(int)get_tension_g(PM1.curr_tns));
+                sprintf(TransmitBuffer, "Ref: %d\tActual: %d\tTens: %d\r\n",(int)PM1.ref_rvt,(int)PM1.curr_rvt,(int)(PM1.curr_tns));
             }
             else if(PM1.control_mode == 2){
                 //sprintf(TransmitBuffer, "sRef: %d\tsActual: %d\tdirection: %d\tcounter: %d\r\n",(int)speed_ref,(int)actual_speed,(int)dir_state,(int)dir_count);
@@ -194,16 +182,13 @@ int main(void)
             /* Send out the data */
             UART_PutString(TransmitBuffer);
             /* Reset the send once flag */
-            SendSingleByte = FALSE;
         }
-
-        if(_uart_Reset)
-        {
-            /* Reset the psoc using software */
+        if(SoftwareReset){
             CySoftwareReset();
         }
-                
         CyDelay(25); // works at 40 Hz
+        
+        //MOTOR_checkError(&PM1);
     }
 }
 

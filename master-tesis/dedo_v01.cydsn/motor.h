@@ -26,9 +26,11 @@
     
 #define HIGH_FREQ_CLOCK 20000
     
-#define VEL_MAX_MOTOR 9500
+#define VEL_MAX_MOTOR 7000
 #define NUM_SENSORS 6
 int16 * TS_array;
+    
+#define NUMREADINGS 50
     
 typedef struct PIN_t
 {
@@ -75,7 +77,16 @@ typedef struct MOTOR_t {
     
     int32_t MAX_RVT;
     int32_t MIN_RVT;
-
+    
+    int32_t error_check_counter;
+     
+    int32_t readings[NUMREADINGS];      // the readings from the analog input
+    int32_t readIndex;              // the index of the current reading
+    int32_t total;                  // the running total
+    int32_t average;                // the average
+   
+    
+    
 } MOTOR_t;
 
 void MOTOR_init(MOTOR_t* motor, PIN_t pin_enable, PIN_t pin_braken, PIN_t pin_dir);
@@ -91,12 +102,17 @@ void MOTOR_readCurrentRevolution(MOTOR_t* motor, uint8 motor_number);
 void MOTOR_readCurrentTension(MOTOR_t* motor, uint8 motor_number);
 
 void MOTOR_checkDir(MOTOR_t* motor, uint8 motor_number);
+void MOTOR_fixParche(MOTOR_t* motor);
+void MOTOR_checkError(MOTOR_t* motor);
 
+void MOTOR_externControl(MOTOR_t* motor, uint8 ctrl, int32 ref);
+void MOTOR_setRef(MOTOR_t* motor, uint8 ctrl, int32 ref);
 void MOTOR_setRvtRef(MOTOR_t* motor, int32_t rvtRef);
 void MOTOR_setSpdRef(MOTOR_t* motor, int32_t spdRef);
 void MOTOR_setTnsRef(MOTOR_t* motor, int32_t tnsRef);
 
 float MOTOR_getTR(MOTOR_t* motor, float alpha);
+int32 MOTOR_get_tension_g(MOTOR_t* motor, int16 tension);
 
 void MOTOR_commandDriver(MOTOR_t* motor, uint8 motor_number, uint8 speed_value);
 void MOTOR_sendSpeedCommand(uint8 motor, uint8 speed_value);
@@ -107,6 +123,7 @@ int16 * MOTOR_StoreADCResults();
 
 // pin operations
 void MOTOR_ToggleHandBrake(MOTOR_t* motor);
+void MOTOR_ToggleDir(MOTOR_t* motor);
 
 void MOTOR_clearPinBRAKEn(MOTOR_t * motor);
 void MOTOR_clearPinDIR(MOTOR_t * motor);

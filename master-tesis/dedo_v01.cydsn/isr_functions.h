@@ -19,7 +19,6 @@ extern MOTOR_t PM1,PM2;
 CY_ISR_PROTO(PM1_HA_INT);          // process PM1_HA_ISR interrupt
 CY_ISR_PROTO(PM2_HA_INT);          // process PM2_HA_ISR interrupt
 
-CY_ISR_PROTO(READ_RVT_INT);          // process PM1_COUNT_ISR interrupt
 CY_ISR_PROTO(CHECK_MOVEMENT_INT);  
 
 CY_ISR_PROTO(SPD_COMMAND_INT);

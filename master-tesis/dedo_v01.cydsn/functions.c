@@ -27,18 +27,7 @@ uint8 fn_mapper_8b(int32_t x, int32_t in_min, int32_t in_max, int32_t out_min, i
 
 int32 get_tension_g(int16 tension)
 {
-       return (int32)((5000.0/4096.0)*tension/0.0035);
-}
-
-float get_tension_kg(int16 tension)
-{
-       return 1000*(ADC_TS_CountsTo_Volts(tension))/0.0034;
-}
-
-
-double Sigmoid(double x,double a, double b)
-{
-    return a*(2/(1 + exp(-x*b))-1);
+       return (int32)((5000.0/4096.0)*tension/0.0035)/1000;
 }
 
 void ProcessCommandMsg(void)
@@ -51,62 +40,117 @@ void ProcessCommandMsg(void)
    
     //todo: ther are problems if terminator is "\r\n"
     uint8 updatePID = FALSE;
+    enum msg_byte {sof, read_write, motor, digital_pin, onoff, ctrl, value} current_state, next_state;
+    current_state = sof;
+    //uint8_t motor;
+    //uint8_t ctrl;
+    char ref[4];
+    //char* motor,ctrl;
+    switch(RB.cmd)
+    {
+        case '0':
+            sprintf(msg,"&%c%c%s\r\n",RB.cmd,RB.dp,RB.valstr);
+            UART_PutString(msg);
+            MOTOR_clearPinBRAKEn(&PM1);
+            MOTOR_clearPinDIR(&PM1);
+            MOTOR_clearPinENABLE(&PM1);
+            current_state = sof;
+            
+            switch(current_state)
+            {
+                case sof:
+                    if(RB.sof == 'x')
+                        next_state = read_write;
+                    break;
+                case read_write:
+                    if(RB.row == 0) // read
+                        next_state = motor;
+                    
+                    break;
+                case motor:
+                    
+                    break;
+                
+                default:
+                    
+                    break;
+            //motor = RB.valstr[0] - '0';
+            //ctrl = RB.valstr[1] - '0';
+            //memcpy(ctrl,&RB.valstr[1],1*sizeof(char));
+            //memcpy(ref,&RB.valstr[2],4*sizeof(char));
+            //sprintf(msg,"&motor: %d\tctrl:%d \tref:%d\r\n",motor,ctrl,atoi(ref));
+            //UART_PutString(msg);
+            }
+            break;
+        case 'P':
+            if(strlen(RB.valstr) > 0){
+                updatePID = TRUE;
+                PB.pVal = atoi(RB.valstr);
+            }   
+            break;
+        case 'I':
+            if(strlen(RB.valstr) > 0){
+                updatePID = TRUE;
+                PB.iVal = atoi(RB.valstr);
+            }
+            break;
+        case 'D':
+            if(strlen(RB.valstr) > 0){
+                updatePID = TRUE;
+                PB.dVal = atoi(RB.valstr);
+            }
+            break;
+        case 's':
+            ContinuouslySendData = TRUE;
+            break;
+        case 'x':
+            ContinuouslySendData = FALSE;
+            break;
+        case 'q':
+            SoftwareReset = TRUE;
+            break;/*
+        case 'b':
+            MOTOR_clearPinBRAKEn(&PM1);
+            MOTOR_clearPinBRAKEn(&PM2);
+            break;
+        case 'B':
+            MOTOR_setPinBRAKEn(&PM1);
+            MOTOR_setPinBRAKEn(&PM2);
+            break;*/
+        default:
+            break;
+    }
     
-    if (RB.cmd == 'P'){
-        if(strlen(RB.valstr) > 0){
-            updatePID = TRUE;
-            PB.pVal = atoi(RB.valstr);
-            //sprintf(msg,"&%c: %s\r\n",RB.cmd,RB.valstr);
-            //UART_PutString(msg);
-        }
+    switch(motor)
+    {
+        case 1:
+            MOTOR_externControl(&PM1,ctrl,atoi(ref));
+            sprintf(msg,"&motor:%d\tctrl:%d\tref:%d\r\n",motor,ctrl,atoi(ref));
+            UART_PutString(msg);
+            break;
+        case 2:
+            MOTOR_externControl(&PM2,ctrl,atoi(ref));
+            sprintf(msg,"&motor:%d\tctrl:%d\tref:%d\r\n",motor,ctrl,atoi(ref));
+            UART_PutString(msg);
+            break;
     }
-    else if (RB.cmd == 'I'){
-        if(strlen(RB.valstr) > 0){
-            updatePID = TRUE;
-            PB.iVal = atoi(RB.valstr);
-            //sprintf(msg,"&%c: %s\r\n",RB.cmd,RB.valstr);
-            //UART_PutString(msg);
-        }
-    }
-    else if (RB.cmd == 'D'){
-        if(strlen(RB.valstr) > 0){
-            updatePID = TRUE;
-            PB.dVal = atoi(RB.valstr);
-            //sprintf(msg,"&%c: %s\r\n",RB.cmd,RB.valstr);
-            //UART_PutString(msg);
-        }
-    }
-    else if (RB.cmd == 's'){
-        //UART_PutString("&S");
-        ContinuouslySendData = TRUE;
-    }
-    else if (RB.cmd == 'q'){
-        CySoftwareReset();
-        CyDelay(500);
-    }
-    else if (RB.cmd == 'x'){
-        ContinuouslySendData = FALSE;
-    }
-    else if (RB.cmd == 'b'){
-        MOTOR_ToggleHandBrake(&PM1);
-        ///MOTOR_ToggleHandBrake(&PM2);
-    }
-    else if (RB.cmd == '!'){
+    
+    if (RB.cmd == '!'){
         if(strlen(RB.valstr) > 0){
             PM1.ref_rvt = atoi(RB.valstr);
-            PM2.ref_rvt = atoi(RB.valstr);
+            //PM2.ref_rvt = atoi(RB.valstr);
         }
     }
     else if (RB.cmd == '#'){
         if(strlen(RB.valstr) > 0){
             PM1.ref_spd = atoi(RB.valstr);
-            PM2.ref_spd = atoi(RB.valstr);
+            //PM2.ref_spd = atoi(RB.valstr);
         }
     }
     else if (RB.cmd == '$'){
         if(strlen(RB.valstr) > 0){
             PM1.ref_tns = atoi(RB.valstr);
-            PM2.ref_tns = atoi(RB.valstr);
+            //PM2.ref_tns = atoi(RB.valstr);
         }
     }
     else if (RB.cmd == '?'){
@@ -114,7 +158,7 @@ void ProcessCommandMsg(void)
             MOTOR_setControlMode(&PM1,atoi(RB.valstr));
             MOTOR_setControlMode(&PM2,atoi(RB.valstr));
             
-            sprintf(msg, "!%d\r\n",PM1.control_mode);
+            sprintf(msg, "!%d%d\r\n",PM1.control_mode,PM1.init_pos);
             UART_PutString(msg);
             if (PM1.control_mode == 1){
                 sprintf(msg, "*%d*%d*%d\r\n",(int)(PM1.rvt_params[0]*100.0),(int)(PM1.rvt_params[1]*100.0),(int)(PM1.rvt_params[2]*100.0));     
