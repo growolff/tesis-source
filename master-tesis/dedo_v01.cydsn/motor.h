@@ -128,9 +128,9 @@ void MOTOR_ToggleDir(MOTOR_t* motor);
 void MOTOR_clearPinBRAKEn(MOTOR_t * motor);
 void MOTOR_clearPinDIR(MOTOR_t * motor);
 void MOTOR_clearPinENABLE(MOTOR_t * motor);
-void MOTOR_setPinBRAKEn(MOTOR_t * motor);
-void MOTOR_setPinDIR(MOTOR_t * motor);
-void MOTOR_setPinENABLE(MOTOR_t * motor);
+void MOTOR_setPinBRAKEn(MOTOR_t * motor, uint8_t setPin);
+void MOTOR_setPinDIR(MOTOR_t * motor, uint8_t setPin);
+void MOTOR_setPinENABLE(MOTOR_t * motor, uint8_t setPin);
 
 int32_t MOTOR_getSpd(MOTOR_t* motor);
 int8_t MOTOR_getDir(MOTOR_t* motor);

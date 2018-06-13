@@ -14,7 +14,6 @@
 
 #include "project.h"
 #include "motor.h"
-#include "structs.h"
 #include "stdio.h"
 #include "pid.h"
 #include "string.h"
@@ -74,7 +73,7 @@ volatile ParamBuffer PB;     //volatile struct TParamBuffer PB;
 
 
 /* Variable to store UART received character */
-volatile uint8 Ch;
+uint8 Ch;
 /* Flags used to store transmit data commands */
 volatile uint8 ContinuouslySendData;
 volatile uint8 SendSingleByte;
@@ -113,7 +112,9 @@ extern uint8 _pid_out;
 MOTOR_t PM1;
 MOTOR_t PM2;
 
-//FINGER_t pulgar;
+MOTOR_t* motors[2];
+
+char TransmitBuffer[TRANSMIT_BUFFER_SIZE];
 
 #endif // GLOBAL_VARIABLES_FILE_H
 

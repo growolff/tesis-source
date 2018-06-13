@@ -27,6 +27,19 @@ CY_ISR(CHECK_MOVEMENT_INT)
     MOTOR_checkDir(&PM2,2);
 }
 
+CY_ISR(MSG_INT)
+{
+    // Check for message received at 100Hz
+            
+    while(IsCharReady()){
+        //UART_PutString("&IsCharReady\r\n");
+        if(GetRxStr()){
+            //UART_PutString("&GetRxStr\r\n");
+            ProcessCommandMsg();
+        }
+    }
+}
+
 CY_ISR(SPD_COMMAND_INT)
 {
     // Write speed command in motor PM1 VDAC
@@ -51,7 +64,7 @@ CY_ISR(RVT_COMMAND_INT)
     MOTOR_readCurrentRevolution(&PM1,1);
     MOTOR_setRvtRef(&PM1,PM1.ref_rvt);
     if(PM1.control_mode == 1){
-        PM1.rvtPID_out < 0 ? MOTOR_setPinDIR(&PM1) : MOTOR_clearPinDIR(&PM1);
+        PM1.rvtPID_out < 0 ? MOTOR_setPinDIR(&PM1,1) : MOTOR_clearPinDIR(&PM1);
         PM1.ref_spd = fn_mapper((int32_t)fabs((float)PM1.rvtPID_out),0,100,0,VEL_MAX);
     }
     
@@ -59,7 +72,7 @@ CY_ISR(RVT_COMMAND_INT)
     //MOTOR_setRvtRef(&PM2,-1*(PM1.curr_rvt+100));
     MOTOR_setRvtRef(&PM2,PM2.ref_rvt);
     if(PM2.control_mode == 1){
-        PM2.rvtPID_out < 0 ? MOTOR_setPinDIR(&PM2) : MOTOR_clearPinDIR(&PM2);
+        PM2.rvtPID_out < 0 ? MOTOR_setPinDIR(&PM2,1) : MOTOR_clearPinDIR(&PM2);
         PM2.ref_spd = fn_mapper((int32_t)fabs((float)PM2.rvtPID_out),0,100,0,VEL_MAX);
     }
 }
@@ -70,7 +83,7 @@ CY_ISR(TNS_COMMAND_INT)
     MOTOR_setTnsRef(&PM1,PM1.ref_tns);
     //PM1.tension_control_signal = (float)PM1.tnsPID_out;///MOTOR_getTR(&PM1,(float)PM1.curr_rvt/4.0);
     if(PM1.control_mode == 3){
-        PM1.tnsPID_out > 0 ? MOTOR_setPinDIR(&PM1) : MOTOR_clearPinDIR(&PM1);
+        PM1.tnsPID_out > 0 ? MOTOR_setPinDIR(&PM1,1) : MOTOR_clearPinDIR(&PM1);
         //MOTOR_sendSpeedCommand(1,(uint8)(fn_mapper_8b(fabs((double)PM1.tnsPID_out),0,TNS_MAX,0,255)));
         //MOTOR_sendSpeedCommand(1,(uint8)fabs((float)PM1.tnsPID_out));
         MOTOR_commandDriver(&PM1,PMF,(uint8)fn_mapper_8b(fabs((double)PM1.tnsPID_out),0,TNS_MAX,0,255));

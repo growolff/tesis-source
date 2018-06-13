@@ -33,8 +33,8 @@ void MOTOR_init(MOTOR_t* motor, PIN_t pin_enable, PIN_t pin_braken, PIN_t pin_di
     
     MOTOR_resetVariables(motor);
 
-    MOTOR_setPinENABLE(motor);
-    MOTOR_setPinDIR(motor);
+    MOTOR_setPinENABLE(motor,1);
+    MOTOR_setPinDIR(motor,1);
     MOTOR_clearPinBRAKEn(motor);
     
     motor->MAX_RVT = 0;
@@ -49,6 +49,7 @@ void MOTOR_init(MOTOR_t* motor, PIN_t pin_enable, PIN_t pin_braken, PIN_t pin_di
     }
     
     motor->error_check_counter = 0;
+    motor->control_mode = 0;
 }
 
 void MOTOR_resetVariables(MOTOR_t* motor)
@@ -149,7 +150,7 @@ void MOTOR_setControlMode(MOTOR_t* motor, uint8_t mode)
     MOTOR_resetVariables(motor);
     
     motor->control_mode = mode;     // set the control mode
-    MOTOR_setPinBRAKEn(motor);    // start the motor
+    MOTOR_setPinBRAKEn(motor,1);    // start the motor
 }
 
 void MOTOR_commandDriver(MOTOR_t* motor, uint8 motor_number, uint8 speed_value)
@@ -163,7 +164,7 @@ void MOTOR_commandDriver(MOTOR_t* motor, uint8 motor_number, uint8 speed_value)
         MOTOR_clearPinBRAKEn(motor);
     }*/
     if (MOTOR_checkActuatorLimits(motor) != 0){
-        MOTOR_setPinBRAKEn(motor);
+        MOTOR_setPinBRAKEn(motor,1);
         MOTOR_sendSpeedCommand(motor_number,speed_value);
     }
     else{
@@ -381,7 +382,7 @@ int16 * MOTOR_StoreADCResults() // store ADC conversion result in a sensor data 
 void MOTOR_ToggleHandBrake(MOTOR_t* motor)
 {    
     if (motor->BRAKEn.STATE == 0){                 
-        MOTOR_setPinBRAKEn(motor);
+        MOTOR_setPinBRAKEn(motor,1);
     }
     else{
         MOTOR_clearPinBRAKEn(motor);
@@ -391,13 +392,12 @@ void MOTOR_ToggleHandBrake(MOTOR_t* motor)
 void MOTOR_ToggleDir(MOTOR_t* motor)
 {    
     if (motor->DIR.STATE == 0){   
-        MOTOR_setPinDIR(motor);
+        MOTOR_setPinDIR(motor,1);
     }
     else{
         MOTOR_clearPinDIR(motor);
     }    
 }
-
 
 void MOTOR_clearPinBRAKEn(MOTOR_t * motor)
 {
@@ -414,20 +414,39 @@ void MOTOR_clearPinENABLE(MOTOR_t * motor)
     *motor->ENABLE.DR &= ~(motor->ENABLE.MASK);
     motor->ENABLE.STATE = 0;
 }
-void MOTOR_setPinBRAKEn(MOTOR_t * motor)
+void MOTOR_setPinBRAKEn(MOTOR_t * motor, uint8_t setPin)
 {
-    *motor->BRAKEn.DR |= motor->BRAKEn.MASK;
-    motor->BRAKEn.STATE = 1;
+    if(setPin == 0){
+        *motor->BRAKEn.DR &= ~(motor->BRAKEn.MASK);
+        motor->BRAKEn.STATE = 0;
+    }
+    else if(setPin == 1){
+        *motor->BRAKEn.DR |= motor->BRAKEn.MASK;
+        motor->BRAKEn.STATE = 1;
+    }
 }
-void MOTOR_setPinDIR(MOTOR_t * motor)
+void MOTOR_setPinDIR(MOTOR_t * motor, uint8_t setPin)
 {
-    *motor->DIR.DR |= motor->DIR.MASK;    
-    motor->DIR.STATE = 1;
+    if(setPin == 0){
+        *motor->DIR.DR &= ~(motor->DIR.MASK);
+        motor->DIR.STATE = 0;  
+    }
+    else if(setPin == 1){
+        *motor->DIR.DR |= motor->DIR.MASK;    
+        motor->DIR.STATE = 1;
+    }
 }
-void MOTOR_setPinENABLE(MOTOR_t * motor)
+void MOTOR_setPinENABLE(MOTOR_t * motor, uint8_t setPin)
 {
-    *motor->ENABLE.DR |= motor->ENABLE.MASK;
-    motor->ENABLE.STATE = 1;
+    if(setPin == 0){
+        *motor->ENABLE.DR &= ~(motor->ENABLE.MASK);
+        motor->ENABLE.STATE = 0; 
+    }
+    else if(setPin == 1){
+        *motor->ENABLE.DR |= motor->ENABLE.MASK;
+        motor->ENABLE.STATE = 1;
+    }
+    
 }
 
 /* [] END OF FILE */

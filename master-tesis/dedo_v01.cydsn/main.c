@@ -19,13 +19,8 @@ void initGeneralHardware(void){
  
     /* Initialize interrupt blocks */
     RxInt_StartEx(MyRxInt);
+    MSG_ISR_StartEx(MSG_INT);
     
-    SPD_COMMAND_ISR_StartEx(SPD_COMMAND_INT);
-    RVT_COMMAND_ISR_StartEx(RVT_COMMAND_INT);
-    TNS_COMMAND_ISR_StartEx(TNS_COMMAND_INT);
-    
-    CHECK_MOVEMENT_ISR_StartEx(CHECK_MOVEMENT_INT);
-
 }
 void initMotorPM1()
 {
@@ -93,15 +88,24 @@ void initMotors()
     
     initMotorPM1();
     initMotorPM2();
-   
+    
+    motors[0] = &PM1;
+    motors[1] = &PM2;
+    
+    SPD_COMMAND_ISR_StartEx(SPD_COMMAND_INT);
+    RVT_COMMAND_ISR_StartEx(RVT_COMMAND_INT);
+    TNS_COMMAND_ISR_StartEx(TNS_COMMAND_INT);
+    
+    CHECK_MOVEMENT_ISR_StartEx(CHECK_MOVEMENT_INT);
+    
 }
 
 int main(void)
 {
-    char TransmitBuffer[TRANSMIT_BUFFER_SIZE];
+    _state_ = 0;
    
+    CyGlobalIntEnable; /* Enable global interrupts. */
     initGeneralHardware();
-    initMotors();
 
     ADC_TS_StartConvert();
         
@@ -114,39 +118,19 @@ int main(void)
 //    PM1_DIR_Write(PM1.DIR.STATE);     // true: left(ccw), false: right(cw)
 //    PM1_BRAKEn_Write(PM1.BRAKEn.STATE);  // true: running, false: braken
     
-    CyDelay(250);
-    
-    while(_state_ == 0){
-        Ch = UART_GetChar();
-        if(Ch == 'n'){
-            sprintf(TransmitBuffer, "& INIT CTRL_TYPE = %d\r\n",PM1.control_mode);
-            UART_PutString(TransmitBuffer);
-            sprintf(TransmitBuffer, "!%d%d\r\n",PM1.control_mode,PM1.init_pos);
-            UART_PutString(TransmitBuffer);
-            if (PM1.control_mode == 1){
-                sprintf(TransmitBuffer, "*%d*%d*%d\r\n",(int)(PM1.rvt_params[0]*100.0),(int)(PM1.rvt_params[1]*100.0),(int)(PM1.rvt_params[2]*100.0));     
-            }
-            if (PM1.control_mode == 2){
-                sprintf(TransmitBuffer, "*%d*%d*%d\r\n",(int)(PM1.spd_params[0]*100.0),(int)(PM1.spd_params[1]*100.0),(int)(PM1.spd_params[2]*100.0));    
-            }
-            if (PM1.control_mode == 3){
-                sprintf(TransmitBuffer, "*%d*%d*%d\r\n",(int)(PM1.tns_params[0]*100.0),(int)(PM1.tns_params[1]*100.0),(int)(PM1.tns_params[2]*100.0));
-            }
-            UART_PutString(TransmitBuffer);
-        }
-        if(Ch == 'i'){
-            _state_=1;
-            break;
-        }
+    while(_state_ != 1){
+        CyDelay(100);
     }
-    CyGlobalIntEnable; /* Enable global interrupts. */
+    
+    initMotors();
+    
     //PM1_BRAKEn_Write(0);
     //M_PIN_SET(PM1_BRAKEn);
     //PM1_BRAKEn_DR |= PM1_BRAKEn_MASK; //set BRAKEn pin port
     //PM1_BRAKEn_DR &= ~PM1_BRAKEn_MASK; //clear BRAKEn pin port
-    MOTOR_setPinBRAKEn(&PM1);
-    MOTOR_setPinDIR(&PM1);
-    MOTOR_setPinENABLE(&PM1);
+    MOTOR_setPinBRAKEn(&PM1,0);
+    MOTOR_setPinDIR(&PM1,0);
+    MOTOR_setPinENABLE(&PM1,0);
     
     for(;;)
     {
@@ -154,13 +138,7 @@ int main(void)
         //sprintf(TransmitBuffer, "& curr_rvt: %d\tDirState: %d\tinit_pos: %d\r\n",(int)PM1.curr_rvt,(int)PM1.DIR.STATE,(int)(PM1.init_pos));
         //UART_PutString(TransmitBuffer);
         /* Check for PID update */
-        while(IsCharReady()){
-            //UART_PutString("&IsCharReady\r\n");
-            if(GetRxStr()){
-                //UART_PutString("&GetRxStr\r\n");
-                ProcessCommandMsg();
-            }
-        }
+
         ContinuouslySendData = FALSE;
         /* Send data based on last UART command */
         if(ContinuouslySendData)

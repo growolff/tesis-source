@@ -35,51 +35,64 @@ void ProcessCommandMsg(void)
     //check received message for any valid command and execute it if necessary or report old value
     //if command not recognized, then report error
     //todo: add check for valid conversion string->value
-     
-    //sprintf(strMsg1,"%s\r", RB.RxStr); UART_PutString(strMsg1);
+    char strMsg1[12] = {0,0,0,0,0,0,0,0,0,0,0,0};
+    sprintf(strMsg1,"%s\r", RB.RxStr); UART_PutString(strMsg1);
    
     //todo: ther are problems if terminator is "\r\n"
     uint8 updatePID = FALSE;
-    enum msg_byte {sof, read_write, motor, digital_pin, onoff, ctrl, value} current_state, next_state;
-    current_state = sof;
-    //uint8_t motor;
-    //uint8_t ctrl;
     char ref[4];
-    //char* motor,ctrl;
+    
     switch(RB.cmd)
     {
-        case '0':
-            sprintf(msg,"&%c%c%s\r\n",RB.cmd,RB.dp,RB.valstr);
-            UART_PutString(msg);
-            MOTOR_clearPinBRAKEn(&PM1);
-            MOTOR_clearPinDIR(&PM1);
-            MOTOR_clearPinENABLE(&PM1);
-            current_state = sof;
-            
-            switch(current_state)
+        case 'i':
+            _state_ = 1;
+            break;
+        case 'n':
+            sprintf(TransmitBuffer, "& INIT CTRL_TYPE = %d\r\n",PM1.control_mode);
+            UART_PutString(TransmitBuffer);
+            sprintf(TransmitBuffer, "!%d%d\r\n",PM1.control_mode,PM1.init_pos);
+            UART_PutString(TransmitBuffer);
+            if (PM1.control_mode == 1){
+                sprintf(TransmitBuffer, "*%d*%d*%d\r\n",(int)(PM1.rvt_params[0]*100.0),(int)(PM1.rvt_params[1]*100.0),(int)(PM1.rvt_params[2]*100.0));     
+            }
+            if (PM1.control_mode == 2){
+                sprintf(TransmitBuffer, "*%d*%d*%d\r\n",(int)(PM1.spd_params[0]*100.0),(int)(PM1.spd_params[1]*100.0),(int)(PM1.spd_params[2]*100.0));    
+            }
+            if (PM1.control_mode == 3){
+                sprintf(TransmitBuffer, "*%d*%d*%d\r\n",(int)(PM1.tns_params[0]*100.0),(int)(PM1.tns_params[1]*100.0),(int)(PM1.tns_params[2]*100.0));
+            }
+            UART_PutString(TransmitBuffer);
+            break;
+        case 'W': // for writing in pins
+            //MOTOR_clearPinBRAKEn(&PM1);
+            //MOTOR_clearPinDIR(&PM1);
+            //MOTOR_clearPinENABLE(&PM1);
+            switch(RB.dpin)
             {
-                case sof:
-                    if(RB.sof == 'x')
-                        next_state = read_write;
+                case 'B':   
+                    MOTOR_setPinBRAKEn(&PM1, atoi(&RB.onoff));
                     break;
-                case read_write:
-                    if(RB.row == 0) // read
-                        next_state = motor;
-                    
+                case 'E':
+                    MOTOR_setPinENABLE(&PM1, atoi(&RB.onoff));
                     break;
-                case motor:
-                    
+                case 'D':
+                    MOTOR_setPinDIR(&PM1, atoi(&RB.onoff));
                     break;
-                
-                default:
-                    
-                    break;
+            }
             //motor = RB.valstr[0] - '0';
             //ctrl = RB.valstr[1] - '0';
             //memcpy(ctrl,&RB.valstr[1],1*sizeof(char));
             //memcpy(ref,&RB.valstr[2],4*sizeof(char));
             //sprintf(msg,"&motor: %d\tctrl:%d \tref:%d\r\n",motor,ctrl,atoi(ref));
             //UART_PutString(msg);
+            break;
+        case 'C':
+            sprintf(strMsg1,"%s\r", RB.RxStr); UART_PutString(strMsg1);
+            switch(RB.ctrl)
+            {
+                case 'S':
+                    sprintf(strMsg1,"%s\r", RB.RxStr); UART_PutString(strMsg1);
+                    break;
             }
             break;
         case 'P':
@@ -117,10 +130,8 @@ void ProcessCommandMsg(void)
             MOTOR_setPinBRAKEn(&PM1);
             MOTOR_setPinBRAKEn(&PM2);
             break;*/
-        default:
-            break;
     }
-    
+    /*
     switch(motor)
     {
         case 1:
@@ -134,7 +145,7 @@ void ProcessCommandMsg(void)
             UART_PutString(msg);
             break;
     }
-    
+    */
     if (RB.cmd == '!'){
         if(strlen(RB.valstr) > 0){
             PM1.ref_rvt = atoi(RB.valstr);

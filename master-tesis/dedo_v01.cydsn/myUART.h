@@ -24,18 +24,16 @@
 // each Rx command consists of: <char command><string value><CR>
 
 union TRxBuffer {
-    char   RxStr[20];   // received Rx packet (to hold individual command message)
+    char   RxStr[12];   // received Rx packet (to hold individual command message)
     struct {            // anonimous structure
-        char cmd;       // 1-byte command
-        char sof;       // start of frame
-        char row;       // read or write 0/1
+        char SOF1,SOF2; // xff xff
+        char cmd;       // 1-byte command: Write, Read, Control
         char motor;     // motor number
-        char dp;        // digital pin to control
+        char dpin;      // digital pin to control: E B D
         char onoff;     // on or off
         char ctrl;      // change control ref
-        char ref1;      // first part of ref value
-        char ref2;
-        char valstr[11];// command value           
+        char asd;
+        char valstr[4]; // command value           
     };
 } RB;
    
