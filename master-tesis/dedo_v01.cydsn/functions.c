@@ -35,8 +35,7 @@ void ProcessCommandMsg(void)
     //check received message for any valid command and execute it if necessary or report old value
     //if command not recognized, then report error
     //todo: add check for valid conversion string->value
-    char strMsg1[12] = {0,0,0,0,0,0,0,0,0,0,0,0};
-    sprintf(strMsg1,"%s\r", RB.RxStr); UART_PutString(strMsg1);
+    //sprintf(strMsg1,"%d\r", atoi(RB.valstr)); UART_PutString(strMsg1);
    
     //todo: ther are problems if terminator is "\r\n"
     uint8 updatePID = FALSE;
@@ -45,7 +44,11 @@ void ProcessCommandMsg(void)
     switch(RB.cmd)
     {
         case 'i':
-            _state_ = 1;
+            if(_state_ == 0)
+            {
+                sprintf(strMsg1,"%s\r", "INICIAR"); UART_PutString(strMsg1);
+                _state_ = 1;
+            }
             break;
         case 'n':
             sprintf(TransmitBuffer, "& INIT CTRL_TYPE = %d\r\n",PM1.control_mode);
@@ -67,16 +70,20 @@ void ProcessCommandMsg(void)
             //MOTOR_clearPinBRAKEn(&PM1);
             //MOTOR_clearPinDIR(&PM1);
             //MOTOR_clearPinENABLE(&PM1);
+            //sprintf(strMsg1,"%s\r", "CASE W"); UART_PutString(strMsg1);
             switch(RB.dpin)
             {
-                case 'B':   
-                    MOTOR_setPinBRAKEn(&PM1, atoi(&RB.onoff));
+                case 'B':
+                    //sprintf(strMsg1,"%d\r", RB.onoff); UART_PutString(strMsg1);
+                    MOTOR_setPinBRAKEn(motors[atoi(&RB.motor)], RB.onoff);
                     break;
                 case 'E':
-                    MOTOR_setPinENABLE(&PM1, atoi(&RB.onoff));
+                    //sprintf(strMsg1,"%s\r", "CASE E"); UART_PutString(strMsg1);
+                    MOTOR_setPinENABLE(motors[atoi(&RB.motor)], RB.onoff);
                     break;
                 case 'D':
-                    MOTOR_setPinDIR(&PM1, atoi(&RB.onoff));
+                    //sprintf(strMsg1,"%s\r", "CASE D"); UART_PutString(strMsg1);
+                    MOTOR_setPinDIR(motors[atoi(&RB.motor)], RB.onoff);
                     break;
             }
             //motor = RB.valstr[0] - '0';
@@ -87,11 +94,11 @@ void ProcessCommandMsg(void)
             //UART_PutString(msg);
             break;
         case 'C':
-            sprintf(strMsg1,"%s\r", RB.RxStr); UART_PutString(strMsg1);
+            sprintf(strMsg1,"%s\r", "CASE C"); UART_PutString(strMsg1);
             switch(RB.ctrl)
             {
                 case 'S':
-                    sprintf(strMsg1,"%s\r", RB.RxStr); UART_PutString(strMsg1);
+                    sprintf(strMsg1,"%s\r", "CASE S"); UART_PutString(strMsg1);
                     break;
             }
             break;

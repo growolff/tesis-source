@@ -114,6 +114,8 @@ MOTOR_t PM2;
 
 MOTOR_t* motors[2];
 
+char strMsg1[20];
+
 char TransmitBuffer[TRANSMIT_BUFFER_SIZE];
 
 #endif // GLOBAL_VARIABLES_FILE_H

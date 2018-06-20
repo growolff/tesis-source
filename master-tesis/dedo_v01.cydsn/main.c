@@ -19,7 +19,6 @@ void initGeneralHardware(void){
  
     /* Initialize interrupt blocks */
     RxInt_StartEx(MyRxInt);
-    MSG_ISR_StartEx(MSG_INT);
     
 }
 void initMotorPM1()
@@ -104,9 +103,9 @@ int main(void)
 {
     _state_ = 0;
    
-    CyGlobalIntEnable; /* Enable global interrupts. */
     initGeneralHardware();
-
+    CyGlobalIntEnable; /* Enable global interrupts. */
+    
     ADC_TS_StartConvert();
         
     /* Initialize Variables */
@@ -117,15 +116,9 @@ int main(void)
 //    //SPEED_Write(TRUE); // true: external pwm control, else: analog voltage control
 //    PM1_DIR_Write(PM1.DIR.STATE);     // true: left(ccw), false: right(cw)
 //    PM1_BRAKEn_Write(PM1.BRAKEn.STATE);  // true: running, false: braken
-    
-    while(_state_ != 1){
-        CyDelay(100);
-    }
-    
-    initMotors();
+   
     
     //PM1_BRAKEn_Write(0);
-    //M_PIN_SET(PM1_BRAKEn);
     //PM1_BRAKEn_DR |= PM1_BRAKEn_MASK; //set BRAKEn pin port
     //PM1_BRAKEn_DR &= ~PM1_BRAKEn_MASK; //clear BRAKEn pin port
     MOTOR_setPinBRAKEn(&PM1,0);
@@ -134,11 +127,25 @@ int main(void)
     
     for(;;)
     {
+        if(_state_ == 1)
+        {
+            initMotors();
+            _state_ = 2;
+            //UART_PutString("INICIADO");
+        }
         //sprintf(TransmitBuffer, "& TNS_PID: %d\tDIR: %d\tTNS_CURR: %d\r\n",(int)PM1.tnsPID_out,(int)PM1.DIR.STATE,(int)(PM1.curr_tns));
         //sprintf(TransmitBuffer, "& curr_rvt: %d\tDirState: %d\tinit_pos: %d\r\n",(int)PM1.curr_rvt,(int)PM1.DIR.STATE,(int)(PM1.init_pos));
         //UART_PutString(TransmitBuffer);
         /* Check for PID update */
-
+        
+        while(IsCharReady()){
+            //UART_PutString("&IsCharReady\r\n");
+            if(GetRxStr()){
+                //UART_PutString("&GetRxStr\r\n");
+                ProcessCommandMsg();
+            }
+        }
+       
         ContinuouslySendData = FALSE;
         /* Send data based on last UART command */
         if(ContinuouslySendData)

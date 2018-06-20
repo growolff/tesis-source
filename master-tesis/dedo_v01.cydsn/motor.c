@@ -33,8 +33,8 @@ void MOTOR_init(MOTOR_t* motor, PIN_t pin_enable, PIN_t pin_braken, PIN_t pin_di
     
     MOTOR_resetVariables(motor);
 
-    MOTOR_setPinENABLE(motor,1);
-    MOTOR_setPinDIR(motor,1);
+    MOTOR_setPinENABLE(motor,0);
+    MOTOR_setPinDIR(motor,0);
     MOTOR_clearPinBRAKEn(motor);
     
     motor->MAX_RVT = 0;

@@ -27,19 +27,6 @@ CY_ISR(CHECK_MOVEMENT_INT)
     MOTOR_checkDir(&PM2,2);
 }
 
-CY_ISR(MSG_INT)
-{
-    // Check for message received at 100Hz
-            
-    while(IsCharReady()){
-        //UART_PutString("&IsCharReady\r\n");
-        if(GetRxStr()){
-            //UART_PutString("&GetRxStr\r\n");
-            ProcessCommandMsg();
-        }
-    }
-}
-
 CY_ISR(SPD_COMMAND_INT)
 {
     // Write speed command in motor PM1 VDAC

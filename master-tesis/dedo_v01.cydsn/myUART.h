@@ -24,7 +24,7 @@
 // each Rx command consists of: <char command><string value><CR>
 
 union TRxBuffer {
-    char   RxStr[12];   // received Rx packet (to hold individual command message)
+    char   RxStr[20];   // received Rx packet (to hold individual command message)
     struct {            // anonimous structure
         char SOF1,SOF2; // xff xff
         char cmd;       // 1-byte command: Write, Read, Control
