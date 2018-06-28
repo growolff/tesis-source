@@ -65,9 +65,10 @@ uint8 GetRxStr(void)
     else                        //string body char received
     {
         //UART_PutChar(Ch);
+        //UART_PutChar('\n');
         *RxStrIndex++ = Ch;     //build command message
         //UART_PutChar(RxStrIndex[val++]);
-        //UART_PutChar('\n');
+        
         //todo: problem if first char is empty space
     }   
 

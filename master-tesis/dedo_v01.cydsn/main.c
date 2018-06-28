@@ -12,7 +12,8 @@
 #include "global.h"
 #include "math.h"
 
-void initGeneralHardware(void){
+void initGeneralHardware(void)
+{
     
     ADC_TS_Start();    
     UART_Start();
@@ -131,7 +132,7 @@ int main(void)
         {
             initMotors();
             _state_ = 2;
-            //UART_PutString("INICIADO");
+            UART_PutString("INICIADO");
         }
         //sprintf(TransmitBuffer, "& TNS_PID: %d\tDIR: %d\tTNS_CURR: %d\r\n",(int)PM1.tnsPID_out,(int)PM1.DIR.STATE,(int)(PM1.curr_tns));
         //sprintf(TransmitBuffer, "& curr_rvt: %d\tDirState: %d\tinit_pos: %d\r\n",(int)PM1.curr_rvt,(int)PM1.DIR.STATE,(int)(PM1.init_pos));

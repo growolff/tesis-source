@@ -13,6 +13,17 @@
 #include <functions.h>
 #include <stdlib.h>
 
+void echo(char* data)
+{
+    sprintf(strMsg1,"%s\r\n", data);
+    UART_PutString(strMsg1);   
+}
+void echod(int data)
+{
+    sprintf(strMsg1,"%d\r\n", data);
+    UART_PutString(strMsg1);   
+}
+
 int32_t fn_mapper(int32_t x, int32_t in_min, int32_t in_max, int32_t out_min, int32_t out_max)
 {    
     double slope = 1.0 * (out_max - out_min)/(in_max - in_min);
@@ -39,8 +50,8 @@ void ProcessCommandMsg(void)
    
     //todo: ther are problems if terminator is "\r\n"
     uint8 updatePID = FALSE;
-    char ref[4];
-    
+    //char ref[4];
+    //UART_PutString("&ProcessCommandMsg\r\n");
     switch(RB.cmd)
     {
         case 'i':
@@ -67,10 +78,6 @@ void ProcessCommandMsg(void)
             UART_PutString(TransmitBuffer);
             break;
         case 'W': // for writing in pins
-            //MOTOR_clearPinBRAKEn(&PM1);
-            //MOTOR_clearPinDIR(&PM1);
-            //MOTOR_clearPinENABLE(&PM1);
-            //sprintf(strMsg1,"%s\r", "CASE W"); UART_PutString(strMsg1);
             switch(RB.dpin)
             {
                 case 'B':
@@ -93,15 +100,27 @@ void ProcessCommandMsg(void)
             //sprintf(msg,"&motor: %d\tctrl:%d \tref:%d\r\n",motor,ctrl,atoi(ref));
             //UART_PutString(msg);
             break;
-        case 'C':
-            sprintf(strMsg1,"%s\r", "CASE C"); UART_PutString(strMsg1);
+        case 'C':        
+            
             switch(RB.ctrl)
             {
                 case 'S':
-                    sprintf(strMsg1,"%s\r", "CASE S"); UART_PutString(strMsg1);
+                    UART_PutString("&ASD\r\n");
+                    UART_PutString(RB.valstr);
+                    PM1_SPD_VDAC8_SetValue(atoi(RB.valstr));
                     break;
             }
             break;
+        case 's':
+            ContinuouslySendData = TRUE;
+            break;
+        case 'x':
+            ContinuouslySendData = FALSE;
+            break;
+        case 'q':
+            SoftwareReset = TRUE;
+            break;
+        /*
         case 'P':
             if(strlen(RB.valstr) > 0){
                 updatePID = TRUE;
@@ -120,15 +139,8 @@ void ProcessCommandMsg(void)
                 PB.dVal = atoi(RB.valstr);
             }
             break;
-        case 's':
-            ContinuouslySendData = TRUE;
-            break;
-        case 'x':
-            ContinuouslySendData = FALSE;
-            break;
-        case 'q':
-            SoftwareReset = TRUE;
-            break;/*
+        */
+        /*
         case 'b':
             MOTOR_clearPinBRAKEn(&PM1);
             MOTOR_clearPinBRAKEn(&PM2);

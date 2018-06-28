@@ -114,7 +114,7 @@ MOTOR_t PM2;
 
 MOTOR_t* motors[2];
 
-char strMsg1[20];
+char strMsg1[9];
 
 char TransmitBuffer[TRANSMIT_BUFFER_SIZE];
 
