@@ -1,10 +1,10 @@
 (DELAYFILE
  (SDFVERSION "IEEE 1497 4.0")
- (DATE "2017-11-02T14:45:14Z")
+ (DATE "2018-10-26T20:03:28Z")
  (DESIGN "UART_test")
  (VENDOR "Cypress Semiconductor")
  (PROGRAM "PSoC Creator")
- (VERSION " 4.1 Update 1")
+ (VERSION " 4.1")
  (DIVIDER .)
  (TIMESCALE 1 ns)
  (CELL

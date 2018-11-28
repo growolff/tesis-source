@@ -20,6 +20,7 @@
 #include "myUART.h"
 #include "functions.h" 
 #include "isr_functions.h"
+#include "inttypes.h"
     
 /* Project structures */
 
@@ -35,14 +36,11 @@ volatile ParamBuffer PB;     //volatile struct TParamBuffer PB;
 #define TRUE   1
 #define TRANSMIT_BUFFER_SIZE  16
 
-#define VEL_MAX 7000 // max vel for speed control
+#define VEL_MAX 9000 // max vel for speed control
 #define TNS_MAX 1300 // max tension for string tension control, in gr
 
 #define HF_CLK 200000 // rate of high frequency clock for speed measurement
 #define MAX_COUNTER 6500 // max counter for checking zero speed
-
-#define MAX_POSITION_LIMIT 100
-#define MIN_POSITION_LIMIT 0
 
 //#define CONTROL_TYPE 1
 
@@ -57,14 +55,9 @@ volatile ParamBuffer PB;     //volatile struct TParamBuffer PB;
 #endif
 
 /* position control parameters */
-#define KP_POS 4.0
+#define KP_POS 1.2
 #define KI_POS 0.0
 #define KD_POS 0.0
-
-/* speed control parameters */
-#define KP_VEL 0.7
-#define KI_VEL 0.01
-#define KD_VEL 0.0
 
 /* tensor control parameters */
 #define KP_TENS 2.0
@@ -95,19 +88,9 @@ volatile int16_t _tVal;
 
 /* for position control */
 extern PID_t  pos_pid_;
-extern volatile int32_t actual_pos;
-extern volatile int32_t pos_ref;
-extern volatile int32_t init_pos;
-
-/* for speed control */
-extern PID_t  speed_pid_;
-extern volatile int32_t actual_speed;
-extern volatile int32_t speed_ref;
 
 extern volatile uint8 _pVal;
 extern volatile int32_t debug;
-
-extern uint8 _pid_out;
 
 MOTOR_t PM1;
 MOTOR_t PM2;

@@ -1,6 +1,6 @@
--- Project:   C:\Users\Gonzalo Olave\Dropbox (Personal)\Magister\Tesis\tesis-source\master-tesis\UART_test.cydsn\UART_test.cyprj
--- Generated: 11/02/2017 11:45:14
--- PSoC Creator  4.1 Update 1
+-- Project:   C:\Users\xx\Google Drive\Gonzalo\Magister\Tesis\tesis-source\master-tesis\UART_test.cydsn\UART_test.cyprj
+-- Generated: 10/26/2018 17:03:28
+-- PSoC Creator  4.1
 
 ENTITY UART_test IS
     PORT(

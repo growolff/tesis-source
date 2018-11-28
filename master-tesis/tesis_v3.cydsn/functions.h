@@ -23,9 +23,9 @@ extern MOTOR_t PM1,PM2;
 char msg[16];
 
 int32_t fn_mapper(int32_t x, int32_t in_min, int32_t in_max, int32_t out_min, int32_t out_max);
-uint8 fn_mapper_8b(int32_t x, int32_t in_min, int32_t in_max, int32_t out_min, int32_t out_max);
+uint8_t fn_mapper_8b(int32_t x, int32_t in_min, int32_t in_max, int32_t out_min, int32_t out_max);
 
-int32 get_tension_g(int16 tension);
+int32_t get_tension_g(int16 tension);
 
 void ProcessCommandMsg(void);
 

@@ -14,18 +14,20 @@
 
 CY_ISR(PM1_HA_INT) //interrupt on level change in PM1_HA signal
 {
-    MOTOR_readCurrentSpeed(&PM1,1);
+    MOTOR_readSpeed(motors[0]);
 }
 
 CY_ISR(RVT_COMMAND_INT)
 {
-    MOTOR_readCurrentRevolution(&PM1,1);
-    MOTOR_setRvtRef(&PM1,PM1.ref_rvt);
-    if(PM1.control_mode == 1){
-        PM1.rvtPID_out < 0 ? MOTOR_setPinDIR(&PM1,1) : MOTOR_clearPinDIR(&PM1);
-        PM1.ref_spd = fn_mapper((int32_t)fabs((float)PM1.rvtPID_out),0,100,0,VEL_MAX);
-    }
-   
+    MOTOR_setRvtRef(motors[0]);
+    
+    MOTOR_readRevolution(motors[0]); // read rotor current position    
+    PM1.rvtPID_out = PID_calculatePID(&PM1.rvt_controller,PM1.curr_rvt);
+    
+    (PM1.rvtPID_out > 0) ?  MOTOR_setPinDIR(&PM1,1) : MOTOR_setPinDIR(&PM1,0);
+
+    PM1.ref_spd = fabs(PM1.rvtPID_out);
+    SPEED_DAC_SetValue(PM1.ref_spd);
 }
 
 /* [] END OF FILE */

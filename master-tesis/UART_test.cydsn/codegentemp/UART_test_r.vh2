@@ -1,6 +1,6 @@
 -- Project:   UART_test
--- Generated: 11/02/2017 11:45:10
--- PSoC Creator  4.1 Update 1
+-- Generated: 10/26/2018 17:03:23
+-- PSoC Creator  4.1
 
 ENTITY UART_test IS
     PORT(

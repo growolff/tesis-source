@@ -1,6 +1,6 @@
 -- Project:   dedo_v01
--- Generated: 11/16/2017 15:10:08
--- PSoC Creator  4.1 Update 1
+-- Generated: 10/26/2018 17:01:44
+-- PSoC Creator  4.1
 
 ENTITY dedo_v01 IS
     PORT(
@@ -44,22 +44,14 @@ ARCHITECTURE __DEFAULT__ OF dedo_v01 IS
     SIGNAL Net_192 : bit;
     SIGNAL Net_234 : bit;
     SIGNAL Net_239 : bit;
-    SIGNAL Net_297 : bit;
-    SIGNAL Net_300 : bit;
     SIGNAL Net_322 : bit;
     SIGNAL Net_323 : bit;
     SIGNAL Net_339 : bit;
     SIGNAL Net_415 : bit;
     SIGNAL Net_426 : bit;
-    SIGNAL Net_431 : bit;
-    ATTRIBUTE global_signal OF Net_431 : SIGNAL IS true;
-    SIGNAL Net_431_local : bit;
     SIGNAL Net_463 : bit;
     ATTRIBUTE global_signal OF Net_463 : SIGNAL IS true;
     SIGNAL Net_463_local : bit;
-    SIGNAL Net_464 : bit;
-    ATTRIBUTE global_signal OF Net_464 : SIGNAL IS true;
-    SIGNAL Net_464_local : bit;
     SIGNAL Net_690 : bit;
     SIGNAL Net_737 : bit;
     ATTRIBUTE udbclken_assigned OF Net_737 : SIGNAL IS "True";
@@ -86,23 +78,6 @@ ARCHITECTURE __DEFAULT__ OF dedo_v01 IS
     SIGNAL PM2_tension(0)__PA : bit;
     SIGNAL Rx_1(0)__PA : bit;
     SIGNAL Tx_1(0)__PA : bit;
-    SIGNAL \\\ADC:Bypass(0)\\__PA\ : bit;
-    SIGNAL \ADC:Net_207_0\ : bit;
-    SIGNAL \ADC:Net_207_10\ : bit;
-    SIGNAL \ADC:Net_207_11\ : bit;
-    SIGNAL \ADC:Net_207_1\ : bit;
-    SIGNAL \ADC:Net_207_2\ : bit;
-    SIGNAL \ADC:Net_207_3\ : bit;
-    SIGNAL \ADC:Net_207_4\ : bit;
-    SIGNAL \ADC:Net_207_5\ : bit;
-    SIGNAL \ADC:Net_207_6\ : bit;
-    SIGNAL \ADC:Net_207_7\ : bit;
-    SIGNAL \ADC:Net_207_8\ : bit;
-    SIGNAL \ADC:Net_207_9\ : bit;
-    SIGNAL \ADC:Net_252\ : bit;
-    SIGNAL \ADC:Net_376\ : bit;
-    ATTRIBUTE global_signal OF \ADC:Net_376\ : SIGNAL IS true;
-    SIGNAL \ADC:Net_376_local\ : bit;
     SIGNAL \ADC_TS:AMuxHw_2_Decoder_is_active\ : bit;
     ATTRIBUTE soft OF \ADC_TS:AMuxHw_2_Decoder_is_active\ : SIGNAL IS 1;
     SIGNAL \ADC_TS:AMuxHw_2_Decoder_is_active_split\ : bit;
@@ -387,7 +362,6 @@ ARCHITECTURE __DEFAULT__ OF dedo_v01 IS
     ATTRIBUTE POWER OF __ONE__ : SIGNAL IS true;
     SIGNAL __ZERO__ : bit;
     ATTRIBUTE GROUND OF __ZERO__ : SIGNAL IS true;
-    SIGNAL pote_PIN(0)__PA : bit;
     SIGNAL tmpOE__PM1_DIR_net_0 : bit;
     ATTRIBUTE POWER OF tmpOE__PM1_DIR_net_0 : SIGNAL IS true;
     SIGNAL zero : bit;
@@ -491,39 +465,35 @@ ARCHITECTURE __DEFAULT__ OF dedo_v01 IS
     SIGNAL \PM2_DirCounter:Cnt16:CounterUDB:sC16:counterdp:u1.cmsbo__sig\ : bit;
     ATTRIBUTE lib_model OF PM1_DIR(0) : LABEL IS "iocell1";
     ATTRIBUTE Location OF PM1_DIR(0) : LABEL IS "P12[1]";
-    ATTRIBUTE lib_model OF pote_PIN(0) : LABEL IS "iocell2";
-    ATTRIBUTE Location OF pote_PIN(0) : LABEL IS "P3[7]";
-    ATTRIBUTE lib_model OF \ADC:Bypass(0)\ : LABEL IS "iocell3";
-    ATTRIBUTE Location OF \ADC:Bypass(0)\ : LABEL IS "P0[2]";
-    ATTRIBUTE lib_model OF PM1_BRAKEn(0) : LABEL IS "iocell4";
+    ATTRIBUTE lib_model OF PM1_BRAKEn(0) : LABEL IS "iocell2";
     ATTRIBUTE Location OF PM1_BRAKEn(0) : LABEL IS "P12[0]";
-    ATTRIBUTE lib_model OF PM1_ENABLE(0) : LABEL IS "iocell5";
+    ATTRIBUTE lib_model OF PM1_ENABLE(0) : LABEL IS "iocell3";
     ATTRIBUTE Location OF PM1_ENABLE(0) : LABEL IS "P12[2]";
-    ATTRIBUTE lib_model OF Rx_1(0) : LABEL IS "iocell6";
+    ATTRIBUTE lib_model OF Rx_1(0) : LABEL IS "iocell4";
     ATTRIBUTE Location OF Rx_1(0) : LABEL IS "P12[6]";
-    ATTRIBUTE lib_model OF Tx_1(0) : LABEL IS "iocell7";
+    ATTRIBUTE lib_model OF Tx_1(0) : LABEL IS "iocell5";
     ATTRIBUTE Location OF Tx_1(0) : LABEL IS "P12[7]";
-    ATTRIBUTE lib_model OF PM1_input(0) : LABEL IS "iocell8";
+    ATTRIBUTE lib_model OF PM1_input(0) : LABEL IS "iocell6";
     ATTRIBUTE Location OF PM1_input(0) : LABEL IS "P2[4]";
-    ATTRIBUTE lib_model OF PM1_input(1) : LABEL IS "iocell9";
+    ATTRIBUTE lib_model OF PM1_input(1) : LABEL IS "iocell7";
     ATTRIBUTE Location OF PM1_input(1) : LABEL IS "P2[5]";
-    ATTRIBUTE lib_model OF PM2_BRAKEn(0) : LABEL IS "iocell10";
+    ATTRIBUTE lib_model OF PM2_BRAKEn(0) : LABEL IS "iocell8";
     ATTRIBUTE Location OF PM2_BRAKEn(0) : LABEL IS "P1[4]";
-    ATTRIBUTE lib_model OF PM2_DIR(0) : LABEL IS "iocell11";
+    ATTRIBUTE lib_model OF PM2_DIR(0) : LABEL IS "iocell9";
     ATTRIBUTE Location OF PM2_DIR(0) : LABEL IS "P1[5]";
-    ATTRIBUTE lib_model OF PM1_tension(0) : LABEL IS "iocell12";
+    ATTRIBUTE lib_model OF PM1_tension(0) : LABEL IS "iocell10";
     ATTRIBUTE Location OF PM1_tension(0) : LABEL IS "P0[0]";
-    ATTRIBUTE lib_model OF PM2_ENABLE(0) : LABEL IS "iocell13";
+    ATTRIBUTE lib_model OF PM2_ENABLE(0) : LABEL IS "iocell11";
     ATTRIBUTE Location OF PM2_ENABLE(0) : LABEL IS "P1[6]";
-    ATTRIBUTE lib_model OF PM1_SPEED(0) : LABEL IS "iocell14";
+    ATTRIBUTE lib_model OF PM1_SPEED(0) : LABEL IS "iocell12";
     ATTRIBUTE Location OF PM1_SPEED(0) : LABEL IS "P3[0]";
-    ATTRIBUTE lib_model OF PM2_input(0) : LABEL IS "iocell15";
+    ATTRIBUTE lib_model OF PM2_input(0) : LABEL IS "iocell13";
     ATTRIBUTE Location OF PM2_input(0) : LABEL IS "P2[6]";
-    ATTRIBUTE lib_model OF PM2_input(1) : LABEL IS "iocell16";
+    ATTRIBUTE lib_model OF PM2_input(1) : LABEL IS "iocell14";
     ATTRIBUTE Location OF PM2_input(1) : LABEL IS "P2[7]";
-    ATTRIBUTE lib_model OF PM2_SPEED(0) : LABEL IS "iocell17";
+    ATTRIBUTE lib_model OF PM2_SPEED(0) : LABEL IS "iocell15";
     ATTRIBUTE Location OF PM2_SPEED(0) : LABEL IS "P3[1]";
-    ATTRIBUTE lib_model OF PM2_tension(0) : LABEL IS "iocell18";
+    ATTRIBUTE lib_model OF PM2_tension(0) : LABEL IS "iocell16";
     ATTRIBUTE Location OF PM2_tension(0) : LABEL IS "P0[1]";
     ATTRIBUTE lib_model OF Net_234 : LABEL IS "macrocell1";
     ATTRIBUTE lib_model OF \UART:BUART:counter_load_not\ : LABEL IS "macrocell2";
@@ -553,7 +523,6 @@ ARCHITECTURE __DEFAULT__ OF dedo_v01 IS
     ATTRIBUTE lib_model OF \PM2_DirCounter:Cnt16:CounterUDB:count_enable\ : LABEL IS "macrocell26";
     ATTRIBUTE lib_model OF \PM2_DirCounter:Net_530\ : LABEL IS "macrocell27";
     ATTRIBUTE lib_model OF \PM2_DirCounter:Net_611\ : LABEL IS "macrocell28";
-    ATTRIBUTE Location OF \ADC:ADC_SAR\ : LABEL IS "F(SAR,1)";
     ATTRIBUTE lib_model OF \UART:BUART:sTX:TxShifter:u0\ : LABEL IS "datapathcell1";
     ATTRIBUTE lib_model OF \UART:BUART:sTX:sCLOCK:TxBitClkGen\ : LABEL IS "datapathcell2";
     ATTRIBUTE lib_model OF \UART:BUART:sTX:TxSts\ : LABEL IS "statusicell1";
@@ -1142,22 +1111,16 @@ BEGIN
             clk_bus => ClockBlock_BUS_CLK_local,
             dsi_clkin_div => open,
             dsi_glb_div => open,
-            dclk_glb_0 => \ADC:Net_376\,
-            dclk_0 => \ADC:Net_376_local\,
-            dclk_glb_1 => \ADC_TS:clock\,
-            dclk_1 => \ADC_TS:clock_local\,
-            dclk_glb_2 => \UART:Net_9\,
-            dclk_2 => \UART:Net_9_local\,
-            dclk_glb_3 => Net_737,
-            dclk_3 => Net_737_local,
-            dclk_glb_4 => Net_431,
-            dclk_4 => Net_431_local,
-            dclk_glb_5 => Net_463,
-            dclk_5 => Net_463_local,
-            dclk_glb_6 => Net_750,
-            dclk_6 => Net_750_local,
-            dclk_glb_7 => Net_464,
-            dclk_7 => Net_464_local);
+            dclk_glb_0 => \ADC_TS:clock\,
+            dclk_0 => \ADC_TS:clock_local\,
+            dclk_glb_1 => \UART:Net_9\,
+            dclk_1 => \UART:Net_9_local\,
+            dclk_glb_2 => Net_737,
+            dclk_2 => Net_737_local,
+            dclk_glb_3 => Net_750,
+            dclk_3 => Net_750_local,
+            dclk_glb_4 => Net_463,
+            dclk_4 => Net_463_local);
 
     PM1_DIR:logicalport
         GENERIC MAP(
@@ -1242,184 +1205,6 @@ BEGIN
             pa_out => PM1_DIR(0)__PA,
             oe => open,
             pad_in => PM1_DIR(0)_PAD,
-            in_clock => open,
-            in_clock_en => '1',
-            in_reset => '0',
-            out_clock => open,
-            out_clock_en => '1',
-            out_reset => '0');
-
-    pote_PIN:logicalport
-        GENERIC MAP(
-            drive_mode => "000",
-            ibuf_enabled => "0",
-            id => "218dad6b-c1d2-43f3-985c-8b58af49b73e",
-            init_dr_st => "0",
-            input_buffer_sel => "00",
-            input_clk_en => 0,
-            input_sync => "1",
-            input_sync_mode => "0",
-            intr_mode => "00",
-            invert_in_clock => 0,
-            invert_in_clock_en => 0,
-            invert_in_reset => 0,
-            invert_out_clock => 0,
-            invert_out_clock_en => 0,
-            invert_out_reset => 0,
-            io_voltage => "",
-            layout_mode => "CONTIGUOUS",
-            oe_conn => "0",
-            oe_reset => 0,
-            oe_sync => "0",
-            output_clk_en => 0,
-            output_clock_mode => "0",
-            output_conn => "0",
-            output_mode => "0",
-            output_reset => 0,
-            output_sync => "0",
-            ovt_hyst_trim => "0",
-            ovt_needed => "0",
-            ovt_slew_control => "00",
-            pa_in_clock => -1,
-            pa_in_clock_en => -1,
-            pa_in_reset => -1,
-            pa_out_clock => -1,
-            pa_out_clock_en => -1,
-            pa_out_reset => -1,
-            pin_aliases => "",
-            pin_mode => "A",
-            por_state => 4,
-            port_alias_group => "",
-            port_alias_required => 0,
-            sio_group_cnt => 0,
-            sio_hifreq => "00000000",
-            sio_hyst => "1",
-            sio_ibuf => "00000000",
-            sio_info => "00",
-            sio_obuf => "00000000",
-            sio_refsel => "00000000",
-            sio_vohsel => "00000000",
-            sio_vtrip => "00000000",
-            slew_rate => "0",
-            spanning => 0,
-            sw_only => 0,
-            use_annotation => "1",
-            vtrip => "10",
-            width => 1,
-            in_clk_inv => 0,
-            in_clken_inv => 0,
-            in_clken_mode => 1,
-            in_rst_inv => 0,
-            out_clk_inv => 0,
-            out_clken_inv => 0,
-            out_clken_mode => 1,
-            out_rst_inv => 0)
-        PORT MAP(
-            in_clock_en => open,
-            in_reset => open,
-            out_clock_en => open,
-            out_reset => open);
-
-    pote_PIN(0):iocell
-        GENERIC MAP(
-            in_sync_mode => 0,
-            out_sync_mode => 0,
-            oe_sync_mode => 0,
-            logicalport => "pote_PIN",
-            logicalport_pin_id => 0,
-            io_capabilities => "0000000000000000000000000000000000000000000000000000000000000010")
-        PORT MAP(
-            pa_out => pote_PIN(0)__PA,
-            oe => open,
-            in_clock => open,
-            in_clock_en => '1',
-            in_reset => '0',
-            out_clock => open,
-            out_clock_en => '1',
-            out_reset => '0');
-
-    \ADC:Bypass\:logicalport
-        GENERIC MAP(
-            drive_mode => "000",
-            ibuf_enabled => "0",
-            id => "eceff5ca-ff1a-45ba-9bb9-b032fbbf895f/16a808f6-2e13-45b9-bce0-b001c8655113",
-            init_dr_st => "0",
-            input_buffer_sel => "",
-            input_clk_en => 0,
-            input_sync => "1",
-            input_sync_mode => "0",
-            intr_mode => "00",
-            invert_in_clock => 0,
-            invert_in_clock_en => 0,
-            invert_in_reset => 0,
-            invert_out_clock => 0,
-            invert_out_clock_en => 0,
-            invert_out_reset => 0,
-            io_voltage => "",
-            layout_mode => "CONTIGUOUS",
-            oe_conn => "0",
-            oe_reset => 0,
-            oe_sync => "0",
-            output_clk_en => 0,
-            output_clock_mode => "0",
-            output_conn => "0",
-            output_mode => "0",
-            output_reset => 0,
-            output_sync => "0",
-            ovt_hyst_trim => "",
-            ovt_needed => "",
-            ovt_slew_control => "",
-            pa_in_clock => -1,
-            pa_in_clock_en => -1,
-            pa_in_reset => -1,
-            pa_out_clock => -1,
-            pa_out_clock_en => -1,
-            pa_out_reset => -1,
-            pin_aliases => "",
-            pin_mode => "A",
-            por_state => 4,
-            port_alias_group => "",
-            port_alias_required => 0,
-            sio_group_cnt => 0,
-            sio_hifreq => "",
-            sio_hyst => "0",
-            sio_ibuf => "00000000",
-            sio_info => "00",
-            sio_obuf => "00000000",
-            sio_refsel => "00000000",
-            sio_vohsel => "",
-            sio_vtrip => "00000000",
-            slew_rate => "0",
-            spanning => 0,
-            sw_only => 0,
-            use_annotation => "0",
-            vtrip => "10",
-            width => 1,
-            in_clk_inv => 0,
-            in_clken_inv => 0,
-            in_clken_mode => 1,
-            in_rst_inv => 0,
-            out_clk_inv => 0,
-            out_clken_inv => 0,
-            out_clken_mode => 1,
-            out_rst_inv => 0)
-        PORT MAP(
-            in_clock_en => open,
-            in_reset => open,
-            out_clock_en => open,
-            out_reset => open);
-
-    \ADC:Bypass(0)\:iocell
-        GENERIC MAP(
-            in_sync_mode => 0,
-            out_sync_mode => 0,
-            oe_sync_mode => 0,
-            logicalport => "\ADC:Bypass\",
-            logicalport_pin_id => 0,
-            io_capabilities => "0000000000000000000000000000000000000000000000000000000000000010")
-        PORT MAP(
-            pa_out => \\\ADC:Bypass(0)\\__PA\,
-            oe => open,
             in_clock => open,
             in_clock_en => '1',
             in_reset => '0',
@@ -2943,44 +2728,6 @@ BEGIN
             main_1 => \PM2_DirCounter:Net_1251\,
             main_2 => \PM2_DirCounter:Cnt16:CounterUDB:prevCompare\);
 
-    \ADC:IRQ\:interrupt
-        GENERIC MAP(
-            int_type => "10",
-            is_nmi => 0)
-        PORT MAP(
-            interrupt => Net_297,
-            clock => ClockBlock_BUS_CLK);
-
-    \ADC:ADC_SAR\:sarcell
-        GENERIC MAP(
-            cy_registers => "")
-        PORT MAP(
-            clk_udb => \ADC:Net_376_local\,
-            sof_udb => open,
-            vp_ctl_udb_3 => open,
-            vp_ctl_udb_2 => open,
-            vp_ctl_udb_1 => open,
-            vp_ctl_udb_0 => open,
-            vn_ctl_udb_3 => open,
-            vn_ctl_udb_2 => open,
-            vn_ctl_udb_1 => open,
-            vn_ctl_udb_0 => open,
-            irq => \ADC:Net_252\,
-            next => Net_300,
-            data_out_udb_11 => \ADC:Net_207_11\,
-            data_out_udb_10 => \ADC:Net_207_10\,
-            data_out_udb_9 => \ADC:Net_207_9\,
-            data_out_udb_8 => \ADC:Net_207_8\,
-            data_out_udb_7 => \ADC:Net_207_7\,
-            data_out_udb_6 => \ADC:Net_207_6\,
-            data_out_udb_5 => \ADC:Net_207_5\,
-            data_out_udb_4 => \ADC:Net_207_4\,
-            data_out_udb_3 => \ADC:Net_207_3\,
-            data_out_udb_2 => \ADC:Net_207_2\,
-            data_out_udb_1 => \ADC:Net_207_1\,
-            data_out_udb_0 => \ADC:Net_207_0\,
-            eof_udb => Net_297);
-
     \UART:RXInternalInterrupt\:interrupt
         GENERIC MAP(
             int_type => "10",
@@ -3161,12 +2908,12 @@ BEGIN
             status_0 => open,
             interrupt => Net_16);
 
-    READ_RVT_ISR:interrupt
+    CHECK_MOVEMENT_ISR:interrupt
         GENERIC MAP(
             int_type => "00",
             is_nmi => 0)
         PORT MAP(
-            interrupt => Net_431_local,
+            interrupt => ClockBlock_1k,
             clock => ClockBlock_BUS_CLK);
 
     SPD_COMMAND_ISR:interrupt
@@ -3192,7 +2939,7 @@ BEGIN
             int_type => "00",
             is_nmi => 0)
         PORT MAP(
-            interrupt => Net_750_local,
+            interrupt => Net_463_local,
             clock => ClockBlock_BUS_CLK);
 
     RVT_COMMAND_ISR:interrupt
@@ -3783,7 +3530,7 @@ BEGIN
         GENERIC MAP(
             cy_alt_mode => 0,
             cy_init_value => "0000000",
-            cy_period => "0000101",
+            cy_period => "0000010",
             cy_route_en => 1,
             cy_route_ld => 1,
             clk_inv => '0',
@@ -4336,14 +4083,6 @@ BEGIN
             is_nmi => 0)
         PORT MAP(
             interrupt => Net_690,
-            clock => ClockBlock_BUS_CLK);
-
-    CHECK_MOVEMENT_ISR:interrupt
-        GENERIC MAP(
-            int_type => "00",
-            is_nmi => 0)
-        PORT MAP(
-            interrupt => Net_464_local,
             clock => ClockBlock_BUS_CLK);
 
     \UART:BUART:txn\:macrocell

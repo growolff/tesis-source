@@ -30,17 +30,17 @@ int32_t fn_mapper(int32_t x, int32_t in_min, int32_t in_max, int32_t out_min, in
     return (int32_t)(out_min + slope*(x - in_min));   
 }
 
-uint8 fn_mapper_8b(int32_t x, int32_t in_min, int32_t in_max, int32_t out_min, int32_t out_max)
+uint8_t fn_mapper_8b(int32_t x, int32_t in_min, int32_t in_max, int32_t out_min, int32_t out_max)
 {
     double slope = 1.0 * (out_max - out_min)/(in_max - in_min);
     return (uint8)(out_min + slope*(x - in_min));
 }
-
-int32 get_tension_g(int16 tension)
+/*
+int32_t get_tension_g(int16 tension)
 {
-       return (int32)((5000.0/4096.0)*tension/0.0035)/1000;
-}
-
+       return (int32_t)((5000.0/4096.0)*tension/0.0035)/1000;
+}*/
+/*
 void ProcessCommandMsg(void)
 {    
     //check received message for any valid command and execute it if necessary or report old value
@@ -69,9 +69,6 @@ void ProcessCommandMsg(void)
             if (PM1.control_mode == 1){
                 sprintf(TransmitBuffer, "*%d*%d*%d\r\n",(int)(PM1.rvt_params[0]*100.0),(int)(PM1.rvt_params[1]*100.0),(int)(PM1.rvt_params[2]*100.0));     
             }
-            if (PM1.control_mode == 2){
-                sprintf(TransmitBuffer, "*%d*%d*%d\r\n",(int)(PM1.spd_params[0]*100.0),(int)(PM1.spd_params[1]*100.0),(int)(PM1.spd_params[2]*100.0));    
-            }
             if (PM1.control_mode == 3){
                 sprintf(TransmitBuffer, "*%d*%d*%d\r\n",(int)(PM1.tns_params[0]*100.0),(int)(PM1.tns_params[1]*100.0),(int)(PM1.tns_params[2]*100.0));
             }
@@ -80,10 +77,6 @@ void ProcessCommandMsg(void)
         case 'W': // for writing in pins
             switch(RB.dpin)
             {
-                case 'B':
-                    //sprintf(strMsg1,"%d\r", RB.onoff); UART_PutString(strMsg1);
-                    MOTOR_setPinBRAKEn(motors[atoi(&RB.motor)], RB.onoff);
-                    break;
                 case 'E':
                     //sprintf(strMsg1,"%s\r", "CASE E"); UART_PutString(strMsg1);
                     MOTOR_setPinENABLE(motors[atoi(&RB.motor)], RB.onoff);
@@ -119,7 +112,7 @@ void ProcessCommandMsg(void)
         case 'q':
             SoftwareReset = TRUE;
             break;
-        /*
+        
         case 'P':
             if(strlen(RB.valstr) > 0){
                 updatePID = TRUE;
@@ -148,7 +141,7 @@ void ProcessCommandMsg(void)
             MOTOR_setPinBRAKEn(&PM1);
             MOTOR_setPinBRAKEn(&PM2);
             break;*/
-    }
+    //}
     /*
     switch(motor)
     {
@@ -163,7 +156,7 @@ void ProcessCommandMsg(void)
             UART_PutString(msg);
             break;
     }
-    */
+    *//*
     if (RB.cmd == '!'){
         if(strlen(RB.valstr) > 0){
             PM1.ref_rvt = atoi(RB.valstr);
@@ -192,9 +185,6 @@ void ProcessCommandMsg(void)
             if (PM1.control_mode == 1){
                 sprintf(msg, "*%d*%d*%d\r\n",(int)(PM1.rvt_params[0]*100.0),(int)(PM1.rvt_params[1]*100.0),(int)(PM1.rvt_params[2]*100.0));     
             }
-            if (PM1.control_mode == 2){
-                sprintf(msg, "*%d*%d*%d\r\n",(int)(PM1.spd_params[0]*100.0),(int)(PM1.spd_params[1]*100.0),(int)(PM1.spd_params[2]*100.0));    
-            }
             if (PM1.control_mode == 3){
                 sprintf(msg, "*%d*%d*%d\r\n",(int)(PM1.tns_params[0]*100.0),(int)(PM1.tns_params[1]*100.0),(int)(PM1.tns_params[2]*100.0));
             }
@@ -206,16 +196,12 @@ void ProcessCommandMsg(void)
             MOTOR_setRvtControlParams(&PM1,(float)PB.pVal/100.0,(float)PB.iVal/100.0,(float)PB.dVal/100.0);
             MOTOR_setRvtControlParams(&PM2,(float)PB.pVal/100.0,(float)PB.iVal/100.0,(float)PB.dVal/100.0);
         }
-        else if(PM1.control_mode == 2){
-            MOTOR_setSpdControlParams(&PM1,(float)PB.pVal/100.0,(float)PB.iVal/100.0,(float)PB.dVal/100.0);
-            MOTOR_setSpdControlParams(&PM2,(float)PB.pVal/100.0,(float)PB.iVal/100.0,(float)PB.dVal/100.0);
-        }
         else if(PM1.control_mode == 3){
             MOTOR_setTnsControlParams(&PM1,(float)PB.pVal/100.0,(float)PB.iVal/100.0,(float)PB.dVal/100.0);
             MOTOR_setTnsControlParams(&PM2,(float)PB.pVal/100.0,(float)PB.iVal/100.0,(float)PB.dVal/100.0);
         }
         updatePID = FALSE;
     }
-}
+}*/
 
 /* [] END OF FILE */

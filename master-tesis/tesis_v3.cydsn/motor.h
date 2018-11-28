@@ -26,7 +26,7 @@
     
 #define HIGH_FREQ_CLOCK 20000
     
-#define VEL_MAX_MOTOR 7000
+#define VEL_MAX_MOTOR 9000
 #define NUM_SENSORS 6
 int16 * TS_array;
     
@@ -42,11 +42,9 @@ typedef struct PIN_t
 typedef struct MOTOR_t {
     uint8_t control_mode;
 
-    PID_t rvt_controller; // motor revolution
-    PID_t spd_controller; // motor speed
+    struct PID_t rvt_controller; // motor revolution
     PID_t tns_controller; // string tension
     
-    float spd_params[3];
     float rvt_params[3];
     float tns_params[3];
     
@@ -56,27 +54,22 @@ typedef struct MOTOR_t {
     int32_t init_pos; // rotor init position
     
     int32_t curr_rvt;
-    int32_t curr_spd;
     int32_t curr_tns;
+    int32_t curr_spd;
     
     int32_t ref_rvt;
-    int32_t ref_spd;
     int32_t ref_tns;
+    int32_t ref_spd;
     
-    int32_t spdPID_out;
-    int32_t rvtPID_out;
-    int32_t tnsPID_out;
+    VAR_TYPE rvtPID_out;
+    int32_t tnsPID_out; 
 
-    PIN_t BRAKEn;
     PIN_t DIR;
     PIN_t ENABLE;
     
     // for TR calculus
     float R,L,A;
     float tension_control_signal;
-    
-    int32_t MAX_RVT;
-    int32_t MIN_RVT;
     
     int32_t error_check_counter;
      
@@ -89,17 +82,16 @@ typedef struct MOTOR_t {
     
 } MOTOR_t;
 
-void MOTOR_init(MOTOR_t* motor, PIN_t pin_enable, PIN_t pin_braken, PIN_t pin_dir);
+void MOTOR_init(MOTOR_t* motor, PIN_t pin_enable, PIN_t pin_dir);
 void MOTOR_setControlMode(MOTOR_t* motor, uint8_t mode);
-void MOTOR_initControlParams(MOTOR_t* motor, float* rvt, float* spd, float* tns);
-void MOTOR_setSpdControlParams(MOTOR_t* motor, float kp, float ki, float kd);
+void MOTOR_initControlParams(MOTOR_t* motor, float* rvt, float* tns);
 void MOTOR_setRvtControlParams(MOTOR_t* motor, float kp, float ki, float kd);
 void MOTOR_setTnsControlParams(MOTOR_t* motor, float kp, float ki, float kd);
 void MOTOR_resetVariables(MOTOR_t* motor);
 
-void MOTOR_readCurrentSpeed(MOTOR_t* motor, uint8 motor_number);
-void MOTOR_readCurrentRevolution(MOTOR_t* motor, uint8 motor_number);
-void MOTOR_readCurrentTension(MOTOR_t* motor, uint8 motor_number);
+void MOTOR_readSpeed(MOTOR_t* motor);
+void MOTOR_readRevolution(MOTOR_t* motor);
+void MOTOR_readTension(MOTOR_t* motor, uint8 motor_number);
 
 void MOTOR_checkDir(MOTOR_t* motor, uint8 motor_number);
 void MOTOR_fixParche(MOTOR_t* motor);
@@ -107,7 +99,7 @@ void MOTOR_checkError(MOTOR_t* motor);
 
 void MOTOR_externControl(MOTOR_t* motor, uint8 ctrl, int32 ref);
 void MOTOR_setRef(MOTOR_t* motor, uint8 ctrl, int32 ref);
-void MOTOR_setRvtRef(MOTOR_t* motor, int32_t rvtRef);
+void MOTOR_setRvtRef(MOTOR_t* motor);
 void MOTOR_setSpdRef(MOTOR_t* motor, int32_t spdRef);
 void MOTOR_setTnsRef(MOTOR_t* motor, int32_t tnsRef);
 
@@ -122,13 +114,10 @@ uint8 MOTOR_checkActuatorLimits(MOTOR_t* motor);
 int16 * MOTOR_StoreADCResults();
 
 // pin operations
-void MOTOR_ToggleHandBrake(MOTOR_t* motor);
 void MOTOR_ToggleDir(MOTOR_t* motor);
 
-void MOTOR_clearPinBRAKEn(MOTOR_t * motor);
 void MOTOR_clearPinDIR(MOTOR_t * motor);
 void MOTOR_clearPinENABLE(MOTOR_t * motor);
-void MOTOR_setPinBRAKEn(MOTOR_t * motor, uint8_t setPin);
 void MOTOR_setPinDIR(MOTOR_t * motor, uint8_t setPin);
 void MOTOR_setPinENABLE(MOTOR_t * motor, uint8_t setPin);
 

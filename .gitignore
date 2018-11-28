@@ -68,3 +68,10 @@ master-tesis/dedo_v01.cydsn/*.cyprj.growo
 master-tesis/dedo_v01.cydsn/*.rpt
 master-tesis/dedo_v01.cydsn/*.svd
 master-tesis/dedo_v01.cydsn/*.html
+codegentemp
+/master-tesis/tesis_v3.cydsn/CortexM3
+/master-tesis/tesis_v3.cydsn/Generated_Source
+/master-tesis/tesis_v3.cydsn/*.log
+/master-tesis/t3sis_v4.cydsn/Generated_Source
+/master-tesis/t3sis_v4.cydsn/Export
+/master-tesis/t3sis_v4.cydsn/CortexM3

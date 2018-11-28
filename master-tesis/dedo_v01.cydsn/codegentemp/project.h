@@ -1,7 +1,7 @@
 /*******************************************************************************
 * File Name: project.h
 * 
-* PSoC Creator  4.1 Update 1
+* PSoC Creator  4.1
 *
 * Description:
 * It contains references to all generated header files and should not be modified.
@@ -21,9 +21,6 @@
 #include "cydisabledsheets.h"
 #include "PM1_DIR_aliases.h"
 #include "PM1_DIR.h"
-#include "pote_PIN_aliases.h"
-#include "pote_PIN.h"
-#include "ADC.h"
 #include "PM1_BRAKEn_aliases.h"
 #include "PM1_BRAKEn.h"
 #include "PM1_ENABLE_aliases.h"
@@ -31,9 +28,8 @@
 #include "UART.h"
 #include "PM1_input_aliases.h"
 #include "PM1_input.h"
-#include "READ_RVT_ISR.h"
-#include "CLOCK_200.h"
-#include "SPD_CLOCK_10K.h"
+#include "CHECK_MOVEMENT_ISR.h"
+#include "SPD_CLOCK_20K.h"
 #include "control_clk.h"
 #include "SPD_COMMAND_ISR.h"
 #include "PM2_SPD_VDAC8.h"
@@ -67,12 +63,6 @@
 #include "PM2_SPEED.h"
 #include "PM2_tension_aliases.h"
 #include "PM2_tension.h"
-#include "CHECK_MOVEMENT_ISR.h"
-#include "CLOCK_10.h"
-#include "ADC_IRQ.h"
-#include "ADC_theACLK.h"
-#include "ADC_Bypass_aliases.h"
-#include "ADC_Bypass.h"
 #include "UART_IntClock.h"
 #include "PM1_DirCounter_isr.h"
 #include "PM1_DirCounter_Cnt16.h"
