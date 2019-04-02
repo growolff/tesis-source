@@ -35,6 +35,11 @@ void MOTOR_init(MOTOR_t* motor, PIN_t pin_enable, PIN_t pin_dir)
     }
 }
 
+void MOTOR_setControlMode(MOTOR_t* motor, uint8_t mode)
+{
+    motor->control_mode = mode;
+}
+
 void MOTOR_initControlParams(MOTOR_t* motor, float* rvt)
 {
     motor->rvt_params[0] = rvt[0];
@@ -149,11 +154,11 @@ void MOTOR_setPinDIR(MOTOR_t * motor, uint8_t setPin)
 }
 void MOTOR_setPinENABLE(MOTOR_t * motor, uint8_t setPin)
 {
-    if(setPin == 0){
+    if(setPin == 0){ // turn off
         *motor->ENABLE.DR &= ~(motor->ENABLE.MASK);
         motor->ENABLE.STATE = 0; 
     }
-    else if(setPin == 1){
+    else if(setPin == 1){ // turn on
         *motor->ENABLE.DR |= motor->ENABLE.MASK;
         motor->ENABLE.STATE = 1;
     }

@@ -63,7 +63,9 @@ int main(void)
     MOTOR_setPinDIR(&PM1,0);
     MOTOR_setPinENABLE(&PM1,1);
     
-    PM1.ref_rvt = -2;
+    PM1.ref_rvt = 0;
+    
+    ContinuouslySendData = FALSE;
 
     for(;;)
     {
@@ -75,11 +77,13 @@ int main(void)
             }
         }
         
-        ContinuouslySendData = FALSE;
         /* Send data based on last UART command */
         if(ContinuouslySendData)
         {
-            sprintf(TransmitBuffer, "V:%d\tP:%d\tO:%d\r\n",PM1.curr_spd,PM1.curr_rvt,PM1.ref_spd);
+            //sprintf(TransmitBuffer, "V:%d\tP:%d\tO:%d\r\n",PM1.curr_spd,PM1.curr_rvt,PM1.ref_spd);
+            sprintf(TransmitBuffer, "Ref: %d\tActual: %d\tTens: %d\r\n",(int)PM1.ref_rvt,(int)PM1.curr_rvt,(int)(PM1.curr_rvt));
+            
+            sprintf(TransmitBuffer, "%d\t%d\r\n",PM1.ref_rvt,PM1.curr_rvt);
             /* Send out the data */
             UART_PutString(TransmitBuffer);
        

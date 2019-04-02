@@ -34,7 +34,7 @@ typedef struct PIN_t
 } PIN_t;
     
 typedef struct MOTOR_t {
-    uint8_t control_mode;
+    uint8_t control_mode; // 1: position control, 2: tension control
 
     struct PID_t rvt_controller; // motor revolution
     
@@ -71,6 +71,8 @@ void MOTOR_setRvtControlParams(MOTOR_t* motor, float kp, float ki, float kd);
 
 void MOTOR_readSpeed(MOTOR_t* motor);
 void MOTOR_readRevolution(MOTOR_t* motor);
+
+void MOTOR_setControlMode(MOTOR_t* motor, uint8_t mode);
 
 void MOTOR_checkDir(MOTOR_t* motor, uint8 motor_number);
 

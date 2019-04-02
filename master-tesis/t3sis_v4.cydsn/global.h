@@ -42,8 +42,8 @@ volatile ParamBuffer PB;     //volatile struct TParamBuffer PB;
 
 /* position control parameters */
 #define KP_POS 1.0
-#define KI_POS 1.0
-#define KD_POS 0.0
+#define KI_POS 0.0
+#define KD_POS 0.00
 
 
 /* Variable to store UART received character */
@@ -69,7 +69,7 @@ MOTOR_t PM2;
 
 MOTOR_t* motors[2];
 
-char strMsg1[9];
+char strMsg[10];
 
 char TransmitBuffer[TRANSMIT_BUFFER_SIZE];
 
