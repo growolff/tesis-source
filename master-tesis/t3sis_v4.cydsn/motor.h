@@ -16,13 +16,18 @@
 #include "pid.h"
 #include "project.h"
 #include "math.h"
+#include <stdio.h>
 
 #define PMF 1
     
 #define HIGH_FREQ_CLOCK 20000
+    
+#define DBG_SIZE 10
    
-#define NUM_SENSORS 6
+#define NUM_SENSORS 3
 int16 * TS_array;
+    
+char msg[10];
     
 #define NUMREADINGS 50
     
@@ -36,7 +41,7 @@ typedef struct PIN_t
 typedef struct MOTOR_t {
     uint8_t control_mode; // 1: position control, 2: tension control
 
-    struct PID_t rvt_controller; // motor revolution
+    struct PID_t rvt_controller; // motor revolution controller
     
     float rvt_params[3];
     
@@ -61,6 +66,7 @@ typedef struct MOTOR_t {
     int32_t total;                  // the running total
     int32_t average;                // the average
    
+    char dbg[DBG_SIZE];
     
     
 } MOTOR_t;
@@ -68,6 +74,11 @@ typedef struct MOTOR_t {
 void MOTOR_init(MOTOR_t* motor, PIN_t pin_enable, PIN_t pin_dir);
 void MOTOR_initControlParams(MOTOR_t* motor, float* rvt);
 void MOTOR_setRvtControlParams(MOTOR_t* motor, float kp, float ki, float kd);
+
+/* debug level */
+void motor_echod(int data);
+void motor_echof(float data);
+void dbgLed();
 
 void MOTOR_readSpeed(MOTOR_t* motor);
 void MOTOR_readRevolution(MOTOR_t* motor);

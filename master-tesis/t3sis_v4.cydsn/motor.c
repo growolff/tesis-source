@@ -35,6 +35,25 @@ void MOTOR_init(MOTOR_t* motor, PIN_t pin_enable, PIN_t pin_dir)
     }
 }
 
+void dbgLed()
+{
+    LED1_Write(0);
+    CyDelay(50);
+
+}
+
+void motor_echof(float data)
+{
+    sprintf(msg,"%.2f\r\n", data);
+    UART_PutString(msg);  
+}
+
+void motor_echod(int data)
+{
+    sprintf(msg,"%d\r\n", data);
+    UART_PutString(msg);   
+}
+
 void MOTOR_setControlMode(MOTOR_t* motor, uint8_t mode)
 {
     motor->control_mode = mode;
@@ -49,10 +68,13 @@ void MOTOR_initControlParams(MOTOR_t* motor, float* rvt)
 
 void MOTOR_setRvtControlParams(MOTOR_t* motor, float kp, float ki, float kd)
 {
+    //dbgLed();
     motor->rvt_params[0] = kp;
     motor->rvt_params[1] = ki;
     motor->rvt_params[2] = kd;
+
     PID_setCoeffs(&motor->rvt_controller,kp,ki,kd);
+    //motor_echof(motor->rvt_params[0]);
 }
 
 void MOTOR_sendSpeedCommand(uint8 speed_value)

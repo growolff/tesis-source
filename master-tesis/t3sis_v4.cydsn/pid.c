@@ -44,6 +44,11 @@ void PID_setCoeffs(PID_t* pid, float p, float i, float d)
     pid->kI = i;
     pid->kD = d;
     #endif
+    
+    pid->refVal = 0;
+    pid->inputValue = 0;
+    pid->iTerm = 0;
+    pid->lastValue = 0;
 }
 
 void PID_setRef(PID_t* pid, VAR_TYPE pnt)

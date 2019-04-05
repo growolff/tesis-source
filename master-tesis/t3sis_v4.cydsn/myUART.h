@@ -30,9 +30,9 @@ union TRxBuffer {
         uint8_t xff1;
         uint8_t id;      // motor id
         uint8_t cmd;     // 1-byte command: Write, Read, Control, get info, set pid, etc.
-        int16_t pref;
+        int16_t pref;    // position reference
         int16_t tref;
-        int16_t P;
+        int16_t P;      // 
         int16_t I;
         int16_t D;
     };

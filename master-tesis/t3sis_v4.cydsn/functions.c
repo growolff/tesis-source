@@ -26,7 +26,7 @@ void echod(int data)
 
 void echof(float data)
 {
-    sprintf(strMsg,"%f\r\n", data);
+    sprintf(strMsg,"%.2f\r\n", data);
     UART_PutString(strMsg);  
 }
 
@@ -62,11 +62,12 @@ void ProcessCommandMsg(void)
     //echod(RB.cmd);
     //echod(RB.pref);
     //echod(RB.tref);
+    float p,i,d;
     
     switch(RB.cmd)
     {
         case 1: /* set reference of position controller of motor RB.id */
-            motors[RB.id]->ref_rvt = RB.pref;
+            PM1.ref_rvt = RB.pref;
             break;
         case 2: /* set reference of tension controller of motor RB.id */
         
@@ -78,16 +79,27 @@ void ProcessCommandMsg(void)
         case 13: /* set control mode */
             // cmd(0,13,-1,0,0,0,0)
             if (RB.pref == -1){
-                MOTOR_setControlMode(motors[RB.id],1);
+                MOTOR_setControlMode(motors[RB.id],1);  
             } 
             else if (RB.tref == -1){
                 MOTOR_setControlMode(motors[RB.id],2);
             }
             break;
         case 14: /* Set pid values */ 
+            p = RB.P/1000.0;
+            i = RB.I/1000.0;
+            d = RB.D/1000.0;
+            
+            MOTOR_setRvtControlParams(motors[RB.id],p,i,d);
+            /*
             if( motors[RB.id]->control_mode == 1){
-                MOTOR_setRvtControlParams(motors[RB.id],(float)RB.P/1000.0,(float)RB.I/1000.0,RB.D/1000.0);
-            }
+                MOTOR_setRvtControlParams(motors[RB.id],(float)p,(float)i,(float)d);
+            }*/
+            
+            //echo("Debug1");
+            //echod(p*1000);
+            //echo("Debug2");
+            //echof(motors[RB.id]->rvt_controller.kP);    
             break;
         case 16:
             echod(RB.P);
@@ -108,6 +120,10 @@ void ProcessCommandMsg(void)
             if(motors[RB.id]->ENABLE.STATE == 0)
                 MOTOR_setPinENABLE(motors[RB.id], 1);
             break;
+        case 99: /* sw rebbot */
+            CySoftwareReset();
+            break;
+                
     }
     
 }

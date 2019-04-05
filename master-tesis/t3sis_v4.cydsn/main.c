@@ -63,9 +63,13 @@ int main(void)
     MOTOR_setPinDIR(&PM1,0);
     MOTOR_setPinENABLE(&PM1,1);
     
-    PM1.ref_rvt = 0;
+    PM1.ref_rvt = 200;
     
     ContinuouslySendData = FALSE;
+    
+    /* transmition rate */
+    int rate = 2;
+    int count = 0;
 
     for(;;)
     {
@@ -81,17 +85,24 @@ int main(void)
         if(ContinuouslySendData)
         {
             //sprintf(TransmitBuffer, "V:%d\tP:%d\tO:%d\r\n",PM1.curr_spd,PM1.curr_rvt,PM1.ref_spd);
-            sprintf(TransmitBuffer, "Ref: %d\tActual: %d\tTens: %d\r\n",(int)PM1.ref_rvt,(int)PM1.curr_rvt,(int)(PM1.curr_rvt));
+            sprintf(TransmitBuffer, "Ref: %d\tActual: %d\tTens: %d\r\n",(int)PM1.ref_rvt,(int)PM1.curr_rvt,(int)(PM1.rvt_controller.kP));
             
-            sprintf(TransmitBuffer, "%d\t%d\r\n",PM1.ref_rvt,PM1.curr_rvt);
+            //sprintf(TransmitBuffer, "%d\t%d\t%d\r\n",PM1.ref_rvt,PM1.curr_rvt,PM1.ref_spd);
             /* Send out the data */
-            UART_PutString(TransmitBuffer);
+            
+            if (count%rate == 0)
+            {
+                UART_PutString(TransmitBuffer);
+                count = 0;
+            }
        
         }
         CyDelay(25); // works at 40 Hz
         
         LED1_Write(_state_);
         _state_ = !_state_;
+        
+        count++;
     }
 }
 

@@ -41,9 +41,9 @@ volatile ParamBuffer PB;     //volatile struct TParamBuffer PB;
 #define MAX_COUNTER 6500 // max counter for checking zero speed
 
 /* position control parameters */
-#define KP_POS 1.0
+#define KP_POS 1.5
 #define KI_POS 0.0
-#define KD_POS 0.00
+#define KD_POS 0.0
 
 
 /* Variable to store UART received character */
