@@ -19,6 +19,10 @@ void MOTOR_init(MOTOR_t* motor, PIN_t pin_enable, PIN_t pin_dir)
     PID_init(&motor->rvt_controller,motor->rvt_params[0],motor->rvt_params[1],motor->rvt_params[2]);
     PID_setMaxValue(&motor->rvt_controller, 255);
     PID_setMinValue(&motor->rvt_controller, -255);
+    
+    PID_init(&motor->spd_controller,motor->spd_params[0],motor->spd_params[1],motor->spd_params[2]);
+    PID_setMaxValue(&motor->spd_controller, 9000);
+    PID_setMinValue(&motor->spd_controller, 0);
    
     motor->DIR = pin_dir;
     motor->ENABLE = pin_enable;
@@ -39,7 +43,6 @@ void dbgLed()
 {
     LED1_Write(0);
     CyDelay(50);
-
 }
 
 void motor_echof(float data)
@@ -59,27 +62,22 @@ void MOTOR_setControlMode(MOTOR_t* motor, uint8_t mode)
     motor->control_mode = mode;
 }
 
-void MOTOR_initControlParams(MOTOR_t* motor, float* rvt)
-{
-    motor->rvt_params[0] = rvt[0];
-    motor->rvt_params[1] = rvt[1];
-    motor->rvt_params[2] = rvt[2];
-}
-
 void MOTOR_setRvtControlParams(MOTOR_t* motor, float kp, float ki, float kd)
 {
-    //dbgLed();
     motor->rvt_params[0] = kp;
     motor->rvt_params[1] = ki;
     motor->rvt_params[2] = kd;
 
     PID_setCoeffs(&motor->rvt_controller,kp,ki,kd);
-    //motor_echof(motor->rvt_params[0]);
 }
 
-void MOTOR_sendSpeedCommand(uint8 speed_value)
+void MOTOR_setSpdControlParams(MOTOR_t* motor, float kp, float ki, float kd)
 {
-    SPEED_DAC_SetValue(speed_value);
+    motor->spd_params[0] = kp;
+    motor->spd_params[1] = ki;
+    motor->spd_params[2] = kd;
+
+    PID_setCoeffs(&motor->spd_controller,kp,ki,kd);
 }
 
 void MOTOR_setRvtRef(MOTOR_t* motor)
@@ -87,46 +85,68 @@ void MOTOR_setRvtRef(MOTOR_t* motor)
     PID_setRef(&motor->rvt_controller,motor->ref_rvt);
 }
 
+void MOTOR_setSpdRef(MOTOR_t* motor)
+{    
+    PID_setRef(&motor->spd_controller,(float)motor->ref_spd*1.0);
+}
+
 void MOTOR_readSpeed(MOTOR_t* motor)
 {
     motor->ca = PM1_HA_TIMER_ReadCounter();
     PM1_HA_TIMER_WriteCounter(0);
-         
-    motor->period_ha = -1*(motor->ca+motor->ma);
-    motor->ma = motor->ca;
+           
+    if(motor->curr_dir == -1){
+        motor->period_ha = 0;
+    }
+    else{
+        motor->period_ha = -1*(motor->ca+motor->ma);
+        motor->ma = motor->ca;
+    }
     motor->curr_spd = (HIGH_FREQ_CLOCK/motor->period_ha) * 30;
+        
+}
+
+void MOTOR_readSpeed_2(MOTOR_t* motor)
+{
+    uint32_t counter;
     
+    if(motor->curr_dir == -1){
+        counter = 0;
+    }
+    else{
+        counter = SPD_COUNTER_ReadCapture();
+    }
+    motor->curr_spd = 60*HIGH_FREQ_CLOCK/(counter*4);
 }
 
 void MOTOR_readRevolution(MOTOR_t* motor)
-{
-    motor->rvt_aux = PM1_DirCounter_GetCounter();
-    motor->curr_rvt = motor->rvt_aux - motor->init_pos;
+{  
+    MOTOR_checkDir(motor);
+    motor->curr_rvt = (motor->rvt_aux - motor->init_pos);
 }
 
-void MOTOR_checkDir(MOTOR_t* motor, uint8 motor_number)
+void MOTOR_checkDir(MOTOR_t* motor)
 {
-    switch(motor_number) {
-        case 1:
-            motor->rvt_aux = PM1_DirCounter_GetCounter();
-            break;
-    }
-    if ( motor->rvt_aux - motor->rvt_last_count > 0 )
+    motor->rvt_aux = PM1_DirCounter_GetCounter();
+    
+    motor->diff = motor->rvt_aux - motor->rvt_last_count;
+    
+    if ( motor->diff > 0 )
     {
         // if > 0 its turning right (CW) 
         motor->curr_dir = 1;
     }
-    else if ( motor->rvt_aux - motor->rvt_last_count < 0 )
+    else if ( motor->diff < 0 )
     {
         // if < 0 its turning left (CCW)
-        motor->curr_dir = -1;
-        //motor->curr_rvt = motor->curr_rvt < motor->MIN_RVT * 4 ? motor->MIN_RVT * 4 : motor->curr_rvt ;
-    }
-    else if ( motor->rvt_aux - motor->rvt_last_count == 0 )
-    {
-        // if = 0 its not rotating
         motor->curr_dir = 0;
-        motor->curr_spd = 0;
+        //motor->curr_rvt = motor->curr_rvt < motor->MIN_RVT * 4 ? motor->MIN_RVT * 4 : motor->curr_rvt ;
+    } 
+    //if ( motor->rvt_aux - motor->rvt_last_count == 0 )
+    else
+    {
+        // if == 0 its not rotating
+        motor->curr_dir = -1;
     }
     // update variable
     motor->rvt_last_count = motor->rvt_aux;

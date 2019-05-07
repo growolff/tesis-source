@@ -37,14 +37,10 @@ volatile ParamBuffer PB;     //volatile struct TParamBuffer PB;
 #define TRUE   1
 #define TRANSMIT_BUFFER_SIZE  16
 
-#define HF_CLK 200000 // rate of high frequency clock for speed measurement
-#define MAX_COUNTER 6500 // max counter for checking zero speed
+// main loop check rate
+#define RATE_HZ 40
 
-/* position control parameters */
-#define KP_POS 1.5
-#define KI_POS 0.0
-#define KD_POS 0.0
-
+//#define MAX_COUNTER 6500 // max counter for checking zero speed
 
 /* Variable to store UART received character */
 uint8 Ch;
@@ -71,7 +67,20 @@ MOTOR_t* motors[2];
 
 char strMsg[10];
 
+float factor;
+
+int pid_rvt[3];
+int pid_spd[3];
+
+char num[3]; // para printear
+char lect[3]; // para leer de la eeprom
+cystatus writeStatus;
+
 char TransmitBuffer[TRANSMIT_BUFFER_SIZE];
+
+void echo(char* data);
+void echod(int data);
+void echof(float data);
 
 #endif // GLOBAL_VARIABLES_FILE_H
 

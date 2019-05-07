@@ -20,6 +20,7 @@ CY_ISR_PROTO(PM1_HA_INT);          // process PM1_HA_ISR interrupt
 CY_ISR_PROTO(PM2_HA_INT);          // process PM2_HA_ISR interrupt
 
 CY_ISR_PROTO(RVT_COMMAND_INT);
+CY_ISR_PROTO(SPD_COMMAND_INT);
 
 #endif // ISR_FUNCTIONS_H
 

@@ -45,10 +45,6 @@ void PID_setCoeffs(PID_t* pid, float p, float i, float d)
     pid->kD = d;
     #endif
     
-    pid->refVal = 0;
-    pid->inputValue = 0;
-    pid->iTerm = 0;
-    pid->lastValue = 0;
 }
 
 void PID_setRef(PID_t* pid, VAR_TYPE pnt)
@@ -87,6 +83,8 @@ VAR_TYPE PID_calculatePID(PID_t *pid, VAR_TYPE input)
     
     //output = (pid->kP * error) / FLOAT_TO_INT_SCALE;
     output = (pid->kP * error);
+    
+    pid->dbg = output;
     
     if (output > pid->maxValue) output = pid->maxValue;
     if (output < pid->minValue) output = pid->minValue;
