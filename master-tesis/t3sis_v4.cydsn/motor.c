@@ -90,6 +90,7 @@ void MOTOR_setSpdRef(MOTOR_t* motor)
     PID_setRef(&motor->spd_controller,(float)motor->ref_spd*1.0);
 }
 
+/*
 void MOTOR_readSpeed(MOTOR_t* motor)
 {
     motor->ca = PM1_HA_TIMER_ReadCounter();
@@ -104,9 +105,9 @@ void MOTOR_readSpeed(MOTOR_t* motor)
     }
     motor->curr_spd = (HIGH_FREQ_CLOCK/motor->period_ha) * 30;
         
-}
+}*/
 
-void MOTOR_readSpeed_2(MOTOR_t* motor)
+void MOTOR_readSpeed(MOTOR_t* motor)
 {
     uint32_t counter;
     

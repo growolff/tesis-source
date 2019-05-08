@@ -11,11 +11,11 @@
 */
 
 #include "isr_functions.h"
-
+/*
 CY_ISR(PM1_HA_INT) //interrupt on level change in PM1_HA signal
 {
     //MOTOR_readSpeed(motors[0]);
-}
+}*/
 
 CY_ISR(RVT_COMMAND_INT)
 {
@@ -36,7 +36,7 @@ CY_ISR(RVT_COMMAND_INT)
 
 CY_ISR(SPD_COMMAND_INT)
 {
-    MOTOR_readSpeed_2(motors[0]);
+    MOTOR_readSpeed(motors[0]);
     if(motors[0]->control_mode == 0){
         MOTOR_setSpdRef(motors[0]);
         

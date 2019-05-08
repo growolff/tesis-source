@@ -86,7 +86,6 @@ void motor_echof(float data);
 void dbgLed();
 
 void MOTOR_readSpeed(MOTOR_t* motor);
-void MOTOR_readSpeed_2(MOTOR_t* motor);
 void MOTOR_readRevolution(MOTOR_t* motor);
 
 void MOTOR_setControlMode(MOTOR_t* motor, uint8_t mode);

@@ -84,7 +84,7 @@ VAR_TYPE PID_calculatePID(PID_t *pid, VAR_TYPE input)
     //output = (pid->kP * error) / FLOAT_TO_INT_SCALE;
     output = (pid->kP * error);
     
-    pid->dbg = output;
+    pid->dbg = error;
     
     if (output > pid->maxValue) output = pid->maxValue;
     if (output < pid->minValue) output = pid->minValue;

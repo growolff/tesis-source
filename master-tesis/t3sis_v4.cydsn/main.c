@@ -97,11 +97,11 @@ int main(void)
     RxInt_StartEx(MyRxInt);
     
     // Initialize hardware related to motor PM1
-    PM1_HA_TIMER_Start();
+    //PM1_HA_TIMER_Start();
     PM1_DirCounter_Start();
     // Initialize ISR
     //PM1_DirCounter_isr_StartEx(PM1_HA_INT);
-    HA_ISR_StartEx(PM1_HA_INT);
+    //HA_ISR_StartEx(PM1_HA_INT);
     RVT_COMMAND_ISR_StartEx(RVT_COMMAND_INT); //revolutions control isr
     SPD_COMMAND_ISR_StartEx(SPD_COMMAND_INT); //speed control isr
     
@@ -128,14 +128,10 @@ int main(void)
     
     uint16_t actual_time = millis_ReadCounter();
     
-    //SPEED_DAC_SetValue(0);
     motors[0]->control_mode = 0;
 
     for(;;)
-    {
-        /* Check motor direction and rotation */
-//        MOTOR_checkDir(motors[0]);
-        
+    {        
         while(IsCharReady()){
             //UART_PutString("&IsCharReady\r\n");
             if(GetRxStr()){
@@ -145,8 +141,8 @@ int main(void)
         }
         
         pote = POTE_ADC_GetResult8();
-        //motors[0]->ref_spd = fn_mapper(pote,0,255,0,9000);
-        SPEED_PWM_WriteCompare(pote);
+        motors[0]->ref_spd = fn_mapper(pote,0,255,0,9000);
+        //SPEED_PWM_WriteCompare(pote);
 
         if(millis_ReadCounter() - actual_time > rate_ms)
         {   
@@ -164,7 +160,7 @@ int main(void)
             /* Send data based on last UART command */
             if(ContinuouslySendData)
             {
-                sprintf(TransmitBuffer, "V:%d\tP:%d\tO:%d\r\n",pote,motors[0]->spdPID_out,motors[0]->curr_spd);
+                sprintf(TransmitBuffer, "V:%d\tP:%d\tO:%d\r\n",motors[0]->ref_spd,(int)motors[0]->spd_controller.dbg,motors[0]->curr_spd);
                 UART_PutString(TransmitBuffer);
                 //sprintf(TransmitBuffer, "Ref: %d\tActual: %d\tTens: %d\r\n",(int)PM1.ref_rvt,(int)PM1.curr_rvt,(int)motors[0]->rvt_controller.kP*1000);
                 
