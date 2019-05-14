@@ -94,18 +94,14 @@ void MOTOR_readSpeed(MOTOR_t* motor)
 {
     motor->ca = PM1_HA_TIMER_ReadCounter();
     PM1_HA_TIMER_WriteCounter(0);
-           
-    if(motor->curr_dir == -1){
-        motor->period_ha = 0;
-    }
-    else{
-        motor->period_ha = -1*(motor->ca+motor->ma);
-        motor->ma = motor->ca;
-    }
+    
+    motor->period_ha = -1*(motor->ca+motor->ma);
+    motor->ma = motor->ca;
+
     motor->curr_spd = (HIGH_FREQ_CLOCK/motor->period_ha) * 30;
         
 }
-
+/*
 void MOTOR_readSpeed_2(MOTOR_t* motor)
 {
     uint32_t counter;
@@ -118,7 +114,7 @@ void MOTOR_readSpeed_2(MOTOR_t* motor)
     }
     motor->curr_spd = 60*HIGH_FREQ_CLOCK/(counter*4);
 }
-
+*/
 void MOTOR_readRevolution(MOTOR_t* motor)
 {  
     MOTOR_checkDir(motor);
@@ -147,6 +143,7 @@ void MOTOR_checkDir(MOTOR_t* motor)
     {
         // if == 0 its not rotating
         motor->curr_dir = -1;
+        motor->curr_spd = 0;
     }
     // update variable
     motor->rvt_last_count = motor->rvt_aux;

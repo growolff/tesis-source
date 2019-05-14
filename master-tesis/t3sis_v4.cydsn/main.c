@@ -63,10 +63,11 @@ void initMotorPM1()
     pid_rvt[1] = EEPROM_1_ReadByte(1);
     pid_rvt[2] = EEPROM_1_ReadByte(2);
     
-    PM1.spd_params[0] = 1.0;
-    PM1.spd_params[1] = 1.0;
+    PM1.spd_params[0] = 2.0;
+    PM1.spd_params[1] = 0.1;
+    PM1.spd_params[2] = 0.0;
     //PM1.spd_params[1] = (float)EEPROM_1_ReadByte(4)*0.01;
-    PM1.spd_params[2] = (float)EEPROM_1_ReadByte(5)*0.01;
+    //PM1.spd_params[2] = (float)EEPROM_1_ReadByte(5)*0.01;
     
     MOTOR_init(&PM1,PM1_EN,PM1_DR);
      
@@ -86,7 +87,6 @@ int main(void)
 {
     millis_Start();
     
-    SPD_COUNTER_Start();
     SPEED_PWM_Start();
     POTE_ADC_Start();
     POTE_ADC_StartConvert();
@@ -145,8 +145,8 @@ int main(void)
         }
         
         pote = POTE_ADC_GetResult8();
-        //motors[0]->ref_spd = fn_mapper(pote,0,255,0,9000);
-        SPEED_PWM_WriteCompare(pote);
+        motors[0]->ref_spd = fn_mapper(pote,0,255,0,9000);
+        //SPEED_PWM_WriteCompare(pote);
 
         if(millis_ReadCounter() - actual_time > rate_ms)
         {   
