@@ -60,9 +60,9 @@ void ProcessCommandMsg(void)
             break;
             
         case 23: /* set control mode */
-            // cmd(0,13,1,0,0,0,0)
-            //MOTOR_setControlMode(motors[RB.id],RB.pref);  
-            echo("DBGctrl");
+            // cmd(0,23,1,0,0,0,0)
+            MOTOR_setControlMode(motors[RB.id],RB.pref);  
+            //echo("DBGctrl");
             break;
         case 25: /* Set pid values */ 
             p = RB.P/100.0;

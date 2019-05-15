@@ -38,7 +38,7 @@ volatile ParamBuffer PB;     //volatile struct TParamBuffer PB;
 #define TRANSMIT_BUFFER_SIZE  16
 
 // main loop check rate
-#define RATE_HZ 20
+#define RATE_HZ 40
 
 //#define MAX_COUNTER 6500 // max counter for checking zero speed
 

@@ -54,7 +54,7 @@ CY_ISR(SPD_COMMAND_INT)
         */
         //SPEED_DAC_SetValue(255);
         //SPEED_DAC_SetValue(fn_mapper(motors[0]->spdPID_out,0,9000,0,255));
-        //SPEED_PWM_WriteCompare(fn_mapper(motors[0]->spdPID_out,0,9000,0,255));
+        SPEED_PWM_WriteCompare(fn_mapper(motors[0]->spdPID_out,0,9000,0,255));
     }
 }
 

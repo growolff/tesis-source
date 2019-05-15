@@ -64,7 +64,7 @@ void initMotorPM1()
     pid_rvt[2] = EEPROM_1_ReadByte(2);
     
     PM1.spd_params[0] = 1.0;
-    PM1.spd_params[1] = 0.1;
+    PM1.spd_params[1] = 0.001;
     PM1.spd_params[2] = 0.0;
     //PM1.spd_params[1] = (float)EEPROM_1_ReadByte(4)*0.01;
     //PM1.spd_params[2] = (float)EEPROM_1_ReadByte(5)*0.01;
@@ -128,9 +128,8 @@ int main(void)
     
     uint16_t actual_time = millis_ReadCounter();
     
-    //SPEED_DAC_SetValue(0);
-    motors[0]->control_mode = 0;
-
+    //SPEED_DAC_SetValue(0)
+    
     for(;;)
     {        
         while(IsCharReady()){
@@ -142,11 +141,13 @@ int main(void)
         }
         
         pote = POTE_ADC_GetResult8();
-        motors[0]->ref_spd = fn_mapper(pote,0,255,0,9000);
-        SPEED_PWM_WriteCompare(pote);
+        //SPEED_PWM_WriteCompare(pote);
 
         if(millis_ReadCounter() - actual_time > rate_ms)
         {   
+            // set speed reference (only for testing)
+            motors[0]->ref_spd = fn_mapper(pote,0,255,0,9000);
+            
             //CyDelay(25); // works at 40 Hz
             _state_ = !_state_;
             LED1_Write(_state_);
@@ -161,7 +162,7 @@ int main(void)
             /* Send data based on last UART command */
             if(ContinuouslySendData)
             {
-                sprintf(TransmitBuffer, "\tP:%d\tO:%d\r\n",motors[0]->spd_controller.dbg,motors[0]->curr_spd);
+                sprintf(TransmitBuffer, "P:%d\tO:%d\r\n",motors[0]->ref_spd,motors[0]->curr_spd);
                 UART_PutString(TransmitBuffer);
                 //sprintf(TransmitBuffer, "Ref: %d\tActual: %d\tTens: %d\r\n",(int)PM1.ref_rvt,(int)PM1.curr_rvt,(int)motors[0]->rvt_controller.kP*1000);
                 
