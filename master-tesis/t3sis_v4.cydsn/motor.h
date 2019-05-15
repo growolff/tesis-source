@@ -13,7 +13,7 @@
 #ifndef MOTOR_H_
 #define MOTOR_H_    
 
-#include "pid.h"
+#include "pid_o.h"
 #include "project.h"
 #include "math.h"
 #include <stdio.h>
@@ -86,7 +86,7 @@ void motor_echof(float data);
 void dbgLed();
 
 void MOTOR_readSpeed(MOTOR_t* motor);
-void MOTOR_readSpeed_2(MOTOR_t* motor);
+//void MOTOR_readSpeed_2(MOTOR_t* motor);
 void MOTOR_readRevolution(MOTOR_t* motor);
 
 void MOTOR_setControlMode(MOTOR_t* motor, uint8_t mode);
@@ -94,7 +94,7 @@ void MOTOR_setControlMode(MOTOR_t* motor, uint8_t mode);
 void MOTOR_checkDir(MOTOR_t* motor);
 
 void MOTOR_setRvtRef(MOTOR_t* motor);
-void MOTOR_setSpdRef(MOTOR_t* motor);
+void MOTOR_setSpdRef(MOTOR_t* motor, int32_t pnt);
 
 float MOTOR_getTR(MOTOR_t* motor, float alpha);
 int32 MOTOR_get_tension_g(MOTOR_t* motor, int16 tension);

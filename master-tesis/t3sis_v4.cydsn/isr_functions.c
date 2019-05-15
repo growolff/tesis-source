@@ -37,9 +37,9 @@ CY_ISR(RVT_COMMAND_INT)
 CY_ISR(SPD_COMMAND_INT)
 {
     if(motors[0]->control_mode == 0){
-        MOTOR_setSpdRef(motors[0]);
+        MOTOR_setSpdRef(motors[0],motors[0]->ref_spd);
         
-        if(motors[0]->curr_spd == 0){
+        if(motors[0]->curr_spd < 300){
             motors[0]->spd_controller.iTerm = 0;
         }
         
@@ -54,7 +54,7 @@ CY_ISR(SPD_COMMAND_INT)
         */
         //SPEED_DAC_SetValue(255);
         //SPEED_DAC_SetValue(fn_mapper(motors[0]->spdPID_out,0,9000,0,255));
-        SPEED_PWM_WriteCompare(fn_mapper(motors[0]->spdPID_out,0,9000,0,255));
+        //SPEED_PWM_WriteCompare(fn_mapper(motors[0]->spdPID_out,0,9000,0,255));
     }
 }
 

@@ -15,7 +15,7 @@
 #include "project.h"
 #include "motor.h"
 #include "stdio.h"
-#include "pid.h"
+#include "pid_o.h"
 #include "string.h"
 #include "myUART.h"
 #include "functions.h" 
@@ -38,7 +38,7 @@ volatile ParamBuffer PB;     //volatile struct TParamBuffer PB;
 #define TRANSMIT_BUFFER_SIZE  16
 
 // main loop check rate
-#define RATE_HZ 40
+#define RATE_HZ 20
 
 //#define MAX_COUNTER 6500 // max counter for checking zero speed
 

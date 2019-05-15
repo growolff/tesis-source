@@ -85,9 +85,9 @@ void MOTOR_setRvtRef(MOTOR_t* motor)
     PID_setRef(&motor->rvt_controller,motor->ref_rvt);
 }
 
-void MOTOR_setSpdRef(MOTOR_t* motor)
+void MOTOR_setSpdRef(MOTOR_t* motor, int32_t pnt)
 {    
-    PID_setRef(&motor->spd_controller,(float)motor->ref_spd*1.0);
+    PID_setRef(&motor->spd_controller,pnt);
 }
 
 void MOTOR_readSpeed(MOTOR_t* motor)
@@ -97,7 +97,7 @@ void MOTOR_readSpeed(MOTOR_t* motor)
     
     motor->period_ha = -1*(motor->ca+motor->ma);
     motor->ma = motor->ca;
-
+    
     motor->curr_spd = (HIGH_FREQ_CLOCK/motor->period_ha) * 30;
         
 }
@@ -117,14 +117,16 @@ void MOTOR_readSpeed_2(MOTOR_t* motor)
 */
 void MOTOR_readRevolution(MOTOR_t* motor)
 {  
-    MOTOR_checkDir(motor);
+    motor->rvt_aux = PM1_DirCounter_GetCounter();
     motor->curr_rvt = (motor->rvt_aux - motor->init_pos);
+    
+    /* Check motor direction ad if it is rotating */
+    MOTOR_checkDir(motor);
 }
 
 void MOTOR_checkDir(MOTOR_t* motor)
 {
-    motor->rvt_aux = PM1_DirCounter_GetCounter();
-    
+    // difference between last counter and current one
     motor->diff = motor->rvt_aux - motor->rvt_last_count;
     
     if ( motor->diff > 0 )
@@ -136,7 +138,6 @@ void MOTOR_checkDir(MOTOR_t* motor)
     {
         // if < 0 its turning left (CCW)
         motor->curr_dir = 0;
-        //motor->curr_rvt = motor->curr_rvt < motor->MIN_RVT * 4 ? motor->MIN_RVT * 4 : motor->curr_rvt ;
     } 
     //if ( motor->rvt_aux - motor->rvt_last_count == 0 )
     else
