@@ -59,6 +59,13 @@ void motor_echod(int data)
 
 void MOTOR_setControlMode(MOTOR_t* motor, uint8_t mode)
 {
+    
+    if(motor->ENABLE.STATE == 1)
+        MOTOR_setPinENABLE(motor, 0);
+    
+    if(mode == 1){
+        motor->init_pos = PM1_DirCounter_GetCounter();
+    }
     motor->control_mode = mode;
 }
 
@@ -101,20 +108,7 @@ void MOTOR_readSpeed(MOTOR_t* motor)
     motor->curr_spd = (HIGH_FREQ_CLOCK/motor->period_ha) * 30;
         
 }
-/*
-void MOTOR_readSpeed_2(MOTOR_t* motor)
-{
-    uint32_t counter;
-    
-    if(motor->curr_dir == -1){
-        counter = 0;
-    }
-    else{
-        counter = SPD_COUNTER_ReadCapture();
-    }
-    motor->curr_spd = 60*HIGH_FREQ_CLOCK/(counter*4);
-}
-*/
+
 void MOTOR_readRevolution(MOTOR_t* motor)
 {  
     motor->rvt_aux = PM1_DirCounter_GetCounter();

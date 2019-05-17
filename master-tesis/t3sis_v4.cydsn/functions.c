@@ -15,13 +15,13 @@
 
 void sendPIDdata(int id)
 {
-    if (motors[id]->control_mode == 1)
+    if (motors[id]->control_mode == 0)
+        sprintf(strMsg,"*%d*%d*%d\r\n",motors[id]->spd_controller.kP,motors[id]->spd_controller.kI,motors[id]->spd_controller.kD);
+    else if (motors[id]->control_mode == 1)
         sprintf(strMsg,"*%d*%d*%d\r\n", (int)(motors[id]->rvt_controller.kP*factor),(int)(motors[id]->rvt_controller.kI*factor),(int)(motors[id]->rvt_controller.kD*factor));
     else if (motors[id]->control_mode == 2)
         sprintf(strMsg,"*%d*%d*%d\r\n", (int)((float)motors[id]->rvt_controller.kP*factor),(int)((float)motors[id]->rvt_controller.kI*factor),(int)((float)motors[id]->rvt_controller.kD*factor));
-    else
-        sprintf(strMsg,"*%d*%d*%d\r\n", (int)((float)motors[id]->rvt_controller.kP*factor),(int)((float)motors[id]->rvt_controller.kI*factor),(int)((float)motors[id]->rvt_controller.kD*factor));
-        
+    
     UART_PutString(strMsg);
 }
 
@@ -39,30 +39,34 @@ uint8_t fn_mapper_8b(int32_t x, int32_t in_min, int32_t in_max, uint8_t out_min,
 
 void ProcessCommandMsg(void)
 {
-    //echo("TEST");
-    //echo(RB.RxStr);
-    //echod(RB.id);
-    //echod(RB.cmd);
-    //echod(RB.pref);
     float p,i,d;
     
     switch(RB.cmd)
     {
+        case 0:
+            motors[RB.id]->ref_spd = RB.pref;
+            break;
         case 1: /* set reference of position controller of motor RB.id */
             PM1.ref_rvt = RB.pref;
             break;
         case 2: /* set reference of tension controller of motor RB.id */
         
             break;
+        case 20: /* Stop data streaming */
+            ContinuouslySendData = FALSE;
+            break;
         case 22: /* request pid values */
             // cmd(0,12,-1,0,0,0,0) ask for position control PID values
             sendPIDdata(RB.id); // send controller parameters
             break;
-            
         case 23: /* set control mode */
             // cmd(0,23,1,0,0,0,0)
             MOTOR_setControlMode(motors[RB.id],RB.pref);  
             //echo("DBGctrl");
+            break;
+        case 24: /* stop motor */
+            if(motors[RB.id]->ENABLE.STATE == 1)
+                MOTOR_setPinENABLE(motors[RB.id], 0);
             break;
         case 25: /* Set pid values */ 
             p = RB.P/100.0;
@@ -85,21 +89,9 @@ void ProcessCommandMsg(void)
             //echo("Debug2");
             //echof(motors[RB.id]->rvt_controller.kP);    
             break;
-        case 16:
-
-            break;
-        case 20: /* Stop data streaming */
-            ContinuouslySendData = FALSE;
-            break;
-        case 24: /* stop motor */
-            if(motors[RB.id]->ENABLE.STATE == 1)
-                MOTOR_setPinENABLE(motors[RB.id], 0);
-            break;
-            
         case 40: /* Contuously send data */
             ContinuouslySendData = TRUE;
             break;
-            
         case 44: /* resume motor */
             if(motors[RB.id]->ENABLE.STATE == 0)
                 MOTOR_setPinENABLE(motors[RB.id], 1);
@@ -108,7 +100,7 @@ void ProcessCommandMsg(void)
             sprintf(strMsg,"%d\t%d",(int)motors[0]->rvt_controller.inputValue,(int)(motors[0]->rvt_controller.kP*factor));
             UART_PutString(strMsg); 
             break;
-        case 99: /* sw rebbot */
+        case 99: /* sw reset */
             CySoftwareReset();
             break;
                 
