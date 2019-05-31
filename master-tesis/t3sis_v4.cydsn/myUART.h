@@ -20,6 +20,8 @@
 #define EOM_CR        0x0D    //message separator char (\r)
 #define EOM_LF        0x0A    //message separator char (\n)
 #define HASH          0x23
+    
+#define COM_MSG_SIZE 8
   
 // each Rx command consists of: <char command><string value><CR>
 
@@ -36,6 +38,17 @@ union TRxBuffer {
         int16_t D;
     };
 } RB;
+
+union comMsg{
+    char   buffStr[COM_MSG_SIZE];   // buffer (to hold individual command message)
+    struct {            // anonimous structure
+        uint8_t xff;
+        uint8_t cmd;     // 1-byte command: Write, Read, Control, get info, set pid, etc.
+        int16_t ref;    // position reference
+        int16_t cur; 
+        int16_t val; 
+    };
+} WB;
    
 //=====================================
 //        Function Prototypes 

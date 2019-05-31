@@ -59,7 +59,7 @@ void motor_echod(int data)
 
 void MOTOR_setControlMode(MOTOR_t* motor, uint8_t mode)
 {
-    
+    // disable motor
     if(motor->ENABLE.STATE == 1)
         MOTOR_setPinENABLE(motor, 0);
     
@@ -67,6 +67,9 @@ void MOTOR_setControlMode(MOTOR_t* motor, uint8_t mode)
         motor->init_pos = PM1_DirCounter_GetCounter();
     }
     motor->control_mode = mode;
+    
+    // enable motor
+    MOTOR_setPinENABLE(motor, 1);
 }
 
 void MOTOR_setRvtControlParams(MOTOR_t* motor, float kp, float ki, float kd)

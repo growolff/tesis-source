@@ -43,11 +43,11 @@ void ProcessCommandMsg(void)
     
     switch(RB.cmd)
     {
-        case 0:
+        case 0: /* set reference of speed controller of motor RB.id */
             motors[RB.id]->ref_spd = RB.pref;
             break;
         case 1: /* set reference of position controller of motor RB.id */
-            PM1.ref_rvt = RB.pref;
+            motors[RB.id]->ref_rvt = RB.pref;
             break;
         case 2: /* set reference of tension controller of motor RB.id */
         
@@ -60,18 +60,19 @@ void ProcessCommandMsg(void)
             sendPIDdata(RB.id); // send controller parameters
             break;
         case 23: /* set control mode */
-            // cmd(0,23,1,0,0,0,0)
+            // cmd(0,23,1,0,0,0) position
+            // cmd(0,23,0,0,0,0) speed
             MOTOR_setControlMode(motors[RB.id],RB.pref);  
-            //echo("DBGctrl");
             break;
         case 24: /* stop motor */
-            if(motors[RB.id]->ENABLE.STATE == 1)
+            if(motors[RB.id]->ENABLE.STATE == 1){
                 MOTOR_setPinENABLE(motors[RB.id], 0);
+            }
             break;
         case 25: /* Set pid values */ 
-            p = RB.P/100.0;
-            i = RB.I/100.0;
-            d = RB.D/100.0;
+            p = RB.P;
+            i = RB.I;
+            d = RB.D;
 
             writeStatus = EEPROM_1_WriteByte((uint8_t)RB.P,0);
             writeStatus = EEPROM_1_WriteByte((uint8_t)RB.I,1);
@@ -93,8 +94,9 @@ void ProcessCommandMsg(void)
             ContinuouslySendData = TRUE;
             break;
         case 44: /* resume motor */
-            if(motors[RB.id]->ENABLE.STATE == 0)
+            if(motors[RB.id]->ENABLE.STATE == 0){
                 MOTOR_setPinENABLE(motors[RB.id], 1);
+            }
             break;
         case 55: /* debug variables */
             sprintf(strMsg,"%d\t%d",(int)motors[0]->rvt_controller.inputValue,(int)(motors[0]->rvt_controller.kP*factor));

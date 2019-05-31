@@ -63,7 +63,7 @@ void initMotorPM1()
     pid_rvt[1] = EEPROM_1_ReadByte(1);
     pid_rvt[2] = EEPROM_1_ReadByte(2);
     
-    PM1.spd_params[0] = 2.0;
+    PM1.spd_params[0] = 2.2;
     PM1.spd_params[1] = 0.001;
     PM1.spd_params[2] = 0.0;
     //PM1.spd_params[1] = (float)EEPROM_1_ReadByte(4)*0.01;
@@ -90,7 +90,6 @@ int main(void)
     SPEED_PWM_Start();
     POTE_ADC_Start();
     POTE_ADC_StartConvert();
-    //SPEED_DAC_Start();
     UART_Start();
     EEPROM_1_Start();
     /* Initialize interrupt blocks */
@@ -100,7 +99,6 @@ int main(void)
     PM1_HA_TIMER_Start();
     PM1_DirCounter_Start();
     // Initialize ISR
-    //PM1_DirCounter_isr_StartEx(PM1_HA_INT);
     HA_ISR_StartEx(PM1_HA_INT);
     RVT_COMMAND_ISR_StartEx(RVT_COMMAND_INT); //revolutions control isr
     SPD_COMMAND_ISR_StartEx(SPD_COMMAND_INT); //speed control isr
@@ -112,12 +110,9 @@ int main(void)
     
     CyGlobalIntEnable; /* Enable global interrupts. */
 
-    /* Place your initialization/startup code here (e.g. MyInst_Start()) */
-    
     MOTOR_setPinDIR(&PM1,0);
     MOTOR_setPinENABLE(&PM1,1);
-        
-    PM1.ref_rvt = 0;
+    
     motors[0]->control_mode = 0;
     
     ContinuouslySendData = TRUE;
@@ -127,7 +122,11 @@ int main(void)
     uint8_t pote = 0;
     
     uint16_t actual_time = millis_ReadCounter();
-       
+    
+    //union comMsg COM;
+      
+    uint8_t c;
+    
     for(;;)
     {        
         while(IsCharReady()){
@@ -160,13 +159,30 @@ int main(void)
             /* Send data based on last UART command */
             if(ContinuouslySendData)
             {
+                int len = sizeof(WB.buffStr)/sizeof(*WB.buffStr);
+                WB.xff = len;
+                WB.cmd = c++;
+                //WB.ref = c;
+                //WB.cur = c;
+                WB.ref = motors[0]->ref_spd;
+                WB.cur = motors[0]->curr_spd;
+               
                 //sprintf(TransmitBuffer, "P:%d\tO:%d\r\n",motors[0]->ref_spd,motors[0]->curr_spd);
-                
-                sprintf(TransmitBuffer, "Ref: %d\tActual: %d\tTens: %d\r\n",(int)PM1.ref_rvt,(int)PM1.curr_rvt,0);
-                
+                //int ref = motors[0]->control_mode == 0 ? motors[0]->ref_spd : motors[0]->ref_rvt ;
+                //int curr = motors[0]->control_mode == 0 ? motors[0]->curr_spd: motors[0]->curr_rvt ;
+                //sprintf(TransmitBuffer, "%d%d%d",(int)motors[0]->ref_spd,(int)motors[0]->curr_spd,actual_time);
+                //sprintf(TransmitBuffer,"%01x%02x%02x",COM.cmd,COM.ref,COM.cur);
+                //sprintf(TransmitBuffer,"%s",COM.buffStr);
                 /* Send out the data */
-                UART_PutString(TransmitBuffer);
-
+                //UART_PutString(TransmitBuffer);
+                
+                UART_PutArray((const uint8*)&WB.buffStr,len);
+                /*
+                for(uint i=0; i < strlen(COM.buffStr); i++){
+                    strcpy(TransmitBuffer,"\"");
+                    UART_WriteTxData([i]);
+                }
+                */
             }
         }
     }
