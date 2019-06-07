@@ -15,6 +15,7 @@
 
 void sendPIDdata(int id)
 {
+    /*
     if (motors[id]->control_mode == 0)
         sprintf(strMsg,"*%d*%d*%d\r\n",motors[id]->spd_controller.kP,motors[id]->spd_controller.kI,motors[id]->spd_controller.kD);
     else if (motors[id]->control_mode == 1)
@@ -23,6 +24,30 @@ void sendPIDdata(int id)
         sprintf(strMsg,"*%d*%d*%d\r\n", (int)((float)motors[id]->rvt_controller.kP*factor),(int)((float)motors[id]->rvt_controller.kI*factor),(int)((float)motors[id]->rvt_controller.kD*factor));
     
     UART_PutString(strMsg);
+    */
+    WB.xff = 0xff;
+    WB.cmd = 5; //send pid data
+    if (motors[id]->control_mode == 0)
+    {
+        WB.ref = (int16_t)motors[id]->spd_controller.kP;
+        WB.cur = (int16_t)motors[id]->spd_controller.kI;
+        WB.val = (int16_t)motors[id]->spd_controller.kD;
+    }
+    else if (motors[id]->control_mode == 1)
+    {
+        WB.ref = motors[id]->rvt_controller.kP;
+        WB.cur = motors[id]->rvt_controller.kI;
+        WB.val = motors[id]->rvt_controller.kD;    
+    }
+    else if (motors[id]->control_mode == 2)
+    {
+        
+    }
+    
+    // send pid data
+    UART_PutArray((const uint8*)&WB.buffStr,COM_MSG_SIZE);
+    
+    
 }
 
 int32_t fn_mapper(int32_t x, int32_t in_min, int32_t in_max, int32_t out_min, int32_t out_max)

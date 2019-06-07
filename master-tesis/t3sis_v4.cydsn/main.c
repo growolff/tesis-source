@@ -63,8 +63,8 @@ void initMotorPM1()
     pid_rvt[1] = EEPROM_1_ReadByte(1);
     pid_rvt[2] = EEPROM_1_ReadByte(2);
     
-    PM1.spd_params[0] = 2.2;
-    PM1.spd_params[1] = 0.001;
+    PM1.spd_params[0] = 2;
+    PM1.spd_params[1] = 0.01;
     PM1.spd_params[2] = 0.0;
     //PM1.spd_params[1] = (float)EEPROM_1_ReadByte(4)*0.01;
     //PM1.spd_params[2] = (float)EEPROM_1_ReadByte(5)*0.01;
@@ -79,7 +79,7 @@ void initMotorPM1()
 void initMotor()
 {       
     initMotorPM1();
-
+    
     motors[0] = &PM1;
 }
 
@@ -160,12 +160,13 @@ int main(void)
             if(ContinuouslySendData)
             {
                 int len = sizeof(WB.buffStr)/sizeof(*WB.buffStr);
-                WB.xff = len;
-                WB.cmd = c++;
+                WB.xff = 0xff;
+                WB.cmd = 1;
                 //WB.ref = c;
                 //WB.cur = c;
                 WB.ref = motors[0]->ref_spd;
                 WB.cur = motors[0]->curr_spd;
+                WB.val = 0;
                
                 //sprintf(TransmitBuffer, "P:%d\tO:%d\r\n",motors[0]->ref_spd,motors[0]->curr_spd);
                 //int ref = motors[0]->control_mode == 0 ? motors[0]->ref_spd : motors[0]->ref_rvt ;
