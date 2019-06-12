@@ -35,9 +35,9 @@ void sendPIDdata(int id)
     }
     else if (motors[id]->control_mode == 1)
     {
-        WB.ref = motors[id]->rvt_controller.kP;
-        WB.cur = motors[id]->rvt_controller.kI;
-        WB.val = motors[id]->rvt_controller.kD;    
+        WB.ref = (int16_t)motors[id]->rvt_controller.kP;
+        WB.cur = (int16_t)motors[id]->rvt_controller.kI;
+        WB.val = (int16_t)motors[id]->rvt_controller.kD;    
     }
     else if (motors[id]->control_mode == 2)
     {
@@ -65,7 +65,7 @@ uint8_t fn_mapper_8b(int32_t x, int32_t in_min, int32_t in_max, uint8_t out_min,
 void ProcessCommandMsg(void)
 {
     float p,i,d;
-    
+    char numaimp[6];
     switch(RB.cmd)
     {
         case 0: /* set reference of speed controller of motor RB.id */
@@ -85,8 +85,8 @@ void ProcessCommandMsg(void)
             sendPIDdata(RB.id); // send controller parameters
             break;
         case 23: /* set control mode */
-            // cmd(0,23,1,0,0,0) position
             // cmd(0,23,0,0,0,0) speed
+            // cmd(0,23,1,0,0,0) position
             MOTOR_setControlMode(motors[RB.id],RB.pref);  
             break;
         case 24: /* stop motor */
@@ -95,25 +95,29 @@ void ProcessCommandMsg(void)
             }
             break;
         case 25: /* Set pid values */ 
-            p = RB.P;
-            i = RB.I;
-            d = RB.D;
-
-            writeStatus = EEPROM_1_WriteByte((uint8_t)RB.P,0);
-            writeStatus = EEPROM_1_WriteByte((uint8_t)RB.I,1);
-            writeStatus = EEPROM_1_WriteByte((uint8_t)RB.D,2);
             
-            MOTOR_setRvtControlParams(motors[RB.id],p,i,d);
-            /*
-            if( motors[RB.id]->control_mode == 1){
-                MOTOR_setRvtControlParams(motors[RB.id],p,i,d);
-                echo("Dbgpid2");
+            p = ((float)RB.P)/FLOAT_TO_INT_SCALE;
+            i = ((float)RB.I)/FLOAT_TO_INT_SCALE;
+            d = ((float)RB.D)/FLOAT_TO_INT_SCALE;
+            
+            echof(p);
+            
+            if(motors[RB.id]->control_mode == 0)
+            {
+                EEPROM_1_Write((const uint8*)&p,0);
+                EEPROM_1_Write((const uint8*)&i,1);
+                EEPROM_1_Write((const uint8*)&d,2);
+                
+                MOTOR_setSpdControlParams(motors[RB.id],p,i,d);
             }
-            */
+            else if(motors[RB.id]->control_mode == 1){
+                EEPROM_1_Write((const uint8*)&p,3);
+                EEPROM_1_Write((const uint8*)&i,4);
+                EEPROM_1_Write((const uint8*)&d,5);
+                
+                MOTOR_setRvtControlParams(motors[RB.id],p,i,d);   
+            }
             
-            //echod(p*1000);
-            //echo("Debug2");
-            //echof(motors[RB.id]->rvt_controller.kP);    
             break;
         case 40: /* Contuously send data */
             ContinuouslySendData = TRUE;
@@ -129,8 +133,7 @@ void ProcessCommandMsg(void)
             break;
         case 99: /* sw reset */
             CySoftwareReset();
-            break;
-                
+            break;         
     }
     
 }

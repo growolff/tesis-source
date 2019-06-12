@@ -39,12 +39,6 @@ void MOTOR_init(MOTOR_t* motor, PIN_t pin_enable, PIN_t pin_dir)
     }
 }
 
-void dbgLed()
-{
-    LED1_Write(0);
-    CyDelay(50);
-}
-
 void motor_echof(float data)
 {
     sprintf(msg,"%.2f\r\n", data);

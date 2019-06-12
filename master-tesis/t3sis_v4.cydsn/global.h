@@ -40,8 +40,6 @@ volatile ParamBuffer PB;     //volatile struct TParamBuffer PB;
 // main loop check rate
 #define RATE_HZ 40
 
-//#define MAX_COUNTER 6500 // max counter for checking zero speed
-
 /* Variable to store UART received character */
 uint8 Ch;
 /* Flags used to store transmit data commands */
@@ -71,10 +69,6 @@ float factor;
 
 int pid_rvt[3];
 int pid_spd[3];
-
-char num[3]; // para printear
-char lect[3]; // para leer de la eeprom
-cystatus writeStatus;
 
 char TransmitBuffer[TRANSMIT_BUFFER_SIZE];
 

@@ -28,7 +28,8 @@ CY_ISR(RVT_COMMAND_INT)
         
         (PM1.rvtPID_out > 0) ?  MOTOR_setPinDIR(&PM1,1) : MOTOR_setPinDIR(&PM1,0);
 
-        PM1.ref_spd = abs(PM1.rvtPID_out);
+        //PM1.ref_spd = abs(PM1.rvtPID_out);
+        PM1.ref_spd = fn_mapper(abs(PM1.rvtPID_out),0,255,0,9000);
        // SPEED_DAC_SetValue(PM1.ref_spd);
     }
  
