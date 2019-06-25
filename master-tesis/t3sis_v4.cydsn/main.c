@@ -42,15 +42,25 @@ void initMotorPM1()
     PM1.init_pos = 0;
     PM1.control_mode = 0;
     PM1_DirCounter_SetCounter(PM1.init_pos);
-
-    PM1.spd_params[0] = CY_GET_REG32(CYDEV_EE_BASE);
-    PM1.spd_params[1] = CY_GET_REG32(CYDEV_EE_BASE+0x10);
-    PM1.spd_params[2] = CY_GET_REG32(CYDEV_EE_BASE+0x20);
+    
+    
+    PM1.spd_pid[0] = 0.9;
+    PM1.spd_pid[1] = 0.016;
+    PM1.spd_pid[2] = 0.0;
+    
+    PM1.rvt_pid[0] = 1.0;
+    PM1.rvt_pid[1] = 0.0;
+    PM1.rvt_pid[2] = 0.0;
+    
+    /*
+    PM1.spd_pid[0] = (float)CY_GET_REG32(CYDEV_EE_BASE);
+    PM1.spd_pid[1] = (float)CY_GET_REG32(CYDEV_EE_BASE+0x10);
+    PM1.spd_pid[2] = (float)CY_GET_REG32(CYDEV_EE_BASE+0x20);
     
     PM1.rvt_params[0] = CY_GET_REG32(CYDEV_EE_BASE+0x30);
     PM1.rvt_params[1] = CY_GET_REG32(CYDEV_EE_BASE+0x40);
     PM1.rvt_params[2] = CY_GET_REG32(CYDEV_EE_BASE+0x50);
-
+*/
     MOTOR_init(&PM1,PM1_EN,PM1_DR);
 }
 
@@ -87,17 +97,18 @@ int main(void)
     CyGlobalIntEnable; /* Enable global interrupts. */
 
     MOTOR_setPinDIR(&PM1,0);
-    MOTOR_setPinENABLE(&PM1,1);
+    MOTOR_setPinENABLE(&PM1,0);
     
     motors[0]->control_mode = 0;
     
-    ContinuouslySendData = TRUE;
+    ContinuouslySendData = FALSE;
     
     /* transmition rate */
     int rate_ms = 1000/RATE_HZ;
     uint8_t pote = 0;
     
     uint16_t actual_time = millis_ReadCounter();
+    echof(motors[0]->spd_pid[0]);
     
     for(;;)
     {        
@@ -133,11 +144,16 @@ int main(void)
                 int len = sizeof(WB.buffStr)/sizeof(*WB.buffStr);
                 WB.xff = 0xff;
                 WB.cmd = 1;
-                //WB.ref = c;
-                //WB.cur = c;
-                WB.ref = motors[0]->ref_spd;
-                WB.cur = motors[0]->curr_spd;
-                WB.val = 0;
+                if(motors[0]->control_mode == 0){
+                    WB.ref = motors[0]->ref_spd;
+                    WB.cur = motors[0]->curr_spd;
+                    WB.val = 0;
+                }
+                else if(motors[0]->control_mode == 1){
+                    WB.ref = motors[0]->ref_rvt;
+                    WB.cur = motors[0]->curr_rvt;
+                    WB.val = 0;
+                }
                
                 UART_PutArray((const uint8*)&WB.buffStr,len);
             }

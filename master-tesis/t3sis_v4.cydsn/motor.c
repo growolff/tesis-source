@@ -15,15 +15,14 @@
 void MOTOR_init(MOTOR_t* motor, PIN_t pin_enable, PIN_t pin_dir)
 {    
     /* initialize motor controllers */
+    PID_init(&motor->spd_controller,motor->spd_pid[0],motor->spd_pid[1],motor->spd_pid[2]);
+    PID_setMaxValue(&motor->spd_controller, 8000);
+    PID_setMinValue(&motor->spd_controller, 0);
     
-    PID_init(&motor->rvt_controller,motor->rvt_params[0],motor->rvt_params[1],motor->rvt_params[2]);
+    PID_init(&motor->rvt_controller,motor->rvt_pid[0],motor->rvt_pid[1],motor->rvt_pid[2]);
     PID_setMaxValue(&motor->rvt_controller, 255);
     PID_setMinValue(&motor->rvt_controller, -255);
-    
-    PID_init(&motor->spd_controller,motor->spd_params[0],motor->spd_params[1],motor->spd_params[2]);
-    PID_setMaxValue(&motor->spd_controller, 9000);
-    PID_setMinValue(&motor->spd_controller, 0);
-   
+      
     motor->DIR = pin_dir;
     motor->ENABLE = pin_enable;
 
@@ -68,18 +67,18 @@ void MOTOR_setControlMode(MOTOR_t* motor, uint8_t mode)
 
 void MOTOR_setRvtControlParams(MOTOR_t* motor, float kp, float ki, float kd)
 {
-    motor->rvt_params[0] = kp;
-    motor->rvt_params[1] = ki;
-    motor->rvt_params[2] = kd;
+    motor->rvt_pid[0] = kp;
+    motor->rvt_pid[1] = ki;
+    motor->rvt_pid[2] = kd;
 
     PID_setCoeffs(&motor->rvt_controller,kp,ki,kd);
 }
 
 void MOTOR_setSpdControlParams(MOTOR_t* motor, float kp, float ki, float kd)
 {
-    motor->spd_params[0] = kp;
-    motor->spd_params[1] = ki;
-    motor->spd_params[2] = kd;
+    motor->spd_pid[0] = kp;
+    motor->spd_pid[1] = ki;
+    motor->spd_pid[2] = kd;
 
     PID_setCoeffs(&motor->spd_controller,kp,ki,kd);
 }

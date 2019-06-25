@@ -23,15 +23,6 @@
 #include "math.h"
 #include "stdlib.h"
     
-/* Project structures */
-
-//buffer to hold application settings
-typedef struct TParamBuffer{
-    char* cmd;  //command
-    int pVal,iVal,dVal;   //int param
-} ParamBuffer;  //settings
-volatile ParamBuffer PB;     //volatile struct TParamBuffer PB;
-
 /* Project defines */
 #define FALSE  0
 #define TRUE   1

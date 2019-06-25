@@ -41,11 +41,11 @@ typedef struct PIN_t
 typedef struct MOTOR_t {
     uint8_t control_mode; // 0: speed contron, 1: position control, 2: tension control
 
-    struct PID_t rvt_controller; // motor revolution controller
     struct PID_t spd_controller; // motor revolution controller
+    struct PID_t rvt_controller; // motor revolution controller
     
-    float rvt_params[3];
-    float spd_params[3];
+    float spd_pid[3];
+    float rvt_pid[3];
     
     int32_t period_ha, rvt_aux, rvt_last_count, ca, ma, diff; // for speed and revolutions measurements
     

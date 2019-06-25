@@ -104,17 +104,20 @@ void ProcessCommandMsg(void)
             
             if(motors[RB.id]->control_mode == 0)
             {
-                EEPROM_1_Write((const uint8*)&p,0);
-                EEPROM_1_Write((const uint8*)&i,1);
-                EEPROM_1_Write((const uint8*)&d,2);
-                
+                /*
+                EEPROM_1_Write((const uint8*)&RB.P,(uint8)CYDEV_EE_BASE);
+                EEPROM_1_Write((const uint8*)&RB.I,(uint8)CYDEV_EE_BASE+0x10);
+                EEPROM_1_Write((const uint8*)&RB.D,(uint8)CYDEV_EE_BASE+0x20);
+                */
                 MOTOR_setSpdControlParams(motors[RB.id],p,i,d);
             }
-            else if(motors[RB.id]->control_mode == 1){
+            else if(motors[RB.id]->control_mode == 1)
+            {
+                /*
                 EEPROM_1_Write((const uint8*)&p,3);
                 EEPROM_1_Write((const uint8*)&i,4);
                 EEPROM_1_Write((const uint8*)&d,5);
-                
+                */
                 MOTOR_setRvtControlParams(motors[RB.id],p,i,d);   
             }
             
