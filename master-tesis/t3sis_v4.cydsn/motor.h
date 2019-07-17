@@ -21,7 +21,12 @@
 #define PMF 1
     
 #define HIGH_FREQ_CLOCK 100000
+
+#define _MOTOR_MIN_SPEED 500 // for pid iterm restart
+#define _MOTOR_MAX_SPEED 8000
     
+#define _MOTOR_MAX_POS 500    
+
 #define DBG_SIZE 10
    
 #define NUM_SENSORS 3
@@ -76,8 +81,10 @@ typedef struct MOTOR_t {
 
 void MOTOR_init(MOTOR_t* motor, PIN_t pin_enable, PIN_t pin_dir);
 void MOTOR_initControlParams(MOTOR_t* motor, float* rvt);
-void MOTOR_setRvtControlParams(MOTOR_t* motor, float kp, float ki, float kd);
 
+void MOTOR_setSpeed(MOTOR_t* motor);
+void MOTOR_setPosition(MOTOR_t* motor);
+void MOTOR_setRvtControlParams(MOTOR_t* motor, float kp, float ki, float kd);
 void MOTOR_setSpdControlParams(MOTOR_t* motor, float kp, float ki, float kd);
 
 /* debug level */

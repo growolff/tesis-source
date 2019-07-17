@@ -48,7 +48,7 @@ void initMotorPM1()
     PM1.spd_pid[1] = 0.016;
     PM1.spd_pid[2] = 0.0;
     
-    PM1.rvt_pid[0] = 1.0;
+    PM1.rvt_pid[0] = 2.0;
     PM1.rvt_pid[1] = 0.0;
     PM1.rvt_pid[2] = 0.0;
     

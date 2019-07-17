@@ -16,12 +16,12 @@ void MOTOR_init(MOTOR_t* motor, PIN_t pin_enable, PIN_t pin_dir)
 {    
     /* initialize motor controllers */
     PID_init(&motor->spd_controller,motor->spd_pid[0],motor->spd_pid[1],motor->spd_pid[2]);
-    PID_setMaxValue(&motor->spd_controller, 8000);
+    PID_setMaxValue(&motor->spd_controller, _MOTOR_MAX_SPEED);
     PID_setMinValue(&motor->spd_controller, 0);
     
     PID_init(&motor->rvt_controller,motor->rvt_pid[0],motor->rvt_pid[1],motor->rvt_pid[2]);
-    PID_setMaxValue(&motor->rvt_controller, 255);
-    PID_setMinValue(&motor->rvt_controller, -255);
+    PID_setMaxValue(&motor->rvt_controller, _MOTOR_MAX_POS);
+    PID_setMinValue(&motor->rvt_controller, -1* _MOTOR_MAX_POS);
       
     motor->DIR = pin_dir;
     motor->ENABLE = pin_enable;
@@ -48,6 +48,37 @@ void motor_echod(int data)
 {
     sprintf(msg,"%d\r\n", data);
     UART_PutString(msg);   
+}
+
+void MOTOR_setSpeed(MOTOR_t* motor)
+{
+    if(motor->control_mode == 0 || motor->control_mode == 1){
+        MOTOR_setSpdRef(motor,motor->ref_spd);
+        
+        if(motor->curr_spd < _MOTOR_MIN_SPEED){
+            motor->spd_controller.iTerm = 0;
+        }
+        motor->spdPID_out = PID_calculatePID(&motor->spd_controller,motor->curr_spd);
+        SPEED_PWM_WriteCompare(255*motor->spdPID_out/_MOTOR_MAX_SPEED);
+    }
+}
+
+void MOTOR_setPosition(MOTOR_t* motor)
+{
+    MOTOR_readRevolution(motor); // read rotor current position
+    if(motor->control_mode == 1)
+    {
+        MOTOR_setRvtRef(motor);
+        motor->rvtPID_out = PID_calculatePID(&motor->rvt_controller,motor->curr_rvt);
+        if(motor->rvtPID_out > 0){
+            MOTOR_setPinDIR(motor,1);
+        }
+        else{
+            MOTOR_setPinDIR(motor,0);
+            motor->rvtPID_out = -motor->rvtPID_out;
+        }
+        motor->ref_spd = motor->rvtPID_out*_MOTOR_MAX_SPEED/_MOTOR_MAX_POS;      
+    }    
 }
 
 void MOTOR_setControlMode(MOTOR_t* motor, uint8_t mode)
