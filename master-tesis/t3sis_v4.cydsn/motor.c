@@ -21,14 +21,14 @@ void MOTOR_init(MOTOR_t* motor, PIN_t pin_enable, PIN_t pin_dir)
     
     PID_init(&motor->rvt_controller,motor->rvt_pid[0],motor->rvt_pid[1],motor->rvt_pid[2]);
     PID_setMaxValue(&motor->rvt_controller, _MOTOR_MAX_POS);
-    PID_setMinValue(&motor->rvt_controller, -1* _MOTOR_MAX_POS);
+    PID_setMinValue(&motor->rvt_controller, (-1)*_MOTOR_MAX_POS);
       
     motor->DIR = pin_dir;
     motor->ENABLE = pin_enable;
 
     MOTOR_setPinENABLE(motor,0);
     MOTOR_setPinDIR(motor,0);
-    
+    /*
     motor->readIndex = 0;
     motor->total = 0;
     motor->average = 0;
@@ -36,6 +36,7 @@ void MOTOR_init(MOTOR_t* motor, PIN_t pin_enable, PIN_t pin_dir)
     for (int thisReading = 0; thisReading < 10; thisReading++) {
         motor->readings[thisReading] = 0;
     }
+    */
 }
 
 void motor_echof(float data)
@@ -50,22 +51,22 @@ void motor_echod(int data)
     UART_PutString(msg);   
 }
 
-void MOTOR_setSpeed(MOTOR_t* motor)
+void MOTOR_setSpeed(MOTOR_t* motor, int32_t ref)
 {
     if(motor->control_mode == 0 || motor->control_mode == 1){
-        MOTOR_setSpdRef(motor,motor->ref_spd);
+        MOTOR_setSpdRef(motor,ref);
         
         if(motor->curr_spd < _MOTOR_MIN_SPEED){
             motor->spd_controller.iTerm = 0;
         }
         motor->spdPID_out = PID_calculatePID(&motor->spd_controller,motor->curr_spd);
-        SPEED_PWM_WriteCompare(255*motor->spdPID_out/_MOTOR_MAX_SPEED);
+        PWM_M1_WriteCompare(255*motor->spdPID_out/_MOTOR_MAX_SPEED);
     }
 }
 
 void MOTOR_setPosition(MOTOR_t* motor)
 {
-    MOTOR_readRevolution(motor); // read rotor current position
+    //MOTOR_readRevolution(motor); // read rotor current position
     if(motor->control_mode == 1)
     {
         MOTOR_setRvtRef(motor);
@@ -81,6 +82,57 @@ void MOTOR_setPosition(MOTOR_t* motor)
     }    
 }
 
+int16 MOTOR_getRvtCounter(MOTOR_t* motor)
+{
+    int16 counter = 0;
+    switch(motor->idx)
+    {
+        case 0:
+            counter = DC_M1_GetCounter();
+            break;
+        case 1:
+            counter = DC_M2_GetCounter();
+            break;/*
+        case 2:
+            counter = DC_M2_GetCounter();
+            break;
+        case 3:
+            counter = DC_M2_GetCounter();
+            break;*/
+    }
+    return counter;
+}
+
+uint32 MOTOR_getSpdCounter(MOTOR_t* motor)
+{
+    uint32 counter = 0;
+    switch (motor->idx)
+    {
+        case 0:
+            counter = HA_TIMER_M1_ReadCounter();
+            HA_TIMER_M1_WriteCounter(0);
+            break;
+        case 1:
+            counter = HA_TIMER_M2_ReadCounter();
+            HA_TIMER_M2_WriteCounter(0);
+            break;
+    }
+    return counter;
+}
+
+void MOTOR_resetSpdCounter(MOTOR_t* motor)
+{
+    switch (motor->idx)
+    {
+        case 0:
+            HA_TIMER_M1_WriteCounter(0);
+            break;
+        case 1:
+            HA_TIMER_M2_WriteCounter(0);
+            break;
+    }
+}
+
 void MOTOR_setControlMode(MOTOR_t* motor, uint8_t mode)
 {
     // disable motor
@@ -88,7 +140,7 @@ void MOTOR_setControlMode(MOTOR_t* motor, uint8_t mode)
         MOTOR_setPinENABLE(motor, 0);
     
     if(mode == 1){
-        motor->init_pos = PM1_DirCounter_GetCounter();
+        motor->init_pos = MOTOR_getRvtCounter(motor);
     }
     motor->control_mode = mode;
     
@@ -119,26 +171,25 @@ void MOTOR_setRvtRef(MOTOR_t* motor)
     PID_setRef(&motor->rvt_controller,motor->ref_rvt);
 }
 
-void MOTOR_setSpdRef(MOTOR_t* motor, int32_t pnt)
+void MOTOR_setSpdRef(MOTOR_t* motor, int32_t ref)
 {    
-    PID_setRef(&motor->spd_controller,pnt);
+    PID_setRef(&motor->spd_controller,ref);
 }
 
 void MOTOR_readSpeed(MOTOR_t* motor)
 {
-    motor->ca = PM1_HA_TIMER_ReadCounter();
-    PM1_HA_TIMER_WriteCounter(0);
+    motor->ca = MOTOR_getSpdCounter(motor);
+    //MOTOR_resetSpdCounter(motor);
     
     motor->period_ha = -1*(motor->ca+motor->ma);
     motor->ma = motor->ca;
     
-    motor->curr_spd = (HIGH_FREQ_CLOCK/motor->period_ha) * 30;
-        
+    motor->curr_spd = (SPD_MEASUREMENT_FREQ_CLOCK/motor->period_ha) * 30;
 }
 
 void MOTOR_readRevolution(MOTOR_t* motor)
 {  
-    motor->rvt_aux = PM1_DirCounter_GetCounter();
+    motor->rvt_aux = MOTOR_getRvtCounter(motor);
     motor->curr_rvt = (motor->rvt_aux - motor->init_pos);
     
     /* Check motor direction ad if it is rotating */
@@ -182,26 +233,6 @@ int16 * MOTOR_StoreADCResults() // store ADC conversion result in a sensor data 
     return dest;
 }
 
-void MOTOR_ToggleDir(MOTOR_t* motor)
-{    
-    if (motor->DIR.STATE == 0){   
-        MOTOR_setPinDIR(motor,1);
-    }
-    else{
-        MOTOR_clearPinDIR(motor);
-    }    
-}
-
-void MOTOR_clearPinDIR(MOTOR_t * motor)
-{
-    *motor->DIR.DR &= ~(motor->DIR.MASK);
-    motor->DIR.STATE = 0;
-}
-void MOTOR_clearPinENABLE(MOTOR_t * motor)
-{
-    *motor->ENABLE.DR &= ~(motor->ENABLE.MASK);
-    motor->ENABLE.STATE = 0;
-}
 void MOTOR_setPinDIR(MOTOR_t * motor, uint8_t setPin)
 {
     if(setPin == 0){

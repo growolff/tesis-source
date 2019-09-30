@@ -25,7 +25,7 @@ void sendPIDdata(int id)
     
     UART_PutString(strMsg);
     */
-    WB.xff = 0xff;
+    WB.xff = FF;
     WB.cmd = 5; //send pid data
     if (motors[id]->control_mode == 0)
     {
@@ -65,7 +65,7 @@ uint8_t fn_mapper_8b(int32_t x, int32_t in_min, int32_t in_max, uint8_t out_min,
 void ProcessCommandMsg(void)
 {
     float p,i,d;
-    char numaimp[6];
+ 
     switch(RB.cmd)
     {
         case 0: /* set reference of speed controller of motor RB.id */
@@ -100,7 +100,7 @@ void ProcessCommandMsg(void)
             i = ((float)RB.I)/FLOAT_TO_INT_SCALE;
             d = ((float)RB.D)/FLOAT_TO_INT_SCALE;
             
-            echof(p);
+            //echof(p);
             
             if(motors[RB.id]->control_mode == 0)
             {

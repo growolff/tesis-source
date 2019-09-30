@@ -30,6 +30,8 @@
 
 // main loop check rate
 #define RATE_HZ 40
+#define SPD_RATE_HZ 1000
+#define RVT_RATE_HZ 100
 
 /* Variable to store UART received character */
 uint8 Ch;
@@ -49,8 +51,8 @@ extern volatile int8_t rotor_direction;
 /* for position control */
 extern PID_t  pos_pid_;
 
-MOTOR_t PM1;
-MOTOR_t PM2;
+MOTOR_t M1;
+MOTOR_t M2;
 
 MOTOR_t* motors[2];
 

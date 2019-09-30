@@ -14,10 +14,10 @@
 
 #include "global.h"
   
-extern MOTOR_t PM1,PM2;
+extern MOTOR_t M1,M2;
 
-CY_ISR_PROTO(PM1_HA_INT);          // process PM1_HA_ISR interrupt
-CY_ISR_PROTO(PM2_HA_INT);          // process PM2_HA_ISR interrupt
+CY_ISR_PROTO(M1_HA_INT);          // process PM1_HA_ISR interrupt
+CY_ISR_PROTO(M2_HA_INT);          // process PM2_HA_ISR interrupt
 
 CY_ISR_PROTO(RVT_COMMAND_INT);
 CY_ISR_PROTO(SPD_COMMAND_INT);

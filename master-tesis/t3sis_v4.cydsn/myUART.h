@@ -20,6 +20,7 @@
 #define EOM_CR        0x0D    //message separator char (\r)
 #define EOM_LF        0x0A    //message separator char (\n)
 #define HASH          0x23
+#define FF            0xff
     
 #define COM_MSG_SIZE 8
   
@@ -32,7 +33,7 @@ union TRxBuffer {
         uint8_t xff1;
         uint8_t id;      // motor id
         uint8_t cmd;     // 1-byte command: Write, Read, Control, get info, set pid, etc.
-        int16_t pref;    // position reference
+        int16_t pref;    // control ref
         int16_t P;      // 
         int16_t I;
         int16_t D;
