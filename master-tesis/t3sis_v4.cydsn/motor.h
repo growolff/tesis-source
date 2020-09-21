@@ -22,7 +22,7 @@
     
 #define SPD_MEASUREMENT_FREQ_CLOCK 5000
 
-#define _MOTOR_MIN_SPEED 500 // for pid iterm restart
+#define _MOTOR_MIN_SPEED 0 // for pid iterm restart
 #define _MOTOR_MAX_SPEED 8000
     
 #define _MOTOR_MAX_POS 500    
@@ -98,12 +98,12 @@ uint32 MOTOR_getSpdCounter(MOTOR_t* motor);
 int16 MOTOR_getRvtCounter(MOTOR_t* motor);
 void MOTOR_resetSpdCounter(MOTOR_t* motor);
 void MOTOR_readSpeed(MOTOR_t* motor);
-void MOTOR_readRevolution(MOTOR_t* motor);
+void MOTOR_updateRevolution(MOTOR_t* motor);
 
 void MOTOR_setControlMode(MOTOR_t* motor, uint8_t mode);
 
 void MOTOR_checkDir(MOTOR_t* motor);
-void MOTOR_setRvtRef(MOTOR_t* motor);
+void MOTOR_setRvtRef(MOTOR_t* motor, int32_t ref_rvt);
 void MOTOR_setSpdRef(MOTOR_t* motor, int32_t ref);
 
 // pin operations

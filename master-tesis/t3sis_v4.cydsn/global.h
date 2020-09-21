@@ -32,6 +32,7 @@
 #define RATE_HZ 40
 #define SPD_RATE_HZ 1000
 #define RVT_RATE_HZ 100
+#define RVT_FACTOR 1
 
 /* Variable to store UART received character */
 uint8 Ch;
@@ -43,6 +44,8 @@ volatile uint8 SoftwareReset;
 
 /* Project variables */
 int _state_;
+    
+int16 ante;
 
 // for rotor speed and direction
 extern volatile uint8 dir_state;

@@ -72,16 +72,12 @@ void initMotor2()
     
     M2.init_pos = 0;
     M2.control_mode = 0;
-    M1.idx = 1;         // motor index
+    M2.idx = 1;         // motor index
     DC_M2_SetCounter(M2.init_pos);
     
-    M2.spd_pid[0] = 0.9;
-    M2.spd_pid[1] = 0.016;
-    M2.spd_pid[2] = 0.0;
-    
-    M2.rvt_pid[0] = 2.0;
+    M2.rvt_pid[0] = 0.5;
     M2.rvt_pid[1] = 0.0;
-    M2.rvt_pid[2] = 0.0;
+    M2.rvt_pid[2] = 0.5;
     
     MOTOR_init(&M2,M2_EN,M2_DR);
     
@@ -91,10 +87,10 @@ void initMotor2()
 
 void initMotors()
 {       
-    initMotor1();
+    //initMotor1();
     initMotor2();
     
-    motors[0] = &M1;
+    //motors[0] = &M1;
     motors[1] = &M2;
 }
 
@@ -109,8 +105,8 @@ int main(void)
     
     /* Initialize general interrupt blocks */
     RxInt_StartEx(MyRxInt);    
-    RVT_COMMAND_ISR_StartEx(RVT_COMMAND_INT); //revolutions control isr
-    SPD_COMMAND_ISR_StartEx(SPD_COMMAND_INT); //speed control isr
+    //RVT_COMMAND_ISR_StartEx(RVT_COMMAND_INT); //revolutions control isr
+    //SPD_COMMAND_ISR_StartEx(SPD_COMMAND_INT); //speed control isr
     
     // Initialize hardware related to motor M1
     PWM_M1_Start();
@@ -123,6 +119,8 @@ int main(void)
     HA_TIMER_M2_Start();
     DC_M2_Start();
     HA_ISR_M2_StartEx(M2_HA_INT);
+    
+    spd_m2_StartEx(SPD_M2_INT);
     
     _state_ = 0;
     initMotors();
@@ -142,7 +140,9 @@ int main(void)
     int spd_rate = 1000/SPD_RATE_HZ;
     int rvt_rate = 1000/RVT_RATE_HZ;
     
-    for(;;)
+    motors[1]->control_mode = 1;
+    
+    for(;;) // main loop
     {       
         while(IsCharReady()){
             //UART_PutString("&IsCharReady\r\n");
@@ -151,12 +151,18 @@ int main(void)
                 ProcessCommandMsg();
             }
         }
-        
-        MOTOR_readRevolution(motors[0]); // read motor position and check direction
-        
         pote = POTE_ADC_GetResult8();
+        
+        MOTOR_updateRevolution(motors[1]); // read motor position and check direction
+        MOTOR_setRvtRef(motors[1],pote*4);
+        
+        
         //PWM_M1_WriteCompare(pote);
         //PWM_M2_WriteCompare(pote);
+        //MOTOR_setPinDIR(&M2,1);
+        MOTOR_setPinENABLE(motors[1],1);
+
+        echod(motors[1]->rvtPID_out);
 
         if(millis_ReadCounter() - actual_time > rate_ms)
         {   
@@ -178,7 +184,7 @@ int main(void)
                 WB.xff = FF;
                 WB.cmd = 1;
                 if(motors[RB.id]->control_mode == 0){
-                    WB.ref = pote;
+                    WB.ref = motors[RB.id]->ref_spd;
                     WB.cur = motors[RB.id]->curr_spd;
                     WB.val = 0;
                 }
@@ -192,13 +198,8 @@ int main(void)
             }
             actual_time = millis_ReadCounter();
         }
-        if(millis_ReadCounter() - spd_time > spd_rate){
-            //MOTOR_setSpeed(motors[0],pote*_MOTOR_MAX_SPEED/255);
-            MOTOR_setSpeed(motors[0],motors[0]->ref_spd);
-            spd_time = millis_ReadCounter();
-        }
         if(millis_ReadCounter() - rvt_time > rvt_rate) {
-            MOTOR_setPosition(motors[0]);
+            MOTOR_setPosition(motors[1]);
             
             rvt_time = millis_ReadCounter();
         }
