@@ -13,125 +13,152 @@
 
 void echo(char* data)
 {
-    sprintf(strMsg,"%s\r\n", data);
-    UART_PutString(strMsg);   
+    sprintf(strMsg,"*%s\r\n", data);
+    UART_PutString(strMsg);
 }
 void echod(int data)
 {
-    sprintf(strMsg,"%d\r\n", data);
-    UART_PutString(strMsg);   
+    sprintf(strMsg,"*%d\r\n", data);
+    UART_PutString(strMsg);
 }
 
 void echof(float data)
 {
-    sprintf(strMsg,"%.2f\r\n", data);
-    UART_PutString(strMsg);  
+    sprintf(strMsg,"*%.4f\r\n", data);
+    UART_PutString(strMsg);
 }
 
-void writeEEPROM()
+void echomsg(int16_t ref, int16_t cur, int16_t val)
 {
-    if(EEPROM_1_WriteByte(100,3)){
-        //echo("writebyte1");
-    }
-    if(EEPROM_1_WriteByte(20,4)){
-        //echo("writebyte2");
-    }
-    if(EEPROM_1_WriteByte(0,5)){
-        //echo("writebyte2");
-    }
-    
+    int len = sizeof(WB.buffStr)/sizeof(*WB.buffStr);
+    WB.xff = FF;
+    WB.cmd = 1;
+    WB.ref = ref;
+    WB.cur = cur;
+    WB.val = val;
+
+    UART_PutArray((const uint8*)&WB.buffStr,len);
 }
 
-void initMotorPM1()
+void initMotor1()
 {
-    
-    writeEEPROM();
+    // Initialize hardware related to motor M1
+    PWM_M1_Start();
+    HA_TIMER_M1_Start();
+    DC_M1_Start();
+    HA_ISR_M1_StartEx(M1_HA_INT);
+
     // initialize software associated to motor PM1
-    PIN_t PM1_DR,PM1_EN;
-    PM1_DR.DR = &PM1_DIR_DR;
-    PM1_DR.MASK = PM1_DIR_MASK;
-    PM1_DR.STATE = 0;
-    PM1_EN.DR = &PM1_ENABLE_DR;
-    PM1_EN.MASK = PM1_ENABLE_MASK;
-    PM1_EN.STATE = 0;
-    
-    PM1.init_pos = 0;
-    PM1.control_mode = 0;
-    PM1_DirCounter_SetCounter(PM1.init_pos);
-    
-    pid_rvt[0] = EEPROM_1_ReadByte(0);
-    pid_rvt[1] = EEPROM_1_ReadByte(1);
-    pid_rvt[2] = EEPROM_1_ReadByte(2);
-    
-    PM1.spd_params[0] = 1.0;
-    PM1.spd_params[1] = 1.0;
-    //PM1.spd_params[1] = (float)EEPROM_1_ReadByte(4)*0.01;
-    PM1.spd_params[2] = (float)EEPROM_1_ReadByte(5)*0.01;
-    
-    MOTOR_init(&PM1,PM1_EN,PM1_DR);
-     
-    //MOTOR_setRvtControlParams(motors[0],(float)pid_rvt[0]*0.01,(float)pid_rvt[1]*0.01,(float)pid_rvt[2]*0.01);
-    //MOTOR_setSpdControlParams(motors[0],(float)pid_spd[0]*0.01,(float)pid_spd[1]*0.01,(float)pid_spd[2]*0.01);
-    //MOTOR_setSpdControlParams(motors[0],(float)1.0,0,0);
+    PIN_t M1_DR,M1_EN;
+    M1_DR.DR = &PM1_DIR_DR;
+    M1_DR.MASK = PM1_DIR_MASK;
+    M1_DR.STATE = 0;
+    M1_EN.DR = &PM1_ENABLE_DR;
+    M1_EN.MASK = PM1_ENABLE_MASK;
+    M1_EN.STATE = 0;
+
+    M1.init_pos = 0;
+    M1.control_mode = 0;
+    M1.idx = 0;         // motor index
+    DC_M1_SetCounter(M1.init_pos);
+
+
+    M1.spd_pid[0] = 0.9;
+    M1.spd_pid[1] = 0.016;
+    M1.spd_pid[2] = 0.0;
+
+    M1.rvt_pid[0] = 2.0;
+    M1.rvt_pid[1] = 0.0;
+    M1.rvt_pid[2] = 0.0;
+
+    MOTOR_init(&M1,M1_EN,M1_DR);
+
+    MOTOR_setPinDIR(&M1,0);
+    MOTOR_setPinENABLE(&M1,0);
 }
 
-void initMotor()
-{       
-    initMotorPM1();
+void initMotor2()
+{
+    // Initialize hardware related to motor M2
+    PWM_M2_Start();
+    HA_TIMER_M2_Start();
+    DC_M2_Start();
+    HA_ISR_M2_StartEx(M2_HA_INT);
 
-    motors[0] = &PM1;
+    // initialize software associated to motor PM1
+    PIN_t M2_DR,M2_EN;
+    M2_DR.DR = &M2_DIR_DR;
+    M2_DR.MASK = M2_DIR_MASK;
+    M2_DR.STATE = 0;
+    M2_EN.DR = &M2_EN_DR;
+    M2_EN.MASK = M2_EN_MASK;
+    M2_EN.STATE = 0;
+
+    M2.init_pos = 0;
+    M2.control_mode = 0;
+    M2.idx = 1;         // motor index
+    DC_M2_SetCounter(M2.init_pos);
+
+    M2.rvt_pid[0] = 1.0;
+    M2.rvt_pid[1] = 0.0;
+    M2.rvt_pid[2] = 0.0;
+
+    MOTOR_init(&M2,M2_EN,M2_DR);
+
+    MOTOR_setPinDIR(&M2,0);
+    MOTOR_setPinENABLE(&M2,0);
+
+    // only for testing
+    M2.control_mode = 1;
+}
+
+void initMotors()
+{
+    //initMotor1();
+    initMotor2();
+
+    //motors[0] = &M1;
+    motors[1] = &M2;
 }
 
 int main(void)
 {
     millis_Start();
-    
-    SPD_COUNTER_Start();
-    SPEED_PWM_Start();
+
     POTE_ADC_Start();
     POTE_ADC_StartConvert();
-    //SPEED_DAC_Start();
     UART_Start();
     EEPROM_1_Start();
-    /* Initialize interrupt blocks */
-    RxInt_StartEx(MyRxInt);
-    
-    // Initialize hardware related to motor PM1
-    //PM1_HA_TIMER_Start();
-    PM1_DirCounter_Start();
-    // Initialize ISR
-    //PM1_DirCounter_isr_StartEx(PM1_HA_INT);
-    //HA_ISR_StartEx(PM1_HA_INT);
-    RVT_COMMAND_ISR_StartEx(RVT_COMMAND_INT); //revolutions control isr
-    SPD_COMMAND_ISR_StartEx(SPD_COMMAND_INT); //speed control isr
-    
-    _state_ = 0;
-    factor = 100.0;
 
-    initMotor();
-    
+    /* Initialize general interrupt blocks */
+    RxInt_StartEx(MyRxInt);
+    spd_m2_StartEx(SPD_M2_INT);
+
+    _state_ = 0;
+    initMotors();
+
     CyGlobalIntEnable; /* Enable global interrupts. */
 
-    /* Place your initialization/startup code here (e.g. MyInst_Start()) */
-    
-    MOTOR_setPinDIR(&PM1,0);
-    MOTOR_setPinENABLE(&PM1,1);
-        
-    PM1.ref_rvt = 0;
-    motors[0]->control_mode = 0;
-    
-    ContinuouslySendData = TRUE;
-    
-    /* transmition rate */
-    int rate_ms = 1000/RATE_HZ;
-    uint8_t pote = 0;
-    
-    uint16_t actual_time = millis_ReadCounter();
-    
-    motors[0]->control_mode = 0;
+    ContinuouslySendData = FALSE;
 
-    for(;;)
-    {        
+    /* control rates */
+    int rate_ms = 1000/RATE_HZ; // transmission rate
+    int spd_rate = 1000/SPD_RATE_HZ; // speed control rate
+    int rvt_rate = 1000/RVT_RATE_HZ; // position control rate
+
+    uint16_t actual_time = millis_ReadCounter();
+    uint16_t spd_time = millis_ReadCounter();
+    uint16_t rvt_time = millis_ReadCounter();
+
+    uint8_t pote = 0;
+
+    MOTOR_setPinENABLE(motors[1],M_ENABLE);
+    MOTOR_setPinDIR(motors[1],M_CCW);
+
+    for(;;) // main loop
+    {
+
+        // receive uart data
         while(IsCharReady()){
             //UART_PutString("&IsCharReady\r\n");
             if(GetRxStr()){
@@ -139,18 +166,23 @@ int main(void)
                 ProcessCommandMsg();
             }
         }
-        
-        pote = POTE_ADC_GetResult8();
-        motors[0]->ref_spd = fn_mapper(pote,0,255,0,9000);
-        //SPEED_PWM_WriteCompare(pote);
 
+        pote = POTE_ADC_GetResult8();
+
+        MOTOR_setRvtRef(motors[1],pote*4);
+
+        //PWM_M1_WriteCompare(pote);
+        //PWM_M2_WriteCompare(pote);
+
+
+        // main counter loop
         if(millis_ReadCounter() - actual_time > rate_ms)
-        {   
-            //CyDelay(25); // works at 40 Hz
+        {
+            // set speed reference (only for testing)
+            //motors[0]->ref_spd = fn_mapper(pote,0,255,0,9000);
+
             _state_ = !_state_;
             LED1_Write(_state_);
-            
-            actual_time = millis_ReadCounter();
             if(actual_time > 60000)
             {
                 millis_WriteCounter(0); //resetea el contador cuando pasa los 60 segundos
@@ -160,14 +192,26 @@ int main(void)
             /* Send data based on last UART command */
             if(ContinuouslySendData)
             {
-                sprintf(TransmitBuffer, "V:%d\tP:%d\tO:%d\r\n",motors[0]->ref_spd,(int)motors[0]->spd_controller.dbg,motors[0]->curr_spd);
-                UART_PutString(TransmitBuffer);
-                //sprintf(TransmitBuffer, "Ref: %d\tActual: %d\tTens: %d\r\n",(int)PM1.ref_rvt,(int)PM1.curr_rvt,(int)motors[0]->rvt_controller.kP*1000);
-                
-                //sprintf(TransmitBuffer, "%d\t%d\t%d\r\n",PM1.ref_rvt,PM1.curr_rvt,PM1.ref_spd);
-                /* Send out the data */
+                int len = sizeof(WB.buffStr)/sizeof(*WB.buffStr);
+                WB.xff = FF;
+                WB.cmd = 1;
+                if(motors[RB.id]->control_mode == 1){
+                    WB.ref = motors[RB.id]->ref_rvt;
+                    WB.cur = motors[RB.id]->curr_rvt;
+                    WB.val = 0;
+                }
 
+                UART_PutArray((const uint8*)&WB.buffStr,len);
             }
+            actual_time = millis_ReadCounter();
+        }
+
+        // position control loop
+        if(millis_ReadCounter() - rvt_time > rvt_rate) {
+            echomsg(motors[1]->ref_rvt,motors[1]->rvtPID_out,motors[1]->curr_rvt);
+            MOTOR_setPosition(motors[1]);
+
+            rvt_time = millis_ReadCounter();
         }
     }
 }

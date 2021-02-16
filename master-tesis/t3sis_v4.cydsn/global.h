@@ -15,7 +15,7 @@
 #include "project.h"
 #include "motor.h"
 #include "stdio.h"
-#include "pid.h"
+#include "pid_o.h"
 #include "string.h"
 #include "myUART.h"
 #include "functions.h" 
@@ -23,24 +23,16 @@
 #include "math.h"
 #include "stdlib.h"
     
-/* Project structures */
-
-//buffer to hold application settings
-typedef struct TParamBuffer{
-    char* cmd;  //command
-    int pVal,iVal,dVal;   //int param
-} ParamBuffer;  //settings
-volatile ParamBuffer PB;     //volatile struct TParamBuffer PB;
-
 /* Project defines */
 #define FALSE  0
 #define TRUE   1
 #define TRANSMIT_BUFFER_SIZE  16
 
 // main loop check rate
-#define RATE_HZ 40
-
-//#define MAX_COUNTER 6500 // max counter for checking zero speed
+#define RATE_HZ 1
+#define SPD_RATE_HZ 1000
+#define RVT_RATE_HZ 10
+#define RVT_FACTOR 1
 
 /* Variable to store UART received character */
 uint8 Ch;
@@ -52,17 +44,19 @@ volatile uint8 SoftwareReset;
 
 /* Project variables */
 int _state_;
-
+   
 // for rotor speed and direction
 extern volatile uint8 dir_state;
 extern volatile int8_t rotor_direction;
 
 /* for position control */
-extern PID_t  pos_pid_;
+PID_t  pos_pid_m1;
+PID_t  pos_pid_m2;
 
-MOTOR_t PM1;
-MOTOR_t PM2;
+MOTOR_t M1;
+MOTOR_t M2;
 
+PID_t* pid[2];
 MOTOR_t* motors[2];
 
 char strMsg[10];
@@ -71,10 +65,6 @@ float factor;
 
 int pid_rvt[3];
 int pid_spd[3];
-
-char num[3]; // para printear
-char lect[3]; // para leer de la eeprom
-cystatus writeStatus;
 
 char TransmitBuffer[TRANSMIT_BUFFER_SIZE];
 
@@ -85,3 +75,4 @@ void echof(float data);
 #endif // GLOBAL_VARIABLES_FILE_H
 
 /* [] END OF FILE */
+
