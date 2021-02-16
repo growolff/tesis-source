@@ -28,8 +28,26 @@ void echof(float data)
     UART_PutString(strMsg);  
 }
 
+void echomsg(int16_t ref, int16_t cur, int16_t val)
+{
+    int len = sizeof(WB.buffStr)/sizeof(*WB.buffStr);
+    WB.xff = FF;
+    WB.cmd = 1;
+    WB.ref = ref;
+    WB.cur = cur;
+    WB.val = val;
+   
+    UART_PutArray((const uint8*)&WB.buffStr,len);
+}
+
 void initMotor1()
 {
+    // Initialize hardware related to motor M1
+    PWM_M1_Start();
+    HA_TIMER_M1_Start();
+    DC_M1_Start();
+    HA_ISR_M1_StartEx(M1_HA_INT);
+    
     // initialize software associated to motor PM1
     PIN_t M1_DR,M1_EN;
     M1_DR.DR = &PM1_DIR_DR;
@@ -61,6 +79,12 @@ void initMotor1()
 
 void initMotor2()
 {
+    // Initialize hardware related to motor M2
+    PWM_M2_Start();
+    HA_TIMER_M2_Start();
+    DC_M2_Start();
+    HA_ISR_M2_StartEx(M2_HA_INT);
+    
     // initialize software associated to motor PM1
     PIN_t M2_DR,M2_EN;
     M2_DR.DR = &M2_DIR_DR;
@@ -75,14 +99,17 @@ void initMotor2()
     M2.idx = 1;         // motor index
     DC_M2_SetCounter(M2.init_pos);
     
-    M2.rvt_pid[0] = 0.5;
+    M2.rvt_pid[0] = 1.0;
     M2.rvt_pid[1] = 0.0;
-    M2.rvt_pid[2] = 0.5;
+    M2.rvt_pid[2] = 0.0;
     
     MOTOR_init(&M2,M2_EN,M2_DR);
     
     MOTOR_setPinDIR(&M2,0);
     MOTOR_setPinENABLE(&M2,0);
+    
+    // only for testing
+    M2.control_mode = 1;
 }
 
 void initMotors()
@@ -104,22 +131,7 @@ int main(void)
     EEPROM_1_Start();
     
     /* Initialize general interrupt blocks */
-    RxInt_StartEx(MyRxInt);    
-    //RVT_COMMAND_ISR_StartEx(RVT_COMMAND_INT); //revolutions control isr
-    //SPD_COMMAND_ISR_StartEx(SPD_COMMAND_INT); //speed control isr
-    
-    // Initialize hardware related to motor M1
-    PWM_M1_Start();
-    HA_TIMER_M1_Start();
-    DC_M1_Start();
-    HA_ISR_M1_StartEx(M1_HA_INT);
-    
-     // Initialize hardware related to motor M2
-    PWM_M2_Start();
-    HA_TIMER_M2_Start();
-    DC_M2_Start();
-    HA_ISR_M2_StartEx(M2_HA_INT);
-    
+    RxInt_StartEx(MyRxInt);     
     spd_m2_StartEx(SPD_M2_INT);
     
     _state_ = 0;
@@ -129,21 +141,24 @@ int main(void)
     
     ContinuouslySendData = FALSE;
     
-    /* transmition rate */
-    int rate_ms = 1000/RATE_HZ;
-    uint8_t pote = 0;
-    
+    /* control rates */
+    int rate_ms = 1000/RATE_HZ; // transmission rate
+    int spd_rate = 1000/SPD_RATE_HZ; // speed control rate
+    int rvt_rate = 1000/RVT_RATE_HZ; // position control rate
+     
     uint16_t actual_time = millis_ReadCounter();
     uint16_t spd_time = millis_ReadCounter();
     uint16_t rvt_time = millis_ReadCounter();
+        
+    uint8_t pote = 0;
     
-    int spd_rate = 1000/SPD_RATE_HZ;
-    int rvt_rate = 1000/RVT_RATE_HZ;
-    
-    motors[1]->control_mode = 1;
+    MOTOR_setPinENABLE(motors[1],M_ENABLE);
+    MOTOR_setPinDIR(motors[1],M_CCW);
     
     for(;;) // main loop
     {       
+        
+        // receive uart data
         while(IsCharReady()){
             //UART_PutString("&IsCharReady\r\n");
             if(GetRxStr()){
@@ -151,19 +166,16 @@ int main(void)
                 ProcessCommandMsg();
             }
         }
+        
         pote = POTE_ADC_GetResult8();
         
-        MOTOR_updateRevolution(motors[1]); // read motor position and check direction
         MOTOR_setRvtRef(motors[1],pote*4);
-        
         
         //PWM_M1_WriteCompare(pote);
         //PWM_M2_WriteCompare(pote);
-        //MOTOR_setPinDIR(&M2,1);
-        MOTOR_setPinENABLE(motors[1],1);
 
-        echod(motors[1]->rvtPID_out);
 
+        // main counter loop
         if(millis_ReadCounter() - actual_time > rate_ms)
         {   
             // set speed reference (only for testing)
@@ -183,12 +195,7 @@ int main(void)
                 int len = sizeof(WB.buffStr)/sizeof(*WB.buffStr);
                 WB.xff = FF;
                 WB.cmd = 1;
-                if(motors[RB.id]->control_mode == 0){
-                    WB.ref = motors[RB.id]->ref_spd;
-                    WB.cur = motors[RB.id]->curr_spd;
-                    WB.val = 0;
-                }
-                else if(motors[RB.id]->control_mode == 1){
+                if(motors[RB.id]->control_mode == 1){
                     WB.ref = motors[RB.id]->ref_rvt;
                     WB.cur = motors[RB.id]->curr_rvt;
                     WB.val = 0;
@@ -198,7 +205,10 @@ int main(void)
             }
             actual_time = millis_ReadCounter();
         }
+        
+        // position control loop
         if(millis_ReadCounter() - rvt_time > rvt_rate) {
+            echomsg(motors[1]->ref_rvt,motors[1]->rvtPID_out,motors[1]->curr_rvt);
             MOTOR_setPosition(motors[1]);
             
             rvt_time = millis_ReadCounter();

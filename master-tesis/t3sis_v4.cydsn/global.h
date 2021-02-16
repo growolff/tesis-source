@@ -29,9 +29,9 @@
 #define TRANSMIT_BUFFER_SIZE  16
 
 // main loop check rate
-#define RATE_HZ 40
+#define RATE_HZ 1
 #define SPD_RATE_HZ 1000
-#define RVT_RATE_HZ 100
+#define RVT_RATE_HZ 10
 #define RVT_FACTOR 1
 
 /* Variable to store UART received character */
@@ -44,19 +44,19 @@ volatile uint8 SoftwareReset;
 
 /* Project variables */
 int _state_;
-    
-int16 ante;
-
+   
 // for rotor speed and direction
 extern volatile uint8 dir_state;
 extern volatile int8_t rotor_direction;
 
 /* for position control */
-extern PID_t  pos_pid_;
+PID_t  pos_pid_m1;
+PID_t  pos_pid_m2;
 
 MOTOR_t M1;
 MOTOR_t M2;
 
+PID_t* pid[2];
 MOTOR_t* motors[2];
 
 char strMsg[10];
@@ -75,3 +75,4 @@ void echof(float data);
 #endif // GLOBAL_VARIABLES_FILE_H
 
 /* [] END OF FILE */
+

@@ -72,29 +72,30 @@ void ProcessCommandMsg(void)
             motors[RB.id]->ref_spd = RB.pref;
             break;
         case 1: /* set reference of position controller of motor RB.id */
-            motors[RB.id]->ref_rvt = RB.pref;
+            //motors[RB.id]->ref_rvt = RB.pref;
+            MOTOR_setRvtRef(motors[RB.id],RB.pref);
             break;
         case 2: /* set reference of tension controller of motor RB.id */
         
             break;
-        case 20: /* Stop data streaming */
+        case F_SEND_DATA_FALSE: /* Stop data streaming */
             ContinuouslySendData = FALSE;
             break;
         case 22: /* request pid values */
             // cmd(0,12,-1,0,0,0,0) ask for position control PID values
             sendPIDdata(RB.id); // send controller parameters
             break;
-        case 23: /* set control mode */
-            // cmd(0,23,0,0,0,0) speed
-            // cmd(0,23,1,0,0,0) position
+        case F_SET_CONTROL_MODE: /* set control mode */
+            // cmd(0,24,0,0,0,0) speed
+            // cmd(0,24,1,0,0,0) position
             MOTOR_setControlMode(motors[RB.id],RB.pref);  
             break;
-        case 24: /* stop motor */
+        case 25: /* stop motor */
             if(motors[RB.id]->ENABLE.STATE == 1){
                 MOTOR_setPinENABLE(motors[RB.id], 0);
             }
             break;
-        case 25: /* Set pid values */ 
+        case 23: /* Set pid values */ 
             
             p = ((float)RB.P)/FLOAT_TO_INT_SCALE;
             i = ((float)RB.I)/FLOAT_TO_INT_SCALE;
@@ -122,10 +123,10 @@ void ProcessCommandMsg(void)
             }
             
             break;
-        case 40: /* Contuously send data */
+        case F_SEND_DATA_TRUE: /* Contuously send data */
             ContinuouslySendData = TRUE;
             break;
-        case 44: /* resume motor */
+        case F_ENABLE_MOTOR: /* resume motor */
             if(motors[RB.id]->ENABLE.STATE == 0){
                 MOTOR_setPinENABLE(motors[RB.id], 1);
             }

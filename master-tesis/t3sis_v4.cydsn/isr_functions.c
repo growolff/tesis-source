@@ -20,16 +20,9 @@ CY_ISR(M2_HA_INT) //interrupt on level change in PM1_HA signal
 {
     //MOTOR_readSpeed(motors[1]);   
 }
-CY_ISR(SPD_M2_INT) //interrupt at 200hz signal
+CY_ISR(SPD_M2_INT) //interrupt at 20hz signal
 { 
-    int16 counter = MOTOR_getRvtCounter(motors[1]);
-    if(counter >= 0 || counter <= 5000){
-        motors[1]->curr_spd = (counter-ante)*60*20/10;
-    }
-    else{
-        counter = ante;
-    }    
-    ante = counter;
+    MOTOR_readSpeed(motors[1]);   
 }
 
 /* [] END OF FILE */

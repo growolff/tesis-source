@@ -22,12 +22,14 @@ void MOTOR_init(MOTOR_t* motor, PIN_t pin_enable, PIN_t pin_dir)
     PID_init(&motor->rvt_controller,motor->rvt_pid[0],motor->rvt_pid[1],motor->rvt_pid[2]);
     PID_setMaxValue(&motor->rvt_controller, _MOTOR_MAX_POS);
     PID_setMinValue(&motor->rvt_controller, - _MOTOR_MAX_POS);
-      
+    
     motor->DIR = pin_dir;
     motor->ENABLE = pin_enable;
 
-    MOTOR_setPinENABLE(motor,0);
-    MOTOR_setPinDIR(motor,0);
+    MOTOR_setPinENABLE(motor,M_DISABLE);
+    MOTOR_setPinDIR(motor,M_CCW);
+    
+    motor->last_count = 0;
     /*
     motor->readIndex = 0;
     motor->total = 0;
@@ -66,19 +68,25 @@ void MOTOR_setSpeed(MOTOR_t* motor, int32_t ref)
 
 void MOTOR_setPosition(MOTOR_t* motor)
 {
-    //MOTOR_readRevolution(motor); // read rotor current position
     if(motor->control_mode == 1)
     {
-        //MOTOR_setRvtRef(motor);
         motor->rvtPID_out = PID_calculatePID(&motor->rvt_controller,motor->curr_rvt);
         if(motor->rvtPID_out > 0){
-            MOTOR_setPinDIR(motor,1);
+            MOTOR_setPinDIR(motor,M_CW);
         }
         else{
-            MOTOR_setPinDIR(motor,0);
+            MOTOR_setPinDIR(motor,M_CCW);
             motor->rvtPID_out = -motor->rvtPID_out;
         }
-        PWM_M2_WriteCompare(motor->rvtPID_out);      
+        switch (motor->idx)
+        {
+            case 0:
+                PWM_M1_WriteCompare(motor->rvtPID_out);      
+                break;
+            case 1:
+                PWM_M2_WriteCompare(motor->rvtPID_out);      
+                break;
+        }         
     }    
 }
 
@@ -135,17 +143,22 @@ void MOTOR_resetSpdCounter(MOTOR_t* motor)
 
 void MOTOR_setControlMode(MOTOR_t* motor, uint8_t mode)
 {
-    // disable motor
-    if(motor->ENABLE.STATE == 1)
-        MOTOR_setPinENABLE(motor, 0);
-    
-    if(mode == 1){
-        motor->init_pos = MOTOR_getRvtCounter(motor);
+    if(motor->ENABLE.STATE == 1){
+        // disable motor if enabled
+        MOTOR_disable(motor);
+        if(mode == M_POSITION_CONTROL_MODE){
+            motor->init_pos = MOTOR_getRvtCounter(motor);
+        }
+        motor->control_mode = mode;
+        // enable motor
+        MOTOR_enable(motor);
     }
-    motor->control_mode = mode;
-    
-    // enable motor
-    MOTOR_setPinENABLE(motor, 1);
+    else {
+        if(mode == M_POSITION_CONTROL_MODE){
+            motor->init_pos = MOTOR_getRvtCounter(motor);
+        }
+        motor->control_mode = mode;
+    }
 }
 
 void MOTOR_setRvtControlParams(MOTOR_t* motor, float kp, float ki, float kd)
@@ -168,58 +181,50 @@ void MOTOR_setSpdControlParams(MOTOR_t* motor, float kp, float ki, float kd)
 
 void MOTOR_setRvtRef(MOTOR_t* motor, int32_t ref_rvt)
 {    
-    motor->ref_rvt = ref_rvt;
     PID_setRef(&motor->rvt_controller,ref_rvt);
-}
-
-void MOTOR_setSpdRef(MOTOR_t* motor, int32_t ref)
-{    
-    PID_setRef(&motor->spd_controller,ref);
+    motor->ref_rvt = ref_rvt;
 }
 
 void MOTOR_readSpeed(MOTOR_t* motor)
 {
+    /*
     motor->ca = MOTOR_getSpdCounter(motor);
-    //MOTOR_resetSpdCounter(motor);
+    MOTOR_resetSpdCounter(motor);
     
     motor->period_ha = -1*(motor->ca+motor->ma);
     motor->ma = motor->ca;
     
-    motor->curr_spd = (SPD_MEASUREMENT_FREQ_CLOCK/motor->period_ha) * 30;
-}
-
-void MOTOR_updateRevolution(MOTOR_t* motor)
-{  
-    motor->rvt_aux = MOTOR_getRvtCounter(motor);
-    motor->curr_rvt = (motor->rvt_aux - motor->init_pos);
-    
-    MOTOR_checkDir(motor);
-}
-
-void MOTOR_checkDir(MOTOR_t* motor)
-{
-    // difference between last counter and current one
-    motor->diff = motor->rvt_aux - motor->rvt_last_count;
-    
-    if ( motor->diff > 0 )
-    {
-        // if > 0 its turning right (CW) 
-        motor->curr_dir = 1;
+    if(MOTOR_checkDir(motor) != -1){
+        motor->curr_spd = (SPD_MEASUREMENT_FREQ_CLOCK/motor->period_ha) * 30;
     }
-    else if ( motor->diff < 0 )
-    {
-        // if < 0 its turning left (CCW)
-        motor->curr_dir = 0;
-    } 
-    //if ( motor->rvt_aux - motor->rvt_last_count == 0 )
-    else
-    {
-        // if == 0 its not rotating
-        motor->curr_dir = -1;
+    else{
         motor->curr_spd = 0;
     }
-    // update variable
-    motor->rvt_last_count = motor->rvt_aux;
+    */
+    
+    int16 counter = MOTOR_getRvtCounter(motor);
+    motor->curr_rvt = (counter - motor->init_pos);
+    
+    int16 diff = counter - motor->last_count;
+    
+    if(counter >= 0 || counter <= 5000){
+        if (motor->DIR.STATE == M_CW){
+            motor->curr_spd = (diff)*60*20/10;
+            motor->curr_dir = M_CW;
+        }
+        else if (motor->DIR.STATE == M_CCW){
+            motor->curr_spd = -1*(diff)*60*20/10;
+            motor->curr_dir = M_CCW;
+        }  
+    }
+    else{
+        counter = motor->last_count;
+    }    
+    motor->last_count = counter;
+    
+    if(motor->curr_spd == 0){
+        motor->curr_dir = M_STOP;
+    }
 }
 
 int16 * MOTOR_StoreADCResults() // store ADC conversion result in a sensor data array
@@ -235,26 +240,36 @@ int16 * MOTOR_StoreADCResults() // store ADC conversion result in a sensor data 
 
 void MOTOR_setPinDIR(MOTOR_t * motor, uint8_t setPin)
 {
-    if(setPin == 0){
+    if(setPin == M_CCW){
         *motor->DIR.DR &= ~(motor->DIR.MASK);
-        motor->DIR.STATE = 0;  
+        motor->DIR.STATE = M_CCW;  
     }
-    else if(setPin == 1){
+    else if(setPin == M_CW){
         *motor->DIR.DR |= motor->DIR.MASK;    
-        motor->DIR.STATE = 1;
+        motor->DIR.STATE = M_CW;
     }
 }
 void MOTOR_setPinENABLE(MOTOR_t * motor, uint8_t setPin)
 {
-    if(setPin == 0){ // turn off
+    if(setPin == M_DISABLE){ // turn off
         *motor->ENABLE.DR &= ~(motor->ENABLE.MASK);
-        motor->ENABLE.STATE = 0; 
+        motor->ENABLE.STATE = M_DISABLE; 
     }
-    else if(setPin == 1){ // turn on
+    else if(setPin == M_ENABLE){ // turn on
         *motor->ENABLE.DR |= motor->ENABLE.MASK;
-        motor->ENABLE.STATE = 1;
+        motor->ENABLE.STATE = M_ENABLE;
     }
     
+}
+
+void MOTOR_enable(MOTOR_t *motor){
+    *motor->ENABLE.DR |= motor->ENABLE.MASK;
+    motor->ENABLE.STATE = M_ENABLE;
+}
+
+void MOTOR_disable(MOTOR_t *motor){
+    *motor->ENABLE.DR &= ~(motor->ENABLE.MASK);
+    motor->ENABLE.STATE = M_DISABLE; 
 }
 
 /* [] END OF FILE */
