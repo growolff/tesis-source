@@ -28,11 +28,10 @@
 #define TRUE   1
 #define TRANSMIT_BUFFER_SIZE  16
 
-// main loop check rate
-#define RATE_HZ 1
-#define SPD_RATE_HZ 1000
-#define RVT_RATE_HZ 10
-#define RVT_FACTOR 1
+// main loop control rates
+#define LED_BLINK_RATE 1    
+#define RATE_HZ 20
+#define RVT_RATE_HZ 100
 
 /* Variable to store UART received character */
 uint8 Ch;
@@ -53,13 +52,24 @@ extern volatile int8_t rotor_direction;
 PID_t  pos_pid_m1;
 PID_t  pos_pid_m2;
 
+#define M1_IDX 0
+#define M2_IDX 1
+    
+#define M1_KP 2.5
+#define M1_KI 0.2
+#define M1_KD 0.1
+    
+#define M2_KP 2.5
+#define M2_KI 0.2
+#define M2_KD 0.1
+    
 MOTOR_t M1;
 MOTOR_t M2;
 
+int16_t sumFS1;
+    
 PID_t* pid[2];
 MOTOR_t* motors[2];
-
-char strMsg[10];
 
 float factor;
 

@@ -12,9 +12,10 @@
 #ifndef FUNCTIONS_H
 #define FUNCTIONS_H
 
-#include "global.h"
 #include <project.h>
 #include <stdint.h>
+#include "global.h"
+#include "myUART.h"
 #include "math.h"
 
 /* list of commands */
@@ -29,11 +30,21 @@
 #define F_ENABLE_MOTOR        26
 #define F_DEBUG_VAR           55
 #define F_SOFTWARE_RESET      99    
-    
-extern MOTOR_t PM1;
+   
+char strMsg[10];
+
+void echo(char* data);
+void echod(int data);
+void echof(float data);
+void echomsg(uint8_t cmd, int16_t ref, int16_t cur, int16_t val);
+void sendPIDdata(int id);
 
 int32_t fn_mapper(int32_t x, int32_t in_min, int32_t in_max, int32_t out_min, int32_t out_max);
 uint8_t fn_mapper_8b(int32_t x, int32_t in_min, int32_t in_max, uint8_t out_min, uint8_t out_max);
+
+// sensor conditioning functions
+int16_t smooth(const int sensor, int numRead);
+uint16_t getTension(uint16_t read);
 
 void ProcessCommandMsg(void);
 

@@ -68,26 +68,25 @@ void MOTOR_setSpeed(MOTOR_t* motor, int32_t ref)
 
 void MOTOR_setPosition(MOTOR_t* motor)
 {
-    if(motor->control_mode == 1)
-    {
-        motor->rvtPID_out = PID_calculatePID(&motor->rvt_controller,motor->curr_rvt);
-        if(motor->rvtPID_out > 0){
-            MOTOR_setPinDIR(motor,M_CW);
-        }
-        else{
-            MOTOR_setPinDIR(motor,M_CCW);
-            motor->rvtPID_out = -motor->rvtPID_out;
-        }
-        switch (motor->idx)
-        {
-            case 0:
-                PWM_M1_WriteCompare(motor->rvtPID_out);
-                break;
-            case 1:
-                PWM_M2_WriteCompare(motor->rvtPID_out);
-                break;
-        }
+    motor->rvtPID_out = PID_calculatePID(&motor->rvt_controller,motor->curr_rvt);
+    int16_t motor_PWM = motor->rvtPID_out;
+    if(motor->rvtPID_out > 0){
+        MOTOR_setCW(motor);
     }
+    else{
+        MOTOR_setCCW(motor);
+        motor_PWM = -motor_PWM;
+    }
+    switch (motor->idx)
+    {
+        case 0:
+            PWM_M1_WriteCompare(motor_PWM);
+            break;
+        case 1:
+            PWM_M2_WriteCompare(motor_PWM);
+            break;
+    }
+
 }
 
 int16 MOTOR_getRvtCounter(MOTOR_t* motor)
@@ -145,13 +144,13 @@ void MOTOR_setControlMode(MOTOR_t* motor, uint8_t mode)
 {
     if(motor->ENABLE.STATE == 1){
         // disable motor if enabled
-        MOTOR_disable(motor);
+        MOTOR_setDisable(motor);
         if(mode == M_POSITION_CONTROL_MODE){
             motor->init_pos = MOTOR_getRvtCounter(motor);
         }
         motor->control_mode = mode;
         // enable motor
-        MOTOR_enable(motor);
+        MOTOR_setEnable(motor);
     }
     else {
         if(mode == M_POSITION_CONTROL_MODE){
@@ -179,7 +178,7 @@ void MOTOR_setSpdControlParams(MOTOR_t* motor, float kp, float ki, float kd)
     PID_setCoeffs(&motor->spd_controller,kp,ki,kd);
 }
 
-void MOTOR_setRvtRef(MOTOR_t* motor, int32_t ref_rvt)
+void MOTOR_setRvtRef(MOTOR_t* motor, int16_t ref_rvt)
 {
     PID_setRef(&motor->rvt_controller,ref_rvt);
     motor->ref_rvt = ref_rvt;
@@ -249,6 +248,23 @@ void MOTOR_setPinDIR(MOTOR_t * motor, uint8_t setPin)
         motor->DIR.STATE = M_CW;
     }
 }
+
+void MOTOR_setCCW(MOTOR_t * motor)
+{
+    if(motor->DIR.STATE == M_CW){
+        *motor->DIR.DR &= ~(motor->DIR.MASK);
+        motor->DIR.STATE = M_CCW;   
+    }
+}
+
+void MOTOR_setCW(MOTOR_t * motor)
+{
+    if(motor->DIR.STATE == M_CCW){
+        *motor->DIR.DR |= motor->DIR.MASK;
+        motor->DIR.STATE = M_CW;
+    }
+}
+
 void MOTOR_setPinENABLE(MOTOR_t * motor, uint8_t setPin)
 {
     if(setPin == M_DISABLE){ // turn off
@@ -262,12 +278,12 @@ void MOTOR_setPinENABLE(MOTOR_t * motor, uint8_t setPin)
 
 }
 
-void MOTOR_enable(MOTOR_t *motor){
+void MOTOR_setEnable(MOTOR_t *motor){
     *motor->ENABLE.DR |= motor->ENABLE.MASK;
     motor->ENABLE.STATE = M_ENABLE;
 }
 
-void MOTOR_disable(MOTOR_t *motor){
+void MOTOR_setDisable(MOTOR_t *motor){
     *motor->ENABLE.DR &= ~(motor->ENABLE.MASK);
     motor->ENABLE.STATE = M_DISABLE;
 }

@@ -35,8 +35,10 @@
 #define M_CCW   0
 #define M_CW    1
 #define M_STOP  -1
+    
+#define M_PLOT_DATA_CMD 1
 
-#define _MOTOR_MAX_POS 500
+#define _MOTOR_MAX_POS 5000
 
 #define DBG_SIZE 10
 
@@ -56,32 +58,33 @@ typedef struct PIN_t
 
 typedef struct MOTOR_t {
 
-    struct PID_t spd_controller; // motor revolution controller
     struct PID_t rvt_controller; // motor revolution controller
+    struct PID_t spd_controller; // motor revolution controller
+    
+    PIN_t DIR;
+    PIN_t ENABLE;
 
     uint8_t idx;    // indice del motor
     uint8_t control_mode; // 0: speed control, 1: position control, 2: tension control
 
     float spd_pid[3];
+    int16_t rvt_pid_int[3];
     float rvt_pid[3];
 
     int16_t period_ha, rvt_aux, rvt_last_count, ca, ma, diff; // for speed and revolutions measurements
 
     int8_t curr_dir; // current rotor direction
-    int32_t init_pos; // rotor init position
+    int16_t init_pos; // rotor init position
 
-    int32_t curr_rvt;
-    int32_t curr_spd;
+    int16_t curr_rvt;
+    int16_t curr_spd;
 
-    int32_t ref_rvt;
-    int32_t ref_spd;
+    int16_t ref_rvt;
+    int16_t ref_spd;
 
-    int32_t rvtPID_out;
-    int32_t spdPID_out;
-
-    PIN_t DIR;
-    PIN_t ENABLE;
-
+    int16_t rvtPID_out;
+    int16_t spdPID_out;
+    
     int16 last_count;
 
     /*
@@ -115,15 +118,18 @@ void MOTOR_readSpeed(MOTOR_t* motor);
 void MOTOR_setControlMode(MOTOR_t* motor, uint8_t mode);
 
 void MOTOR_updateRevolution(MOTOR_t* motor);
-void MOTOR_setRvtRef(MOTOR_t* motor, int32_t ref_rvt);
+void MOTOR_setRvtRef(MOTOR_t* motor, int16_t ref_rvt);
 void MOTOR_setSpdRef(MOTOR_t* motor, int32_t ref);
 
 // pin operations
 void MOTOR_setPinDIR(MOTOR_t * motor, uint8_t setPin);
 void MOTOR_setPinENABLE(MOTOR_t * motor, uint8_t setPin);
 
-void MOTOR_enable(MOTOR_t *motor);
-void MOTOR_disable(MOTOR_t *motor);
+void MOTOR_setCCW(MOTOR_t * motor);
+void MOTOR_setCW(MOTOR_t * motor);
+
+void MOTOR_setEnable(MOTOR_t *motor);
+void MOTOR_setDisable(MOTOR_t *motor);
 
 int32_t MOTOR_getSpd(MOTOR_t* motor);
 int8_t MOTOR_getDir(MOTOR_t* motor);

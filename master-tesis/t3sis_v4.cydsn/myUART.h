@@ -45,8 +45,8 @@ union comMsg{
     struct {            // anonimous structure
         uint8_t xff;
         uint8_t cmd;     // 1-byte command: Write, Read, Control, get info, set pid, etc.
-        int16_t ref;    // position reference
-        int16_t cur; 
+        int16_t ref;    // pid control reference
+        int16_t cur;    // pid control current value
         int16_t val; 
     };
 } WB;
