@@ -68,6 +68,7 @@ void MOTOR_setSpeed(MOTOR_t* motor, int32_t ref)
 
 void MOTOR_setPosition(MOTOR_t* motor)
 {
+    // salida del controlador de posicion son ticks de los sensores del motor, 16 por vuelta
     motor->rvtPID_out = PID_calculatePID(&motor->rvt_controller,motor->curr_rvt);
     int16_t motor_PWM = motor->rvtPID_out;
     if(motor->rvtPID_out > 0){
@@ -142,7 +143,7 @@ void MOTOR_resetSpdCounter(MOTOR_t* motor)
 
 void MOTOR_setControlMode(MOTOR_t* motor, uint8_t mode)
 {
-    if(motor->ENABLE.STATE == 1){
+    if(motor->ENABLE.STATE == M_ENABLE){
         // disable motor if enabled
         MOTOR_setDisable(motor);
         if(mode == M_POSITION_CONTROL_MODE){

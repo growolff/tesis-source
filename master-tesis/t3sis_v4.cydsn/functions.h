@@ -23,6 +23,7 @@
 #define F_SEND_DATA_FALSE     20
 #define F_SET_POS_REF         1
 #define F_SET_FORCE_REF       2
+#define F_GET_PID_VALUES      21
 #define F_REQ_PID_VALUES      22
 #define F_SET_PID_VALUES      23
 #define F_SET_CONTROL_MODE    24
@@ -43,7 +44,7 @@ int32_t fn_mapper(int32_t x, int32_t in_min, int32_t in_max, int32_t out_min, in
 uint8_t fn_mapper_8b(int32_t x, int32_t in_min, int32_t in_max, uint8_t out_min, uint8_t out_max);
 
 // sensor conditioning functions
-int16_t smooth(const int sensor, int numRead);
+void read_smooth(int numRead);
 uint16_t getTension(uint16_t read);
 
 void ProcessCommandMsg(void);

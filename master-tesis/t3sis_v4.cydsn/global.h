@@ -29,8 +29,8 @@
 #define TRANSMIT_BUFFER_SIZE  16
 
 // main loop control rates
-#define LED_BLINK_RATE 1    
-#define RATE_HZ 20
+#define LED_BLINK_RATE 2    
+#define RATE_HZ 10
 #define RVT_RATE_HZ 100
 
 /* Variable to store UART received character */
@@ -54,9 +54,14 @@ PID_t  pos_pid_m2;
 
 #define M1_IDX 0
 #define M2_IDX 1
+
+/* SENSOR_ADC connection order*/
+#define _FS1 2
+#define _FS2 0
+#define _POTE 1    
     
-#define M1_KP 2.5
-#define M1_KI 0.2
+#define M1_KP 4.5
+#define M1_KI 0.1
 #define M1_KD 0.1
     
 #define M2_KP 2.5
@@ -65,8 +70,12 @@ PID_t  pos_pid_m2;
     
 MOTOR_t M1;
 MOTOR_t M2;
+    
+#define NUM_MOTORS 2
 
-int16_t sumFS1;
+int16_t sumFs1;
+int16_t sumFs2;
+int16_t sumPote;
     
 PID_t* pid[2];
 MOTOR_t* motors[2];
@@ -85,4 +94,5 @@ void echof(float data);
 #endif // GLOBAL_VARIABLES_FILE_H
 
 /* [] END OF FILE */
+
 

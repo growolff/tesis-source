@@ -89,12 +89,9 @@ int main(void)
 {
     millis_Start();
 
-    POTE_ADC_Start();
-    POTE_ADC_StartConvert();
+    AMux_Start();
     
-    FORCE_SENSOR_1_ADC_Start();
-    FORCE_SENSOR_1_ADC_StartConvert();
-    
+    SENSOR_ADC_Start();    
     UART_Start();
     EEPROM_1_Start();
 
@@ -110,24 +107,26 @@ int main(void)
     ContinuouslySendData = FALSE;
 
     /* control rates */
-    int led_blink_rate = 1000/LED_BLINK_RATE;
-    int rate_ms = 1000/RATE_HZ; // transmission rate
-    int rvt_rate = 1000/RVT_RATE_HZ; // position control rate
+    uint16_t led_blink_rate = 1000/LED_BLINK_RATE;
+    uint16_t rate_ms = 1000/RATE_HZ; // transmission rate
+    uint16_t rvt_rate = 1000/RVT_RATE_HZ; // position control rate
 
-    uint16_t led_time = millis_ReadCounter();
-    uint16_t actual_time = millis_ReadCounter();
-    uint16_t rvt_time = millis_ReadCounter();
+    uint32_t led_time = millis_ReadCounter();
+    uint32_t actual_time = millis_ReadCounter();
+    uint32_t rvt_time = millis_ReadCounter();
 
-    uint8_t pote = 0;
-    uint16_t fs1 = 0, FS1 = 0;
-    sumFS1 = 0;
+    uint16_t fs1 = 0, fs2 = 0, FS1 = 0, pote = 0;
+    sumFs1 = 0;
+    sumFs2 = 0;
+    sumPote = 0;
     
     MOTOR_setPinENABLE(motors[1],M_ENABLE);
     MOTOR_setPinDIR(motors[1],M_CCW);
 
     for(;;) // main loop
     {
-
+        read_smooth(5);
+        
         // receive uart data
         while(IsCharReady()){
             //UART_PutString("&IsCharReady\r\n");
@@ -137,13 +136,14 @@ int main(void)
             }
         }
 
-        pote = POTE_ADC_GetResult8();
-        fs1 = smooth(M1_IDX,10)/4;
+        pote = sumPote;
+        fs1 = sumFs1;
+        fs2 = sumFs2;
         FS1 = getTension(fs1);
-        
-
-        MOTOR_setRvtRef(motors[0],fs1);
-        //MOTOR_setRvtRef(motors[1],pote*4);
+    
+        // configura referencia de control
+        //MOTOR_setRvtRef(motors[0],fs1/4);
+        //MOTOR_setRvtRef(motors[1],fs2/4);
         
         //PWM_M1_WriteCompare(fn_mapper(fs1,0,4095,0,1200));
         //PWM_M2_WriteCompare(pote);
@@ -158,10 +158,10 @@ int main(void)
         // main counter loop
         if(millis_ReadCounter() - actual_time > rate_ms)
         {
-            if(actual_time > 60000)
+            if(actual_time > 600000)
             {
-                millis_WriteCounter(0); //resetea el contador cuando pasa los 60 segundos
-                actual_time = millis_ReadCounter();
+                millis_WriteCounter(0); //resetea el contador cuando pasa los 600 segundos
+                //actual_time = millis_ReadCounter();
             }
 
             /* Send data based on last UART command */
@@ -170,9 +170,9 @@ int main(void)
                 int len = sizeof(WB.buffStr)/sizeof(*WB.buffStr);
                 WB.xff = FF;
                 WB.cmd = M_PLOT_DATA_CMD;
-                WB.ref = motors[0]->ref_rvt;
-                WB.cur = motors[0]->curr_rvt;
-                WB.val = fs1;
+                WB.ref = motors[RB.id]->ref_rvt;
+                WB.cur = motors[RB.id]->curr_rvt;
+                WB.val = sumFs1;
 
                 UART_PutArray((const uint8*)&WB.buffStr,len);
             }
@@ -182,8 +182,17 @@ int main(void)
         // position control loop
         if(millis_ReadCounter() - rvt_time > rvt_rate) {
             //echomsg(motors[1]->rvt_controller.kP ,motors[1]->ref_rvt,motors[1]->rvtPID_out,motors[1]->curr_rvt);
-            MOTOR_setPosition(motors[0]);
-            MOTOR_setPosition(motors[1]);
+            
+            // revisa error del controlador y corrije
+            for(int i=0; i<NUM_MOTORS; i++){
+                if(motors[i]->ref_rvt > _MOTOR_MAX_RVT){
+                    MOTOR_setRvtRef(motors[i],_MOTOR_MAX_RVT);   
+                }
+                if(motors[i]->ref_rvt < _MOTOR_MIN_RVT){
+                    MOTOR_setRvtRef(motors[i],_MOTOR_MIN_RVT);
+                }
+                MOTOR_setPosition(motors[i]);
+            }
 
             rvt_time = millis_ReadCounter();
         }

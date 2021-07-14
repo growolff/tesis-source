@@ -22,6 +22,13 @@
 
 #define SPD_MEASUREMENT_FREQ_CLOCK 5000
 
+// limita giro del motor para no sobretensar el tendon
+#define _MOTOR_MAX_RVT 500
+#define _MOTOR_MIN_RVT 0    
+    
+#define _MOTOR_MIN_POS 0
+#define _MOTOR_MAX_POS 5000
+    
 #define _MOTOR_MIN_SPEED 0 // for pid iterm restart
 #define _MOTOR_MAX_SPEED 8000
 
@@ -37,8 +44,6 @@
 #define M_STOP  -1
     
 #define M_PLOT_DATA_CMD 1
-
-#define _MOTOR_MAX_POS 5000
 
 #define DBG_SIZE 10
 

@@ -44,7 +44,7 @@ void echomsg(uint8_t cmd,int16_t ref, int16_t cur, int16_t val)
 
 void sendPIDdata(int id)
 {
-    uint8_t cmd = 5; //send pid data
+    uint8_t cmd = F_GET_PID_VALUES; //send pid data
     int16_t ref = motors[id]->rvt_controller.kP;
     int16_t cur = motors[id]->rvt_controller.kI;
     int16_t val = motors[id]->rvt_controller.kD;    
@@ -64,31 +64,21 @@ uint8_t fn_mapper_8b(int32_t x, int32_t in_min, int32_t in_max, uint8_t out_min,
     return (out_min + slope*(x - in_min));
 }
 
-int16_t smooth(const int sensor, int numRead){
-  int16_t i;
-  int16_t numReadings = numRead;
+void read_smooth(int numRead){
+  uint16_t numReadings = numRead;
+  uint16_t adc_reading[3] = {0,0,0};
 
-//  for (i = 0; i < numReadings; i++){
-    // Read light sensor data.
-    switch(sensor)
-    {
-        case 0:
-            sumFS1 = sumFS1 + (FORCE_SENSOR_1_ADC_GetResult16()-sumFS1)/numReadings;
-            break;
-        case 1:
-            break;
-    }   
-    // 1ms pause adds more stability between reads.
-    // CyDelay(1);
-//  }
+  for(int i=0; i<=2; i++){
+    AMux_FastSelect(i);
+    SENSOR_ADC_StartConvert();
+    SENSOR_ADC_IsEndConversion(SENSOR_ADC_WAIT_FOR_RESULT);
+    adc_reading[i] = SENSOR_ADC_GetResult16();
+    SENSOR_ADC_StopConvert();                
+  }
+  sumFs1 = sumFs1 + (adc_reading[_FS1]- sumFs1)/numReadings;
+  sumFs2 = sumFs2 + (adc_reading[_FS2]- sumFs2)/numReadings;
+  sumPote = sumPote + (adc_reading[_POTE]- sumPote)/numReadings;
 
-  // Take an average of all the readings.
-  //sumFS1 = sumFS1 / numReadings;
-
-  // Scale to 8 bits (0 - 255).
-  // value = value / 4;
-
-  return sumFS1;
 }
 
 uint16_t getTension(uint16_t read)
