@@ -1,11 +1,8 @@
 /* ========================================
  *
- * Copyright YOUR COMPANY, THE YEAR
- * All Rights Reserved
- * UNPUBLISHED, LICENSED SOFTWARE.
+ * Copyright Gonzalo Olave, 2021
  *
- * CONFIDENTIAL AND PROPRIETARY INFORMATION
- * WHICH IS THE PROPERTY OF your company.
+ * This work is published under CC-BY-SA license
  *
  * ========================================
 */
@@ -18,16 +15,15 @@
 #include "math.h"
 #include <stdio.h>
 
-#define PMF 1
-
 #define SPD_MEASUREMENT_FREQ_CLOCK 5000
 
 // limita giro del motor para no sobretensar el tendon
 #define _MOTOR_MAX_RVT 500
 #define _MOTOR_MIN_RVT 0    
     
-#define _MOTOR_MIN_POS 0
-#define _MOTOR_MAX_POS 5000
+// limita el controlador 
+#define _MOTOR_MAX_RVT_CONTROLLER_VAL 5000
+#define _MOTOR_MIN_RVT_CONTROLLER_VAL -5000
     
 #define _MOTOR_MIN_SPEED 0 // for pid iterm restart
 #define _MOTOR_MAX_SPEED 8000
@@ -64,7 +60,7 @@ typedef struct PIN_t
 typedef struct MOTOR_t {
 
     struct PID_t rvt_controller; // motor revolution controller
-    struct PID_t spd_controller; // motor revolution controller
+    struct PID_t spd_controller; // motor speed controller
     
     PIN_t DIR;
     PIN_t ENABLE;
@@ -103,28 +99,30 @@ typedef struct MOTOR_t {
 
 } MOTOR_t;
 
+// motor initialization funtcionts
 void MOTOR_init(MOTOR_t* motor, PIN_t pin_enable, PIN_t pin_dir);
-void MOTOR_initControlParams(MOTOR_t* motor, float* rvt);
-
-void MOTOR_setSpeed(MOTOR_t* motor, int32_t ref);
-void MOTOR_setPosition(MOTOR_t* motor);
-void MOTOR_setRvtControlParams(MOTOR_t* motor, float kp, float ki, float kd);
-void MOTOR_setSpdControlParams(MOTOR_t* motor, float kp, float ki, float kd);
-
-/* debug level */
-void motor_echod(int data);
-void motor_echof(float data);
-
-uint32 MOTOR_getSpdCounter(MOTOR_t* motor);
-int16 MOTOR_getRvtCounter(MOTOR_t* motor);
-void MOTOR_resetSpdCounter(MOTOR_t* motor);
-void MOTOR_readSpeed(MOTOR_t* motor);
 
 void MOTOR_setControlMode(MOTOR_t* motor, uint8_t mode);
 
-void MOTOR_updateRevolution(MOTOR_t* motor);
+// motor revolution control functions
+void MOTOR_setRvtControlParams(MOTOR_t* motor, float kp, float ki, float kd);
+void MOTOR_setPosition(MOTOR_t* motor);
 void MOTOR_setRvtRef(MOTOR_t* motor, int16_t ref_rvt);
+void MOTOR_readCurrentRvt(MOTOR_t* motor);
+int16_t MOTOR_getRvtCounter(MOTOR_t* motor);
+
+void MOTOR_writePWM(MOTOR_t* motor, int16_t pwm);
+
+// motor speed control functions
+void MOTOR_setSpdControlParams(MOTOR_t* motor, float kp, float ki, float kd);
+void MOTOR_setSpeed(MOTOR_t* motor, int32_t ref);
 void MOTOR_setSpdRef(MOTOR_t* motor, int32_t ref);
+void MOTOR_readSpeed(MOTOR_t* motor);
+void MOTOR_resetSpdCounter(MOTOR_t* motor);
+uint32 MOTOR_getSpdCounter(MOTOR_t* motor);
+
+void MOTOR_setZeroPosistion(MOTOR_t* motor);
+void MOTOR_setZeroPositionManual(MOTOR_t* motor);
 
 // pin operations
 void MOTOR_setPinDIR(MOTOR_t * motor, uint8_t setPin);
@@ -133,13 +131,12 @@ void MOTOR_setPinENABLE(MOTOR_t * motor, uint8_t setPin);
 void MOTOR_setCCW(MOTOR_t * motor);
 void MOTOR_setCW(MOTOR_t * motor);
 
-void MOTOR_setEnable(MOTOR_t *motor);
-void MOTOR_setDisable(MOTOR_t *motor);
+void MOTOR_Enable(MOTOR_t *motor);
+void MOTOR_Disable(MOTOR_t *motor);
 
-int32_t MOTOR_getSpd(MOTOR_t* motor);
-int8_t MOTOR_getDir(MOTOR_t* motor);
-float MOTOR_getTR(MOTOR_t* motor, float alpha);
-int32 MOTOR_get_tension_g(MOTOR_t* motor, int16 tension);
+/* debug level */
+void motor_echod(int data);
+void motor_echof(float data);
 
 #endif
 /* [] END OF FILE */

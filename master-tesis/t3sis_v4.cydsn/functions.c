@@ -30,14 +30,14 @@ void echof(float data)
     UART_PutString(strMsg);
 }
 
-void echomsg(uint8_t cmd,int16_t ref, int16_t cur, int16_t val)
+void echomsg(uint8_t cmd, uint8_t motor, int16_t val1, int16_t val2, int16_t val3)
 {
     int len = sizeof(WB.buffStr)/sizeof(*WB.buffStr);
-    WB.xff = FF;
     WB.cmd = cmd;
-    WB.ref = ref;
-    WB.cur = cur;
-    WB.val = val;
+    WB.motor = motor;
+    WB.ref = val1;
+    WB.cur = val2;
+    WB.val = val3;
 
     UART_PutArray((const uint8*)&WB.buffStr,len);
 }
@@ -45,11 +45,26 @@ void echomsg(uint8_t cmd,int16_t ref, int16_t cur, int16_t val)
 void sendPIDdata(int id)
 {
     uint8_t cmd = F_GET_PID_VALUES; //send pid data
-    int16_t ref = motors[id]->rvt_controller.kP;
-    int16_t cur = motors[id]->rvt_controller.kI;
-    int16_t val = motors[id]->rvt_controller.kD;    
-
-    echomsg(cmd,ref,cur,val);
+    uint8_t motor;
+    int16_t kp,ki,kd; 
+    if(id >= 0 && id < 6){
+        motor = id;
+        kp = motors[id]->rvt_controller.kP;
+        ki = motors[id]->rvt_controller.kI;
+        kd = motors[id]->rvt_controller.kD;
+    }
+    // fingers index
+    // 6 finger 1
+    // 7 finger 2
+    // 8 finger 3
+    else if (id >= 6 && id < 9){
+        motor = id;
+        kp = fingers[id-6]->ten_controller.kP;
+        ki = fingers[id-6]->ten_controller.kI;
+        kd = fingers[id-6]->ten_controller.kD;
+    }
+    
+    echomsg(cmd,id,kp,ki,kd);
 }
 
 int32_t fn_mapper(int32_t x, int32_t in_min, int32_t in_max, int32_t out_min, int32_t out_max)
@@ -75,29 +90,10 @@ void read_smooth(int numRead){
     adc_reading[i] = SENSOR_ADC_GetResult16();
     SENSOR_ADC_StopConvert();                
   }
-  sumFs1 = sumFs1 + (adc_reading[_FS1]- sumFs1)/numReadings;
-  sumFs2 = sumFs2 + (adc_reading[_FS2]- sumFs2)/numReadings;
-  sumPote = sumPote + (adc_reading[_POTE]- sumPote)/numReadings;
+  sumFs1 += (adc_reading[_FS1]- sumFs1)/numReadings;
+  sumFs2 += (adc_reading[_FS2]- sumFs2)/numReadings;
+  sumPote += (adc_reading[_POTE]- sumPote)/numReadings;
 
-}
-
-uint16_t getTension(uint16_t read)
-{
-    // returns A101 sensor reading in g
-    uint16_t tension = 0;
-    float c_factor = 0.2908;
-    float bit_factor = 4096.0;
-    float force = read * 5.0/bit_factor*c_factor; 
-    
-    // using the ecuation for equilibrum state
-    float Df = 0.017; // distance in meters
-    float de = 0.0085;
-    float alpha = atan(0.003/de) * 3.14159 / 180; // in radians
-    float beta = atan(0.003/Df) * 3.14159 / 180; // in radians
-
-    tension = Df*force*cos(alpha) / (de * cos(beta))*1000;
-
-    return tension;
 }
 
 void ProcessCommandMsg(void)
@@ -106,30 +102,40 @@ void ProcessCommandMsg(void)
  
     switch(RB.cmd)
     {
-        case 0: /* set reference of speed controller of motor RB.id */
+        case F_SET_SPEED_REF: /* set reference of speed controller of motor RB.id */
             motors[RB.id]->ref_spd = RB.pref;
             break;
         case F_SET_POS_REF: /* set reference of position controller of motor RB.id */
-            MOTOR_setRvtRef(motors[RB.id],RB.pref);
-            //echomsg(1,0,0,RB.pref);
+            MOTOR_setRvtRef(indice.M[RB.id],RB.pref);
+            echomsg(F_SET_POS_REF,RB.id,0,0,RB.pref);
             break;
-        case 2: /* set reference of tension controller of motor RB.id */
-        
+        case F_SET_FORCE_REF: /* set reference of tension controller of finger RB.id */
+            FINGER_setTensionRef(fingers[RB.id-6],RB.pref);
+            echomsg(F_SET_FORCE_REF,RB.id,0,0,fingers[RB.id]->ref_tension);
             break;
         case F_SEND_DATA_FALSE: /* Stop data streaming */
             ContinuouslySendData = FALSE;
             break;
         case F_REQ_PID_VALUES: /* request pid values */
+            //echomsg(F_REQ_PID_VALUES,RB.id,0,0,0);
             sendPIDdata(RB.id); // send controller parameters
             break;
         case F_SET_CONTROL_MODE: /* set control mode */
-            // cmd(0,24,0,0,0,0) speed
-            // cmd(0,24,1,0,0,0) position
-            MOTOR_setControlMode(motors[RB.id],RB.pref);  
+            // 0 speed
+            // 1 revolution
+            // 2 tension    
+            //echomsg(F_SET_CONTROL_MODE,RB.id,0,0,0);
+            if (RB.pref == REV_CTRL) MOTOR_setControlMode(motors[RB.id],RB.pref);  
+            else if (RB.pref == TEN_CTRL) {
+                MOTOR_setControlMode(indice.M[F1_ME_IDX],M_FORCE_CONTROL_MODE);  
+                MOTOR_setControlMode(indice.M[F1_MF_IDX],M_POSITION_CONTROL_MODE);
+                MOTOR_Enable(indice.M[F1_ME_IDX]);
+                MOTOR_Enable(indice.M[F1_MF_IDX]);
+            }
             break;
         case F_DISABLE_MOTOR: /* stop motor */
             if(motors[RB.id]->ENABLE.STATE == 1){
-                MOTOR_setPinENABLE(motors[RB.id], 0);
+                MOTOR_Disable(motors[RB.id]);
             }
             break;
         case F_SET_PID_VALUES: /* Set pid values */ 
@@ -137,8 +143,6 @@ void ProcessCommandMsg(void)
             p = ((float)RB.P)/FLOAT_TO_INT_SCALE;
             i = ((float)RB.I)/FLOAT_TO_INT_SCALE;
             d = ((float)RB.D)/FLOAT_TO_INT_SCALE;
-            
-            //echof(p);
             
             if(motors[RB.id]->control_mode == 0)
             {
@@ -158,13 +162,22 @@ void ProcessCommandMsg(void)
                 */
                 MOTOR_setRvtControlParams(motors[RB.id],p,i,d);   
             }
+            else if(RB.id == 6)
+            {
+                /*
+                EEPROM_1_Write((const uint8*)&p,3);
+                EEPROM_1_Write((const uint8*)&i,4);
+                EEPROM_1_Write((const uint8*)&d,5);
+                */
+                FINGER_setTensionControlParams(fingers[RB.id-6],p,i,d);
+            }
             break;
         case F_SEND_DATA_TRUE: /* Contuously send data */
             ContinuouslySendData = TRUE;
             break;
         case F_ENABLE_MOTOR: /* resume motor */
             if(motors[RB.id]->ENABLE.STATE == 0){
-                MOTOR_setPinENABLE(motors[RB.id], 1);
+                MOTOR_Enable(motors[RB.id]);
             }
             break;
         case 55: /* debug variables */

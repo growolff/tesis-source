@@ -1,11 +1,8 @@
 /* ========================================
  *
- * Copyright YOUR COMPANY, THE YEAR
- * All Rights Reserved
- * UNPUBLISHED, LICENSED SOFTWARE.
+ * Copyright Gonzalo Olave, 2021
  *
- * CONFIDENTIAL AND PROPRIETARY INFORMATION
- * WHICH IS THE PROPERTY OF your company.
+ * This work is published under CC-BY-SA license
  *
  * ========================================
 */
@@ -20,8 +17,8 @@ void MOTOR_init(MOTOR_t* motor, PIN_t pin_enable, PIN_t pin_dir)
     PID_setMinValue(&motor->spd_controller, _MOTOR_MIN_SPEED);
 
     PID_init(&motor->rvt_controller,motor->rvt_pid[0],motor->rvt_pid[1],motor->rvt_pid[2]);
-    PID_setMaxValue(&motor->rvt_controller, _MOTOR_MAX_POS);
-    PID_setMinValue(&motor->rvt_controller, - _MOTOR_MAX_POS);
+    PID_setMaxValue(&motor->rvt_controller, _MOTOR_MAX_RVT_CONTROLLER_VAL);
+    PID_setMinValue(&motor->rvt_controller, _MOTOR_MIN_RVT_CONTROLLER_VAL);
 
     motor->DIR = pin_dir;
     motor->ENABLE = pin_enable;
@@ -30,45 +27,41 @@ void MOTOR_init(MOTOR_t* motor, PIN_t pin_enable, PIN_t pin_dir)
     MOTOR_setPinDIR(motor,M_CCW);
 
     motor->last_count = 0;
-    /*
-    motor->readIndex = 0;
-    motor->total = 0;
-    motor->average = 0;
-
-    for (int thisReading = 0; thisReading < 10; thisReading++) {
-        motor->readings[thisReading] = 0;
-    }
-    */
 }
 
-void motor_echof(float data)
+void MOTOR_setControlMode(MOTOR_t* motor, uint8_t mode)
 {
-    sprintf(msg,"%.2f\r\n", data);
-    UART_PutString(msg);
-}
-
-void motor_echod(int data)
-{
-    sprintf(msg,"%d\r\n", data);
-    UART_PutString(msg);
-}
-
-void MOTOR_setSpeed(MOTOR_t* motor, int32_t ref)
-{
-    if(motor->control_mode == 0 || motor->control_mode == 1){
-        MOTOR_setSpdRef(motor,ref);
-
-        if(motor->curr_spd <= _MOTOR_MIN_SPEED){
-            motor->spd_controller.iTerm = 0;
+    if(motor->ENABLE.STATE == M_ENABLE){
+        // disable motor if enabled
+        MOTOR_Disable(motor);
+        if(mode == M_POSITION_CONTROL_MODE){
+            motor->init_pos = MOTOR_getRvtCounter(motor);
         }
-        motor->spdPID_out = PID_calculatePID(&motor->spd_controller,motor->curr_spd);
-        PWM_M1_WriteCompare(255*motor->spdPID_out/_MOTOR_MAX_SPEED);
+        motor->control_mode = mode;
+        // enable motor
+        MOTOR_Enable(motor);
     }
+    else {
+        if(mode == M_POSITION_CONTROL_MODE){
+            motor->init_pos = MOTOR_getRvtCounter(motor);
+        }
+        motor->control_mode = mode;
+    }
+}
+
+void MOTOR_setRvtControlParams(MOTOR_t* motor, float kp, float ki, float kd)
+{
+    motor->rvt_pid[0] = kp;
+    motor->rvt_pid[1] = ki;
+    motor->rvt_pid[2] = kd;
+
+    PID_setCoeffs(&motor->rvt_controller,kp,ki,kd);
 }
 
 void MOTOR_setPosition(MOTOR_t* motor)
 {
     // salida del controlador de posicion son ticks de los sensores del motor, 16 por vuelta
+        
     motor->rvtPID_out = PID_calculatePID(&motor->rvt_controller,motor->curr_rvt);
     int16_t motor_PWM = motor->rvtPID_out;
     if(motor->rvtPID_out > 0){
@@ -78,16 +71,17 @@ void MOTOR_setPosition(MOTOR_t* motor)
         MOTOR_setCCW(motor);
         motor_PWM = -motor_PWM;
     }
-    switch (motor->idx)
-    {
-        case 0:
-            PWM_M1_WriteCompare(motor_PWM);
-            break;
-        case 1:
-            PWM_M2_WriteCompare(motor_PWM);
-            break;
-    }
+    MOTOR_writePWM(motor,motor_PWM);
+}
 
+void MOTOR_setRvtRef(MOTOR_t* motor, int16_t ref_rvt)
+{
+    motor->ref_rvt = ref_rvt;
+    PID_setRef(&motor->rvt_controller,ref_rvt);
+}
+
+void MOTOR_readCurrentRvt(MOTOR_t* motor){
+    motor->curr_rvt = MOTOR_getRvtCounter(motor);
 }
 
 int16 MOTOR_getRvtCounter(MOTOR_t* motor)
@@ -111,64 +105,28 @@ int16 MOTOR_getRvtCounter(MOTOR_t* motor)
     return counter;
 }
 
-uint32 MOTOR_getSpdCounter(MOTOR_t* motor)
-{
-    uint32 counter = 0;
+void MOTOR_writePWM(MOTOR_t* motor, int16_t pwm){
     switch (motor->idx)
     {
         case 0:
-            counter = HA_TIMER_M1_ReadCounter();
-            HA_TIMER_M1_WriteCounter(0);
+            PWM_M1_WriteCompare(pwm);
             break;
         case 1:
-            counter = HA_TIMER_M2_ReadCounter();
-            HA_TIMER_M2_WriteCounter(0);
+            PWM_M2_WriteCompare(pwm);
             break;
     }
-    return counter;
+   
 }
 
-void MOTOR_resetSpdCounter(MOTOR_t* motor)
-{
-    switch (motor->idx)
-    {
-        case 0:
-            HA_TIMER_M1_WriteCounter(0);
-            break;
-        case 1:
-            HA_TIMER_M2_WriteCounter(0);
-            break;
-    }
+void MOTOR_setZeroPosistionManual(MOTOR_t* motor){
+    MOTOR_Disable(motor);    
+    motor->init_pos = MOTOR_getRvtCounter(motor);
 }
 
-void MOTOR_setControlMode(MOTOR_t* motor, uint8_t mode)
-{
-    if(motor->ENABLE.STATE == M_ENABLE){
-        // disable motor if enabled
-        MOTOR_setDisable(motor);
-        if(mode == M_POSITION_CONTROL_MODE){
-            motor->init_pos = MOTOR_getRvtCounter(motor);
-        }
-        motor->control_mode = mode;
-        // enable motor
-        MOTOR_setEnable(motor);
-    }
-    else {
-        if(mode == M_POSITION_CONTROL_MODE){
-            motor->init_pos = MOTOR_getRvtCounter(motor);
-        }
-        motor->control_mode = mode;
-    }
+void MOTOR_setZeroPosistion(MOTOR_t* motor){ 
+    MOTOR_setRvtRef(motor,motor->init_pos);
 }
 
-void MOTOR_setRvtControlParams(MOTOR_t* motor, float kp, float ki, float kd)
-{
-    motor->rvt_pid[0] = kp;
-    motor->rvt_pid[1] = ki;
-    motor->rvt_pid[2] = kd;
-
-    PID_setCoeffs(&motor->rvt_controller,kp,ki,kd);
-}
 
 void MOTOR_setSpdControlParams(MOTOR_t* motor, float kp, float ki, float kd)
 {
@@ -179,10 +137,17 @@ void MOTOR_setSpdControlParams(MOTOR_t* motor, float kp, float ki, float kd)
     PID_setCoeffs(&motor->spd_controller,kp,ki,kd);
 }
 
-void MOTOR_setRvtRef(MOTOR_t* motor, int16_t ref_rvt)
+void MOTOR_setSpeed(MOTOR_t* motor, int32_t ref)
 {
-    PID_setRef(&motor->rvt_controller,ref_rvt);
-    motor->ref_rvt = ref_rvt;
+    if(motor->control_mode == 0 || motor->control_mode == 1){
+        MOTOR_setSpdRef(motor,ref);
+
+        if(motor->curr_spd <= _MOTOR_MIN_SPEED){
+            motor->spd_controller.iTerm = 0;
+        }
+        motor->spdPID_out = PID_calculatePID(&motor->spd_controller,motor->curr_spd);
+        PWM_M1_WriteCompare(255*motor->spdPID_out/_MOTOR_MAX_SPEED);
+    }
 }
 
 void MOTOR_readSpeed(MOTOR_t* motor)
@@ -203,7 +168,7 @@ void MOTOR_readSpeed(MOTOR_t* motor)
     */
 
     int16 counter = MOTOR_getRvtCounter(motor);
-    motor->curr_rvt = (counter - motor->init_pos);
+    //motor->curr_rvt = (counter - motor->init_pos);
 
     int16 diff = counter - motor->last_count;
 
@@ -227,15 +192,34 @@ void MOTOR_readSpeed(MOTOR_t* motor)
     }
 }
 
-int16 * MOTOR_StoreADCResults() // store ADC conversion result in a sensor data array
+void MOTOR_resetSpdCounter(MOTOR_t* motor)
 {
-	uint16 i;
-    static int16 dest[NUM_SENSORS];
+    switch (motor->idx)
+    {
+        case 0:
+            HA_TIMER_M1_WriteCounter(0);
+            break;
+        case 1:
+            HA_TIMER_M2_WriteCounter(0);
+            break;
+    }
+}
 
-	for (i = 0; i < NUM_SENSORS; i++) {
-		//dest[i] = ADC_TS_GetResult16(i);
-	}
-    return dest;
+uint32 MOTOR_getSpdCounter(MOTOR_t* motor)
+{
+    uint32 counter = 0;
+    switch (motor->idx)
+    {
+        case 0:
+            counter = HA_TIMER_M1_ReadCounter();
+            HA_TIMER_M1_WriteCounter(0);
+            break;
+        case 1:
+            counter = HA_TIMER_M2_ReadCounter();
+            HA_TIMER_M2_WriteCounter(0);
+            break;
+    }
+    return counter;
 }
 
 void MOTOR_setPinDIR(MOTOR_t * motor, uint8_t setPin)
@@ -245,22 +229,6 @@ void MOTOR_setPinDIR(MOTOR_t * motor, uint8_t setPin)
         motor->DIR.STATE = M_CCW;
     }
     else if(setPin == M_CW){
-        *motor->DIR.DR |= motor->DIR.MASK;
-        motor->DIR.STATE = M_CW;
-    }
-}
-
-void MOTOR_setCCW(MOTOR_t * motor)
-{
-    if(motor->DIR.STATE == M_CW){
-        *motor->DIR.DR &= ~(motor->DIR.MASK);
-        motor->DIR.STATE = M_CCW;   
-    }
-}
-
-void MOTOR_setCW(MOTOR_t * motor)
-{
-    if(motor->DIR.STATE == M_CCW){
         *motor->DIR.DR |= motor->DIR.MASK;
         motor->DIR.STATE = M_CW;
     }
@@ -279,14 +247,43 @@ void MOTOR_setPinENABLE(MOTOR_t * motor, uint8_t setPin)
 
 }
 
-void MOTOR_setEnable(MOTOR_t *motor){
+void MOTOR_setCCW(MOTOR_t * motor)
+{
+    if(motor->DIR.STATE == M_CW){
+        *motor->DIR.DR &= ~(motor->DIR.MASK);
+        motor->DIR.STATE = M_CCW;   
+    }
+}
+
+void MOTOR_setCW(MOTOR_t * motor)
+{
+    if(motor->DIR.STATE == M_CCW){
+        *motor->DIR.DR |= motor->DIR.MASK;
+        motor->DIR.STATE = M_CW;
+    }
+}
+
+void MOTOR_Enable(MOTOR_t *motor){
     *motor->ENABLE.DR |= motor->ENABLE.MASK;
     motor->ENABLE.STATE = M_ENABLE;
 }
 
-void MOTOR_setDisable(MOTOR_t *motor){
+void MOTOR_Disable(MOTOR_t *motor){
     *motor->ENABLE.DR &= ~(motor->ENABLE.MASK);
     motor->ENABLE.STATE = M_DISABLE;
 }
+
+void motor_echof(float data)
+{
+    sprintf(msg,"%.2f\r\n", data);
+    UART_PutString(msg);
+}
+
+void motor_echod(int data)
+{
+    sprintf(msg,"%d\r\n", data);
+    UART_PutString(msg);
+}
+
 
 /* [] END OF FILE */

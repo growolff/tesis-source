@@ -30,7 +30,7 @@ void initMotor1()
 
     M1.init_pos = 0;
     M1.control_mode = 1;
-    M1.idx = M1_IDX;         // motor index
+    M1.idx = F1_MF_IDX;         // motor index
     DC_M1_SetCounter(M1.init_pos);
 
     M1.rvt_pid[0] = M1_KP;
@@ -62,13 +62,13 @@ void initMotor2()
 
     M2.init_pos = 0;
     M2.control_mode = 1;
-    M2.idx = M2_IDX;         // motor index
+    M2.idx = F1_ME_IDX;         // motor index
     DC_M2_SetCounter(M2.init_pos);
 
     M2.rvt_pid[0] = M2_KP;    // kp
     M2.rvt_pid[1] = M2_KI;   // kI
     M2.rvt_pid[2] = M2_KD;   // kD
-    
+       
     MOTOR_init(&M2,M2_EN,M2_DR);
 
     MOTOR_setPinDIR(&M2,0);
@@ -76,16 +76,7 @@ void initMotor2()
 
 }
 
-void initMotors()
-{
-    initMotor1();
-    initMotor2();
-
-    motors[0] = &M1;
-    motors[1] = &M2;
-}
-
-int main(void)
+void initHW()
 {
     millis_Start();
 
@@ -98,11 +89,37 @@ int main(void)
     /* Initialize general interrupt blocks */
     RxInt_StartEx(MyRxInt);
     spd_m2_StartEx(SPD_M2_INT);
+}
 
+void initFingers()
+{
+    initMotor1();
+    initMotor2();
+     
+    motors[F1_MF_IDX] = &F1_MF;
+    motors[F1_ME_IDX] = &F1_ME;
+       
+    indice.tension_pid[0] = F1_T_KP;
+    indice.tension_pid[1] = F1_T_KI;
+    indice.tension_pid[2] = F1_T_KD;
+    
+    FINGER_init(&indice,&M1,&M2);
+    
+    fingers[0] = &indice;
+    indice.idx = 0;
+}
+
+int main(void)
+{
     _state_ = 0;
-    initMotors();
-
-    CyGlobalIntEnable; /* Enable global interrupts. */
+    
+    // initialize general hardware
+    initHW();
+    // initialize motors hardware and fingers structures
+    initFingers();
+    
+    /* Enable global interrupts. */
+    CyGlobalIntEnable;
 
     ContinuouslySendData = FALSE;
 
@@ -110,22 +127,27 @@ int main(void)
     uint16_t led_blink_rate = 1000/LED_BLINK_RATE;
     uint16_t rate_ms = 1000/RATE_HZ; // transmission rate
     uint16_t rvt_rate = 1000/RVT_RATE_HZ; // position control rate
+    uint16_t tension_rate = 1000/TENSION_RATE_HZ; // position control rate
 
     uint32_t led_time = millis_ReadCounter();
     uint32_t actual_time = millis_ReadCounter();
     uint32_t rvt_time = millis_ReadCounter();
+    uint32_t tension_time = millis_ReadCounter();
 
-    uint16_t fs1 = 0, fs2 = 0, FS1 = 0, pote = 0;
+    uint16_t fs1 = 0, fs2 = 0, FS2 = 0, pote = 0;
     sumFs1 = 0;
     sumFs2 = 0;
     sumPote = 0;
     
-    MOTOR_setPinENABLE(motors[1],M_ENABLE);
-    MOTOR_setPinDIR(motors[1],M_CCW);
-
+    // disable all motors
+    for(int i=0; i<NUM_MOTORS; i++){
+        MOTOR_Disable(motors[i]);
+    }
+    
     for(;;) // main loop
     {
-        read_smooth(5);
+        read_smooth(100);
+        indice.pressure_sensor = sumFs2-90;
         
         // receive uart data
         while(IsCharReady()){
@@ -135,19 +157,25 @@ int main(void)
                 ProcessCommandMsg();
             }
         }
+        
+        if(!SW1_Read()){
+            for(int i=0; i<NUM_MOTORS; i++){
+                MOTOR_setZeroPosistion(motors[i]);
+            }/*
+            while(!SW1_Read()){
+                for(int i=0; i<NUM_MOTORS; i++){
+                    MOTOR_setZeroPosistionManual(motors[i]);
+                }
+            }*/
+        }
 
         pote = sumPote;
         fs1 = sumFs1;
-        fs2 = sumFs2;
-        FS1 = getTension(fs1);
     
         // configura referencia de control
         //MOTOR_setRvtRef(motors[0],fs1/4);
         //MOTOR_setRvtRef(motors[1],fs2/4);
         
-        //PWM_M1_WriteCompare(fn_mapper(fs1,0,4095,0,1200));
-        //PWM_M2_WriteCompare(pote);
-
         if(millis_ReadCounter() - led_time > led_blink_rate)
         {
             _state_ = !_state_;
@@ -168,11 +196,11 @@ int main(void)
             if(ContinuouslySendData)
             {
                 int len = sizeof(WB.buffStr)/sizeof(*WB.buffStr);
-                WB.xff = FF;
-                WB.cmd = M_PLOT_DATA_CMD;
-                WB.ref = motors[RB.id]->ref_rvt;
-                WB.cur = motors[RB.id]->curr_rvt;
-                WB.val = sumFs1;
+                WB.cmd = F_UPDATE_PLOT;
+                WB.motor = RB.id;
+                WB.ref = indice.tensionPID_out;
+                WB.cur = indice.ref_tension;
+                WB.val = indice.string_tension;
 
                 UART_PutArray((const uint8*)&WB.buffStr,len);
             }
@@ -181,10 +209,11 @@ int main(void)
 
         // position control loop
         if(millis_ReadCounter() - rvt_time > rvt_rate) {
-            //echomsg(motors[1]->rvt_controller.kP ,motors[1]->ref_rvt,motors[1]->rvtPID_out,motors[1]->curr_rvt);
-            
+            //echomsg(motors[1]->rvt_controller.kP ,motors[1]->ref_rvt,motors[1]->rvtPID_out,motors[1]->curr_rvt);            
             // revisa error del controlador y corrije
             for(int i=0; i<NUM_MOTORS; i++){
+                MOTOR_readCurrentRvt(motors[i]);
+                
                 if(motors[i]->ref_rvt > _MOTOR_MAX_RVT){
                     MOTOR_setRvtRef(motors[i],_MOTOR_MAX_RVT);   
                 }
@@ -196,6 +225,21 @@ int main(void)
 
             rvt_time = millis_ReadCounter();
         }
+        
+        if(millis_ReadCounter() - tension_time > tension_rate) {
+            //echomsg(motors[1]->rvt_controller.kP ,motors[1]->ref_rvt,motors[1]->rvtPID_out,motors[1]->curr_rvt);
+            FINGER_readTension(&indice);
+            
+            if(indice.ref_tension > _FINGER_MAX_TENSION){
+                FINGER_setTensionRef(&indice,_FINGER_MAX_TENSION);   
+            }
+            else if(indice.ref_tension < _FINGER_MIN_TENSION){
+                FINGER_setTensionRef(&indice,_FINGER_MIN_TENSION);   
+            }
+            FINGER_setTension(&indice);
+            tension_time = millis_ReadCounter();
+        }
+        
     }
 }
 

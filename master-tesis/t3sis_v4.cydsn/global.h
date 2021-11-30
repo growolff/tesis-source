@@ -14,6 +14,7 @@
 
 #include "project.h"
 #include "motor.h"
+#include "finger.h"
 #include "stdio.h"
 #include "pid_o.h"
 #include "string.h"
@@ -30,8 +31,9 @@
 
 // main loop control rates
 #define LED_BLINK_RATE 2    
-#define RATE_HZ 10
-#define RVT_RATE_HZ 100
+#define RATE_HZ 15
+#define RVT_RATE_HZ 5000
+#define TENSION_RATE_HZ 500
 
 /* Variable to store UART received character */
 uint8 Ch;
@@ -48,42 +50,48 @@ int _state_;
 extern volatile uint8 dir_state;
 extern volatile int8_t rotor_direction;
 
-/* for position control */
-PID_t  pos_pid_m1;
-PID_t  pos_pid_m2;
-
-#define M1_IDX 0
-#define M2_IDX 1
-
 /* SENSOR_ADC connection order*/
 #define _FS1 2
 #define _FS2 0
-#define _POTE 1    
-    
-#define M1_KP 4.5
-#define M1_KI 0.1
-#define M1_KD 0.1
-    
-#define M2_KP 2.5
-#define M2_KI 0.2
-#define M2_KD 0.1
-    
-MOTOR_t M1;
-MOTOR_t M2;
-    
-#define NUM_MOTORS 2
-
+#define _POTE 1  
 int16_t sumFs1;
 int16_t sumFs2;
 int16_t sumPote;
+
+// M1 position control parameters (finger 1)
+#define M1_KP 5.0
+#define M1_KI 1.0
+#define M1_KD 7.0
+// M2 position control parameters (finger 1)
+#define M2_KP 5.0
+#define M2_KI 0.2
+#define M2_KD 2.0
+// finger 1 tension control parameters    
+#define F1_T_KP 1.0
+#define F1_T_KI 0.1
+#define F1_T_KD 1.0
     
+    
+#define NUM_MOTORS 2
+#define NUM_FINGERS 1
+    
+MOTOR_t* motors[NUM_MOTORS];
+MOTOR_t M1;
+MOTOR_t M2;
+
+FINGER_t indice;
+FINGER_t* fingers[NUM_FINGERS];
+
+#define SPD_CTRL 0
+#define REV_CTRL 1
+#define TEN_CTRL 2
+
 PID_t* pid[2];
-MOTOR_t* motors[2];
-
-float factor;
-
 int pid_rvt[3];
 int pid_spd[3];
+int pid_ten[3];
+
+float factor;
 
 char TransmitBuffer[TRANSMIT_BUFFER_SIZE];
 

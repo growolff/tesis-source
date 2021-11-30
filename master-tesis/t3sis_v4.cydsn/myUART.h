@@ -43,8 +43,8 @@ union TRxBuffer {
 union comMsg{
     char   buffStr[COM_MSG_SIZE];   // buffer (to hold individual command message)
     struct {            // anonimous structure
-        uint8_t xff;
-        uint8_t cmd;     // 1-byte command: Write, Read, Control, get info, set pid, etc.
+        uint8_t cmd;
+        uint8_t motor;     // 1-byte command: Write, Read, Control, get info, set pid, etc.
         int16_t ref;    // pid control reference
         int16_t cur;    // pid control current value
         int16_t val; 
