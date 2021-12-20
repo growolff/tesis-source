@@ -19,8 +19,7 @@
 #include "math.h"
 
 /* list of commands */
-#define F_SEND_DATA_TRUE      40
-#define F_SEND_DATA_FALSE     20
+// motor cmds 0 - 29 
 #define F_SET_SPEED_REF       0    
 #define F_SET_POS_REF         1
 #define F_SET_FORCE_REF       2
@@ -30,9 +29,18 @@
 #define F_SET_CONTROL_MODE    24
 #define F_DISABLE_MOTOR       25
 #define F_ENABLE_MOTOR        26
+
+// finger cmds 30 - 39
+#define F_FINGER_OPEN         30        
+#define F_FINGER_CLOSE        31     
+        
+// system cmds 40 - 60
+#define F_SEND_DATA_TRUE      40
+#define F_SEND_DATA_FALSE     41
 #define F_DEBUG_VAR           55
 #define F_SOFTWARE_RESET      99 
 #define F_UPDATE_PLOT         100    
+
    
 char strMsg[10];
 

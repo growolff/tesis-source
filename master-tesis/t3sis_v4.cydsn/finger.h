@@ -25,6 +25,11 @@
 #define F1_MF_IDX 0
 #define F1_ME_IDX 1
     
+#define F1_ME_OPEN_POS 380
+#define F1_ME_CLOSED_POS 0
+#define F1_MF_OPEN_POS 0
+#define F1_MF_CLOSED_POS 450
+    
 typedef struct FINGER_t {
     
     MOTOR_t* M[2];
@@ -43,6 +48,10 @@ typedef struct FINGER_t {
     int16_t tensionPID_out;
     uint16_t ref_tension;
     
+    // actuator params
+    float me_L,me_R,me_A,me_B;
+    float mf_L,mf_R,mf_A,mf_B;
+    
     
 } FINGER_t;
 
@@ -56,7 +65,10 @@ uint16_t FINGER_getTensionFromReading(uint16_t read);
 // finger, flector motor, extensor motor
 void FINGER_init(FINGER_t* finger, MOTOR_t *mf, MOTOR_t *me);
 
-void FINGER_setPosition(FINGER_t* finger);
+void FINGER_open(FINGER_t* finger);
+void FINGER_close(FINGER_t* finger);
+void FINGER_setPosition(FINGER_t* finger, int pos);
+void FINGER_setAntagonist(FINGER_t* finger);
 
 #endif
 /* [] END OF FILE */

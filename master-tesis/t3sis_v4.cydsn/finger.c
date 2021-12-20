@@ -18,6 +18,14 @@ void FINGER_init(FINGER_t* finger, MOTOR_t* mf, MOTOR_t* me){
     PID_setMaxValue(&finger->ten_controller, _FINGER_MAX_TENSION);
     PID_setMinValue(&finger->ten_controller, _FINGER_MIN_TENSION);
     
+    finger->me_A = 1.5;
+    finger->me_L = 36;
+    finger->me_R = 0.175;
+    
+    finger->mf_A = 1.5;
+    finger->mf_L = 36;
+    finger->mf_R = 0.175;
+    
     finger->t0 = 10; // grs
     
 }
@@ -31,12 +39,16 @@ void FINGER_readTension(FINGER_t* finger)
 void FINGER_setTension(FINGER_t* finger)
 {
     finger->tensionPID_out = PID_calculatePID(&finger->ten_controller,finger->string_tension);
+    
+    // relacion entre tension y posicion del motor
     int16_t me_rvt_ref = finger->tensionPID_out;
+    
+    
     
     switch(finger->idx){
         case 0:
             if(finger->M[F1_ME_IDX]->control_mode == M_FORCE_CONTROL_MODE){
-                MOTOR_setRvtRef(finger->M[F1_ME_IDX],-me_rvt_ref);
+                MOTOR_setRvtRef(finger->M[F1_ME_IDX],me_rvt_ref);
             }
             break;
     }
@@ -77,13 +89,43 @@ uint16_t FINGER_getTensionFromReading(uint16_t read)
     return tension;
 }
 
-void FINGER_setPosition(FINGER_t* finger)
+void FINGER_open(FINGER_t* finger){
+    uint8_t ME_IDX,MF_IDX;
+    if(finger->idx == 0){
+        ME_IDX = F1_ME_IDX;
+        MF_IDX = F1_MF_IDX;
+    }
+    // move ME to open position
+    MOTOR_setRvtRef(finger->M[ME_IDX], F1_ME_OPEN_POS);
+    // move MF to open position
+    MOTOR_setRvtRef(finger->M[MF_IDX], F1_MF_OPEN_POS);
+}
+
+void FINGER_close(FINGER_t* finger){
+    uint8_t ME_IDX,MF_IDX;
+    if(finger->idx == 0){
+        ME_IDX = F1_ME_IDX;
+        MF_IDX = F1_MF_IDX;
+    }
+    // move MF to open position
+    MOTOR_setRvtRef(finger->M[MF_IDX], F1_MF_CLOSED_POS);
+    // ME motor follows the movement of 
+}
+
+void FINGER_setAntagonist(FINGER_t* finger)
 {
     
+}
+
+
+void FINGER_setPosition(FINGER_t* finger, int pos)
+{
     // control de posicion del dedo
     // motor flector controla la posicion mientras el extensor mantiene la tension
-    
+     
     // salida del controlador de posicion son ticks de los sensores del motor, 16 por vuelta
+    
+    
     /*
     if(motor->rvtPID_out > 0){
         MOTOR_setCW(motor);

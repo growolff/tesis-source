@@ -32,8 +32,8 @@
 // main loop control rates
 #define LED_BLINK_RATE 2    
 #define RATE_HZ 15
-#define RVT_RATE_HZ 5000
-#define TENSION_RATE_HZ 500
+#define RVT_RATE_HZ 2000
+#define TENSION_RATE_HZ 200
 
 /* Variable to store UART received character */
 uint8 Ch;

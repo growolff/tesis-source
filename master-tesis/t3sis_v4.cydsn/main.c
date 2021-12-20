@@ -198,8 +198,8 @@ int main(void)
                 int len = sizeof(WB.buffStr)/sizeof(*WB.buffStr);
                 WB.cmd = F_UPDATE_PLOT;
                 WB.motor = RB.id;
-                WB.ref = indice.tensionPID_out;
-                WB.cur = indice.ref_tension;
+                WB.ref = indice.M[F1_MF_IDX]->curr_rvt;
+                WB.cur = indice.M[F1_ME_IDX]->curr_rvt;
                 WB.val = indice.string_tension;
 
                 UART_PutArray((const uint8*)&WB.buffStr,len);

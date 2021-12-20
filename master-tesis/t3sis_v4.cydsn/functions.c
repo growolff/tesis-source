@@ -102,6 +102,12 @@ void ProcessCommandMsg(void)
  
     switch(RB.cmd)
     {
+        case F_FINGER_OPEN:
+            FINGER_open(fingers[RB.id]);
+            break;
+        case F_FINGER_CLOSE:
+            FINGER_close(fingers[RB.id]);
+            break;
         case F_SET_SPEED_REF: /* set reference of speed controller of motor RB.id */
             motors[RB.id]->ref_spd = RB.pref;
             break;
@@ -112,9 +118,6 @@ void ProcessCommandMsg(void)
         case F_SET_FORCE_REF: /* set reference of tension controller of finger RB.id */
             FINGER_setTensionRef(fingers[RB.id-6],RB.pref);
             echomsg(F_SET_FORCE_REF,RB.id,0,0,fingers[RB.id]->ref_tension);
-            break;
-        case F_SEND_DATA_FALSE: /* Stop data streaming */
-            ContinuouslySendData = FALSE;
             break;
         case F_REQ_PID_VALUES: /* request pid values */
             //echomsg(F_REQ_PID_VALUES,RB.id,0,0,0);
@@ -133,7 +136,12 @@ void ProcessCommandMsg(void)
                 MOTOR_Enable(indice.M[F1_MF_IDX]);
             }
             break;
-        case F_DISABLE_MOTOR: /* stop motor */
+        case F_ENABLE_MOTOR: /* enable motor movement: args id,cmd */
+            if(motors[RB.id]->ENABLE.STATE == 0){
+                MOTOR_Enable(motors[RB.id]);
+            }
+            break;
+        case F_DISABLE_MOTOR: /* disable motor movement: args id,cmd */
             if(motors[RB.id]->ENABLE.STATE == 1){
                 MOTOR_Disable(motors[RB.id]);
             }
@@ -172,19 +180,17 @@ void ProcessCommandMsg(void)
                 FINGER_setTensionControlParams(fingers[RB.id-6],p,i,d);
             }
             break;
-        case F_SEND_DATA_TRUE: /* Contuously send data */
+        case F_SEND_DATA_FALSE: /* Stop data streaming: args cmd */
+            ContinuouslySendData = FALSE;
+            break;
+        case F_SEND_DATA_TRUE: /* Contuously send data: args cmd */
             ContinuouslySendData = TRUE;
             break;
-        case F_ENABLE_MOTOR: /* resume motor */
-            if(motors[RB.id]->ENABLE.STATE == 0){
-                MOTOR_Enable(motors[RB.id]);
-            }
-            break;
-        case 55: /* debug variables */
+        case F_DEBUG_VAR: /* debug variables */
             sprintf(strMsg,"%d\t%d",(int)motors[0]->rvt_controller.inputValue,(int)(motors[0]->rvt_controller.kP*factor));
             UART_PutString(strMsg); 
             break;
-        case 99: /* sw reset */
+        case F_SOFTWARE_RESET: /* sw reset */
             CySoftwareReset();
             break;         
     }
