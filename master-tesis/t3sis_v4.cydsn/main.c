@@ -15,9 +15,9 @@ void initMotor1()
 {
     // Initialize hardware related to motor M1
     PWM_M1_Start();
-    HA_TIMER_M1_Start();
+    //HA_TIMER_M1_Start();
     DC_M1_Start();
-    HA_ISR_M1_StartEx(M1_HA_INT);
+    //HA_ISR_M1_StartEx(M1_HA_INT);
 
     // initialize software associated to motor M1
     PIN_t M1_DR,M1_EN;
@@ -47,9 +47,9 @@ void initMotor2()
 {
     // Initialize hardware related to motor M2
     PWM_M2_Start();
-    HA_TIMER_M2_Start();
+    //HA_TIMER_M2_Start();
     DC_M2_Start();
-    HA_ISR_M2_StartEx(M2_HA_INT);
+    //HA_ISR_M2_StartEx(M2_HA_INT);
 
     // initialize software associated to motor 2M2
     PIN_t M2_DR,M2_EN;
@@ -76,6 +76,39 @@ void initMotor2()
 
 }
 
+void initMotor3()
+{
+    // Initialize hardware related to motor M2
+    PWM_M3_Start();
+    //HA_TIMER_M2_Start();
+    DC_M3_Start();
+    //HA_ISR_M2_StartEx(M2_HA_INT);
+
+    // initialize software associated to motor 2M2
+    PIN_t M3_DR,M3_EN;
+    M3_DR.DR = &M3_DIR_DR;
+    M3_DR.MASK = M3_DIR_MASK;
+    M3_DR.STATE = 0;
+    M3_EN.DR = &M3_EN_DR;
+    M3_EN.MASK = M3_EN_MASK;
+    M3_EN.STATE = 0;
+
+    M3.init_pos = 0;
+    M3.control_mode = 1;
+    M3.idx = F2_MF_IDX;         // motor index
+    DC_M3_SetCounter(M3.init_pos);
+
+    M3.rvt_pid[0] = M2_KP;    // kp
+    M3.rvt_pid[1] = M2_KI;   // kI
+    M3.rvt_pid[2] = M2_KD;   // kD
+       
+    MOTOR_init(&M3,M3_EN,M3_DR);
+
+    MOTOR_setPinDIR(&M3,0);
+    MOTOR_setPinENABLE(&M3,1);
+
+}
+
 void initHW()
 {
     millis_Start();
@@ -95,18 +128,23 @@ void initFingers()
 {
     initMotor1();
     initMotor2();
+    initMotor3();
      
     motors[F1_MF_IDX] = &F1_MF;
     motors[F1_ME_IDX] = &F1_ME;
+    motors[F2_MF_IDX] = &F2_MF;
        
     indice.tension_pid[0] = F1_T_KP;
     indice.tension_pid[1] = F1_T_KI;
     indice.tension_pid[2] = F1_T_KD;
     
     FINGER_init(&indice,&M1,&M2);
+    FINGER_init(&pulgar,&M3,&M4);
     
     fingers[0] = &indice;
+    fingers[1] = &pulgar;
     indice.idx = 0;
+    pulgar.idx = 1;
 }
 
 int main(void)

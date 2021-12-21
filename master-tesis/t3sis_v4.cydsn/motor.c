@@ -94,10 +94,10 @@ int16 MOTOR_getRvtCounter(MOTOR_t* motor)
             break;
         case 1:
             counter = DC_M2_GetCounter();
-            break;/*
-        case 2:
-            counter = DC_M2_GetCounter();
             break;
+        case 2:
+            counter = DC_M3_GetCounter();
+            break;/*
         case 3:
             counter = DC_M2_GetCounter();
             break;*/
@@ -113,6 +113,9 @@ void MOTOR_writePWM(MOTOR_t* motor, int16_t pwm){
             break;
         case 1:
             PWM_M2_WriteCompare(pwm);
+            break;
+        case 2:
+            PWM_M3_WriteCompare(pwm);
             break;
     }
    

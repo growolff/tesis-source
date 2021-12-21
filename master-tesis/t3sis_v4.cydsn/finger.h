@@ -21,9 +21,11 @@
 #define _FINGER_MAX_TENSION 1500
     
 #define F1_MF M1
-#define F1_ME M2    
+#define F1_ME M2
+#define F2_MF M3  
 #define F1_MF_IDX 0
 #define F1_ME_IDX 1
+#define F2_MF_IDX 2
     
 #define F1_ME_OPEN_POS 380
 #define F1_ME_CLOSED_POS 0

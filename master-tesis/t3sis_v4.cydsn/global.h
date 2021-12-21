@@ -72,14 +72,15 @@ int16_t sumPote;
 #define F1_T_KD 1.0
     
     
-#define NUM_MOTORS 2
-#define NUM_FINGERS 1
+#define NUM_MOTORS 3
+#define NUM_FINGERS 2
     
 MOTOR_t* motors[NUM_MOTORS];
-MOTOR_t M1;
-MOTOR_t M2;
+MOTOR_t M1,M2;
+MOTOR_t M3,M4;
 
 FINGER_t indice;
+FINGER_t pulgar;
 FINGER_t* fingers[NUM_FINGERS];
 
 #define SPD_CTRL 0

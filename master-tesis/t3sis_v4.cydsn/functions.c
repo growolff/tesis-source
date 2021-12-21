@@ -44,7 +44,7 @@ void echomsg(uint8_t cmd, uint8_t motor, int16_t val1, int16_t val2, int16_t val
 
 void sendPIDdata(int id)
 {
-    uint8_t cmd = F_GET_PID_VALUES; //send pid data
+    uint8_t cmd = F_REQ_PID_VALUES; //send pid data
     uint8_t motor;
     int16_t kp,ki,kd; 
     if(id >= 0 && id < 6){
@@ -112,8 +112,8 @@ void ProcessCommandMsg(void)
             motors[RB.id]->ref_spd = RB.pref;
             break;
         case F_SET_POS_REF: /* set reference of position controller of motor RB.id */
-            MOTOR_setRvtRef(indice.M[RB.id],RB.pref);
-            echomsg(F_SET_POS_REF,RB.id,0,0,RB.pref);
+            MOTOR_setRvtRef(motors[RB.id],RB.pref);
+            //echomsg(F_SET_POS_REF,RB.id,0,0,RB.pref);
             break;
         case F_SET_FORCE_REF: /* set reference of tension controller of finger RB.id */
             FINGER_setTensionRef(fingers[RB.id-6],RB.pref);

@@ -23,7 +23,6 @@
 #define F_SET_SPEED_REF       0    
 #define F_SET_POS_REF         1
 #define F_SET_FORCE_REF       2
-#define F_GET_PID_VALUES      21
 #define F_REQ_PID_VALUES      22
 #define F_SET_PID_VALUES      23
 #define F_SET_CONTROL_MODE    24

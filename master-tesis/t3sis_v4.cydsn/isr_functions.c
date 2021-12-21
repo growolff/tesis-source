@@ -12,18 +12,11 @@
 
 #include "isr_functions.h"
 
-CY_ISR(M1_HA_INT) //interrupt on level change in PM1_HA signal
-{
-    //MOTOR_readSpeed(motors[0]);
-}
-CY_ISR(M2_HA_INT) //interrupt on level change in PM1_HA signal
-{
-    //MOTOR_readSpeed(motors[1]);
-}
 CY_ISR(SPD_M2_INT) //interrupt at 20hz signal
 {
     MOTOR_readSpeed(motors[0]);
     MOTOR_readSpeed(motors[1]);
+    MOTOR_readSpeed(motors[2]);
 }
 
 /* [] END OF FILE */
