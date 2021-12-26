@@ -117,7 +117,6 @@ void initHW()
     
     SENSOR_ADC_Start();    
     UART_Start();
-    EEPROM_1_Start();
 
     /* Initialize general interrupt blocks */
     RxInt_StartEx(MyRxInt);
@@ -236,8 +235,8 @@ int main(void)
                 int len = sizeof(WB.buffStr)/sizeof(*WB.buffStr);
                 WB.cmd = F_UPDATE_PLOT;
                 WB.motor = RB.id;
-                WB.ref = indice.M[F1_MF_IDX]->curr_rvt;
-                WB.cur = indice.M[F1_ME_IDX]->curr_rvt;
+                WB.ref = motors[RB.id]->ref_rvt;
+                WB.cur = motors[RB.id]->curr_rvt;
                 WB.val = indice.string_tension;
 
                 UART_PutArray((const uint8*)&WB.buffStr,len);
