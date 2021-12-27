@@ -18,12 +18,12 @@
 #define SPD_MEASUREMENT_FREQ_CLOCK 5000
 
 // limita giro del motor para no sobretensar el tendon
-#define _MOTOR_MAX_RVT 500
-#define _MOTOR_MIN_RVT 0    
-    
+#define _MOTOR_MAX_RVT 200
+#define _MOTOR_MIN_RVT 0
+   
 // limita el controlador 
-#define _MOTOR_MAX_RVT_CONTROLLER_VAL 5000
-#define _MOTOR_MIN_RVT_CONTROLLER_VAL -5000
+#define _MOTOR_MAX_RVT_CONTROLLER_VAL 255   
+#define _MOTOR_MIN_RVT_CONTROLLER_VAL -255
     
 #define _MOTOR_MIN_SPEED 0 // for pid iterm restart
 #define _MOTOR_MAX_SPEED 8000
@@ -109,9 +109,9 @@ void MOTOR_setRvtControlParams(MOTOR_t* motor, float kp, float ki, float kd);
 void MOTOR_setPosition(MOTOR_t* motor);
 void MOTOR_setRvtRef(MOTOR_t* motor, int16_t ref_rvt);
 void MOTOR_readCurrentRvt(MOTOR_t* motor);
-int16_t MOTOR_getRvtCounter(MOTOR_t* motor);
+uint8_t MOTOR_getRvtCounter(MOTOR_t* motor);
 
-void MOTOR_writePWM(MOTOR_t* motor, int16_t pwm);
+void MOTOR_writePWM(MOTOR_t* motor, uint8_t pwm);
 
 // motor speed control functions
 void MOTOR_setSpdControlParams(MOTOR_t* motor, float kp, float ki, float kd);

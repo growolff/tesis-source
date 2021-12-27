@@ -93,7 +93,7 @@ void initMotor3()
     M3_EN.MASK = M3_EN_MASK;
     M3_EN.STATE = 0;
 
-    M3.init_pos = 0;
+    M3.init_pos = -127;
     M3.control_mode = 1;
     M3.idx = F2_MF_IDX;         // motor index
     DC_M3_SetCounter(M3.init_pos);
@@ -237,7 +237,7 @@ int main(void)
                 WB.motor = RB.id;
                 WB.ref = motors[RB.id]->ref_rvt;
                 WB.cur = motors[RB.id]->curr_rvt;
-                WB.val = indice.string_tension;
+                WB.val = 0;//indice.string_tension;
 
                 UART_PutArray((const uint8*)&WB.buffStr,len);
             }

@@ -63,7 +63,7 @@ void MOTOR_setPosition(MOTOR_t* motor)
     // salida del controlador de posicion son ticks de los sensores del motor, 16 por vuelta
         
     motor->rvtPID_out = PID_calculatePID(&motor->rvt_controller,motor->curr_rvt);
-    int16_t motor_PWM = motor->rvtPID_out;
+    uint8_t motor_PWM = motor->rvtPID_out;
     if(motor->rvtPID_out > 0){
         MOTOR_setCW(motor);
     }
@@ -71,6 +71,7 @@ void MOTOR_setPosition(MOTOR_t* motor)
         MOTOR_setCCW(motor);
         motor_PWM = -motor_PWM;
     }
+    CyDelay(1);
     MOTOR_writePWM(motor,motor_PWM);
 }
 
@@ -84,9 +85,9 @@ void MOTOR_readCurrentRvt(MOTOR_t* motor){
     motor->curr_rvt = MOTOR_getRvtCounter(motor);
 }
 
-int16 MOTOR_getRvtCounter(MOTOR_t* motor)
+uint8 MOTOR_getRvtCounter(MOTOR_t* motor)
 {
-    int16 counter = 0;
+    int8 counter = 0;
     switch(motor->idx)
     {
         case 0:
@@ -102,10 +103,10 @@ int16 MOTOR_getRvtCounter(MOTOR_t* motor)
             counter = DC_M2_GetCounter();
             break;*/
     }
-    return counter;
+    return (uint8)counter+127;
 }
 
-void MOTOR_writePWM(MOTOR_t* motor, int16_t pwm){
+void MOTOR_writePWM(MOTOR_t* motor, uint8_t pwm){
     switch (motor->idx)
     {
         case 0:
