@@ -71,7 +71,7 @@ void MOTOR_setPosition(MOTOR_t* motor)
         MOTOR_setCCW(motor);
         motor_PWM = -motor_PWM;
     }
-    CyDelay(1);
+    //CyDelay(1);
     MOTOR_writePWM(motor,motor_PWM);
 }
 

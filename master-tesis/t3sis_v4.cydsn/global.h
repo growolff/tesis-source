@@ -63,7 +63,7 @@ int16_t sumPote;
 #define M1_KI 0.0
 #define M1_KD 0.0
 // M2 position control parameters (finger 1)
-#define M2_KP 3.0
+#define M2_KP 2.4
 #define M2_KI 0.0
 #define M2_KD 0.0
 // finger 1 tension control parameters    
