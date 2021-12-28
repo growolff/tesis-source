@@ -115,6 +115,7 @@ void initHW()
 
     AMux_Start();
     
+    VDAC8_Start();
     SENSOR_ADC_Start();    
     UART_Start();
 

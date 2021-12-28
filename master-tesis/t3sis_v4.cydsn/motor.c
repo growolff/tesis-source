@@ -117,6 +117,7 @@ void MOTOR_writePWM(MOTOR_t* motor, uint8_t pwm){
             break;
         case 2:
             PWM_M3_WriteCompare(pwm);
+            //VDAC8_SetValue(pwm);
             break;
     }
    
