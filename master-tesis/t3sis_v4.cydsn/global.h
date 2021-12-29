@@ -32,7 +32,7 @@
 // main loop control rates
 #define LED_BLINK_RATE 2    
 #define RATE_HZ 15
-#define RVT_RATE_HZ 2000
+#define RVT_RATE_HZ 5000
 #define TENSION_RATE_HZ 200
 
 /* Variable to store UART received character */
@@ -63,24 +63,25 @@ int16_t sumPote;
 #define M1_KI 0.0
 #define M1_KD 0.0
 // M2 position control parameters (finger 1)
-#define M2_KP 2.4
+#define M2_KP 3.4
 #define M2_KI 0.0
-#define M2_KD 0.0
+#define M2_KD 0.4
 // finger 1 tension control parameters    
 #define F1_T_KP 1.0
 #define F1_T_KI 0.1
 #define F1_T_KD 1.0
     
-    
-#define NUM_MOTORS 3
-#define NUM_FINGERS 2
+#define NUM_MOTORS 6
+#define NUM_FINGERS 3
     
 MOTOR_t* motors[NUM_MOTORS];
 MOTOR_t M1,M2;
 MOTOR_t M3,M4;
+MOTOR_t M5,M6;
 
 FINGER_t indice;
 FINGER_t pulgar;
+FINGER_t medio;
 FINGER_t* fingers[NUM_FINGERS];
 
 #define SPD_CTRL 0
@@ -93,6 +94,7 @@ int pid_spd[3];
 int pid_ten[3];
 
 float factor;
+#define DC_OFFSET 100
 
 char TransmitBuffer[TRANSMIT_BUFFER_SIZE];
 

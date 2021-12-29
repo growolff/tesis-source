@@ -28,7 +28,7 @@ void initMotor1()
     M1_EN.MASK = M1_EN_MASK;
     M1_EN.STATE = 0;
 
-    M1.init_pos = 0;
+    M1.init_pos = -DC_OFFSET;
     M1.control_mode = 1;
     M1.idx = F1_MF_IDX;         // motor index
     DC_M1_SetCounter(M1.init_pos);
@@ -39,8 +39,8 @@ void initMotor1()
 
     MOTOR_init(&M1,M1_EN,M1_DR);
 
-    MOTOR_setPinDIR(&M1,1);
-    MOTOR_setPinENABLE(&M1,1);
+    MOTOR_setPinDIR(&M1,0);
+    MOTOR_setPinENABLE(&M1,0);
 }
 
 void initMotor2()
@@ -60,19 +60,19 @@ void initMotor2()
     M2_EN.MASK = M2_EN_MASK;
     M2_EN.STATE = 0;
 
-    M2.init_pos = 0;
+    M2.init_pos = -DC_OFFSET;
     M2.control_mode = 1;
     M2.idx = F1_ME_IDX;         // motor index
     DC_M2_SetCounter(M2.init_pos);
 
-    M2.rvt_pid[0] = M2_KP;    // kp
-    M2.rvt_pid[1] = M2_KI;   // kI
-    M2.rvt_pid[2] = M2_KD;   // kD
+    M2.rvt_pid[0] = M1_KP;    // kp
+    M2.rvt_pid[1] = M1_KI;   // kI
+    M2.rvt_pid[2] = M1_KD;   // kD
        
     MOTOR_init(&M2,M2_EN,M2_DR);
 
     MOTOR_setPinDIR(&M2,0);
-    MOTOR_setPinENABLE(&M2,1);
+    MOTOR_setPinENABLE(&M2,0);
 
 }
 
@@ -93,19 +93,85 @@ void initMotor3()
     M3_EN.MASK = M3_EN_MASK;
     M3_EN.STATE = 0;
 
-    M3.init_pos = -127;
+    M3.init_pos = -DC_OFFSET;
     M3.control_mode = 1;
     M3.idx = F2_MF_IDX;         // motor index
     DC_M3_SetCounter(M3.init_pos);
 
-    M3.rvt_pid[0] = M2_KP;    // kp
-    M3.rvt_pid[1] = M2_KI;   // kI
-    M3.rvt_pid[2] = M2_KD;   // kD
+    M3.rvt_pid[0] = M1_KP;    // kp
+    M3.rvt_pid[1] = M1_KI;   // kI
+    M3.rvt_pid[2] = M1_KD;   // kD
        
     MOTOR_init(&M3,M3_EN,M3_DR);
 
     MOTOR_setPinDIR(&M3,0);
-    MOTOR_setPinENABLE(&M3,1);
+    MOTOR_setPinENABLE(&M3,0);
+
+}
+
+void initMotor4()
+{
+    // Initialize hardware related to motor M2
+    PWM_M4_Start();
+    //HA_TIMER_M2_Start();
+    DC_M4_Start();
+    //HA_ISR_M2_StartEx(M2_HA_INT);
+
+    // initialize software associated to motor 2M2
+    PIN_t M4_DR,M4_EN;
+    M4_DR.DR = &M4_DIR_DR;
+    M4_DR.MASK = M4_DIR_MASK;
+    M4_DR.STATE = 0;
+    M4_EN.DR = &M4_EN_DR;
+    M4_EN.MASK = M4_EN_MASK;
+    M4_EN.STATE = 0;
+
+    M4.init_pos = -DC_OFFSET;
+    M4.control_mode = 1;
+    M4.idx = F2_ME_IDX;         // motor index
+    DC_M4_SetCounter(M4.init_pos);
+
+    M4.rvt_pid[0] = M1_KP;    // kp
+    M4.rvt_pid[1] = M1_KI;   // kI
+    M4.rvt_pid[2] = M1_KD;   // kD
+       
+    MOTOR_init(&M4,M4_EN,M4_DR);
+
+    MOTOR_setPinDIR(&M4,0);
+    MOTOR_setPinENABLE(&M4,0);
+
+}
+
+void initMotor5()
+{
+    // Initialize hardware related to motor M2
+    DAC_M5_Start();
+    //HA_TIMER_M2_Start();
+    DC_M5_Start();
+    //HA_ISR_M2_StartEx(M2_HA_INT);
+
+    // initialize software associated to motor 2M2
+    PIN_t M5_DR,M5_EN;
+    M5_DR.DR = &M5_DIR_DR;
+    M5_DR.MASK = M5_DIR_MASK;
+    M5_DR.STATE = 0;
+    M5_EN.DR = &M5_EN_DR;
+    M5_EN.MASK = M5_EN_MASK;
+    M5_EN.STATE = 0;
+
+    M5.init_pos = -DC_OFFSET;
+    M5.control_mode = 1;
+    M5.idx = F3_MF_IDX;         // motor index
+    DC_M5_SetCounter(M5.init_pos);
+
+    M5.rvt_pid[0] = M2_KP;    // kp
+    M5.rvt_pid[1] = M2_KI;   // kI
+    M5.rvt_pid[2] = M2_KD;   // kD
+       
+    MOTOR_init(&M5,M5_EN,M5_DR);
+
+    MOTOR_setPinDIR(&M5,0);
+    MOTOR_setPinENABLE(&M5,0);
 
 }
 
@@ -115,7 +181,6 @@ void initHW()
 
     AMux_Start();
     
-    VDAC8_Start();
     SENSOR_ADC_Start();    
     UART_Start();
 
@@ -124,27 +189,36 @@ void initHW()
     spd_m2_StartEx(SPD_M2_INT);
 }
 
-void initFingers()
+void initHand()
 {
     initMotor1();
     initMotor2();
     initMotor3();
+    initMotor4();
+    initMotor5();
      
     motors[F1_MF_IDX] = &F1_MF;
     motors[F1_ME_IDX] = &F1_ME;
     motors[F2_MF_IDX] = &F2_MF;
-       
+    motors[F2_ME_IDX] = &F2_ME;
+    motors[F3_MF_IDX] = &F3_MF;
+    //motors[F3_ME_IDX] = &F3_ME;
+    
     indice.tension_pid[0] = F1_T_KP;
     indice.tension_pid[1] = F1_T_KI;
     indice.tension_pid[2] = F1_T_KD;
     
     FINGER_init(&indice,&M1,&M2);
     FINGER_init(&pulgar,&M3,&M4);
+    FINGER_init(&medio,&M5,&M6);
     
-    fingers[0] = &indice;
-    fingers[1] = &pulgar;
-    indice.idx = 0;
-    pulgar.idx = 1;
+    fingers[P_IDX] = &pulgar;
+    fingers[I_IDX] = &indice;
+    fingers[M_IDX] = &medio;
+    
+    pulgar.idx = P_IDX;
+    indice.idx = I_IDX;
+    medio.idx = M_IDX;
 }
 
 int main(void)
@@ -154,7 +228,7 @@ int main(void)
     // initialize general hardware
     initHW();
     // initialize motors hardware and fingers structures
-    initFingers();
+    initHand();
     
     /* Enable global interrupts. */
     CyGlobalIntEnable;
@@ -184,8 +258,11 @@ int main(void)
     
     for(;;) // main loop
     {
+        // lee sensores de presion
         read_smooth(100);
-        indice.pressure_sensor = sumFs2-90;
+        indice.pressure_sensor = sumFs2-90; // -90 por un error acumulado del "smooth"    
+        pulgar.pressure_sensor = sumFs1;
+        pote = sumPote; 
         
         // receive uart data
         while(IsCharReady()){
@@ -207,13 +284,6 @@ int main(void)
             }*/
         }
 
-        pote = sumPote;
-        fs1 = sumFs1;
-    
-        // configura referencia de control
-        //MOTOR_setRvtRef(motors[0],fs1/4);
-        //MOTOR_setRvtRef(motors[1],fs2/4);
-        
         if(millis_ReadCounter() - led_time > led_blink_rate)
         {
             _state_ = !_state_;

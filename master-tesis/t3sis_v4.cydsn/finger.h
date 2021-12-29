@@ -23,9 +23,19 @@
 #define F1_MF M1
 #define F1_ME M2
 #define F2_MF M3  
+#define F2_ME M4
+#define F3_MF M5
+#define F3_ME M5
 #define F1_MF_IDX 0
 #define F1_ME_IDX 1
 #define F2_MF_IDX 2
+#define F2_ME_IDX 3
+#define F3_MF_IDX 4
+#define F3_ME_IDX 5
+    
+#define P_IDX 0
+#define I_IDX 1
+#define M_IDX 2
     
 #define F1_ME_OPEN_POS 380
 #define F1_ME_CLOSED_POS 0
