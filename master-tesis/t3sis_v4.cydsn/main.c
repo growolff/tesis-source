@@ -28,7 +28,7 @@ void initMotor1()
     M1_EN.MASK = M1_EN_MASK;
     M1_EN.STATE = 0;
 
-    M1.init_pos = -DC_OFFSET;
+    M1.init_pos = 0;
     M1.control_mode = 1;
     M1.idx = I_ME_IDX;         // motor index
     DC_M1_SetCounter(M1.init_pos);
@@ -60,7 +60,7 @@ void initMotor2()
     M2_EN.MASK = M2_EN_MASK;
     M2_EN.STATE = 0;
 
-    M2.init_pos = -DC_OFFSET;
+    M2.init_pos = 0;
     M2.control_mode = 1;
     M2.idx = I_MF_IDX;         // motor index
     DC_M2_SetCounter(M2.init_pos);
@@ -93,7 +93,7 @@ void initMotor3()
     M3_EN.MASK = M3_EN_MASK;
     M3_EN.STATE = 0;
 
-    M3.init_pos = -DC_OFFSET;
+    M3.init_pos = 0;
     M3.control_mode = 1;
     M3.idx = P_ME_IDX;         // motor index
     DC_M3_SetCounter(M3.init_pos);
@@ -124,7 +124,8 @@ void initMotor4()
     M4_EN.MASK = M4_EN_MASK;
     M4_EN.STATE = 0;
 
-    M4.init_pos = -DC_OFFSET;
+    M4.init_pos = 0
+    ;
     M4.control_mode = 1;
     M4.idx = P_MF_IDX;         // motor index
     DC_M4_SetCounter(M4.init_pos);
@@ -155,7 +156,7 @@ void initMotor5()
     M5_EN.MASK = M5_EN_MASK;
     M5_EN.STATE = 0;
 
-    M5.init_pos = -DC_OFFSET;
+    M5.init_pos = 0;
     M5.control_mode = 1;
     M5.idx = M_ME_IDX;         // motor index
     DC_M5_SetCounter(M5.init_pos);
@@ -185,7 +186,7 @@ void initMotor6()
     M6_EN.MASK = M6_EN_MASK;
     M6_EN.STATE = 0;
 
-    M6.init_pos = -DC_OFFSET;
+    M6.init_pos = 0;
     M6.control_mode = 1;
     M6.idx = M_MF_IDX;         // motor index
     //DC_M5_SetCounter(M5.init_pos);
@@ -216,7 +217,6 @@ void initHW()
     RxInt_StartEx(MyRxInt);
     spd_m2_StartEx(SPD_M2_INT);
     M6_HA_StartEx(HA_INT);
-    M6_HB_StartEx(HB_INT);
     
 }
 
@@ -264,7 +264,7 @@ int main(void)
     
     // disable all motors
     for(int i=0; i<NUM_MOTORS; i++){
-        MOTOR_Disable(motors[i]);
+        MOTOR_Enable(motors[i]);
     }
     
     /* Enable global interrupts. */

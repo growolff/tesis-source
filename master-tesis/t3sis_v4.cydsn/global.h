@@ -109,7 +109,6 @@ int pid_spd[3];
 int pid_ten[3];
 
 float factor;
-#define DC_OFFSET 100
 
 char TransmitBuffer[TRANSMIT_BUFFER_SIZE];
 
@@ -118,7 +117,7 @@ void echod(int data);
 void echof(float data);
 
 /* contador vueltas M6 */
-uint8 m6_counter;
+int16 m6_counter;
 
 #endif // GLOBAL_VARIABLES_FILE_H
 

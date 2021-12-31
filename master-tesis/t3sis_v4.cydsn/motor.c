@@ -66,9 +66,9 @@ void MOTOR_updateCounter(MOTOR_t* motor, uint8 counter){
     motor->counter = counter;   
 }
 
-uint8 MOTOR_getRvtCounter(MOTOR_t* motor)
+int16_t MOTOR_getRvtCounter(MOTOR_t* motor)
 {
-    int8 counter = 0;
+    int16 counter = 0;
     switch(motor->idx)
     {
         case 0:
@@ -90,7 +90,7 @@ uint8 MOTOR_getRvtCounter(MOTOR_t* motor)
             counter = motor->counter;
             break;
     }
-    return (uint8)counter+100;
+    return counter;
 }
 
 void MOTOR_setRvtRef(MOTOR_t* motor, int16_t ref_rvt)
@@ -104,7 +104,7 @@ void MOTOR_setPosition(MOTOR_t* motor)
     // salida del controlador de posicion son ticks de los sensores del motor, 16 por vuelta
         
     motor->rvtPID_out = PID_calculatePID(&motor->rvt_controller,motor->curr_rvt);
-    uint8_t motor_PWM = motor->rvtPID_out;
+    int16_t motor_PWM = motor->rvtPID_out;
     if(motor->rvtPID_out > 0){
         MOTOR_setCW(motor);
     }
@@ -112,8 +112,7 @@ void MOTOR_setPosition(MOTOR_t* motor)
         MOTOR_setCCW(motor);
         motor_PWM = -motor_PWM;
     }
-    //CyDelay(1);
-    MOTOR_writePWM(motor,motor_PWM);
+    MOTOR_writePWM(motor,(uint8)motor_PWM);
 }
 
 void MOTOR_writePWM(MOTOR_t* motor, uint8_t pwm){
@@ -128,13 +127,13 @@ void MOTOR_writePWM(MOTOR_t* motor, uint8_t pwm){
         case 2: // M3
             PWM_M3_WriteCompare(pwm);
             break;
-        case 3: // M3
+        case 3: // M4
             PWM_M4_WriteCompare(pwm);
             break;
         case 4: // M5
             DAC_M5_SetValue(pwm);
             break;
-        case 5: // M5
+        case 5: // M6
             DAC_M6_SetValue(pwm);
             break;
     }

@@ -77,7 +77,7 @@ typedef struct MOTOR_t {
     int8_t curr_dir; // current rotor direction
     int16_t init_pos; // rotor init position
 
-    uint8 counter;
+    int16_t counter;
     
     int16_t curr_rvt;
     int16_t ref_rvt;
@@ -110,8 +110,8 @@ void MOTOR_setRvtControlParams(MOTOR_t* motor, float kp, float ki, float kd);
 void MOTOR_setPosition(MOTOR_t* motor);
 void MOTOR_setRvtRef(MOTOR_t* motor, int16_t ref_rvt);
 void MOTOR_readCurrentRvt(MOTOR_t* motor);
-uint8_t MOTOR_getRvtCounter(MOTOR_t* motor);
-
+int16_t MOTOR_getRvtCounter(MOTOR_t* motor);
+void MOTOR_updateCounter(MOTOR_t* motor, uint8 counter);
 void MOTOR_writePWM(MOTOR_t* motor, uint8_t pwm);
 
 // motor speed control functions
@@ -121,7 +121,7 @@ void MOTOR_setSpdRef(MOTOR_t* motor, int32_t ref);
 void MOTOR_readSpeed(MOTOR_t* motor);
 void MOTOR_resetSpdCounter(MOTOR_t* motor);
 uint32 MOTOR_getSpdCounter(MOTOR_t* motor);
-void MOTOR_updateCounter(MOTOR_t* motor, uint8 counter);
+
 
 void MOTOR_setZeroPosistion(MOTOR_t* motor);
 void MOTOR_setZeroPositionManual(MOTOR_t* motor);

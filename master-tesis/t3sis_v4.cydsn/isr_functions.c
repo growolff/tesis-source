@@ -23,13 +23,8 @@ CY_ISR(SPD_M2_INT) //interrupt at 20hz signal
 
 CY_ISR(HA_INT){
     //ha_st = !ha_st;
-    m6_counter += M6_HB_PIN_Read() ? -1 : 1;
+    m6_counter += M6_HB_PIN_Read() ? 1 : -1;
     MOTOR_updateCounter(&M6, m6_counter);
-}
-
-CY_ISR(HB_INT){
-    //hb_st = !hb_st;
-    
 }
 
 /* [] END OF FILE */
