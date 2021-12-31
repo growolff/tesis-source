@@ -62,6 +62,10 @@ void MOTOR_readCurrentRvt(MOTOR_t* motor){
     motor->curr_rvt = MOTOR_getRvtCounter(motor);
 }
 
+void MOTOR_updateCounter(MOTOR_t* motor, uint8 counter){
+    motor->counter = counter;   
+}
+
 uint8 MOTOR_getRvtCounter(MOTOR_t* motor)
 {
     int8 counter = 0;
@@ -81,6 +85,9 @@ uint8 MOTOR_getRvtCounter(MOTOR_t* motor)
             break;
         case 4:
             counter = DC_M5_GetCounter();
+            break;
+        case 5:
+            counter = motor->counter;
             break;
     }
     return (uint8)counter+100;
@@ -127,6 +134,9 @@ void MOTOR_writePWM(MOTOR_t* motor, uint8_t pwm){
         case 4: // M5
             DAC_M5_SetValue(pwm);
             break;
+        case 5: // M5
+            DAC_M6_SetValue(pwm);
+            break;
     }
    
 }
@@ -163,6 +173,7 @@ void MOTOR_setSpeed(MOTOR_t* motor, int32_t ref)
     }
 }
 
+/*
 void MOTOR_readSpeed(MOTOR_t* motor)
 {
     /*
@@ -178,7 +189,7 @@ void MOTOR_readSpeed(MOTOR_t* motor)
     else{
         motor->curr_spd = 0;
     }
-    */
+   
 
     int16 counter = MOTOR_getRvtCounter(motor);
     //motor->curr_rvt = (counter - motor->init_pos);
@@ -234,7 +245,7 @@ uint32 MOTOR_getSpdCounter(MOTOR_t* motor)
     }
     return counter;
 }
-
+*/
 void MOTOR_setPinDIR(MOTOR_t * motor, uint8_t setPin)
 {
     if(setPin == M_CCW){

@@ -81,9 +81,9 @@ uint8_t fn_mapper_8b(int32_t x, int32_t in_min, int32_t in_max, uint8_t out_min,
 
 void read_smooth(int numRead){
   uint16_t numReadings = numRead;
-  uint16_t adc_reading[3] = {0,0,0};
+  uint16_t adc_reading[4] = {0,0,0,0};
 
-  for(int i=0; i<=2; i++){
+  for(int i=0; i<NUM_SENSORS; i++){
     AMux_FastSelect(i);
     SENSOR_ADC_StartConvert();
     SENSOR_ADC_IsEndConversion(SENSOR_ADC_WAIT_FOR_RESULT);
@@ -93,6 +93,7 @@ void read_smooth(int numRead){
   sumFs1 += (adc_reading[_FS1]- sumFs1)/numReadings;
   sumFs2 += (adc_reading[_FS2]- sumFs2)/numReadings;
   sumPote += (adc_reading[_POTE]- sumPote)/numReadings;
+  sumFs3 += (adc_reading[_FS3]- sumFs3)/numReadings;
 
 }
 
@@ -129,22 +130,19 @@ void ProcessCommandMsg(void)
             // 2 tension    
             //echomsg(F_SET_CONTROL_MODE,RB.id,0,0,0);
             if (RB.pref == REV_CTRL) MOTOR_setControlMode(motors[RB.id],RB.pref);  
+            /*
             else if (RB.pref == TEN_CTRL) {
                 MOTOR_setControlMode(indice.M[F1_ME_IDX],M_FORCE_CONTROL_MODE);  
                 MOTOR_setControlMode(indice.M[F1_MF_IDX],M_POSITION_CONTROL_MODE);
                 MOTOR_Enable(indice.M[F1_ME_IDX]);
                 MOTOR_Enable(indice.M[F1_MF_IDX]);
-            }
+            }*/
             break;
         case F_ENABLE_MOTOR: /* enable motor movement: args id,cmd */
-            if(motors[RB.id]->ENABLE.STATE == 0){
-                MOTOR_Enable(motors[RB.id]);
-            }
+            MOTOR_Enable(motors[RB.id]);
             break;
         case F_DISABLE_MOTOR: /* disable motor movement: args id,cmd */
-            if(motors[RB.id]->ENABLE.STATE == 1){
-                MOTOR_Disable(motors[RB.id]);
-            }
+            MOTOR_Disable(motors[RB.id]);
             break;
         case F_SET_PID_VALUES: /* Set pid values */ 
             

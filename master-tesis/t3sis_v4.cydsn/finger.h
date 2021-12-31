@@ -20,18 +20,18 @@
 #define _FINGER_MIN_TENSION 0
 #define _FINGER_MAX_TENSION 1500
     
-#define F1_MF M1
-#define F1_ME M2
-#define F2_MF M3  
-#define F2_ME M4
-#define F3_MF M5
-#define F3_ME M5
-#define F1_MF_IDX 0
-#define F1_ME_IDX 1
-#define F2_MF_IDX 2
-#define F2_ME_IDX 3
-#define F3_MF_IDX 4
-#define F3_ME_IDX 5
+#define I_ME M1
+#define I_MF M2
+#define P_ME M3  
+#define P_MF M4
+#define M_ME M5
+#define M_MF M6
+#define I_ME_IDX 0
+#define I_MF_IDX 1
+#define P_ME_IDX 2
+#define P_MF_IDX 3
+#define M_ME_IDX 4
+#define M_MF_IDX 5
     
 #define P_IDX 0
 #define I_IDX 1

@@ -47,8 +47,8 @@ void FINGER_setTension(FINGER_t* finger)
     
     switch(finger->idx){
         case 0:
-            if(finger->M[F1_ME_IDX]->control_mode == M_FORCE_CONTROL_MODE){
-                MOTOR_setRvtRef(finger->M[F1_ME_IDX],me_rvt_ref);
+            if(finger->M[I_MF_IDX]->control_mode == M_FORCE_CONTROL_MODE){
+                MOTOR_setRvtRef(finger->M[I_MF_IDX],me_rvt_ref);
             }
             break;
     }
@@ -92,8 +92,8 @@ uint16_t FINGER_getTensionFromReading(uint16_t read)
 void FINGER_open(FINGER_t* finger){
     uint8_t ME_IDX,MF_IDX;
     if(finger->idx == 0){
-        ME_IDX = F1_ME_IDX;
-        MF_IDX = F1_MF_IDX;
+        ME_IDX = I_ME_IDX;
+        MF_IDX = I_MF_IDX;
     }
     // move ME to open position
     MOTOR_setRvtRef(finger->M[ME_IDX], F1_ME_OPEN_POS);
@@ -104,19 +104,13 @@ void FINGER_open(FINGER_t* finger){
 void FINGER_close(FINGER_t* finger){
     uint8_t ME_IDX,MF_IDX;
     if(finger->idx == 0){
-        ME_IDX = F1_ME_IDX;
-        MF_IDX = F1_MF_IDX;
+        ME_IDX = I_ME_IDX;
+        MF_IDX = I_MF_IDX;
     }
     // move MF to open position
     MOTOR_setRvtRef(finger->M[MF_IDX], F1_MF_CLOSED_POS);
     // ME motor follows the movement of 
 }
-
-void FINGER_setAntagonist(FINGER_t* finger)
-{
-    
-}
-
 
 void FINGER_setPosition(FINGER_t* finger, int pos)
 {

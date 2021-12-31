@@ -14,9 +14,10 @@
 
 #include "global.h"
 
-extern MOTOR_t M1,M2,M3;
-
 CY_ISR_PROTO(SPD_M2_INT);
+
+CY_ISR_PROTO(HA_INT);
+CY_ISR_PROTO(HB_INT);
 
 #endif // ISR_FUNCTIONS_H
 

@@ -14,7 +14,7 @@
 
 #include "project.h"
 #include "motor.h"
-#include "finger.h"
+#include "finger.h"    
 #include "stdio.h"
 #include "pid_o.h"
 #include "string.h"
@@ -32,7 +32,7 @@
 // main loop control rates
 #define LED_BLINK_RATE 2    
 #define RATE_HZ 15
-#define RVT_RATE_HZ 5000
+#define RVT_RATE_HZ 2000
 #define TENSION_RATE_HZ 200
 
 /* Variable to store UART received character */
@@ -45,17 +45,15 @@ volatile uint8 SoftwareReset;
 
 /* Project variables */
 int _state_;
-   
-// for rotor speed and direction
-extern volatile uint8 dir_state;
-extern volatile int8_t rotor_direction;
 
 /* SENSOR_ADC connection order*/
+#define _FS3 3
 #define _FS1 2
 #define _FS2 0
 #define _POTE 1  
 int16_t sumFs1;
 int16_t sumFs2;
+int16_t sumFs3;
 int16_t sumPote;
 
 // M1 position control parameters (finger 1)
@@ -70,6 +68,23 @@ int16_t sumPote;
 #define F1_T_KP 1.0
 #define F1_T_KI 0.1
 #define F1_T_KD 1.0
+    
+#define I_ME M1
+#define I_MF M2
+#define P_ME M3  
+#define P_MF M4
+#define M_ME M5
+#define M_MF M6
+#define I_ME_IDX 0
+#define I_MF_IDX 1
+#define P_ME_IDX 2
+#define P_MF_IDX 3
+#define M_ME_IDX 4
+#define M_MF_IDX 5
+    
+#define P_IDX 0
+#define I_IDX 1
+#define M_IDX 2
     
 #define NUM_MOTORS 6
 #define NUM_FINGERS 3
@@ -101,6 +116,9 @@ char TransmitBuffer[TRANSMIT_BUFFER_SIZE];
 void echo(char* data);
 void echod(int data);
 void echof(float data);
+
+/* contador vueltas M6 */
+uint8 m6_counter;
 
 #endif // GLOBAL_VARIABLES_FILE_H
 

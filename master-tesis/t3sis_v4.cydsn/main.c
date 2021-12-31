@@ -30,7 +30,7 @@ void initMotor1()
 
     M1.init_pos = -DC_OFFSET;
     M1.control_mode = 1;
-    M1.idx = F1_MF_IDX;         // motor index
+    M1.idx = I_ME_IDX;         // motor index
     DC_M1_SetCounter(M1.init_pos);
 
     M1.rvt_pid[0] = M1_KP;
@@ -62,7 +62,7 @@ void initMotor2()
 
     M2.init_pos = -DC_OFFSET;
     M2.control_mode = 1;
-    M2.idx = F1_ME_IDX;         // motor index
+    M2.idx = I_MF_IDX;         // motor index
     DC_M2_SetCounter(M2.init_pos);
 
     M2.rvt_pid[0] = M1_KP;    // kp
@@ -95,7 +95,7 @@ void initMotor3()
 
     M3.init_pos = -DC_OFFSET;
     M3.control_mode = 1;
-    M3.idx = F2_MF_IDX;         // motor index
+    M3.idx = P_ME_IDX;         // motor index
     DC_M3_SetCounter(M3.init_pos);
 
     M3.rvt_pid[0] = M1_KP;    // kp
@@ -113,9 +113,7 @@ void initMotor4()
 {
     // Initialize hardware related to motor M2
     PWM_M4_Start();
-    //HA_TIMER_M2_Start();
     DC_M4_Start();
-    //HA_ISR_M2_StartEx(M2_HA_INT);
 
     // initialize software associated to motor 2M2
     PIN_t M4_DR,M4_EN;
@@ -128,7 +126,7 @@ void initMotor4()
 
     M4.init_pos = -DC_OFFSET;
     M4.control_mode = 1;
-    M4.idx = F2_ME_IDX;         // motor index
+    M4.idx = P_MF_IDX;         // motor index
     DC_M4_SetCounter(M4.init_pos);
 
     M4.rvt_pid[0] = M1_KP;    // kp
@@ -146,10 +144,8 @@ void initMotor5()
 {
     // Initialize hardware related to motor M2
     DAC_M5_Start();
-    //HA_TIMER_M2_Start();
     DC_M5_Start();
-    //HA_ISR_M2_StartEx(M2_HA_INT);
-
+    
     // initialize software associated to motor 2M2
     PIN_t M5_DR,M5_EN;
     M5_DR.DR = &M5_DIR_DR;
@@ -161,7 +157,7 @@ void initMotor5()
 
     M5.init_pos = -DC_OFFSET;
     M5.control_mode = 1;
-    M5.idx = F3_MF_IDX;         // motor index
+    M5.idx = M_ME_IDX;         // motor index
     DC_M5_SetCounter(M5.init_pos);
 
     M5.rvt_pid[0] = M2_KP;    // kp
@@ -172,6 +168,38 @@ void initMotor5()
 
     MOTOR_setPinDIR(&M5,0);
     MOTOR_setPinENABLE(&M5,0);
+
+}
+
+void initMotor6()
+{
+    // Initialize hardware related to motor M2
+    DAC_M6_Start();
+
+    // initialize software associated to motor 2M2
+    PIN_t M6_DR,M6_EN;
+    M6_DR.DR = &M6_DIR_DR;
+    M6_DR.MASK = M6_DIR_MASK;
+    M6_DR.STATE = 0;
+    M6_EN.DR = &M6_EN_DR;
+    M6_EN.MASK = M6_EN_MASK;
+    M6_EN.STATE = 0;
+
+    M6.init_pos = -DC_OFFSET;
+    M6.control_mode = 1;
+    M6.idx = M_MF_IDX;         // motor index
+    //DC_M5_SetCounter(M5.init_pos);
+
+    M6.counter = M6.init_pos;
+
+    M6.rvt_pid[0] = M2_KP;    // kp
+    M6.rvt_pid[1] = M2_KI;   // kI
+    M6.rvt_pid[2] = M2_KD;   // kD
+       
+    MOTOR_init(&M6,M6_EN,M6_DR);
+
+    MOTOR_setPinDIR(&M6,0);
+    MOTOR_setPinENABLE(&M6,0);
 
 }
 
@@ -187,6 +215,9 @@ void initHW()
     /* Initialize general interrupt blocks */
     RxInt_StartEx(MyRxInt);
     spd_m2_StartEx(SPD_M2_INT);
+    M6_HA_StartEx(HA_INT);
+    M6_HB_StartEx(HB_INT);
+    
 }
 
 void initHand()
@@ -196,21 +227,22 @@ void initHand()
     initMotor3();
     initMotor4();
     initMotor5();
+    initMotor6();
      
-    motors[F1_MF_IDX] = &F1_MF;
-    motors[F1_ME_IDX] = &F1_ME;
-    motors[F2_MF_IDX] = &F2_MF;
-    motors[F2_ME_IDX] = &F2_ME;
-    motors[F3_MF_IDX] = &F3_MF;
-    //motors[F3_ME_IDX] = &F3_ME;
+    motors[I_MF_IDX] = &I_MF;
+    motors[I_ME_IDX] = &I_ME;
+    motors[P_MF_IDX] = &P_MF;
+    motors[P_ME_IDX] = &P_ME;
+    motors[M_MF_IDX] = &M_MF;
+    motors[M_ME_IDX] = &M_ME;
     
     indice.tension_pid[0] = F1_T_KP;
     indice.tension_pid[1] = F1_T_KI;
     indice.tension_pid[2] = F1_T_KD;
     
-    FINGER_init(&indice,&M1,&M2);
-    FINGER_init(&pulgar,&M3,&M4);
-    FINGER_init(&medio,&M5,&M6);
+    FINGER_init(&indice,&I_ME,&I_MF);
+    FINGER_init(&pulgar,&P_ME,&P_MF);
+    FINGER_init(&medio,&M_ME,&M_MF);
     
     fingers[P_IDX] = &pulgar;
     fingers[I_IDX] = &indice;
@@ -230,6 +262,11 @@ int main(void)
     // initialize motors hardware and fingers structures
     initHand();
     
+    // disable all motors
+    for(int i=0; i<NUM_MOTORS; i++){
+        MOTOR_Disable(motors[i]);
+    }
+    
     /* Enable global interrupts. */
     CyGlobalIntEnable;
 
@@ -246,22 +283,19 @@ int main(void)
     uint32_t rvt_time = millis_ReadCounter();
     uint32_t tension_time = millis_ReadCounter();
 
-    uint16_t fs1 = 0, fs2 = 0, FS2 = 0, pote = 0;
+    uint16_t fs1 = 0, fs2 = 0, fs3 = 0, pote = 0;
     sumFs1 = 0;
     sumFs2 = 0;
+    sumFs3 = 0;
     sumPote = 0;
-    
-    // disable all motors
-    for(int i=0; i<NUM_MOTORS; i++){
-        MOTOR_Disable(motors[i]);
-    }
     
     for(;;) // main loop
     {
         // lee sensores de presion
         read_smooth(100);
-        indice.pressure_sensor = sumFs2-90; // -90 por un error acumulado del "smooth"    
+        indice.pressure_sensor = sumFs2; // -90 por un error acumulado del "smooth"    
         pulgar.pressure_sensor = sumFs1;
+        medio.pressure_sensor = sumFs3;
         pote = sumPote; 
         
         // receive uart data
@@ -299,17 +333,23 @@ int main(void)
                 millis_WriteCounter(0); //resetea el contador cuando pasa los 600 segundos
                 //actual_time = millis_ReadCounter();
             }
-
+            MOTOR_readCurrentRvt(motors[5]);
             /* Send data based on last UART command */
             if(ContinuouslySendData)
             {
                 int len = sizeof(WB.buffStr)/sizeof(*WB.buffStr);
                 WB.cmd = F_UPDATE_PLOT;
                 WB.motor = RB.id;
+                
                 WB.ref = motors[RB.id]->ref_rvt;
                 WB.cur = motors[RB.id]->curr_rvt;
-                WB.val = 0;//indice.string_tension;
-
+                WB.val = medio.pressure_sensor;
+                /*
+                WB.ref = RB.id;//ha_st;
+                WB.cur = motors[RB.id]->curr_rvt;
+                WB.val = pulgar.pressure_sensor;
+                */
+    
                 UART_PutArray((const uint8*)&WB.buffStr,len);
             }
             actual_time = millis_ReadCounter();
@@ -317,7 +357,7 @@ int main(void)
 
         // position control loop
         if(millis_ReadCounter() - rvt_time > rvt_rate) {
-            //echomsg(motors[1]->rvt_controller.kP ,motors[1]->ref_rvt,motors[1]->rvtPID_out,motors[1]->curr_rvt);            
+            
             // revisa error del controlador y corrije
             for(int i=0; i<NUM_MOTORS; i++){
                 MOTOR_readCurrentRvt(motors[i]);

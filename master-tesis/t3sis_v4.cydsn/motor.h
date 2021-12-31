@@ -18,7 +18,7 @@
 #define SPD_MEASUREMENT_FREQ_CLOCK 5000
 
 // limita giro del motor para no sobretensar el tendon
-#define _MOTOR_MAX_RVT 200
+#define _MOTOR_MAX_RVT 160
 #define _MOTOR_MIN_RVT 0
    
 // limita el controlador 
@@ -43,7 +43,7 @@
 
 #define DBG_SIZE 10
 
-#define NUM_SENSORS 3
+#define NUM_SENSORS 4
 int16 * TS_array;
 
 char msg[10];
@@ -77,13 +77,14 @@ typedef struct MOTOR_t {
     int8_t curr_dir; // current rotor direction
     int16_t init_pos; // rotor init position
 
+    uint8 counter;
+    
     int16_t curr_rvt;
-    int16_t curr_spd;
-
     int16_t ref_rvt;
-    int16_t ref_spd;
-
     int16_t rvtPID_out;
+        
+    int16_t curr_spd;
+    int16_t ref_spd;
     int16_t spdPID_out;
     
     int16 last_count;
@@ -120,6 +121,7 @@ void MOTOR_setSpdRef(MOTOR_t* motor, int32_t ref);
 void MOTOR_readSpeed(MOTOR_t* motor);
 void MOTOR_resetSpdCounter(MOTOR_t* motor);
 uint32 MOTOR_getSpdCounter(MOTOR_t* motor);
+void MOTOR_updateCounter(MOTOR_t* motor, uint8 counter);
 
 void MOTOR_setZeroPosistion(MOTOR_t* motor);
 void MOTOR_setZeroPositionManual(MOTOR_t* motor);
