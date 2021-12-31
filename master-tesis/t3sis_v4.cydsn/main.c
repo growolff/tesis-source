@@ -15,9 +15,7 @@ void initMotor1()
 {
     // Initialize hardware related to motor M1
     PWM_M1_Start();
-    //HA_TIMER_M1_Start();
     DC_M1_Start();
-    //HA_ISR_M1_StartEx(M1_HA_INT);
 
     // initialize software associated to motor M1
     PIN_t M1_DR,M1_EN;
@@ -47,9 +45,7 @@ void initMotor2()
 {
     // Initialize hardware related to motor M2
     PWM_M2_Start();
-    //HA_TIMER_M2_Start();
     DC_M2_Start();
-    //HA_ISR_M2_StartEx(M2_HA_INT);
 
     // initialize software associated to motor 2M2
     PIN_t M2_DR,M2_EN;
@@ -80,9 +76,7 @@ void initMotor3()
 {
     // Initialize hardware related to motor M2
     PWM_M3_Start();
-    //HA_TIMER_M2_Start();
     DC_M3_Start();
-    //HA_ISR_M2_StartEx(M2_HA_INT);
 
     // initialize software associated to motor 2M2
     PIN_t M3_DR,M3_EN;
@@ -124,8 +118,7 @@ void initMotor4()
     M4_EN.MASK = M4_EN_MASK;
     M4_EN.STATE = 0;
 
-    M4.init_pos = 0
-    ;
+    M4.init_pos = 0;
     M4.control_mode = 1;
     M4.idx = P_MF_IDX;         // motor index
     DC_M4_SetCounter(M4.init_pos);
@@ -189,7 +182,6 @@ void initMotor6()
     M6.init_pos = 0;
     M6.control_mode = 1;
     M6.idx = M_MF_IDX;         // motor index
-    //DC_M5_SetCounter(M5.init_pos);
 
     M6.counter = M6.init_pos;
 
@@ -216,7 +208,7 @@ void initHW()
     /* Initialize general interrupt blocks */
     RxInt_StartEx(MyRxInt);
     spd_m2_StartEx(SPD_M2_INT);
-    M6_HA_StartEx(HA_INT);
+    M6_HA_StartEx(M6_HA_INT);
     
 }
 
@@ -343,12 +335,7 @@ int main(void)
                 
                 WB.ref = motors[RB.id]->ref_rvt;
                 WB.cur = motors[RB.id]->curr_rvt;
-                WB.val = medio.pressure_sensor;
-                /*
-                WB.ref = RB.id;//ha_st;
-                WB.cur = motors[RB.id]->curr_rvt;
-                WB.val = pulgar.pressure_sensor;
-                */
+                WB.val = motors[RB.id]->applied_pwm;
     
                 UART_PutArray((const uint8*)&WB.buffStr,len);
             }
@@ -358,19 +345,11 @@ int main(void)
         // position control loop
         if(millis_ReadCounter() - rvt_time > rvt_rate) {
             
-            // revisa error del controlador y corrije
+            // revisa posicion actual y corrije
             for(int i=0; i<NUM_MOTORS; i++){
                 MOTOR_readCurrentRvt(motors[i]);
-                
-                if(motors[i]->ref_rvt > _MOTOR_MAX_RVT){
-                    MOTOR_setRvtRef(motors[i],_MOTOR_MAX_RVT);   
-                }
-                if(motors[i]->ref_rvt < _MOTOR_MIN_RVT){
-                    MOTOR_setRvtRef(motors[i],_MOTOR_MIN_RVT);
-                }
                 MOTOR_setPosition(motors[i]);
             }
-
             rvt_time = millis_ReadCounter();
         }
         

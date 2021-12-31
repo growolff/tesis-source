@@ -113,7 +113,13 @@ void ProcessCommandMsg(void)
             motors[RB.id]->ref_spd = RB.pref;
             break;
         case F_SET_POS_REF: /* set reference of position controller of motor RB.id */
-            MOTOR_setRvtRef(motors[RB.id],RB.pref);
+            if(RB.pref > _MOTOR_MAX_RVT){
+                MOTOR_setRvtRef(motors[RB.id],_MOTOR_MAX_RVT);   
+            }
+            else if(RB.pref < _MOTOR_MIN_RVT){
+                MOTOR_setRvtRef(motors[RB.id],_MOTOR_MIN_RVT);
+            }
+            else MOTOR_setRvtRef(motors[RB.id],RB.pref);
             //echomsg(F_SET_POS_REF,RB.id,0,0,RB.pref);
             break;
         case F_SET_FORCE_REF: /* set reference of tension controller of finger RB.id */

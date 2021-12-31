@@ -62,13 +62,13 @@ void MOTOR_readCurrentRvt(MOTOR_t* motor){
     motor->curr_rvt = MOTOR_getRvtCounter(motor);
 }
 
-void MOTOR_updateCounter(MOTOR_t* motor, uint8 counter){
+void MOTOR_updateCounter(MOTOR_t* motor, int16 counter){
     motor->counter = counter;   
 }
 
 int16_t MOTOR_getRvtCounter(MOTOR_t* motor)
 {
-    int16 counter = 0;
+    int16_t counter = 0;
     switch(motor->idx)
     {
         case 0:
@@ -111,8 +111,11 @@ void MOTOR_setPosition(MOTOR_t* motor)
     else{
         MOTOR_setCCW(motor);
         motor_PWM = -motor_PWM;
+        //CyDelay(5);
     }
+    motor->applied_pwm =(uint8)motor_PWM;
     MOTOR_writePWM(motor,(uint8)motor_PWM);
+    //out > handle->lim ?  handle->lim : (out < - handle->lim ? - handle->lim : out);
 }
 
 void MOTOR_writePWM(MOTOR_t* motor, uint8_t pwm){
